@@ -67,7 +67,7 @@ program ever disagree, the program wins — please open an issue.
 ## Author & license
 
 Course text, diagrams, and site © 2026 Rafael Espericueta
-(Math Department, Bakersfield College), licensed
+(Professor of Mathematics Emeritus, Bakersfield College), licensed
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 All code (scripts and notebooks) is released under the MIT License.
 See [LICENSE](LICENSE) for both notices.
