@@ -1,0 +1,809 @@
+<!-- Intro to Category Theory — Lesson 3: Natural Transformations -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 · Natural Transformations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
+  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8; --code-bg:#15171E; --code-fg:#E7E4DA; --code-dim:#8A8E9C;
+  --out-bg:#1E2733; --maxw:720px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%)}
+.wrap{position:relative;z-index:1}
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i{font-style:italic}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{font-size:clamp(38px,7vw,70px);margin:0 0 .35em;font-weight:500}
+.hero h1 .q{color:var(--arrow)}
+.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:38ch;margin:0}
+.hero-diagram{margin:42px auto 8px;max-width:470px}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:12px}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+figure{margin:34px 0;text-align:center}
+.board{background:radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);border-radius:3px;padding:26px 18px 18px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:470px;margin-inline:auto}
+.board.wide svg{max-width:560px}
+figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;max-width:54ch;margin-inline:auto;font-style:italic}
+
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.small{font-size:19px}
+.node.dbl{font-family:"Fraunces",serif;font-style:normal;font-size:34px;fill:var(--arrow)}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;fill:var(--arrow);
+  paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.elabel.mono{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:14px}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+.arrow.big{stroke-width:2.5}
+
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.elabel,.node.dbl{opacity:0}
+.draw .elabel,.draw .node.dbl{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .elabel,.node.dbl{opacity:1 !important;transition:none !important}
+}
+
+.box{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin:30px 0}
+.box .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.box.amber{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag{color:var(--amber)}
+.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.thm .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+.law{display:flex;gap:14px;align-items:baseline;margin:.5em 0;flex-wrap:wrap}
+.law .name{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);min-width:96px}
+.law .eq{font-size:20px}
+
+.m{font-style:italic;white-space:nowrap}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+.code{background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;border:1px solid #000}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--code-dim);background:transparent;border:1px solid #2f323c;border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{background:var(--out-bg);border-top:1px solid #2a3340;padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;white-space:pre-wrap}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
+
+.ex{margin:26px 0;padding-top:22px;border-top:1px dashed var(--rule)}
+.ex:first-of-type{border-top:none;padding-top:0}
+.ex h3{margin-top:0;display:flex;align-items:baseline;gap:.5em}
+.ex h3 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);font-weight:500}
+
+details{border:1px solid var(--rule);border-radius:4px;background:#fff;margin:14px 0;padding:0 20px}
+details[open]{background:var(--paper-2)}
+summary{cursor:pointer;padding:16px 0;font-weight:500;list-style:none;display:flex;gap:.7em;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary .qn{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);flex:none}
+summary .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-left:auto;flex:none;border:1px solid var(--rule);border-radius:20px;padding:2px 9px;align-self:center}
+.sol{padding:2px 0 20px;border-top:1px solid var(--rule);margin-top:2px;color:var(--ink-soft);font-size:18px}
+.sol strong{color:var(--ink)}
+
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{content:counter(t);position:absolute;left:0;top:13px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.next{margin-top:38px;border:1px solid var(--rule);border-radius:4px;padding:26px;display:flex;gap:22px;align-items:center;background:#fff}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+  .law .name{min-width:0}
+}
+
+/* ---------- expanded exercise format ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob details[open]{background:transparent}
+.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s}
+.prob summary:hover{background:var(--blue-wash)}
+.prob summary::before{content:"+ ";font-weight:500}
+.prob details[open] summary::before{content:"\2212  "}
+.prob .sol{border:none;border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero measure">
+  <div class="crumbs">Lesson 02 — Functors &nbsp;›&nbsp; <b>Lesson 03 — Natural transformations</b> &nbsp;›&nbsp; Lesson 04 — Universal properties</div>
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 03</div>
+  <h1>Natural <span class="q">Transformations</span></h1>
+  <p class="lede">A way to slide one functor onto another, one arrow per object, so coherently that it commutes with everything. This is the idea the whole field was invented to make precise.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="The naturality square: components alpha at X and at Y across the top and bottom, F f and G f down the sides, and the square commutes.">
+      <svg></svg>
+    </div>
+  </figure>
+</header>
+
+<main>
+
+<!-- ============ §1 ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§1 — One more floor up</div>
+    <h2>The maps between functors</h2>
+    <p>Lesson 1 gave us categories. Lesson 2 gave us functors — the maps between categories — and noticed they bundle into a category, <span class="cat">Cat</span>. The reflex of the subject now fires one more time. Fix two categories <span class="cat">𝒞</span> and <span class="cat">𝒟</span>; there are many functors between them. What is the right notion of a <em>map between two functors</em>?</p>
+    <p>This is not an afterthought — it is the reason category theory exists. Eilenberg and Mac Lane kept saying things like &ldquo;there is a <em>natural</em> map from a space to its double dual,&rdquo; and wanted to pin down what &ldquo;natural&rdquo; meant, as opposed to a map that merely happens to exist once you make arbitrary choices. The slogan they left behind: categories were defined in order to define functors, and functors were defined in order to define <strong>natural transformations</strong>.</p>
+    <p>The friendliest first example lives in code. A polymorphic function like <code>reverse</code> works at every element type at once and never looks at the elements themselves — only at the structure holding them. That uniformity, made precise, is exactly naturality. By the end of this lesson you&rsquo;ll be checking it with an assertion.</p>
+  </div>
+</section>
+
+<!-- ============ §2 DEFINITION ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§2 — The definition</div>
+    <h2>A coherent family of arrows, one per object</h2>
+    <p>Suppose <span class="m">F</span> and <span class="m">G</span> are both functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> — same source, same target. Think of them as two ways of drawing a picture of <span class="cat">𝒞</span> inside <span class="cat">𝒟</span>. A natural transformation is a way to slide the first picture onto the second.</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Natural transformation</span>
+      <p style="margin-bottom:.5em">A natural transformation <span class="m">α : F ⇒ G</span> assigns:</p>
+      <ul class="deflist">
+        <li>to each object <span class="m">X</span> of <span class="cat">𝒞</span>, an arrow <span class="m">α<sub>X</sub> : F X → G X</span> in <span class="cat">𝒟</span> — its <strong>component</strong> at <span class="m">X</span></li>
+      </ul>
+      <p style="margin:.9em 0 .5em">such that for every arrow <span class="m">f : X → Y</span> in <span class="cat">𝒞</span>, the <strong>naturality square</strong> commutes:</p>
+      <div class="law"><span class="name">Naturality</span><span class="eq m">G f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span></div>
+    </div>
+
+    <p>Read the square at the top of the page: the two paths from <span class="m">F X</span> to <span class="m">G Y</span> — go across by <span class="m">α<sub>X</sub></span> then down by <span class="m">G f</span>, or down by <span class="m">F f</span> then across by <span class="m">α<sub>Y</sub></span> — must agree. The single equation has to hold for <em>every</em> arrow of <span class="cat">𝒞</span> at once. That is what stops <span class="m">α</span> from being an arbitrary pile of arrows: each component is pinned to its neighbours by the action of every morphism. There is no freedom to wire things up inconsistently.</p>
+
+    <p>Because functors are the arrows of <span class="cat">Cat</span> and natural transformations are maps between <em>them</em>, we draw a natural transformation as a <strong>2-cell</strong> — a double arrow sitting between two parallel functor arrows:</p>
+
+    <figure>
+      <div class="board" data-diagram="twocell" aria-label="Two categories C and D with two parallel functors F and G between them, and a double arrow alpha from F to G.">
+        <svg></svg>
+      </div>
+      <figcaption>The bird&rsquo;s-eye view: <span class="m">F</span> and <span class="m">G</span> run from <span class="cat">𝒞</span> to <span class="cat">𝒟</span>, and <span class="m">α</span> is a single arrow <em>between the functors</em>. The naturality square is what this collapses to object by object.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ §3 EXAMPLES & NATURAL ISO ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§3 — Naturality in the wild</div>
+    <h2>Polymorphism, determinants, and the double dual</h2>
+    <p>The cleanest examples are functions you already trust. Take <span class="m">F = G = List</span> and let the component be <code>reverse</code>. The naturality square says: for any <span class="m">f</span>, mapping <span class="m">f</span> after reversing equals reversing after mapping <span class="m">f</span>. It holds for a structural reason — <code>reverse</code> only rearranges positions, it never inspects the elements, so it cannot matter whether you transform the elements before or after.</p>
+
+    <figure>
+      <div class="board wide" data-diagram="reverse" aria-label="The naturality square for reverse: reversing then mapping f equals mapping f then reversing, on lists of A and lists of B.">
+        <svg></svg>
+      </div>
+      <figcaption>The hero square made concrete with <span class="m">F = G = List</span> and component <code>reverse</code>. Every parametrically polymorphic function fills in a square like this for free.</figcaption>
+    </figure>
+
+    <p>This is not a coincidence of <code>reverse</code>. A function whose type is genuinely polymorphic — defined uniformly for all types, blind to the contents — is <em>forced</em> to be natural; the naturality square comes packaged with the type signature. (This is the heart of what&rsquo;s called a &ldquo;free theorem.&rdquo;) The same goes for <code>safe_head : List ⇒ Maybe</code>, <code>concat</code>, <code>length</code> seen as <span class="m">List ⇒ Const&nbsp;ℕ</span>, and so on.</p>
+
+    <div class="box amber">
+      <span class="tag">Aside · What &ldquo;natural&rdquo; was invented to mean</span>
+      <p>For every vector space <span class="m">V</span> there is a map to its double dual <span class="m">V → V**</span> sending a vector to &ldquo;evaluation at that vector.&rdquo; It needs no choice of basis, and it assembles into a natural transformation from the identity functor to the double-dual functor. The single dual <span class="m">V → V*</span> is different: an isomorphism exists for finite-dimensional <span class="m">V</span>, but only after choosing a basis, and it is <em>not</em> natural. The gap between &ldquo;isomorphic&rdquo; and &ldquo;naturally isomorphic&rdquo; is precisely the gap these definitions were built to capture. In mainstream mathematics the determinant is another: <span class="m">det</span> is a natural transformation from <span class="m">GL<sub>n</sub></span> to the units functor, commuting with every ring homomorphism.</p>
+    </div>
+
+    <p>When every component <span class="m">α<sub>X</sub></span> is an isomorphism, <span class="m">α</span> is a <strong>natural isomorphism</strong>, written <span class="m">F ≅ G</span>. This is the correct sense in which two functors can be &ldquo;the same.&rdquo;</p>
+
+    <div class="box thm">
+      <span class="tag">Lemma · Inverses are automatically natural</span>
+      <p>If <span class="m">α : F ⇒ G</span> has every component invertible, the inverse components <span class="m">(α<sub>X</sub>)<sup>−1</sup></span> assemble into a natural transformation <span class="m">G ⇒ F</span>. So &ldquo;natural iso&rdquo; needs only that each <span class="m">α<sub>X</sub></span> be an iso — coherence of the inverse comes for free.</p>
+    </div>
+
+    <p><strong>Proof (arrows only).</strong> Start from the naturality square <span class="m">G f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span>. Pre-compose with <span class="m">(α<sub>X</sub>)<sup>−1</sup></span> and post-compose with <span class="m">(α<sub>Y</sub>)<sup>−1</sup></span>; the components cancel by the inverse laws and you are left with <span class="m">(α<sub>Y</sub>)<sup>−1</sup> ∘ G f = F f ∘ (α<sub>X</sub>)<sup>−1</sup></span>, which is exactly the naturality square for the inverse family. ∎</p>
+  </div>
+</section>
+
+<!-- ============ §4 FUNCTOR CATEGORY ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§4 — The functor category</div>
+    <h2>Natural transformations compose, so they too form a category</h2>
+    <p>Given <span class="m">α : F ⇒ G</span> and <span class="m">β : G ⇒ H</span>, define their composite component-wise: <span class="m">(β ∘ α)<sub>X</sub> = β<sub>X</sub> ∘ α<sub>X</sub></span>, composing inside <span class="cat">𝒟</span>. Is it natural? Draw the two naturality squares side by side, sharing the middle edge <span class="m">G f</span>:</p>
+
+    <figure>
+      <div class="board" data-diagram="vcomp" aria-label="Two naturality squares for alpha and beta sharing the middle column G; gluing them yields the naturality square for the composite beta after alpha.">
+        <svg></svg>
+      </div>
+      <figcaption>The left square commutes (<span class="m">α</span> is natural), the right square commutes (<span class="m">β</span> is natural), so the outer rectangle commutes — which is the naturality square for <span class="m">β ∘ α</span>. Composites of natural transformations are natural.</figcaption>
+    </figure>
+
+    <p>The identity natural transformation <span class="m">1<sub>F</sub></span> has components <span class="m">id<sub>F X</sub></span>, and this composition is associative because composition in <span class="cat">𝒟</span> is. Recognize the pattern? It is the Lesson 1 definition of a category yet again. Fixing <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, the functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> are the objects and natural transformations are the arrows — a category, the <strong>functor category</strong> <span class="m">[<span class="cat">𝒞</span>, <span class="cat">𝒟</span>]</span>.</p>
+
+    <p>And the loop closes neatly: an isomorphism <em>in</em> <span class="m">[<span class="cat">𝒞</span>, <span class="cat">𝒟</span>]</span> — in the Lesson 1 sense of an arrow with a two-sided inverse — is exactly a natural isomorphism, which by the lemma above is exactly a natural transformation whose components are all isos. Three vantage points, one notion.</p>
+
+    <div class="box">
+      <span class="tag">One level higher, in passing</span>
+      <p>There is a second way to compose — <em>horizontally</em>, across different pairs of categories — and the two compositions satisfy an interchange law. That structure makes <span class="cat">Cat</span> a <em>2-category</em>: objects, arrows between them, and arrows between <em>those</em>. We won&rsquo;t need the machinery here; it&rsquo;s enough to notice the tower keeps going up.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §5 PYTHON ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§5 — Naturality in Python</div>
+    <h2>Check a square, then check it for a finite functor</h2>
+    <p>First, the structural examples. We confirm the naturality square for <code>reverse</code> (a transformation <span class="m">List ⇒ List</span>) and for <code>safe_head</code> (a transformation <span class="m">List ⇒ Maybe</span>, with <span class="m">Maybe</span> modelled as a list of length 0 or 1).</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>natural.py</b> — polymorphic functions are natural</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def fmap(f, xs):                 # the List functor on arrows
+    return [f(x) for x in xs]
+
+def reverse(xs):                 # the component of  reverse : List =&gt; List
+    return xs[::-1]
+
+inc  = lambda x: x + 1
+data = [1, 2, 3, 4]
+
+# Naturality of reverse:   map f . reverse  ==  reverse . map f
+assert fmap(inc, reverse(data)) == reverse(fmap(inc, data))
+print(fmap(inc, reverse(data)))              # [5, 4, 3, 2]
+
+# safe_head : List =&gt; Maybe   (Maybe modelled as a 0-or-1 element list)
+def safe_head(xs):
+    return [xs[0]] if xs else []
+
+# Naturality of safe_head holds for every list and every f
+for xs in ([], [10, 20, 30]):
+    assert fmap(inc, safe_head(xs)) == safe_head(fmap(inc, xs))
+print("reverse and safe_head are natural")</code></pre>
+      <div class="out"><span class="lbl">output</span>[5, 4, 3, 2]
+reverse and safe_head are natural</div>
+    </div>
+
+    <p>Now the finite version, reusing <code>FiniteCategory</code> and <code>Functor</code> from the previous lessons. A natural transformation is one component arrow per object; <code>check()</code> verifies the typing and the naturality square for every arrow. We use the cleanest possible illustration: two functors out of <span class="cat">𝟚</span> pick two opposite edges of a commuting square, and a natural transformation between them <em>is</em> that commuting square — its components are the other two edges.</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>nat_transformation.py</b> — a naturality checker</span><button class="copy" type="button">Copy</button></div>
+<pre><code>class Nat:
+    &quot;&quot;&quot;alpha : F =&gt; G, with F, G : C -&gt; D sharing source and target.
+       `comp` maps each object X of C to a component arrow alpha_X of D.&quot;&quot;&quot;
+    def __init__(self, F, G, comp):
+        self.F, self.G, self.comp = F, G, comp
+
+    def check(self):
+        F, G, C, D = self.F, self.G, self.F.C, self.F.D
+        for X in C.obj:           # component typing:  alpha_X : F X -&gt; G X
+            assert D.ar[self.comp[X]] == (F.on_obj[X], G.on_obj[X])
+        for f in C.ar:            # naturality:  G f . alpha_X == alpha_Y . F f
+            X, Y = C.ar[f]
+            assert D.comp[(G.on_arr[f], self.comp[X])] == \
+                   D.comp[(self.comp[Y], F.on_arr[f])]
+        return True
+
+# F and G send the category 2 to two opposite edges of the square; a natural
+# transformation between them is EXACTLY a commuting square (components p, q).
+F = Functor(Two, Square, {0:&#x27;A&#x27;, 1:&#x27;B&#x27;}, {&#x27;i0&#x27;:&#x27;iA&#x27;, &#x27;i1&#x27;:&#x27;iB&#x27;, &#x27;u&#x27;:&#x27;f&#x27;})
+G = Functor(Two, Square, {0:&#x27;C&#x27;, 1:&#x27;D&#x27;}, {&#x27;i0&#x27;:&#x27;iC&#x27;, &#x27;i1&#x27;:&#x27;iD&#x27;, &#x27;u&#x27;:&#x27;g&#x27;})
+alpha = Nat(F, G, comp={0:&#x27;p&#x27;, 1:&#x27;q&#x27;})
+print(alpha.check())</code></pre>
+      <div class="out"><span class="lbl">output</span>True</div>
+    </div>
+
+    <p>The downloadable script builds <code>Square</code> (objects <span class="m">A, B, C, D</span> with <span class="m">q ∘ f = g ∘ p</span>) and <code>Two</code> in full. The lesson made true a slogan worth keeping: <strong>a natural transformation between two arrow-shaped diagrams is a commuting square</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ GOING DEEPER ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Going deeper</div>
+    <h2>Horizontal composition and the interchange law</h2>
+
+    <p>Exercise 8&rsquo;s whiskering — pushing a natural transformation through a functor — is half of a richer operation. Given <span class="m">α : F ⇒ G</span> between functors <span class="cat">𝒞</span> → <span class="cat">𝒟</span> and <span class="m">β : H ⇒ K</span> between functors <span class="cat">𝒟</span> → <span class="cat">ℰ</span>, there is a <strong>horizontal composite</strong> <span class="m">β ∗ α : H∘F ⇒ K∘G</span> — a transformation between the <em>composite</em> functors, built from one transformation on each floor. Its component at <span class="m">X</span> can be written two ways: cross with <span class="m">β</span> first and then translate <span class="m">α</span> through <span class="m">K</span>, or translate first and cross second. Exercise 10 shows one naturality square makes the two routes agree.</p>
+    <p>Vertical composition (§4) and horizontal composition coexist under a compatibility equation — the <strong>interchange law</strong>, <span class="m">(β&prime; ∘ β) ∗ (α&prime; ∘ α) = (β&prime; ∗ α&prime;) ∘ (β ∗ α)</span> — and the full package (categories, functors, natural transformations, two compositions, interchange) is what &ldquo;<span class="cat">Cat</span> is a 2-category,&rdquo; the aside of §4, actually means. None of the rest of this course needs the general machinery, but it is worth having seen the doorway: everything in these lessons is the ground floor of a taller building.</p>
+  </div>
+</section>
+
+<!-- ============ §6 EXERCISES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§6 — Exercises</div>
+    <h2>Eleven problems on naturality</h2>
+    <p>Naturality proofs are short but the squares must be drawn with care — when in doubt, draw the square first and only then write the equation. The code problems reuse <code>fmap</code> and the <code>Nat</code> checker from §5.</p>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>Instantiate the naturality square for <code>reverse</code> with the concrete function <code>f = str.upper</code> and the concrete list <code>[&#x27;a&#x27;, &#x27;b&#x27;]</code>.</p>
+        <p>Compute both paths — across-then-down and down-then-across — element by element, and confirm they agree. Then say in one sentence <em>why</em> they were bound to agree.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Across then down:</strong> <code>reverse([&#x27;a&#x27;,&#x27;b&#x27;]) = [&#x27;b&#x27;,&#x27;a&#x27;]</code>, then <code>map(upper)</code> gives <code>[&#x27;B&#x27;,&#x27;A&#x27;]</code>. <strong>Down then across:</strong> <code>map(upper)([&#x27;a&#x27;,&#x27;b&#x27;]) = [&#x27;A&#x27;,&#x27;B&#x27;]</code>, then <code>reverse</code> gives <code>[&#x27;B&#x27;,&#x27;A&#x27;]</code>. Both paths land on <code>[&#x27;B&#x27;,&#x27;A&#x27;]</code>.</p>
+          <p>They had to: <code>reverse</code> only permutes <em>positions</em> and <code>upper</code> only transforms <em>contents</em>, and the two concerns cannot interact. That separation of concerns is naturality, seen from ground level.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>For a functor <span class="m">F</span>, define the family <span class="m">α<sub>X</sub> = id<sub>F X</sub></span>, one identity arrow per object.</p>
+        <p>Prove this family is a natural transformation <span class="m">F ⇒ F</span>. (It is the identity arrow on <span class="m">F</span> in the functor category — so this exercise checks that the functor category has its identities.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Fix any <span class="m">f : X → Y</span>. The naturality square demands <span class="m">F f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span>, i.e. <span class="m">F f ∘ id<sub>F X</sub> = id<sub>F Y</sub> ∘ F f</span>. By the identity law of the target category, both sides are just <span class="m">F f</span>. Every square commutes, so <span class="m">1<sub>F</sub></span> is natural.</p>
+          <p>Together with Exercise 3 below, this confirms the functor category <span class="m">[<span class="cat">𝒞</span>, <span class="cat">𝒟</span>]</span> really is a category in the Lesson 1 sense: identities exist, composites exist, and the laws are inherited pointwise from <span class="cat">𝒟</span>.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>Let <span class="m">α : F ⇒ G</span> and <span class="m">β : G ⇒ H</span> be natural transformations, and define the composite componentwise: <span class="m">(β ∘ α)<sub>X</sub> = β<sub>X</sub> ∘ α<sub>X</sub></span>.</p>
+        <p>Prove that <span class="m">β ∘ α</span> is natural, and explain how your algebra corresponds to the picture of gluing two naturality squares along their shared middle edge.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Fix <span class="m">f : X → Y</span> and compute <span class="m">H f ∘ (β<sub>X</sub> ∘ α<sub>X</sub>)</span>. Re-associate and apply <span class="m">β</span>&rsquo;s naturality square (<span class="m">H f ∘ β<sub>X</sub> = β<sub>Y</sub> ∘ G f</span>) to get <span class="m">β<sub>Y</sub> ∘ (G f ∘ α<sub>X</sub>)</span>; now apply <span class="m">α</span>&rsquo;s square (<span class="m">G f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span>) to reach <span class="m">(β<sub>Y</sub> ∘ α<sub>Y</sub>) ∘ F f</span>. That is exactly the naturality square for <span class="m">β ∘ α</span>.</p>
+          <p>Each application of a naturality square is one &ldquo;pane&rdquo; of the §4 picture: the first rewrite carries the path across the right square, the second across the left. Two commuting panes glued along the shared column <span class="m">G f</span> make the outer rectangle commute — the algebra and the picture are the same proof.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>Decide, with justification, whether each of the following is a natural transformation, and if so between which functors:</p>
+        <ol>
+          <li><code>double = lambda xs: xs + xs</code> — concatenate a list with itself.</li>
+          <li><code>total = lambda xs: sum(xs)</code> — replace a list of numbers by the sum of its elements, proposed as a transformation <span class="m">List ⇒ List</span>.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a) Natural, <span class="m">List ⇒ List</span>.</strong> <code>double</code> duplicates and rearranges <em>positions</em> without inspecting elements, so <code>map f (xs + xs) = (map f xs) + (map f xs)</code> for every <code>f</code> — the square commutes.</p>
+          <p><strong>(b) Not even well-typed as stated.</strong> The output of <code>total</code> is a number, not a list, so its components do not have the type <span class="m">List X → List X</span>; and worse, it only exists at numeric element types, whereas a transformation <span class="m">List ⇒ List</span> must supply a component at <em>every</em> type. (A cousin of the idea does work: <code>length : List ⇒ Const ℕ</code> is natural, because length is blind to contents.) The moral: naturality is a property of a family <em>relative to a declared pair of functors</em> — you must say what the source and target are before the question even makes sense.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Let <span class="cat">𝒞</span> and <span class="cat">𝒟</span> be preorders viewed as categories, so that functors <span class="m">F, G : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> are monotone maps (Lesson 2, §4).</p>
+        <p>What does a natural transformation <span class="m">F ⇒ G</span> amount to, concretely? How much of the definition survives, and how much becomes automatic?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>A component <span class="m">α<sub>X</sub> : F X → G X</span> is an arrow of the preorder <span class="cat">𝒟</span>, which exists precisely when <span class="m">F X ≤ G X</span> — and when it exists it is unique. The naturality squares then commute for free, because preorders are thin (Lesson 1, Exercise 5: every diagram in a thin category commutes).</p>
+          <p>So a natural transformation between monotone maps is exactly the statement <span class="m">F X ≤ G X</span> <em>for every</em> <span class="m">X</span> — the pointwise order on monotone functions. All the data evaporates; only the condition remains. Thin categories keep doing this: they are the shadow of category theory where every &ldquo;how&rdquo; collapses to a &ldquo;whether.&rdquo;</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Take the <code>Nat</code> demo from §5 and sabotage it: change the components from <code>{0:&#x27;p&#x27;, 1:&#x27;q&#x27;}</code> to <code>{0:&#x27;p&#x27;, 1:&#x27;f&#x27;}</code>.</p>
+        <p>Predict what <code>check()</code> will do — which assertion fires, and why — and then run it to confirm.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>It fails at the <strong>component-typing check</strong>, before naturality is ever consulted. The component at object <span class="m">1</span> must be an arrow <span class="m">F 1 → G 1</span>, i.e. <span class="m">B → D</span> in the square category; but <code>f</code> is typed <span class="m">A → B</span>, so the assertion comparing <code>D.ar[comp[1]]</code> with <code>(F.on_obj[1], G.on_obj[1])</code> raises immediately.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>broken_component.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>bad = Nat(F, G, comp={0:&#x27;p&#x27;, 1:&#x27;f&#x27;})
+try:
+    bad.check()
+except AssertionError:
+    print(&quot;rejected: component at 1 is mistyped&quot;)</code></pre>
+          </div>
+          <p style="margin-top:14px">A component with the wrong source and target cannot be rescued by any cleverness elsewhere in the family — typing errors are absolute, which is why the checker tests them first.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">examples · new</span></div>
+      <div class="prob-body">
+        <p>Consider <code>flatten</code> (often called <code>concat</code> or <code>join</code>), which turns a list of lists into a single list: <code>flatten([[1,2],[3]]) = [1,2,3]</code>.</p>
+        <p>It is a natural transformation — but between which two functors? State the source and target carefully, write down the naturality square, and verify it on the example <code>xss = [[1,2],[3]]</code> with <code>f = lambda x: x*10</code>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The source is the <em>composite</em> functor <span class="m">List ∘ List</span> (lists of lists) and the target is <span class="m">List</span>: <code>flatten : List∘List ⇒ List</code>. The naturality square reads <code>map f (flatten xss) == flatten (map (map f) xss)</code> — note the <em>double</em> map on the right, because the composite functor acts on arrows by <code>map(map f)</code>.</p>
+          <p>On the example: left path, <code>flatten = [1,2,3]</code> then <code>map(*10) = [10,20,30]</code>; right path, <code>map(map(*10)) = [[10,20],[30]]</code> then <code>flatten = [10,20,30]</code>. Equal. <code>flatten</code> is another positions-only operation — it erases inner brackets and touches no elements. (File this one away: <code>flatten</code> is the multiplication of the List <em>monad</em>, and its naturality is one of the monad axioms you&rsquo;ll meet at the end of the course.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-body">
+        <p>Natural transformations can be pushed forward through a functor. Let <span class="m">α : F ⇒ G</span> be natural, with <span class="m">F, G : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span>, and let <span class="m">H : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span> be any functor.</p>
+        <p>Show that the family with components <span class="m">H(α<sub>X</sub>)</span> is a natural transformation <span class="m">H∘F ⇒ H∘G</span>. (This operation is called <em>whiskering</em>; it is half of the horizontal composition mentioned in §4&rsquo;s aside.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Take the naturality square of <span class="m">α</span> at <span class="m">f : X → Y</span>, which is the equation <span class="m">G f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span>, and apply the functor <span class="m">H</span> to both sides. Composition-preservation splits each side: <span class="m">H(G f) ∘ H(α<sub>X</sub>) = H(α<sub>Y</sub>) ∘ H(F f)</span>.</p>
+          <p>Reading <span class="m">H(G f)</span> as <span class="m">(H∘G)(f)</span> and <span class="m">H(F f)</span> as <span class="m">(H∘F)(f)</span>, this is exactly the naturality square for the family <span class="m">H(α<sub>X</sub>)</span> between the composite functors. The proof is one move — &ldquo;apply <span class="m">H</span> and use that it preserves composition&rdquo; — and it is a template: functors transport not just objects, arrows, and diagrams, but entire natural transformations.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+        <p>Not every function of type &ldquo;list to list&rdquo; is natural — only the ones blind to their elements. Test two candidates numerically:</p>
+        <ol>
+          <li><code>duplicate = lambda xs: [x for x in xs for _ in (0, 1)]</code>, which repeats each element in place: <code>[1,2] ↦ [1,1,2,2]</code>.</li>
+          <li><code>sorted</code>, Python&rsquo;s sorting function, proposed as a transformation <span class="m">List ⇒ List</span>.</li>
+        </ol>
+        <p>For each, check the naturality square <code>fmap(f, t(xs)) == t(fmap(f, xs))</code> on well-chosen inputs. For <code>sorted</code>, find an explicit counterexample and explain what property of sorting is to blame.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong><code>duplicate</code> is natural</strong> — it repeats positions without reading values, so the square commutes for every <code>f</code> and every list.</p>
+          <p><strong><code>sorted</code> is not.</strong> Take <code>xs = [1, 2]</code> and <code>f = lambda x: -x</code>. One path: <code>sorted([1,2]) = [1,2]</code>, then <code>map(f) = [-1,-2]</code>. Other path: <code>map(f) = [-1,-2]</code>, then <code>sorted = [-2,-1]</code>. The results differ.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>sorted_not_natural.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>dup = lambda xs: [x for x in xs for _ in (0, 1)]
+neg = lambda x: -x
+assert fmap(neg, dup([1, 2])) == dup(fmap(neg, [1, 2]))   # natural
+
+lhs = fmap(neg, sorted([1, 2]))     # [-1, -2]
+rhs = sorted(fmap(neg, [1, 2]))     # [-2, -1]
+print(lhs, rhs, lhs == rhs)         # [-1, -2] [-2, -1] False</code></pre>
+            <div class="out"><span class="lbl">output</span>[-1, -2] [-2, -1] False</div>
+          </div>
+          <p style="margin-top:14px">Sorting <em>compares</em> elements — it reads their values to decide the output order — and a non-monotone <code>f</code> like negation changes the verdicts of those comparisons. Blindness to contents is not a stylistic nicety; it is exactly the property the naturality square detects.</p>
+        </div>
+      </details>
+    </div>
+  
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-body">
+
+        <p>With <span class="m">α : F ⇒ G</span> (functors <span class="cat">𝒞</span> → <span class="cat">𝒟</span>) and <span class="m">β : H ⇒ K</span> (functors <span class="cat">𝒟</span> → <span class="cat">ℰ</span>), the two candidate formulas for the horizontal composite&rsquo;s component at <span class="m">X</span> are:</p>
+        <p style="text-align:center" class="m">K(α<sub>X</sub>) ∘ β<sub>F X</sub> &nbsp;&nbsp;and&nbsp;&nbsp; β<sub>G X</sub> ∘ H(α<sub>X</sub>).</p>
+        <p>Show they are equal. Hint: <span class="m">α<sub>X</sub></span> is an arrow of <span class="cat">𝒟</span> — at which arrow should you instantiate the naturality of <span class="m">β</span>?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Instantiate <span class="m">β</span>&rsquo;s naturality square at the arrow <span class="m">α<sub>X</sub> : F X → G X</span> of <span class="cat">𝒟</span>. The square reads, verbatim: <span class="m">K(α<sub>X</sub>) ∘ β<sub>F X</sub> = β<sub>G X</sub> ∘ H(α<sub>X</sub>)</span>. That <em>is</em> the required equation — no computation left to do.</p>
+          <p>The pleasure of this proof is realizing that a component of one transformation is a perfectly ordinary arrow, eligible to be fed into the naturality of another. Layers feeding layers is the everyday texture of the subject from here on: Lesson 7 builds monad multiplication by exactly this kind of move (whiskering a counit), and its associativity proof instantiates a naturality square at a component, just as here.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+
+        <p>Two more candidates for naturality, one of each kind:</p>
+        <ol>
+          <li><code>take2 = lambda xs: xs[:2]</code> — keep the first two elements (fewer if the list is short).</li>
+          <li><code>dedupe = lambda xs: list(dict.fromkeys(xs))</code> — remove duplicates, keeping first occurrences.</li>
+        </ol>
+        <p>Test each against the naturality square. For the failure, find a counterexample using a <em>non-injective</em> function, and explain what operation on elements the failure exposes. (Note the contrast with Exercise 9: <code>sorted</code> failed via a non-<em>monotone</em> map. Different inspections, different witnesses.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p><strong><code>take2</code> is natural</strong>: it selects positions 0 and 1 without reading values, so mapping and truncating commute for every function and list.</p>
+          <p><strong><code>dedupe</code> is not</strong> — it tests elements for <em>equality</em>, and a non-injective map manufactures new equalities. Counterexample with the constant map:</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>dedupe_not_natural.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>take2  = lambda xs: xs[:2]
+dedupe = lambda xs: list(dict.fromkeys(xs))
+const0 = lambda x: 0
+
+for f in (str, lambda x: -x):
+    for xs in ([], [1], [3, 1, 2], [5, 5, 1]):
+        assert fmap(f, take2(xs)) == take2(fmap(f, xs))   # natural
+
+lhs = fmap(const0, dedupe([1, 2]))    # dedupe sees 1 != 2 ...
+rhs = dedupe(fmap(const0, [1, 2]))    # ... but const0 merges them
+print(lhs, rhs, lhs == rhs)</code></pre>
+            <div class="out"><span class="lbl">output</span>[0, 0] [0] False</div>
+          </div>
+          <p style="margin-top:14px">On one path the two elements are distinct when <code>dedupe</code> looks, and both survive; on the other they have already been merged, and one is deleted. Equality-testing is content-inspection just as much as comparison is — naturality is a fine-grained instrument, and each failure mode names the exact operation that broke it.</p>
+        </div>
+      </details>
+    </div>
+</div>
+</section>
+
+<!-- ============ RECAP / NEXT ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Recap</div>
+    <h2>What to carry forward</h2>
+    <ol class="takeaways">
+      <li>A natural transformation <span class="m">α : F ⇒ G</span> is <strong>one component arrow <span class="m">α<sub>X</sub> : F X → G X</span> per object</strong>, such that every <strong>naturality square</strong> <span class="m">G f ∘ α<sub>X</sub> = α<sub>Y</sub> ∘ F f</span> commutes.</li>
+      <li>Naturality is uniformity: a family that commutes with the action of every arrow. Parametrically polymorphic functions are natural for free.</li>
+      <li>A <strong>natural isomorphism</strong> (every component an iso) is the right notion of two functors being &ldquo;the same&rdquo; — the distinction &ldquo;iso vs. naturally iso&rdquo; is why the field was founded.</li>
+      <li>Natural transformations compose by gluing squares, so functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> form the <strong>functor category</strong> <span class="m">[<span class="cat">𝒞</span>, <span class="cat">𝒟</span>]</span>; its isomorphisms are exactly the natural isos.</li>
+      <li>Slogan to keep: a natural transformation between two arrow-shaped diagrams is a commuting square.</li>
+    </ol>
+
+    <div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="70" height="42" viewBox="0 0 70 42">
+          <path d="M8 14 L52 14" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M8 26 L52 26" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M46 8 L56 20 L46 32" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">Coming next · Lesson 04</span>
+        <h3>Universal properties — defining things by their arrows</h3>
+        <p>Now that we can say when a construction is the &ldquo;natural&rdquo; one, we can define objects purely by how everything else maps to them: initial and terminal objects, products and coproducts. The payoff of three lessons of arrow-pushing — objects pinned down, up to unique isomorphism, by a universal property.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Intro to Category Theory · Lesson 03 · the concept the whole subject was built to define</footer>
+
+</main>
+</div>
+
+<script>
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+
+function setLabel(t, label){
+  // "base~sub" renders sub as a subscript tspan
+  const parts = String(label).split("~");
+  t.textContent = parts[0];
+  if(parts[1]){
+    const s = el("tspan", {dy:"5", "font-size":"12"}, t);
+    s.textContent = parts[1];
+  }
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, labelAt;
+
+    if(a.from === a.to){
+      const x = from.x, y = from.y;
+      const deg = (a.deg ?? 0) * Math.PI/180;
+      const ca = Math.cos(deg), sa = Math.sin(deg);
+      const rot = (px,py)=>[ x + px*ca - py*sa, y + px*sa + py*ca ];
+      const [sx,sy]=rot(-12,-16), [c1x,c1y]=rot(-26,-54),
+            [c2x,c2y]=rot(26,-54), [ex,ey]=rot(12,-16), [lx,ly]=rot(0,-64);
+      shaft = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
+      labelAt = [lx, ly];
+    } else {
+      let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+      let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+      const px=-uy, py=ux, off = a.curve ?? 0;
+      if(off){
+        const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
+        shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+        labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+      } else {
+        shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+        const lo = a.lo ?? 14;
+        labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+      }
+    }
+
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const path = el("path", {d:full, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    const len = path.getTotalLength();
+    path.style.setProperty("--len", len);
+    path.setAttribute("stroke-dasharray", len);
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle", "dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle", "dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
+  });
+}
+
+const SC = "\u{1D49E}", SD = "\u{1D49F}";
+
+const DIAGRAMS = {
+  hero: {
+    w:460, h:300,
+    nodes:[
+      {id:"FX", x:115, y:95,  label:"FX"},
+      {id:"GX", x:345, y:95,  label:"GX"},
+      {id:"FY", x:115, y:245, label:"FY"},
+      {id:"GY", x:345, y:245, label:"GY"},
+    ],
+    arrows:[
+      {from:"FX", to:"GX", label:"\u03b1~X", lo:-16, rs:23, re:23, delay:0},
+      {from:"FX", to:"FY", label:"Ff", lo:16, rs:23, re:23, delay:200},
+      {from:"GX", to:"GY", label:"Gf", lo:-16, rs:23, re:23, delay:400},
+      {from:"FY", to:"GY", label:"\u03b1~Y", lo:16, rs:23, re:23, delay:600},
+    ]
+  },
+  twocell: {
+    w:420, h:200,
+    nodes:[
+      {id:"cC", x:95,  y:100, label:SC, cls:"region"},
+      {id:"cD", x:325, y:100, label:SD, cls:"region"},
+      {id:"dn", x:206, y:100, label:"\u21D3", cls:"dbl"},
+      {id:"al", x:232, y:100, label:"\u03b1"},
+    ],
+    arrows:[
+      {from:"cC", to:"cD", curve:-46, label:"F", rs:24, re:24, delay:0},
+      {from:"cC", to:"cD", curve:46,  label:"G", rs:24, re:24, delay:220},
+    ]
+  },
+  reverse: {
+    w:520, h:280,
+    nodes:[
+      {id:"LA1", x:140, y:90,  label:"[A]"},
+      {id:"LA2", x:360, y:90,  label:"[A]"},
+      {id:"LB1", x:140, y:240, label:"[B]"},
+      {id:"LB2", x:360, y:240, label:"[B]"},
+    ],
+    arrows:[
+      {from:"LA1", to:"LA2", label:"reverse", lcls:"mono", lo:-16, rs:22, re:22, delay:0},
+      {from:"LA1", to:"LB1", label:"map f", lcls:"mono", lo:16, rs:22, re:22, delay:200},
+      {from:"LA2", to:"LB2", label:"map f", lcls:"mono", lo:-16, rs:22, re:22, delay:400},
+      {from:"LB1", to:"LB2", label:"reverse", lcls:"mono", lo:16, rs:22, re:22, delay:600},
+    ]
+  },
+  vcomp: {
+    w:400, h:330,
+    nodes:[
+      {id:"FX", x:70,  y:90,  label:"FX"},
+      {id:"GX", x:200, y:90,  label:"GX"},
+      {id:"HX", x:330, y:90,  label:"HX"},
+      {id:"FY", x:70,  y:270, label:"FY"},
+      {id:"GY", x:200, y:270, label:"GY"},
+      {id:"HY", x:330, y:270, label:"HY"},
+    ],
+    arrows:[
+      {from:"FX", to:"GX", label:"\u03b1~X", lo:-15, rs:23, re:23, delay:0},
+      {from:"GX", to:"HX", label:"\u03b2~X", lo:-15, rs:23, re:23, delay:160},
+      {from:"FX", to:"FY", label:"Ff", lo:16, rs:23, re:23, delay:300},
+      {from:"GX", to:"GY", label:"Gf", lo:-15, rs:23, re:23, delay:420},
+      {from:"HX", to:"HY", label:"Hf", lo:-15, rs:23, re:23, delay:540},
+      {from:"FY", to:"GY", label:"\u03b1~Y", lo:16, rs:23, re:23, delay:660},
+      {from:"GY", to:"HY", label:"\u03b2~Y", lo:16, rs:23, re:23, delay:800},
+    ]
+  },
+};
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(spec) build(div.querySelector("svg"), spec);
+  });
+}
+renderAll();
+
+if(reduce){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "\u2014"; });
+  });
+});
+</script>

@@ -1,0 +1,813 @@
+<!-- Intro to Category Theory — Lesson 7: Yoneda & Monads -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 7 · Yoneda &amp; Monads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
+  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8; --code-bg:#15171E; --code-fg:#E7E4DA; --code-dim:#8A8E9C;
+  --out-bg:#1E2733; --maxw:720px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%)}
+.wrap{position:relative;z-index:1}
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i{font-style:italic}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{font-size:clamp(38px,7vw,70px);margin:0 0 .35em;font-weight:500}
+.hero h1 .q{color:var(--arrow)}
+.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:38ch;margin:0}
+.hero-diagram{margin:42px auto 8px;max-width:440px}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:12px}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+figure{margin:34px 0;text-align:center}
+.board{background:radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);border-radius:3px;padding:26px 18px 18px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:460px;margin-inline:auto}
+.board.wide svg{max-width:560px}
+figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;max-width:54ch;margin-inline:auto;font-style:italic}
+
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.amber{fill:var(--amber)}
+.node.small{font-size:19px}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;fill:var(--arrow);
+  paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+.elabel{opacity:0}
+.draw .elabel{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .arrow.unique{opacity:1 !important}
+  .elabel{opacity:1 !important;transition:none !important}
+}
+
+.box{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin:30px 0}
+.box .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.box.amber,.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag,.box.thm .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+
+.m{font-style:italic;white-space:nowrap}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+.code{background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;border:1px solid #000}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--code-dim);background:transparent;border:1px solid #2f323c;border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{background:var(--out-bg);border-top:1px solid #2a3340;padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;white-space:pre-wrap}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
+
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{content:counter(t);position:absolute;left:0;top:13px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.next{margin-top:38px;border:1px solid var(--rule);border-radius:4px;padding:26px;display:flex;gap:22px;align-items:center;background:#fff}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+/* ---------- expanded exercise format ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob details[open]{background:transparent}
+.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob summary::-webkit-details-marker{display:none}
+.prob summary:hover{background:var(--blue-wash)}
+.prob summary::before{content:"+ ";font-weight:500}
+.prob details[open] summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+.prob .sol strong{color:var(--ink)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero measure">
+  <div class="crumbs">Lesson 06 — Adjunctions &nbsp;›&nbsp; <b>Lesson 07 — Yoneda &amp; monads</b> &nbsp;›&nbsp; fin</div>
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 07 · finale</div>
+  <h1>Yoneda <span class="q">&amp;</span> Monads</h1>
+  <p class="lede">The course&rsquo;s slogan — an object is known by its arrows — becomes a theorem. And every adjunction, folded in half, becomes a monad you have already used.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="Several objects X, Y, Z each with arrows into a highlighted object A: the totality of arrows into A is, by Yoneda, everything there is to know about A.">
+      <svg></svg>
+    </div>
+  </figure>
+</header>
+
+<main>
+
+<!-- ============ §1 ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§1 — Two punchlines</div>
+    <h2>Cashing the course&rsquo;s two oldest cheques</h2>
+    <p>Since Lesson 1 this course has repeated one article of faith: <em>never look inside an object; its arrows tell you everything.</em> We have practiced the discipline — arrows-only proofs, universal properties, adjunctions — but the article of faith itself was never proved. The <strong>Yoneda lemma</strong> proves it. It says, precisely, that the totality of arrows into an object, organized functorially, determines that object up to isomorphism — and even determines the maps between objects. The slogan graduates from methodology to theorem.</p>
+    <p>The second punchline settles a different account. Lesson 6 built adjunctions <span class="m">F ⊣ U</span> and kept the two categories separate. But nothing stops us composing the two functors into a single endofunctor <span class="m">T = U∘F</span> on <span class="cat">𝒞</span> — for the free-monoid adjunction, <span class="m">T = List</span>. What structure does <span class="m">T</span> inherit from the adjunction it came from? The answer is a <strong>monad</strong>: an endofunctor with a unit and a multiplication obeying laws you have met before in another costume. Lesson 3&rsquo;s Exercise 7 verified that <code>flatten</code> is a natural transformation and filed it away &ldquo;for the end of the course.&rdquo; This is the end of the course; <code>flatten</code> is the multiplication of the List monad, and the monad laws are the reason effectful code composes.</p>
+  </div>
+</section>
+
+<!-- ============ §2 YONEDA ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§2 — The Yoneda lemma</div>
+    <h2>An object, organized as a functor</h2>
+    <p>Fix an object <span class="m">A</span> of <span class="cat">𝒞</span>. The arrows into <span class="m">A</span> do not form a single set — they form one set <em>per source object</em>, and those sets are related: any arrow <span class="m">g : X → Y</span> converts <span class="m">Y</span>-probes of <span class="m">A</span> into <span class="m">X</span>-probes, by precomposition <span class="m">h ↦ h ∘ g</span>. Sets indexed by objects, translated along arrows — contravariantly, since <span class="m">g</span> points one way and the conversion points the other. That is a functor on the opposite category of Lesson 1, Exercise 7:</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Representable presheaf</span>
+      <p>A <strong>presheaf</strong> on <span class="cat">𝒞</span> is a functor <span class="cat">𝒞</span><sup>op</sup> <span class="m">→ <span class="cat">Set</span></span>. Each object <span class="m">A</span> gives the <strong>representable</strong> presheaf <span class="m">yA = <span class="cat">𝒞</span>(−, A)</span>: on objects, <span class="m">yA(X) = <span class="cat">𝒞</span>(X, A)</span>, the set of arrows <span class="m">X → A</span>; on arrows, precomposition. Functoriality is Lesson 1&rsquo;s two laws, read backwards: <span class="m">h ∘ id = h</span> and <span class="m">(h ∘ g) ∘ g&prime; = h ∘ (g ∘ g&prime;)</span>.</p>
+    </div>
+
+    <p>The presheaf <span class="m">yA</span> is the hero picture made precise: the complete dossier of arrows into <span class="m">A</span>, with its bookkeeping. The Yoneda lemma says the dossier omits nothing. Its general form compares <span class="m">yA</span> with an <em>arbitrary</em> presheaf:</p>
+
+    <div class="box thm">
+      <span class="tag">Theorem · The Yoneda lemma</span>
+      <p>For every presheaf <span class="m">F</span> and every object <span class="m">A</span>, natural transformations <span class="m">yA ⇒ F</span> correspond exactly to elements of <span class="m">F(A)</span>:</p>
+      <p style="text-align:center" class="m">Nat(yA, F) &nbsp;≅&nbsp; F(A),</p>
+      <p>via <span class="m">α ↦ α<sub>A</sub>(id<sub>A</sub>)</span>. A natural transformation out of a representable is determined by where it sends the identity.</p>
+    </div>
+
+    <figure>
+      <div class="board wide" data-diagram="yoneda" aria-label="The naturality square used in the Yoneda proof: hom of A A maps to F A across the top, hom of X A maps to F X across the bottom, with precomposition by f on the left and F f on the right; chasing the identity around it determines every component.">
+        <svg></svg>
+      </div>
+      <figcaption>The whole proof is this square. Put <span class="m">id<sub>A</sub></span> in the top-left corner and chase: down-then-across gives <span class="m">α<sub>X</sub>(f)</span>, across-then-down gives <span class="m">F(f)(α<sub>A</sub>(id<sub>A</sub>))</span>. Naturality says they are equal.</figcaption>
+    </figure>
+
+    <p><strong>Proof.</strong> Given <span class="m">α : yA ⇒ F</span>, set <span class="m">a = α<sub>A</sub>(id<sub>A</sub>) ∈ F(A)</span>. For any <span class="m">f : X → A</span>, the naturality square at <span class="m">f</span> (drawn above) forces <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> — because <span class="m">f = id<sub>A</sub> ∘ f</span>, the left edge sends <span class="m">id<sub>A</sub></span> to <span class="m">f</span>, and the two paths around the square must agree. So <span class="m">α</span> is completely determined by <span class="m">a</span>: the correspondence is injective. Conversely, any <span class="m">a ∈ F(A)</span> <em>defines</em> a transformation by that same formula <span class="m">α<sub>X</sub>(f) = F(f)(a)</span>, and its naturality squares commute by the functoriality of <span class="m">F</span> (Exercise 2 checks this half in detail). Surjective and injective: a bijection. ∎</p>
+    <p>&ldquo;Track the identity&rdquo; is the entire idea — the identity arrow is the generic probe, and every other probe is the generic one, translated. Two consequences fall out immediately. Taking <span class="m">F = yB</span>: natural transformations <span class="m">yA ⇒ yB</span> correspond to elements of <span class="m">yB(A) = <span class="cat">𝒞</span>(A, B)</span> — the assignment <span class="m">A ↦ yA</span> is a <strong>fully faithful</strong> functor into the presheaf category (Lesson 3&rsquo;s functor categories, now indispensable). And fully faithful functors reflect isomorphisms, so:</p>
+
+    <div class="box amber">
+      <span class="tag">Corollary · The slogan, q.e.d.</span>
+      <p><span class="m">A ≅ B</span> &nbsp;if and only if&nbsp; <span class="m">yA ≅ yB</span>. Two objects with the same arrows into them — the same dossier, naturally in the probing object — are isomorphic. An object <em>is</em> the arrows into it. In a poset this says something you can compute: an element is determined by its down-set, and §5 checks it, element by element, in the divisibility order.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §3 MONADS ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§3 — Monads</div>
+    <h2>An adjunction, folded in half</h2>
+    <p>Take any adjunction <span class="m">F ⊣ U</span> and compose: <span class="m">T = U∘F : <span class="cat">𝒞</span> → <span class="cat">𝒞</span></span>. The adjunction hands <span class="m">T</span> two natural transformations. The unit <span class="m">η : Id ⇒ T</span> comes straight from Lesson 6. The counit lives in the wrong category — <span class="m">ε : F∘U ⇒ Id</span> on the <span class="cat">𝒟</span> side — but whiskering it (Lesson 3, Exercise 8, load-bearing at last) with <span class="m">U</span> on the left and <span class="m">F</span> on the right yields <span class="m">μ = UεF : T² ⇒ T</span>, a way to collapse two applications of <span class="m">T</span> into one. For the free-monoid adjunction: <span class="m">T = List</span>, <span class="m">η(x) = [x]</span>, and <span class="m">μ</span> evaluates a list <em>of lists</em> by concatenation — <span class="m">μ = </span><code>flatten</code>.</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Monad</span>
+      <p>A <strong>monad</strong> on <span class="cat">𝒞</span> is an endofunctor <span class="m">T</span> with natural transformations <span class="m">η : Id ⇒ T</span> (<strong>unit</strong>) and <span class="m">μ : T² ⇒ T</span> (<strong>multiplication</strong>) such that</p>
+      <ul class="deflist" style="margin-top:0">
+        <li><strong>associativity:</strong> <span class="m">μ ∘ μT = μ ∘ Tμ</span> — the two ways to flatten <span class="m">T³</span> to <span class="m">T</span> agree;</li>
+        <li><strong>unit laws:</strong> <span class="m">μ ∘ ηT = id = μ ∘ Tη</span> — wrapping then flattening changes nothing.</li>
+      </ul>
+    </div>
+
+    <figure>
+      <div class="board" data-diagram="assoc" aria-label="The monad associativity square: T cubed maps to T squared two ways, by T mu and by mu at T X, and both composites into T X agree.">
+        <svg></svg>
+      </div>
+      <figcaption>Associativity: flatten the inner layer first or the outer layer first — from three layers down to one, the order cannot matter.</figcaption>
+    </figure>
+
+    <p>Every adjunction produces a monad this way — the laws follow from the triangle identities and naturality, by an argument with exactly the flavor of Lesson 6&rsquo;s Exercise 4 (this lesson&rsquo;s Exercise 5 walks it). And the examples are a programmer&rsquo;s standard library. <strong>List</strong>: nondeterminism — a computation returning many possible answers; <span class="m">μ</span> merges a batch of batches. <strong>Maybe</strong>: partiality — <span class="m">T X = X + 1</span>, an answer or <code>None</code>; <span class="m">η</span> wraps, <span class="m">μ</span> collapses <code>Just(Just x)</code> to <code>Just x</code> and everything else to <code>None</code>. <strong>Writer</strong>: logging — <span class="m">T X = X × M</span> for a monoid <span class="m">M</span>; <span class="m">μ</span> concatenates logs, and its associativity law holds <em>because</em> the monoid&rsquo;s does — Lesson 1&rsquo;s axioms, billed at last (Exercise 8 makes this dependency executable). In every case <span class="m">T X</span> reads as &ldquo;a value of type <span class="m">X</span>, plus an effect,&rdquo; <span class="m">η</span> as &ldquo;no effect,&rdquo; and <span class="m">μ</span> as &ldquo;merge two rounds of effect into one.&rdquo;</p>
+  </div>
+</section>
+
+<!-- ============ §4 KLEISLI ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§4 — The Kleisli category</div>
+    <h2>What the monad laws are <em>for</em></h2>
+    <p>Here is the question the laws answer. An <em>effectful function</em> from <span class="m">A</span> to <span class="m">B</span> is an ordinary arrow <span class="m">A → T B</span>: it returns a <span class="m">B</span>, plus effect. Can effectful functions be composed? Given <span class="m">f : A → T B</span> and <span class="m">g : B → T C</span>, the types refuse to chain directly — <span class="m">f</span> lands in <span class="m">T B</span>, and <span class="m">g</span> wants a bare <span class="m">B</span>. The monad supplies the adapter: apply <span class="m">T</span> to <span class="m">g</span> (Lesson 2: functors act on arrows), then flatten the doubled effect with <span class="m">μ</span>:</p>
+
+    <figure>
+      <div class="board wide" data-diagram="kleisli" aria-label="Kleisli composition: f from A to T B, then T g from T B to T squared C, then mu down to T C; the dashed composite is the Kleisli composite of g after f.">
+        <svg></svg>
+      </div>
+      <figcaption>The Kleisli composite <span class="m">g ∘<sub>K</sub> f = μ ∘ Tg ∘ f</span>: run <span class="m">f</span>, map <span class="m">g</span> over its result, merge the two layers of effect.</figcaption>
+    </figure>
+
+    <p>Now the punchline of the whole construction. Define the <strong>Kleisli category</strong> <span class="m">Kl(T)</span>: same objects as <span class="cat">𝒞</span>, but an arrow <span class="m">A ⇸ B</span> is an arrow <span class="m">A → T B</span> of <span class="cat">𝒞</span>, composed as above, with <span class="m">η<sub>A</sub> : A → T A</span> as the identity. For this to be a <em>category</em> — Lesson 1&rsquo;s two laws — you need exactly: composition associative, and <span class="m">η</span> neutral on both sides. Unwind those requirements (Exercise 7) and they are, one for one, <strong>the monad laws</strong>. The associativity square is what makes chained effectful calls bracket-independent; the unit laws are what make a pure value a no-op in a pipeline. Programmers usually meet the package as <code>bind</code>: <span class="m">m &gt;&gt;= g = μ(T g (m))</span>, Kleisli composition with the first argument already evaluated — Haskell&rsquo;s <code>do</code>-notation, Rust&rsquo;s <code>and_then</code>, JavaScript&rsquo;s promise chaining. The course ends where it began: the two laws of Lesson 1, discovered a second time as the specification of composable effects.</p>
+  </div>
+</section>
+
+<!-- ============ §5 PYTHON ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§5 — The finale, machine-checked</div>
+    <h2>Yoneda counted, monad laws by exhaustion</h2>
+    <p>First, the corollary in a poset. Representables in the divisibility order are down-sets — <span class="m">y(a)(x)</span> is inhabited exactly when <span class="m">x | a</span> — and Yoneda says the down-set determines the element, order and all. Sixteen biconditionals, checked:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>yoneda_poset.py</b> — an element is its down-set</span><button class="copy" type="button">Copy</button></div>
+<pre><code>objs = {1, 2, 3, 6}
+downset = {a: {x for x in objs if a % x == 0} for a in objs}
+
+for a in objs:
+    for b in objs:
+        assert (b % a == 0) == (downset[a] &lt;= downset[b])  # a|b iff ds(a) ⊆ ds(b)
+
+for a in sorted(objs):
+    print(f&quot;downset({a}) = {sorted(downset[a])}&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>downset(1) = [1]
+downset(2) = [1, 2]
+downset(3) = [1, 3]
+downset(6) = [1, 2, 3, 6]</div>
+    </div>
+
+    <p>Second, the lemma itself, <em>counted</em>. In the one-object category <span class="cat">Z3</span>, a natural transformation <span class="m">y∗ ⇒ y∗</span> is a single function <span class="m">α</span> on the three arrows satisfying the naturality condition <span class="m">α(f ∘ g) = α(f) ∘ g</span>. Yoneda predicts exactly <span class="m">|<span class="cat">𝒞</span>(∗, ∗)| = 3</span> of them, each given by postcomposition. Enumerate all 27 candidate functions and see:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>yoneda_count.py</b> — Nat(y∗, y∗) has exactly |Hom| elements</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product as cartesian
+
+H = [0, 1, 2]
+comp = lambda a, b: (a + b) % 3            # a . b  in Z3
+
+nats = []
+for vals in cartesian(H, repeat=3):
+    alpha = dict(zip(H, vals))
+    if all(alpha[comp(f, g)] == comp(alpha[f], g)   # naturality
+           for f in H for g in H):
+        nats.append(alpha)
+
+print(f&quot;natural transformations y* =&gt; y* : {len(nats)}&quot;)
+for a in nats:
+    assert all(a[f] == comp(a[0], f) for f in H)    # = postcompose by a[0]
+    print(f&quot;  {a}  =  postcompose by {a[0]}&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>natural transformations y* => y* : 3
+  {0: 0, 1: 1, 2: 2}  =  postcompose by 0
+  {0: 1, 1: 2, 2: 0}  =  postcompose by 1
+  {0: 2, 1: 0, 2: 1}  =  postcompose by 2</div>
+    </div>
+
+    <p>Twenty-seven candidates, three survivors, each one &ldquo;compose with a fixed arrow&rdquo; — the bijection <span class="m">Nat(yA, yB) ≅ <span class="cat">𝒞</span>(A, B)</span>, witnessed by brute force. Notice <em>where</em> each survivor&rsquo;s defining arrow shows up: at <span class="m">α(0) = α(id)</span>. Track the identity. Finally, the monads. The List monad&rsquo;s carrier, unit, and multiplication have all appeared in this course before — <code>fmap</code> in Lesson 2, <code>flatten</code> in Lesson 3 — and the laws can be checked over a systematically generated cube of nested lists, with Maybe done fully exhaustively alongside:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>monad_laws.py</b> — List and Maybe, laws by enumeration</span><button class="copy" type="button">Copy</button></div>
+<pre><code>eta  = lambda x: [x]
+mu   = lambda xss: [x for xs in xss for x in xs]     # Lesson 3&#x27;s flatten
+fmap = lambda f, xs: [f(x) for x in xs]
+
+def lists_over(base, maxlen=2):
+    out = [[]]
+    for k in range(1, maxlen + 1):
+        out += [list(t) for t in cartesian(base, repeat=k)]
+    return out
+
+T1 = lists_over([0, 1]); T2 = lists_over(T1); T3 = lists_over(T2)
+
+assert all(mu(mu(x)) == mu(fmap(mu, x)) for x in T3)          # associativity
+assert all(mu(eta(x)) == x == mu(fmap(eta, x)) for x in T1)   # unit laws
+print(f&quot;List : associativity on {len(T3)} T\u00b3 values, units on {len(T1)} — pass&quot;)
+
+J     = lambda x: (&#x27;Just&#x27;, x)                        # Maybe&#x27;s eta
+fmapM = lambda f, m: None if m is None else J(f(m[1]))
+muM   = lambda mm: None if mm is None else mm[1]     # collapse one layer
+
+M1 = [None] + [J(x) for x in (0, 1)]
+M2 = [None] + [J(m) for m in M1]
+M3 = [None] + [J(m) for m in M2]
+
+assert all(muM(muM(m)) == muM(fmapM(muM, m)) for m in M3)
+assert all(muM(J(m)) == m == muM(fmapM(J, m)) for m in M1)
+print(f&quot;Maybe: associativity on {len(M3)} T\u00b3 values, units on {len(M1)} — pass&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>List : associativity on 3307 T³ values, units on 7 — pass
+Maybe: associativity on 5 T³ values, units on 3 — pass</div>
+    </div>
+
+    <p>For Maybe the check is genuinely exhaustive — there are only five triple-layer values over a two-point base, and all five commute. For List, 3,307 systematically generated triples of nesting all agree that outer-first and inner-first flattening coincide. The downloadable script adds the Writer monad (Exercise 8) and the Kleisli law checks (Exercise 9), completing the set.</p>
+  </div>
+</section>
+
+<!-- ============ GOING DEEPER ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Going deeper</div>
+    <h2>Algebras for a monad</h2>
+
+    <p>A monad describes a <em>kind</em> of structure; an <strong>algebra</strong> for it is a place where that structure is actually realized. The definition is one arrow and two laws:</p>
+    <div class="box def">
+      <span class="tag">Definition · T-algebra</span>
+      <p>An <strong>algebra</strong> for a monad <span class="m">(T, η, μ)</span> is an object <span class="m">X</span> with an arrow <span class="m">a : T X → X</span> (the <em>structure map</em>) such that <span class="m">a ∘ η<sub>X</sub> = id<sub>X</sub></span> and <span class="m">a ∘ μ<sub>X</sub> = a ∘ T a</span>.</p>
+    </div>
+    <p>Read <span class="m">a</span> as an <em>evaluator</em>: it collapses a <span class="m">T</span>-shaped bundle of <span class="m">X</span>&rsquo;s to a single <span class="m">X</span>. The first law says a trivially-wrapped value evaluates to itself; the second says a two-layer bundle evaluates to the same answer whether you merge the layers first (<span class="m">μ</span>) or evaluate the inner bundles first (<span class="m">T a</span>). For the List monad, an evaluator that satisfies these laws is <em>exactly a monoid structure</em> — Exercise 10 unwinds the correspondence, closing the loop this course opened when Lesson 1 called monoids one-object categories. The algebras of a monad form the <strong>Eilenberg–Moore category</strong>, one of the two canonical adjunctions generating the monad — the converse promised in Exercise 5&rsquo;s solution, and the first stop on the road out of this course.</p>
+  </div>
+</section>
+
+<!-- ============ §6 EXERCISES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§6 — Exercises</div>
+    <h2>Eleven problems to finish the course</h2>
+    <p>Exercises 5 and 7 are the capstones — the first connects Lessons 6 and 7, the second connects Lesson 7 back to Lesson 1. Between them they close the course&rsquo;s longest arcs.</p>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, write out the four down-sets by hand and verify, for the three pairs <span class="m">(2, 6)</span>, <span class="m">(2, 3)</span>, and <span class="m">(6, 6)</span>, the Yoneda biconditional: <span class="m">a | b</span> exactly when <span class="m">downset(a) ⊆ downset(b)</span>.</p>
+        <p>Then say in one sentence why no two distinct elements of a poset can ever have the same down-set.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The down-sets: <span class="m">{1}, {1,2}, {1,3}, {1,2,3,6}</span> — as §5 printed. Pairs: <span class="m">2 | 6</span> and <span class="m">{1,2} ⊆ {1,2,3,6}</span> ✓; <span class="m">2 ∤ 3</span> and <span class="m">{1,2} ⊄ {1,3}</span> ✓; <span class="m">6 | 6</span> and equality of sets ✓.</p>
+          <p>If <span class="m">downset(a) = downset(b)</span>, then since <span class="m">a ∈ downset(a)</span> we get <span class="m">a ∈ downset(b)</span>, i.e. <span class="m">a ≤ b</span>, and symmetrically <span class="m">b ≤ a</span> — so <span class="m">a = b</span> by antisymmetry (or <span class="m">a ≅ b</span> in a preorder). Note the proof&rsquo;s engine: <em>the element belongs to its own down-set because of the identity arrow <span class="m">a ≤ a</span></em>. Even in this baby case, the identity is the tracked probe — the thin-category shadow of the Yoneda proof.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Complete the surjectivity half of the Yoneda proof. Given a presheaf <span class="m">F</span> and an element <span class="m">a ∈ F(A)</span>, define the family <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> for <span class="m">f : X → A</span>.</p>
+        <p>Verify the two things §2 left to you: that each naturality square of <span class="m">α</span> commutes (use the functoriality of <span class="m">F</span> — mind the contravariance), and that tracking the identity recovers <span class="m">a</span>: <span class="m">α<sub>A</sub>(id<sub>A</sub>) = a</span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Naturality.</strong> Fix <span class="m">g : X → Y</span>. The square requires <span class="m">α<sub>X</sub>(f ∘ g) = F(g)(α<sub>Y</sub>(f))</span> for every <span class="m">f : Y → A</span> — precompose first or apply <span class="m">F(g)</span> after. Left side: <span class="m">F(f ∘ g)(a)</span>. Right side: <span class="m">F(g)(F(f)(a))</span>. These agree because <span class="m">F</span>, being contravariant, sends <span class="m">f ∘ g</span> to <span class="m">F(g) ∘ F(f)</span> — the flip of Lesson 2&rsquo;s composition law is exactly what the square needs. (Had <span class="m">F</span> been covariant, the square would demand the <em>un</em>-flipped law; the variance and the direction of translation are made for each other.)</p>
+          <p><strong>Recovery.</strong> <span class="m">α<sub>A</sub>(id<sub>A</sub>) = F(id<sub>A</sub>)(a) = id<sub>F(A)</sub>(a) = a</span>, by the identity law of <span class="m">F</span>. So &ldquo;element to transformation to element&rdquo; is the identity — one of the two round trips of the bijection; §2&rsquo;s determination argument was the other. Both functor laws of Lesson 2 were consumed, one per round trip, with nothing left over.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>Deduce the two headline corollaries from the lemma:</p>
+        <ol>
+          <li>Setting <span class="m">F = yB</span>, show <span class="m">Nat(yA, yB) ≅ <span class="cat">𝒞</span>(A, B)</span>, and describe explicitly which transformation an arrow <span class="m">h : A → B</span> becomes.</li>
+          <li>Conclude that <span class="m">y</span> is fully faithful, and that <span class="m">yA ≅ yB</span> (in the presheaf category) implies <span class="m">A ≅ B</span> (in <span class="cat">𝒞</span>).</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> The lemma with <span class="m">F = yB</span> reads <span class="m">Nat(yA, yB) ≅ yB(A) = <span class="cat">𝒞</span>(A, B)</span>. Chasing the bijection: the element <span class="m">h ∈ <span class="cat">𝒞</span>(A, B)</span> becomes the transformation with components <span class="m">α<sub>X</sub>(f) = yB(f)(h) = h ∘ f</span> — <strong>postcomposition by <span class="m">h</span></strong>. That is exactly what §5&rsquo;s census found: all three survivors were postcompositions, one per arrow.</p>
+          <p><strong>(b)</strong> The bijection is precisely the statement that <span class="m">y</span> is full (surjective on hom-sets) and faithful (injective) — one checks it also respects composition, which is associativity of <span class="m">∘</span>. A fully faithful functor reflects isomorphisms: if <span class="m">α : yA ≅ yB</span>, write <span class="m">α = y(h)</span> and <span class="m">α<sup>−1</sup> = y(k)</span>; then <span class="m">y(k ∘ h) = y(k) ∘ y(h) = id = y(id<sub>A</sub>)</span>, and faithfulness cancels the <span class="m">y</span>, giving <span class="m">k ∘ h = id<sub>A</sub></span>, likewise <span class="m">h ∘ k = id<sub>B</sub></span>. So <span class="m">A ≅ B</span> — the slogan, fully proved, using only machinery this course built.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">duality</span></div>
+      <div class="prob-body">
+        <p>State the <em>covariant</em> Yoneda lemma — for functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">Set</span></span> and the co-representable <span class="m"><span class="cat">𝒞</span>(A, −)</span>, arrows <em>out of</em> <span class="m">A</span> — by dualizing everything in §2. What does the corollary become, as a slogan?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>For any covariant <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">Set</span></span>: <span class="m">Nat(<span class="cat">𝒞</span>(A, −), F) ≅ F(A)</span>, again via <span class="m">α ↦ α<sub>A</sub>(id<sub>A</sub>)</span>, with translation now by <em>post</em>composition and the determining formula <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> using <span class="m">F</span>&rsquo;s covariance. Formally it is §2&rsquo;s lemma applied to <span class="cat">𝒞</span><sup>op</sup> — Lesson 4&rsquo;s duality principle doing its last day of work in this course.</p>
+          <p>Slogan: <strong>an object is also the arrows out of it.</strong> Both dossiers are complete; you may know an object by how everything probes it, or by how it probes everything. (In the poset shadow: an element is determined by its down-set, and equally by its up-set.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>The Lesson 6 connection, in full. Let <span class="m">F ⊣ U</span> with unit <span class="m">η</span> and counit <span class="m">ε</span>, and set <span class="m">T = UF</span>, <span class="m">μ = UεF</span> (components <span class="m">μ<sub>X</sub> = U(ε<sub>F X</sub>)</span>). Prove the three monad laws:</p>
+        <ol>
+          <li><span class="m">μ ∘ ηT = id</span> — i.e. <span class="m">μ<sub>X</sub> ∘ η<sub>T X</sub> = id<sub>T X</sub></span>;</li>
+          <li><span class="m">μ ∘ Tη = id</span> — i.e. <span class="m">μ<sub>X</sub> ∘ UF(η<sub>X</sub>) = id<sub>T X</sub>;</span></li>
+          <li><span class="m">μ ∘ μT = μ ∘ Tμ</span>.</li>
+        </ol>
+        <p>Hint: (a) and (b) are the two triangle identities, one whiskered by <span class="m">U</span>, the other instantiated at <span class="m">F X</span>. For (c), apply <span class="m">U</span> to the naturality square of <span class="m">ε</span> at the arrow <span class="m">ε<sub>F X</sub></span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> The second triangle identity says <span class="m">U(ε<sub>Y</sub>) ∘ η<sub>U Y</sub> = id<sub>U Y</sub></span> for every <span class="m">Y</span>; instantiate <span class="m">Y = F X</span>: <span class="m">U(ε<sub>F X</sub>) ∘ η<sub>U F X</sub> = id</span>, which is exactly <span class="m">μ<sub>X</sub> ∘ η<sub>T X</sub> = id<sub>T X</sub></span>.</p>
+          <p><strong>(b)</strong> The first triangle identity says <span class="m">ε<sub>F X</sub> ∘ F(η<sub>X</sub>) = id<sub>F X</sub></span>; apply the functor <span class="m">U</span> to both sides (Lesson 2: equal arrows have equal images, composition splits): <span class="m">U(ε<sub>F X</sub>) ∘ UF(η<sub>X</sub>) = id<sub>UF X</sub></span> — which is <span class="m">μ<sub>X</sub> ∘ T(η<sub>X</sub>) = id<sub>T X</sub></span>.</p>
+          <p><strong>(c)</strong> Naturality of <span class="m">ε</span> at the arrow <span class="m">ε<sub>F X</sub> : FUF X → F X</span> reads <span class="m">ε<sub>F X</sub> ∘ FU(ε<sub>F X</sub>) = ε<sub>F X</sub> ∘ ε<sub>FUF X</sub></span>. Apply <span class="m">U</span>: <span class="m">μ<sub>X</sub> ∘ UFU(ε<sub>F X</sub>) = μ<sub>X</sub> ∘ U(ε<sub>FUF X</sub>)</span> — and reading the two sides as components, the left is <span class="m">μ<sub>X</sub> ∘ T(μ<sub>X</sub>)</span> and the right is <span class="m">μ<sub>X</sub> ∘ μ<sub>T X</sub></span>. That is associativity. Three laws, three ingredients: one triangle each for the units, one naturality square for associativity — the same toolkit as Lesson 6&rsquo;s Exercise 4, run in reverse. (The converse is also true — every monad arises from an adjunction — but its two standard constructions, Kleisli and Eilenberg–Moore, belong to the next course.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>The Maybe monad by cases. With <span class="m">T X = X + 1</span> represented as <code>None</code> or <code>(&#x27;Just&#x27;, x)</code>, and <span class="m">η = </span><code>Just</code>, <span class="m">μ(None) = None</span>, <span class="m">μ(Just m) = m</span>:</p>
+        <ol>
+          <li>Verify the two unit laws by exhausting the cases of a value <span class="m">m ∈ T X</span>.</li>
+          <li>Verify associativity by exhausting the cases of a value in <span class="m">T³ X</span>. How many case-shapes are there, and which single line of the definition does all the work?</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> <span class="m">μ(η(m)) = μ(Just(m)) = m</span> — one case, done. For <span class="m">μ(T η(m))</span>: if <span class="m">m = None</span>, <span class="m">Tη</span> maps it to <span class="m">None</span> and <span class="m">μ(None) = None = m</span>; if <span class="m">m = Just(x)</span>, <span class="m">Tη(m) = Just(Just(x))</span> and <span class="m">μ</span> peels a layer: <span class="m">Just(x) = m</span>. ✓</p>
+          <p><strong>(b)</strong> A <span class="m">T³</span> value has four shapes: <span class="m">None</span>, <span class="m">J(None)</span>, <span class="m">J(J(None))</span>, <span class="m">J(J(J(x)))</span> — §5&rsquo;s exhaustive list, with the last shape once per base element. Chase each through <span class="m">μ ∘ μT</span> and <span class="m">μ ∘ Tμ</span>: e.g. <span class="m">J(J(J(x)))</span> goes to <span class="m">J(J(x))</span> either way, then to <span class="m">J(x)</span>; and any <span class="m">None</span> at any depth propagates to <span class="m">None</span> along both paths. The single line doing all the work is <span class="m">μ(Just m) = m</span> — &ldquo;peel exactly one layer&rdquo; — which cannot notice whether the layer it peels is outer or inner. Failure is absorbing, success is transparent: that is the whole personality of Maybe, and the laws are its formal statement.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>The full circle. Take the Kleisli data at face value: arrows <span class="m">A ⇸ B</span> are arrows <span class="m">A → T B</span>, composition is <span class="m">g ∘<sub>K</sub> f = μ ∘ Tg ∘ f</span>, and the proposed identity on <span class="m">A</span> is <span class="m">η<sub>A</sub></span>.</p>
+        <ol>
+          <li>Show <span class="m">f ∘<sub>K</sub> η = f</span> and <span class="m">η ∘<sub>K</sub> f = f</span>, identifying which monad unit law each uses (and where naturality of <span class="m">η</span> sneaks in).</li>
+          <li>Show that associativity of <span class="m">∘<sub>K</sub></span> follows from the monad&rsquo;s associativity law together with naturality of <span class="m">μ</span>. (Expand both bracketings of <span class="m">h ∘<sub>K</sub> g ∘<sub>K</sub> f</span> and slide <span class="m">μ</span>&rsquo;s past <span class="m">T</span>&rsquo;s.)</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> Right identity: <span class="m">f ∘<sub>K</sub> η<sub>A</sub> = μ ∘ Tf ∘ η<sub>A</sub></span>. Naturality of <span class="m">η</span> at <span class="m">f : A → TB</span> slides it forward: <span class="m">Tf ∘ η<sub>A</sub> = η<sub>T B</sub> ∘ f</span>, so the composite is <span class="m">μ ∘ ηT ∘ f = f</span> by the <em>first</em> unit law. Left identity: <span class="m">η<sub>B</sub> ∘<sub>K</sub> f = μ ∘ Tη<sub>B</sub> ∘ f = f</span> directly by the <em>second</em> unit law. Each unit law serves exactly one side — that is <em>why</em> there are two.</p>
+          <p><strong>(b)</strong> Expand: <span class="m">h ∘<sub>K</sub> (g ∘<sub>K</sub> f) = μ ∘ Th ∘ μ ∘ Tg ∘ f</span>, while <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f = μ ∘ T(μ ∘ Th ∘ g) ∘ f = μ ∘ Tμ ∘ T²h ∘ Tg ∘ f</span>. In the first expression, slide <span class="m">Th</span> past <span class="m">μ</span> using <span class="m">μ</span>&rsquo;s naturality at <span class="m">h</span>: <span class="m">Th ∘ μ = μ ∘ T²h</span>, giving <span class="m">μ ∘ μT ∘ T²h ∘ Tg ∘ f</span>. The two expressions now differ only in their heads — <span class="m">μ ∘ μT</span> versus <span class="m">μ ∘ Tμ</span> — and the associativity square says those are equal. ∎</p>
+          <p>So: <em>Kl(T) is a category precisely because T is a monad.</em> Lesson 1 asked for two laws and the course spent six lessons discovering how much they carry; here, at the end, the same two laws re-derive themselves as the correctness conditions for effectful programming. The snake has its tail.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>The Writer monad, and the invoice it sends to Lesson 1. Implement <span class="m">T X = X × M</span> for the string monoid: <span class="m">η(x) = (x, &quot;&quot;)</span>, <span class="m">μ(((x, v), w)) = (x, w + v)</span>, with <span class="m">fmap</span> acting on the first component.</p>
+        <p>Verify the three laws on an enumerated grid of values. Then answer: exactly which monoid axiom does each monad law consume? What would break if the &ldquo;log combiner&rdquo; were subtraction of numbers instead of concatenation of strings?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <div class="code" style="margin-top:2px">
+            <div class="code-bar"><span class="fname"><b>writer.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>etaW  = lambda x: (x, &quot;&quot;)
+fmapW = lambda f, p: (f(p[0]), p[1])
+def muW(pp):
+    (x, inner), outer = pp
+    return (x, outer + inner)
+
+logs = [&quot;&quot;, &quot;a&quot;, &quot;bc&quot;]
+W1 = [(x, w) for x in (0, 1) for w in logs]
+W2 = [(p, w) for p in W1 for w in logs]
+W3 = [(q, w) for q in W2 for w in logs]
+
+assert all(muW(muW(q)) == muW(fmapW(muW, q)) for q in W3)
+assert all(muW(etaW(p)) == p == muW(fmapW(etaW, p)) for p in W1)
+print(f&quot;Writer: associativity on {len(W3)} values, units on {len(W1)} — pass&quot;)</code></pre>
+            <div class="out"><span class="lbl">output</span>Writer: associativity on 54 values, units on 6 — pass</div>
+          </div>
+          <p style="margin-top:14px">The audit: monad <strong>associativity</strong> reduces to <span class="m">(w + v) + u = w + (v + u)</span> — the monoid&rsquo;s associativity; each <strong>unit law</strong> reduces to <span class="m">&quot;&quot; + w = w</span> or <span class="m">w + &quot;&quot; = w</span> — the monoid&rsquo;s two-sided unit. A perfect bill: three laws bought, three axioms paid. With subtraction, <span class="m">(w − v) − u ≠ w − (v − u)</span> in general, so associativity fails — replace <code>outer + inner</code> with subtraction on numeric logs and the first assert dies. Lesson 1 defined a monoid as a one-object category; seven lessons later, its two laws turn out to be exactly the price of composable logging.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Kleisli in practice. For the List monad, implement <code>kleisli(g, f) = lambda x: mu(fmap(g, f(x)))</code> and take <span class="m">f(x) = [x, x+1]</span>, <span class="m">g(x) = [2x]</span>, <span class="m">h(x) = [x, −x]</span>.</p>
+        <ol>
+          <li>Check associativity <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f = h ∘<sub>K</sub> (g ∘<sub>K</sub> f)</span> and both identity laws against <span class="m">η</span>, pointwise on a range of inputs.</li>
+          <li>Compute <span class="m">((h ∘<sub>K</sub> g) ∘<sub>K</sub> f)(2)</span> by hand — tracing the nondeterminism — before running it.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(b) first, by hand:</strong> <span class="m">f(2) = [2, 3]</span>; map <span class="m">g</span>: <span class="m">[[4], [6]]</span>; flatten: <span class="m">[4, 6]</span>; map <span class="m">h</span>: <span class="m">[[4, −4], [6, −6]]</span>; flatten: <span class="m">[4, −4, 6, −6]</span>. Four outcomes — every branch of every stage, in deterministic left-to-right order.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>kleisli_list.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>kleisli = lambda g, f: (lambda x: mu(fmap(g, f(x))))
+f = lambda x: [x, x + 1]
+g = lambda x: [x * 2]
+h = lambda x: [x, -x]
+
+assert all(kleisli(kleisli(h, g), f)(x) == kleisli(h, kleisli(g, f))(x)
+           for x in range(-5, 6))
+assert all(kleisli(f, eta)(x) == f(x) == kleisli(eta, f)(x)
+           for x in range(-5, 6))
+print(&quot;laws pass;  ((h .K g) .K f)(2) =&quot;, kleisli(kleisli(h, g), f)(2))</code></pre>
+            <div class="out"><span class="lbl">output</span>laws pass;  ((h .K g) .K f)(2) = [4, -4, 6, -6]</div>
+          </div>
+          <p style="margin-top:14px">The associativity assert is the practical content of Exercise 7: a three-stage nondeterministic pipeline gives the same outcomes however you bracket the stages — so &ldquo;pipeline&rdquo; is a well-defined notion at all. Every <code>flatMap</code> chain you have ever written was leaning on this.</p>
+        </div>
+      </details>
+    </div>
+  
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">structure · new</span></div>
+      <div class="prob-body">
+
+        <p>Show that a List-algebra on a set <span class="m">X</span> is the same thing as a monoid structure on <span class="m">X</span>. Given a structure map <span class="m">a : List X → X</span> satisfying the two algebra laws, define <span class="m">e = a([])</span> and <span class="m">x · y = a([x, y])</span>, and derive:</p>
+        <ol>
+          <li>the unit laws <span class="m">e · x = x = x · e</span>,</li>
+          <li>associativity of <span class="m">·</span> — evaluate the two-layer value <span class="m">[[x, y], [z]]</span> both ways the algebra law allows.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>The key consequence of the laws (worth deriving first) is that <span class="m">a</span> evaluates concatenations pairwise: applying the second law to <span class="m">[xs, ys]</span> ∈ <span class="m">List(List X)</span> gives <span class="m">a(xs ⧺ ys) = a([a(xs), a(ys)])= a(xs) · a(ys)</span>.</p>
+          <p><strong>(a)</strong> <span class="m">e · x = a([a([]), a([x])])</span>; by the pairwise rule backwards this is <span class="m">a([] ⧺ [x]) = a([x])</span>, and the first algebra law (<span class="m">a ∘ η = id</span>) gives <span class="m">a([x]) = x</span>. The right unit law mirrors.</p>
+          <p><strong>(b)</strong> Evaluate <span class="m">[[x, y], [z]]</span>: merging layers first (<span class="m">μ</span>) gives <span class="m">a([x, y, z])</span>; evaluating inner bundles first (<span class="m">T a</span>) gives <span class="m">a([x·y, z]) = (x·y)·z</span>. The algebra law equates them, so <span class="m">a([x,y,z]) = (x·y)·z</span> — and running the same computation on <span class="m">[[x], [y, z]]</span> gives <span class="m">a([x,y,z]) = x·(y·z)</span>. Both bracketings equal the same three-element evaluation: associativity. Conversely a monoid defines <span class="m">a</span> = &ldquo;multiply the list out&rdquo; (Lesson 6&rsquo;s <code>fold_map</code> of the identity), and the two constructions invert each other. <strong>Monoids are the algebras of the List monad</strong> — the course&rsquo;s first definition and its last, revealed as the same idea seen from opposite ends.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+
+        <p>Make Exercise 10 executable: take <span class="m">X = ℤ</span> with structure map <code>a = sum</code> (note <code>sum([]) == 0</code> — the evaluator chooses the monoid&rsquo;s unit for you).</p>
+        <p>Verify both algebra laws — <span class="m">a ∘ η = id</span> pointwise, and <span class="m">a ∘ μ = a ∘ Ta</span> over the systematically generated <span class="m">T²</span> values from §5&rsquo;s <code>lists_over</code>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Reusing §5&rsquo;s machinery, the whole check is four lines:</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>algebra.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>a = sum                          # a : List Z -&gt; Z,  with a([]) == 0
+
+assert all(a(eta(x)) == x for x in (0, 1, 5, -3))          # a . eta = id
+T2 = lists_over(lists_over([0, 1]))
+assert all(a(mu(xss)) == a(fmap(a, xss)) for xss in T2)    # a . mu = a . Ta
+print(f&quot;sum is a List-algebra: laws pass on {len(T2)} T² values&quot;)</code></pre>
+            <div class="out"><span class="lbl">output</span>sum is a List-algebra: laws pass on 57 T² values</div>
+          </div>
+          <p style="margin-top:14px">Swap <code>sum</code> for <code>math.prod</code> (unit 1) or <code>&quot;&quot;.join</code> on strings (unit <code>&quot;&quot;</code>) and the same asserts pass — one algebra per monoid, as Exercise 10 predicts. Swap in something non-associative, like <code>lambda xs: functools.reduce(operator.sub, xs, 0)</code>, and the second assert fails: the algebra laws are the monoid laws, mechanically enforced. A fitting final output for the course: its very first definition, verified by its very last program.</p>
+        </div>
+      </details>
+    </div>
+</div>
+</section>
+
+<!-- ============ RECAP / ROAD ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Recap</div>
+    <h2>What the course leaves you with</h2>
+    <ol class="takeaways">
+      <li>The <strong>Yoneda lemma</strong>: <span class="m">Nat(yA, F) ≅ F(A)</span>, proved by tracking the identity. Its corollary is the course&rsquo;s creed as a theorem — <span class="m">A ≅ B</span> iff <span class="m">yA ≅ yB</span>: <strong>an object is the arrows into it.</strong></li>
+      <li>The Yoneda embedding is <strong>fully faithful</strong>: maps between objects are exactly natural transformations between their dossiers — in a poset, elements are their down-sets.</li>
+      <li>A <strong>monad</strong> is an endofunctor with unit and multiplication obeying associativity and unit laws; <strong>every adjunction yields one</strong> via <span class="m">T = UF</span>, <span class="m">μ = UεF</span>. List, Maybe, and Writer are the standard library: nondeterminism, partiality, logging.</li>
+      <li>The <strong>Kleisli category</strong> of effectful arrows <span class="m">A → T B</span> is a category <em>precisely because</em> the monad laws hold — Lesson 1&rsquo;s two axioms, rediscovered as the specification of composable effects. <code>bind</code> is Kleisli composition.</li>
+      <li>Everything above is <strong>checkable by machine</strong> in finite settings: Yoneda counted (27 candidates, 3 survivors, all postcompositions), monad laws by enumeration (3,307 List instances; Maybe exhaustively). The subject&rsquo;s abstractions cash out as assertions that pass.</li>
+    </ol>
+
+    <div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="70" height="44" viewBox="0 0 70 44">
+          <path d="M12 32 Q 35 6 58 32" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M58 32 l-8 -1 M58 32 l-3 -8" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="12" cy="32" r="3" fill="var(--amber)"/>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">The road from here</span>
+        <h3>Seven lessons down; the subject is wide open</h3>
+        <p>Natural next steps: <strong>Eilenberg–Moore and Kleisli</strong> as the two adjunctions behind every monad; <strong>presheaf categories and topoi</strong>, where Yoneda becomes a way of life; <strong>Kan extensions</strong> (&ldquo;all concepts are Kan extensions&rdquo;). For books — Leinster&rsquo;s <em>Basic Category Theory</em> for rigor at this course&rsquo;s scope, Riehl&rsquo;s <em>Category Theory in Context</em> to go deeper, Milewski&rsquo;s <em>Category Theory for Programmers</em> to keep the code angle, and Mac Lane when you are ready for the source. Keep the discipline: never look inside.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Intro to Category Theory · Lesson 07 · an object is the arrows into it — q.e.d.</footer>
+
+</main>
+</div>
+
+<script>
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+function setLabel(t, label){
+  const parts = String(label).split("~");
+  t.textContent = parts[0];
+  if(parts[1]){
+    const s = el("tspan", {dy:"5","font-size":"12"}, t);
+    s.textContent = parts[1];
+  }
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, labelAt;
+    let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+    let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+    let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+    const px=-uy, py=ux, off = a.curve ?? 0;
+    if(off){
+      const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
+      shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+      labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+    } else {
+      shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+      const lo = a.lo ?? 14;
+      labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+    }
+
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:full, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
+  });
+}
+
+const DIAGRAMS = {
+  hero: {
+    w:440, h:280,
+    nodes:[
+      {id:"X", x:80,  y:60,  label:"X"},
+      {id:"Y", x:62,  y:140, label:"Y"},
+      {id:"Z", x:80,  y:220, label:"Z"},
+      {id:"A", x:350, y:140, label:"A", cls:"amber"},
+    ],
+    arrows:[
+      {from:"X", to:"A", label:"f", lo:-15, delay:0},
+      {from:"X", to:"A", curve:-26, cls:"soft", delay:120},
+      {from:"Y", to:"A", label:"g", lo:-13, delay:240},
+      {from:"Z", to:"A", label:"h", lo:15, delay:360},
+      {from:"Z", to:"A", curve:26, cls:"soft", delay:480},
+    ]
+  },
+  yoneda: {
+    w:520, h:300,
+    nodes:[
+      {id:"HAA", x:120, y:75,  label:"\ud835\udc9e(A,A)", cls:"small"},
+      {id:"FA",  x:420, y:75,  label:"FA"},
+      {id:"HXA", x:120, y:235, label:"\ud835\udc9e(X,A)", cls:"small"},
+      {id:"FX",  x:420, y:235, label:"FX"},
+    ],
+    arrows:[
+      {from:"HAA", to:"FA",  label:"\u03b1~A", lo:-14, rs:52, delay:0},
+      {from:"HXA", to:"FX",  label:"\u03b1~X", lo:15, rs:52, delay:200},
+      {from:"HAA", to:"HXA", label:"(\u2212)\u2218f", lo:-24, cls:"soft", lcls:"soft", rs:24, re:26, delay:420},
+      {from:"FA",  to:"FX",  label:"Ff", lo:-15, cls:"soft", lcls:"soft", delay:560},
+    ]
+  },
+  assoc: {
+    w:460, h:300,
+    nodes:[
+      {id:"T3",  x:100, y:75,  label:"T\u00b3X"},
+      {id:"T2a", x:370, y:75,  label:"T\u00b2X"},
+      {id:"T2b", x:100, y:235, label:"T\u00b2X"},
+      {id:"TX",  x:370, y:235, label:"TX", cls:"amber"},
+    ],
+    arrows:[
+      {from:"T3",  to:"T2a", label:"T\u03bc~X", lo:-15, rs:26, re:28, delay:0},
+      {from:"T3",  to:"T2b", label:"\u03bc~TX", lo:-17, rs:22, re:24, delay:180},
+      {from:"T2a", to:"TX",  label:"\u03bc~X", lo:-15, rs:22, re:22, delay:400},
+      {from:"T2b", to:"TX",  label:"\u03bc~X", lo:15, rs:26, re:24, delay:580},
+    ]
+  },
+  kleisli: {
+    w:560, h:280,
+    nodes:[
+      {id:"A",   x:70,  y:100, label:"A"},
+      {id:"TB",  x:240, y:100, label:"TB"},
+      {id:"T2C", x:430, y:100, label:"T\u00b2C"},
+      {id:"TC",  x:430, y:230, label:"TC", cls:"amber"},
+    ],
+    arrows:[
+      {from:"A",   to:"TB",  label:"f", lo:-14, delay:0},
+      {from:"TB",  to:"T2C", label:"Tg", lo:-14, rs:24, re:28, delay:180},
+      {from:"T2C", to:"TC",  label:"\u03bc~C", lo:-15, rs:22, re:22, delay:380},
+      {from:"A",   to:"TC",  label:"g\u2218f~K", lo:26, cls:"unique", lcls:"amber", re:26, delay:640},
+    ]
+  },
+};
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(spec) build(div.querySelector("svg"), spec);
+  });
+}
+renderAll();
+
+if(reduce){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "\u2014"; });
+  });
+});
+</script>

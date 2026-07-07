@@ -1,0 +1,832 @@
+<!-- Intro to Category Theory — Lesson 5: Limits & Colimits -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 · Limits &amp; Colimits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
+  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8; --code-bg:#15171E; --code-fg:#E7E4DA; --code-dim:#8A8E9C;
+  --out-bg:#1E2733; --maxw:720px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%)}
+.wrap{position:relative;z-index:1}
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i{font-style:italic}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{font-size:clamp(38px,7vw,70px);margin:0 0 .35em;font-weight:500}
+.hero h1 .q{color:var(--arrow)}
+.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:38ch;margin:0}
+.hero-diagram{margin:42px auto 8px;max-width:440px}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:12px}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+figure{margin:34px 0;text-align:center}
+.board{background:radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);border-radius:3px;padding:26px 18px 18px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:460px;margin-inline:auto}
+.board.wide svg{max-width:560px}
+figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;max-width:54ch;margin-inline:auto;font-style:italic}
+
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.amber{fill:var(--amber)}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;fill:var(--arrow);
+  paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+.elabel{opacity:0}
+.draw .elabel{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .arrow.unique{opacity:1 !important}
+  .elabel{opacity:1 !important;transition:none !important}
+}
+
+.box{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin:30px 0}
+.box .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.box.amber,.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag,.box.thm .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+
+.m{font-style:italic;white-space:nowrap}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+.zoo{width:100%;border-collapse:collapse;margin:28px 0;font-size:17.5px}
+.zoo th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);text-align:left;padding:10px 12px;border-bottom:2px solid var(--rule)}
+.zoo td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+.zoo td:first-child{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--ink);white-space:nowrap}
+.zoo td .m{color:var(--ink)}
+
+.code{background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;border:1px solid #000}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--code-dim);background:transparent;border:1px solid #2f323c;border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{background:var(--out-bg);border-top:1px solid #2a3340;padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;white-space:pre-wrap}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
+
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{content:counter(t);position:absolute;left:0;top:13px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.next{margin-top:38px;border:1px solid var(--rule);border-radius:4px;padding:26px;display:flex;gap:22px;align-items:center;background:#fff}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+/* ---------- expanded exercise format ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob details[open]{background:transparent}
+.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob summary::-webkit-details-marker{display:none}
+.prob summary:hover{background:var(--blue-wash)}
+.prob summary::before{content:"+ ";font-weight:500}
+.prob details[open] summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+.prob .sol strong{color:var(--ink)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+  .zoo{font-size:15.5px}
+}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero measure">
+  <div class="crumbs">Lesson 04 — Universal properties &nbsp;›&nbsp; <b>Lesson 05 — Limits &amp; colimits</b> &nbsp;›&nbsp; Lesson 06 — Adjunctions</div>
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 05</div>
+  <h1>Limits <span class="q">&amp;</span> Colimits</h1>
+  <p class="lede">Terminal objects, products, and their cousins were the same construction wearing different diagrams. Time to say so — and prove the uniqueness theorem exactly once.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="A cone: an apex X with legs a, b, c down to a three-object diagram A to B from C, every triangle commuting.">
+      <svg></svg>
+    </div>
+  </figure>
+</header>
+
+<main>
+
+<!-- ============ §1 ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§1 — One pattern, many disguises</div>
+    <h2>Every construction so far was a cone in denial</h2>
+    <p>Look back at Lesson 4 with suspicious eyes. A <em>terminal object</em>: an object such that everything maps to it, uniquely. A <em>product</em>: an object with arrows to <span class="m">A</span> and <span class="m">B</span>, such that anything else with arrows to <span class="m">A</span> and <span class="m">B</span> factors through it, uniquely. Both times the recipe was the same: fix some target configuration, consider objects equipped with arrows to that configuration, and crown the best one. The only thing that changed was the <em>shape</em> of the configuration — nothing at all, or two isolated dots.</p>
+    <p>We have had the vocabulary for &ldquo;shape&rdquo; since Lesson 2. A <strong>diagram</strong> in <span class="cat">𝒞</span> of shape <span class="cat">𝒥</span> is just a functor <span class="m">D : <span class="cat">𝒥</span> → <span class="cat">𝒞</span></span>, where <span class="cat">𝒥</span> is a small <em>index category</em>: its objects mark dots and its arrows mark which connecting arrows the diagram must supply. Lesson 2&rsquo;s Exercise 6 already proved the first instance — functors out of <span class="cat">𝟚</span> are exactly arrows — and Lesson 3&rsquo;s checker demo showed that a natural transformation between two such diagrams is a commuting square. This lesson is where that machinery stops being an aside and becomes the main act.</p>
+    <p>The plan: define a <em>cone</em> over a diagram (§2), define the <em>limit</em> as the best cone, and then get the uniqueness theorem for every limit at once by a one-line reduction to Lesson 4. Then we tour the shapes (§3): the two we know, plus two new ones — equalizers and pullbacks — that turn out to be solution sets and database joins. Duality flips everything into colimits (§4), and in §5 a single Python function computes all of it.</p>
+  </div>
+</section>
+
+<!-- ============ §2 CONES & LIMITS ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§2 — Cones &amp; limits</div>
+    <h2>The best vantage point over a diagram</h2>
+
+    <div class="box def">
+      <span class="tag">Definition · Cone</span>
+      <p>Let <span class="m">D : <span class="cat">𝒥</span> → <span class="cat">𝒞</span></span> be a diagram. A <strong>cone</strong> over <span class="m">D</span> is an object <span class="m">X</span> (the <strong>apex</strong>) together with one arrow <span class="m">x<sub>j</sub> : X → D(j)</span> for <em>each</em> object <span class="m">j</span> of <span class="cat">𝒥</span> (the <strong>legs</strong>), such that every triangle commutes: for every arrow <span class="m">a : i → j</span> in <span class="cat">𝒥</span>,</p>
+      <p style="text-align:center" class="m">D(a) ∘ x<sub>i</sub> = x<sub>j</sub>.</p>
+    </div>
+
+    <p>That is the hero picture: an apex, a leg to every object of the diagram, and no way to cheat — going directly to <span class="m">D(j)</span> must agree with going via any <span class="m">D(i)</span>. Lesson 2&rsquo;s Exercise 8 planted a flag we can now collect: a cone with apex <span class="m">X</span> is precisely a <strong>natural transformation <span class="m">Δ<sub>X</sub> ⇒ D</span></strong> from the constant functor at <span class="m">X</span>. The legs are the components, and the cone condition is naturality — check it against the square, remembering that <span class="m">Δ<sub>X</sub></span> sends every arrow to <span class="m">id<sub>X</sub></span>.</p>
+    <p>Cones over a fixed <span class="m">D</span> form a category of their own, <span class="cat">Cone</span><span class="m">(D)</span>: an arrow from cone <span class="m">(X, x)</span> to cone <span class="m">(L, λ)</span> is an arrow <span class="m">m : X → L</span> of <span class="cat">𝒞</span> that is compatible with all the legs, <span class="m">λ<sub>j</sub> ∘ m = x<sub>j</sub></span> for every <span class="m">j</span>. (Identities and composites are inherited from <span class="cat">𝒞</span>; checking the axioms is Exercise 3.) With that category in hand, the central definition of the lesson costs four words:</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Limit</span>
+      <p>A <strong>limit</strong> of <span class="m">D</span> is a terminal object of <span class="cat">Cone</span><span class="m">(D)</span>.</p>
+      <p>Unwound: a cone <span class="m">(lim D, λ)</span> such that every cone <span class="m">(X, x)</span> factors through it via <strong>exactly one</strong> arrow <span class="m">m : X → lim D</span> with <span class="m">λ<sub>j</sub> ∘ m = x<sub>j</sub></span> for all <span class="m">j</span>.</p>
+    </div>
+
+    <div class="box thm">
+      <span class="tag">Theorem · Uniqueness, once and for all</span>
+      <p>Any two limits of the same diagram are isomorphic via a unique cone-compatible isomorphism.</p>
+      <p><strong>Proof.</strong> A limit is a terminal object in <span class="cat">Cone</span><span class="m">(D)</span>, and Lesson 4 §2 proved that terminal objects are unique up to unique isomorphism — in <em>any</em> category. Apply that theorem to <span class="cat">Cone</span><span class="m">(D)</span>. ∎</p>
+    </div>
+
+    <p>This is the promised payoff. In Lesson 4 we proved uniqueness for terminal objects, then re-proved it by hand for products (Exercise 5) and noted it dualizes. Now every limit of every shape — including every construction in the rest of this lesson — inherits the theorem from one four-sentence proof, applied in a cleverly chosen category. Building the right category and citing an old theorem inside it is one of the field&rsquo;s signature moves; this is its first full appearance.</p>
+  </div>
+</section>
+
+<!-- ============ §3 THE ZOO ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§3 — Shapes and their limits</div>
+    <h2>Change the index category, change the construction</h2>
+
+    <table class="zoo">
+      <tr><th>Shape 𝒥</th><th>Limit over it</th><th>In Set</th></tr>
+      <tr><td>&empty; &nbsp;(empty)</td><td>terminal object</td><td>the one-point set</td></tr>
+      <tr><td>• &nbsp; • &nbsp;(two dots)</td><td>product <span class="m">A × B</span></td><td>cartesian product</td></tr>
+      <tr><td>• ⇉ • &nbsp;(parallel pair)</td><td>equalizer</td><td>solution set of <span class="m">f(x) = g(x)</span></td></tr>
+      <tr><td>• → • ← • &nbsp;(cospan)</td><td>pullback</td><td>pairs with <span class="m">f(a) = g(b)</span> — a join</td></tr>
+    </table>
+
+    <p>Rows one and two are Lesson 4 in new clothes. Over the <strong>empty diagram</strong>, a cone is just an apex — no legs, no conditions — so the terminal cone is the terminal object. Over <strong>two isolated dots</strong> picking out <span class="m">A</span> and <span class="m">B</span>, a cone is an object with arrows to each, the triangles are vacuous, and the terminal cone is exactly the product with its projections. (Exercise 1 has you verify both unwindings carefully.) The new rows are where the shape starts doing real work.</p>
+
+    <h3>The parallel pair: equalizers</h3>
+    <p>Let <span class="cat">𝒥</span> be two objects with two parallel arrows between them, and let the diagram pick out <span class="m">f, g : A → B</span>. A cone is an apex <span class="m">X</span> with legs to <span class="m">A</span> and <span class="m">B</span> — but the triangle conditions force the <span class="m">B</span>-leg to equal both <span class="m">f ∘ x<sub>A</sub></span> and <span class="m">g ∘ x<sub>A</sub></span>. So a cone is really just an arrow <span class="m">x : X → A</span> with <span class="m">f ∘ x = g ∘ x</span> — an arrow that <em>cannot tell <span class="m">f</span> and <span class="m">g</span> apart</em>. The limit, written <span class="m">e : E → A</span> and called the <strong>equalizer</strong>, is the universal such arrow.</p>
+
+    <figure>
+      <div class="board" data-diagram="equalizer" aria-label="The equalizer diagram: E maps to A by e, two parallel arrows f and g from A to B, a cone X over A, and a dashed unique arrow from X to E.">
+        <svg></svg>
+      </div>
+      <figcaption>Any <span class="m">x</span> with <span class="m">f ∘ x = g ∘ x</span> factors through <span class="m">E</span>, uniquely. In <span class="cat">Set</span>, <span class="m">E = { a ∈ A : f(a) = g(a) }</span> with <span class="m">e</span> the inclusion.</figcaption>
+    </figure>
+
+    <p>In <span class="cat">Set</span> the equalizer is the <strong>solution set</strong>: everything in <span class="m">A</span> where the equation <span class="m">f(a) = g(a)</span> holds, sitting inside <span class="m">A</span> via the inclusion map. Solving equations — the oldest activity in mathematics — is computing a limit over the second-smallest interesting shape. And the universal property captures precisely what a solution set is <em>for</em>: any way of landing in <span class="m">A</span> that satisfies the equation lands, in exactly one way, in the solutions.</p>
+
+    <h3>The cospan: pullbacks</h3>
+    <p>Now let <span class="cat">𝒥</span> be the cospan <span class="m">• → • ← •</span>, so the diagram is a pair of arrows with a common target: <span class="m">f : A → Z</span> and <span class="m">g : B → Z</span>. A cone is an apex with arrows to <span class="m">A</span> and <span class="m">B</span> that <em>agree upon arrival in <span class="m">Z</span></em> (the leg to <span class="m">Z</span> is forced, just as with the equalizer). The limit is the <strong>pullback</strong> <span class="m">A ×<sub>Z</sub> B</span> — the product of <span class="m">A</span> and <span class="m">B</span>, constrained by the shared map to <span class="m">Z</span>.</p>
+
+    <figure>
+      <div class="board wide" data-diagram="pullback" aria-label="The pullback square: P with projections to A and B, f from A to Z and g from B to Z, an outer cone X, and a dashed unique arrow from X into P.">
+        <svg></svg>
+      </div>
+      <figcaption>The pullback square. In <span class="cat">Set</span>, <span class="m">A ×<sub>Z</sub> B = { (a, b) : f(a) = g(b) }</span> — pairs that agree in <span class="m">Z</span>.</figcaption>
+    </figure>
+
+    <p>Pullbacks are everywhere once you know the shape. Two subsets included in a common set pull back to their <strong>intersection</strong>. A function <span class="m">f : A → B</span> pulled back along a subset inclusion <span class="m">S ↪ B</span> gives the <strong>inverse image</strong> <span class="m">f<sup>−1</sup>(S)</span> (Exercise 5). And two database tables sharing a key column pull back to their <strong>join</strong>: the pairs of rows that agree on the key — which is exactly what §5 computes. When the maps to <span class="m">Z</span> carry the meaning &ldquo;this row&rsquo;s foreign key,&rdquo; the pullback carries the meaning &ldquo;match them up.&rdquo;</p>
+  </div>
+</section>
+
+<!-- ============ §4 COLIMITS & DUALITY ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§4 — Colimits</div>
+    <h2>Reverse the legs, glue instead of carve</h2>
+    <p>Duality now does a lesson&rsquo;s worth of work in a paragraph. A <strong>cocone</strong> under a diagram <span class="m">D</span> is an apex <span class="m">X</span> with legs <span class="m">D(j) → X</span> <em>out of</em> the diagram, commuting with the diagram&rsquo;s arrows; equivalently, a natural transformation <span class="m">D ⇒ Δ<sub>X</sub></span>. A <strong>colimit</strong> is an <em>initial</em> cocone — the universal way to fuse the diagram into a single object — and it is unique up to unique isomorphism because Lesson 4&rsquo;s theorem dualizes (or directly: apply the terminal-object theorem in <span class="cat">Cocone</span><span class="m">(D)</span><sup>op</sup>).</p>
+
+    <figure>
+      <div class="board" data-diagram="cocone" aria-label="A cocone: legs from the objects of a diagram down into a single apex X, every triangle commuting.">
+        <svg></svg>
+      </div>
+      <figcaption>The hero diagram, arrows reversed: legs flow <em>out of</em> the diagram into the apex. The colimit is the initial such cocone.</figcaption>
+    </figure>
+
+    <p>The zoo dualizes row by row. The colimit of the empty diagram is the <strong>initial object</strong>; of two dots, the <strong>coproduct</strong>. The dual of the equalizer is the <strong>coequalizer</strong> of <span class="m">f, g : A → B</span>: in <span class="cat">Set</span>, the quotient of <span class="m">B</span> by the equivalence relation generated by <span class="m">f(a) ∼ g(a)</span> — where equalizers <em>solve</em> equations, coequalizers <em>impose</em> them, which is how quotient constructions throughout mathematics arise. The dual of the pullback is the <strong>pushout</strong>: the universal way to glue <span class="m">A</span> and <span class="m">B</span> along a shared part <span class="m">Z</span>, as when two line segments are joined at an endpoint, or two sets are united over their intersection (Exercise 7). Limits carve out; colimits glue together.</p>
+
+    <div class="box amber">
+      <span class="tag">Aside · Two shapes suffice</span>
+      <p>A category with all binary products, a terminal object, and all equalizers automatically has <em>every</em> finite limit — pullbacks, and limits over any finite shape whatsoever, can be assembled from those parts. Exercise 8 walks through the first case: a pullback is an equalizer of two maps out of a product. This is why &ldquo;<span class="cat">Set</span> has all (small) limits&rdquo; is provable by exhibiting just two constructions, and it is the theorem quietly powering §5: our finder searches for arbitrary limits, but a library implementer would only ever need to hand-build two.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §5 PYTHON ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§5 — Limits in Python</div>
+    <h2>One finder to rule the whole zoo</h2>
+    <p>Lesson 4&rsquo;s code had one finder per construction — <code>terminal_objects</code>, <code>find_products</code>, <code>find_coproducts</code>. This lesson&rsquo;s definitions say those should all be a <em>single</em> function, parameterized by a diagram. A diagram is a <code>Functor</code> from Lesson 2; a cone is an apex plus a legs dictionary; and the limit is found by checking the terminal-cone property by enumeration. The whole finder is shorter than any two of Lesson 4&rsquo;s specialists combined:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>limits.py</b> — the general limit finder</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def cones(C, D):
+    &quot;All cones over the diagram D : J -&gt; C, as (apex, legs) pairs.&quot;
+    J, out = D.C, []
+    Jobjs = sorted(J.obj, key=str)
+    for X in C.obj:
+        legsets = [arrows_between(C, X, D.on_obj[j]) for j in Jobjs]
+        for combo in cartesian(*legsets):
+            legs = dict(zip(Jobjs, combo))
+            # every triangle commutes:  D(a) . leg_i == leg_j
+            if all(C.comp[(D.on_arr[a], legs[i])] == legs[j]
+                   for a, (i, j) in J.ar.items()):
+                out.append((X, legs))
+    return out
+
+def find_limits(C, D):
+    &quot;Limit = the cone through which every cone factors exactly once.&quot;
+    cs = cones(C, D)
+    return [(apex, legs) for apex, legs in cs
+            if all(len([m for m in arrows_between(C, X, apex)
+                        if all(C.comp[(legs[j], m)] == l[j]
+                               for j in legs)]) == 1
+                   for X, l in cs)]</code></pre>
+    </div>
+
+    <p>Now aim it at the divisibility poset <span class="m">{1, 2, 3, 6}</span> from Lesson 4, using three index categories: the empty category, two isolated dots, and the cospan. The first two runs must reproduce Lesson 4&rsquo;s answers — same universal properties, new packaging — and the third computes our first pullback:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>zoo.py</b> — three shapes, one function</span><button class="copy" type="button">Copy</button></div>
+<pre><code>Empty = FiniteCategory(set(), {}, {}, {})
+
+Disc2 = FiniteCategory({0, 1}, {&#x27;i0&#x27;:(0,0), &#x27;i1&#x27;:(1,1)},
+                       {(&#x27;i0&#x27;,&#x27;i0&#x27;):&#x27;i0&#x27;, (&#x27;i1&#x27;,&#x27;i1&#x27;):&#x27;i1&#x27;},
+                       {0:&#x27;i0&#x27;, 1:&#x27;i1&#x27;})
+
+cos_ar   = {&#x27;i0&#x27;:(0,0),&#x27;i1&#x27;:(1,1),&#x27;i2&#x27;:(2,2),&#x27;u&#x27;:(0,2),&#x27;v&#x27;:(1,2)}
+cos_comp = {(&#x27;i0&#x27;,&#x27;i0&#x27;):&#x27;i0&#x27;,(&#x27;i1&#x27;,&#x27;i1&#x27;):&#x27;i1&#x27;,(&#x27;i2&#x27;,&#x27;i2&#x27;):&#x27;i2&#x27;,
+            (&#x27;u&#x27;,&#x27;i0&#x27;):&#x27;u&#x27;,(&#x27;i2&#x27;,&#x27;u&#x27;):&#x27;u&#x27;,(&#x27;v&#x27;,&#x27;i1&#x27;):&#x27;v&#x27;,(&#x27;i2&#x27;,&#x27;v&#x27;):&#x27;v&#x27;}
+Cospan = FiniteCategory({0,1,2}, cos_ar, cos_comp, {0:&#x27;i0&#x27;,1:&#x27;i1&#x27;,2:&#x27;i2&#x27;})
+
+D_empty  = Functor(Empty,  Div, {}, {})
+D_23     = Functor(Disc2,  Div, {0:2, 1:3}, {&#x27;i0&#x27;:&#x27;2|2&#x27;, &#x27;i1&#x27;:&#x27;3|3&#x27;})
+D_cospan = Functor(Cospan, Div, {0:2, 1:3, 2:6},
+                   {&#x27;i0&#x27;:&#x27;2|2&#x27;,&#x27;i1&#x27;:&#x27;3|3&#x27;,&#x27;i2&#x27;:&#x27;6|6&#x27;,
+                    &#x27;u&#x27;:&#x27;2|6&#x27;,&#x27;v&#x27;:&#x27;3|6&#x27;})
+
+print(&quot;limit of empty diagram :&quot;, find_limits(Div, D_empty))
+print(&quot;limit of {2, 3}        :&quot;, find_limits(Div, D_23))
+print(&quot;limit of 2 -&gt; 6 &lt;- 3   :&quot;, find_limits(Div, D_cospan))
+print(&quot;colimit of {2, 3}      :&quot;, find_colimits(Div, D_23))</code></pre>
+      <div class="out"><span class="lbl">output</span>limit of empty diagram : [(6, {})]
+limit of {2, 3}        : [(1, {0: '1|2', 1: '1|3'})]
+limit of 2 -> 6 <- 3   : [(1, {0: '1|2', 1: '1|3', 2: '1|6'})]
+colimit of {2, 3}      : [(6, {0: '2|6', 1: '3|6'})]</div>
+    </div>
+
+    <p>Read the receipts: the empty diagram yields the terminal object <span class="m">6</span>; two dots yield the product <span class="m">gcd(2,3) = 1</span> with the same projections <code>find_products</code> found last lesson; and the cospan yields the pullback — which in a thin category is again the meet, its extra leg forced. The colimit of two dots is the coproduct <span class="m">lcm(2,3) = 6</span>, via <code>find_colimits</code>, the arrow-reversed twin included in the downloadable script. Four Lesson-4 functions have become one function and a shape parameter. Finally, the two new constructions in <span class="cat">Set</span> itself, where they earn their keep:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>set_limits.py</b> — equalizers solve, pullbacks join</span><button class="copy" type="button">Copy</button></div>
+<pre><code># equalizer of f, g : X -&gt; Y  ==  the solution set of  f(x) = g(x)
+X = range(-3, 4)
+f = lambda x: x * x
+g = lambda x: x + 2
+E = [x for x in X if f(x) == g(x)]
+print(&quot;equalizer of x\u00b2 and x+2 on [-3..3]:&quot;, E)
+
+# pullback of  dept : Emp -&gt; Key  and  key : Bldg -&gt; Key  ==  a join
+employees = [(&quot;Alice&quot;, &quot;eng&quot;), (&quot;Bob&quot;, &quot;sales&quot;), (&quot;Carol&quot;, &quot;eng&quot;)]
+buildings = [(&quot;eng&quot;, &quot;Building 1&quot;), (&quot;sales&quot;, &quot;Building 2&quot;)]
+dept = lambda e: e[1]
+key  = lambda b: b[0]
+
+P  = [(e, b) for e in employees for b in buildings if dept(e) == key(b)]
+p1 = lambda x: x[0]
+p2 = lambda x: x[1]
+
+for e, b in P:
+    print(f&quot;{e[0]} works in {b[1]}&quot;)
+print(&quot;square commutes:&quot;, all(dept(p1(x)) == key(p2(x)) for x in P))</code></pre>
+      <div class="out"><span class="lbl">output</span>equalizer of x² and x+2 on [-3..3]: [-1, 2]
+Alice works in Building 1
+Bob works in Building 2
+Carol works in Building 1
+square commutes: True</div>
+    </div>
+
+    <p>The equalizer of <span class="m">x²</span> and <span class="m">x + 2</span> is <span class="m">{−1, 2}</span> — the roots of <span class="m">x² − x − 2</span>, computed as a limit. And the pullback of two tables over their shared key column is the inner join, projections and commuting square included. <code>SELECT ... JOIN ... ON</code> has been a limit over a cospan all along.</p>
+  </div>
+</section>
+
+<!-- ============ GOING DEEPER ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Going deeper</div>
+    <h2>The pasting lemma</h2>
+
+    <p>Pullbacks compose in a way worth knowing by name. Draw two commuting squares side by side, sharing a vertical edge — a wide rectangle subdivided into a <em>left</em> square and a <em>right</em> square. The <strong>pasting lemma</strong> says: <em>if the right square is a pullback, then the outer rectangle is a pullback if and only if the left square is.</em></p>
+    <p>This is the working tool behind many &ldquo;obvious&rdquo; manipulations: computing an iterated inverse image <span class="m">f<sup>−1</sup>(g<sup>−1</sup>(S))</span> in one step, or chaining two joins on shared keys and knowing the result is itself a join. Categorically it says pullbacks paste like tiles — the same gluing behavior that naturality squares showed in Lesson 3, Exercise 3, now upgraded from &ldquo;commuting&rdquo; to &ldquo;universal.&rdquo; Exercise 10 proves the harder direction; the proof is three universal properties taking turns, in the style this course has been rehearsing since Lesson 4.</p>
+  </div>
+</section>
+
+<!-- ============ §6 EXERCISES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§6 — Exercises</div>
+    <h2>Eleven problems on limits and colimits</h2>
+    <p>The unwinding exercises (1, 2, 5) are where the lesson sinks in: take the general definition, specialize the shape, and watch a familiar object appear. The arrows-only proofs then use the universal property the way Lesson 4 taught — existence to manufacture arrows, uniqueness to collapse them.</p>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>Carefully unwind the definition of a limit over the two smallest shapes:</p>
+        <ol>
+          <li>The <strong>empty</strong> index category. What is a cone over the empty diagram? What does the terminal-cone condition say? Conclude that the limit is exactly a terminal object of <span class="cat">𝒞</span>.</li>
+          <li>The <strong>discrete two-object</strong> index category (two dots, identity arrows only). Show that a cone is exactly &ldquo;an object with an arrow to <span class="m">A</span> and an arrow to <span class="m">B</span>,&rdquo; and that the limit condition reproduces, word for word, Lesson 4&rsquo;s definition of the product.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> With no objects in <span class="cat">𝒥</span> there are no legs to give and no triangles to check, so a cone is just an apex: every object of <span class="cat">𝒞</span> is one, in exactly one way. A cone morphism <span class="m">(X) → (L)</span> is any arrow <span class="m">X → L</span> — the compatibility conditions are vacuous too. So <span class="cat">Cone</span><span class="m">(D)</span> is just <span class="cat">𝒞</span> itself, and its terminal object is a terminal object of <span class="cat">𝒞</span>.</p>
+          <p><strong>(b)</strong> The only arrows of <span class="cat">𝒥</span> are identities, and the triangle for <span class="m">id<sub>j</sub></span> reads <span class="m">D(id<sub>j</sub>) ∘ x<sub>j</sub> = x<sub>j</sub></span> — automatic, since functors preserve identities. So a cone is an unconstrained pair of arrows <span class="m">x<sub>A</sub> : X → A</span>, <span class="m">x<sub>B</sub> : X → B</span>. The terminal cone <span class="m">(P, π<sub>1</sub>, π<sub>2</sub>)</span> must admit, from every such pair, exactly one <span class="m">m</span> with <span class="m">π<sub>1</sub> ∘ m = x<sub>A</sub></span> and <span class="m">π<sub>2</sub> ∘ m = x<sub>B</sub></span> — which is Lesson 4&rsquo;s product definition verbatim, with <span class="m">⟨x<sub>A</sub>, x<sub>B</sub>⟩ = m</span>.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>What is the limit of a diagram over the <strong>one-object, one-arrow</strong> index category <span class="cat">𝟙</span> — i.e. of a diagram that just picks out a single object <span class="m">A</span> of <span class="cat">𝒞</span>?</p>
+        <p>Guess first, then verify your guess against the universal property.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The limit is <span class="m">A</span> itself, with the identity as its single leg. A cone is any arrow <span class="m">x : X → A</span> (the one triangle, over <span class="m">id</span>, is automatic). The cone <span class="m">(A, id<sub>A</sub>)</span> is terminal among these: given <span class="m">x : X → A</span>, a mediating arrow <span class="m">m</span> must satisfy <span class="m">id<sub>A</sub> ∘ m = x</span>, forcing <span class="m">m = x</span> — existence and uniqueness in one line.</p>
+          <p>So &ldquo;the limit of a single object is that object&rdquo;: reassuringly boring, and a useful sanity check that the machinery adds nothing when there is nothing to add. (Dually, the colimit over <span class="cat">𝟙</span> is also <span class="m">A</span>.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>§2 asserted that cones over a fixed diagram <span class="m">D</span> form a category <span class="cat">Cone</span><span class="m">(D)</span>. Verify the claim: say what the identity on a cone <span class="m">(X, x)</span> is, show that the composite of two cone morphisms is a cone morphism, and explain where the category laws come from.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The identity on <span class="m">(X, x)</span> is <span class="m">id<sub>X</sub></span>, which is leg-compatible since <span class="m">x<sub>j</sub> ∘ id<sub>X</sub> = x<sub>j</sub></span>. For composites, suppose <span class="m">m : (X, x) → (Y, y)</span> and <span class="m">n : (Y, y) → (L, λ)</span> are cone morphisms, so <span class="m">y<sub>j</sub> ∘ m = x<sub>j</sub></span> and <span class="m">λ<sub>j</sub> ∘ n = y<sub>j</sub></span> for all <span class="m">j</span>. Then <span class="m">λ<sub>j</sub> ∘ (n ∘ m) = (λ<sub>j</sub> ∘ n) ∘ m = y<sub>j</sub> ∘ m = x<sub>j</sub></span> — compatible again, using associativity once per step.</p>
+          <p>Associativity and the identity laws hold because composition in <span class="cat">Cone</span><span class="m">(D)</span> <em>is</em> composition in <span class="cat">𝒞</span>, merely restricted to arrows that happen to respect legs. Categories whose arrows are &ldquo;arrows of <span class="cat">𝒞</span> satisfying extra conditions&rdquo; inherit the laws for free — the same phenomenon as the injective-functions category of Lesson 1, Exercise 4.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>Compute two equalizers in <span class="cat">Set</span>, concretely:</p>
+        <ol>
+          <li>The equalizer of <span class="m">f(x) = x³</span> and <span class="m">g(x) = x</span> on the set <span class="m">X = {−2, −1, 0, 1, 2}</span>.</li>
+          <li>The equalizer of any <span class="m">f : A → B</span> with <em>itself</em>. What does the answer say, in slogan form, about what equalizers measure?</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> Solve <span class="m">x³ = x</span>, i.e. <span class="m">x(x−1)(x+1) = 0</span>: the equalizer is <span class="m">{−1, 0, 1}</span>, included into <span class="m">X</span>. (One comprehension in Python: <code>[x for x in X if x**3 == x]</code>.)</p>
+          <p><strong>(b)</strong> The condition <span class="m">f(a) = f(a)</span> holds everywhere, so the equalizer of <span class="m">f</span> with itself is all of <span class="m">A</span>, with <span class="m">e = id<sub>A</sub></span> (up to the usual unique isomorphism). Slogan: <strong>an equalizer measures disagreement</strong> — it is the part of the domain on which two arrows cannot be told apart, and two copies of the same arrow disagree nowhere. This also explains why equalizers are invisible in thin categories: parallel arrows are already equal there, so every equalizer is trivial — and why §5 demonstrated equalizers in <span class="cat">Set</span> rather than in the divisibility poset.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Inverse images are pullbacks. Let <span class="m">f : A → B</span> be a function and <span class="m">S ⊆ B</span> a subset, with inclusion map <span class="m">i : S ↪ B</span>.</p>
+        <p>Compute the pullback <span class="m">A ×<sub>B</sub> S</span> of <span class="m">f</span> and <span class="m">i</span> as a set of pairs, and exhibit a bijection between it and the inverse image <span class="m">f<sup>−1</sup>(S) = { a ∈ A : f(a) ∈ S }</span>. Try it concretely with <span class="m">A = {1,2,3,4}</span>, <span class="m">f(a) = a mod 2</span>, <span class="m">B = {0,1}</span>, <span class="m">S = {0}</span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The pullback is <span class="m">{ (a, s) : f(a) = i(s) } = { (a, s) : f(a) = s, s ∈ S }</span>. Since the second coordinate is forced to equal <span class="m">f(a)</span>, the map <span class="m">(a, s) ↦ a</span> is a bijection onto <span class="m">{ a : f(a) ∈ S } = f<sup>−1</sup>(S)</span>, with inverse <span class="m">a ↦ (a, f(a))</span>. Concretely: the pairs are <span class="m">{(2, 0), (4, 0)}</span>, and the bijection lands on <span class="m">f<sup>−1</sup>({0}) = {2, 4}</span> — the even elements.</p>
+          <p>So &ldquo;take the preimage&rdquo; is &ldquo;pull back along an inclusion.&rdquo; This is where the name comes from: the subset <span class="m">S</span> of the codomain is <em>pulled back</em> along <span class="m">f</span> to a subset of the domain. Filtering a dataset by a condition on a derived column is this construction, performed daily.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>An arrow <span class="m">m : X → Y</span> is a <strong>monomorphism</strong> (is <em>monic</em>) if it is cancellable on the left: whenever <span class="m">m ∘ h = m ∘ k</span> for arrows <span class="m">h, k : W → X</span>, it follows that <span class="m">h = k</span>. (In <span class="cat">Set</span>, monic = injective.)</p>
+        <p>Prove that <strong>every equalizer arrow is monic</strong>: if <span class="m">e : E → A</span> is the equalizer of <span class="m">f, g : A → B</span>, and <span class="m">e ∘ h = e ∘ k</span>, then <span class="m">h = k</span>. Hint: name the common composite <span class="m">x = e ∘ h</span>, check that <span class="m">x</span> is a cone, and let uniqueness of mediators finish.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Let <span class="m">x = e ∘ h = e ∘ k : W → A</span>. It equalizes the pair: <span class="m">f ∘ x = (f ∘ e) ∘ h = (g ∘ e) ∘ h = g ∘ x</span>, using <span class="m">f ∘ e = g ∘ e</span> (the equalizer&rsquo;s own fork) and associativity. So <span class="m">x</span> is a cone over the parallel pair, and the universal property says there is <strong>exactly one</strong> arrow <span class="m">m : W → E</span> with <span class="m">e ∘ m = x</span>.</p>
+          <p>But two such arrows are staring at us: <span class="m">h</span> and <span class="m">k</span> both satisfy <span class="m">e ∘ (–) = x</span> — that is how <span class="m">x</span> was defined. Uniqueness forces <span class="m">h = k</span>. ∎ This is the cleanest specimen yet of the Lesson-4 proof pattern: to show two arrows are equal, exhibit both as mediators for the <em>same</em> cone and let &ldquo;exactly one&rdquo; do the work. In <span class="cat">Set</span> it recovers the obvious fact that a subset inclusion is injective — but the proof never looked at an element, so it holds in every category with equalizers.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">duality</span></div>
+      <div class="prob-body">
+        <p>Dualize §3&rsquo;s pullback discussion:</p>
+        <ol>
+          <li>State the definition of the <strong>pushout</strong> of a span <span class="m">A ← Z → B</span> by reversing every arrow in the pullback&rsquo;s universal property.</li>
+          <li>In <span class="cat">Set</span>, let <span class="m">Z = A ∩ B</span> with the two inclusions into <span class="m">A = {1, 2}</span> and <span class="m">B = {2, 3}</span>. Compute the pushout and identify it with a familiar set. What happened to the two copies of the element <span class="m">2</span>?</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> Given <span class="m">f : Z → A</span> and <span class="m">g : Z → B</span>, the pushout is an object <span class="m">A +<sub>Z</sub> B</span> with arrows <span class="m">j<sub>1</sub> : A → A +<sub>Z</sub> B</span> and <span class="m">j<sub>2</sub> : B → A +<sub>Z</sub> B</span> satisfying <span class="m">j<sub>1</sub> ∘ f = j<sub>2</sub> ∘ g</span>, such that for any <span class="m">X</span> with <span class="m">p : A → X</span>, <span class="m">q : B → X</span> and <span class="m">p ∘ f = q ∘ g</span>, there is exactly one <span class="m">m : A +<sub>Z</sub> B → X</span> with <span class="m">m ∘ j<sub>1</sub> = p</span> and <span class="m">m ∘ j<sub>2</sub> = q</span>.</p>
+          <p><strong>(b)</strong> Start with the coproduct — the disjoint union with tags, <span class="m">{(&#x27;L&#x27;,1), (&#x27;L&#x27;,2), (&#x27;R&#x27;,2), (&#x27;R&#x27;,3)}</span> from Lesson 4 — and then <em>impose</em> the equation <span class="m">j<sub>1</sub>(f(z)) = j<sub>2</sub>(g(z))</span> for each <span class="m">z ∈ Z = {2}</span>: glue <span class="m">(&#x27;L&#x27;,2)</span> to <span class="m">(&#x27;R&#x27;,2)</span>. The result has three points and is in bijection with the plain union <span class="m">{1, 2, 3}</span>. Where Lesson 4&rsquo;s coproduct kept the two 2&rsquo;s apart, the pushout is precisely the instruction to merge them — union is coproduct <em>relative to</em> the intersection. (And the recipe &ldquo;coproduct, then coequalize&rdquo; is the dual of the aside in §4: pushouts from coproducts and coequalizers.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">think</span></div>
+      <div class="prob-body">
+        <p>Prove the first case of §4&rsquo;s amber aside: <strong>a category with binary products and equalizers has all pullbacks</strong>.</p>
+        <p>Given <span class="m">f : A → Z</span> and <span class="m">g : B → Z</span>, form the product <span class="m">A × B</span> and the two composites <span class="m">f ∘ π<sub>1</sub>, g ∘ π<sub>2</sub> : A × B → Z</span>. Show that their equalizer <span class="m">e : E → A × B</span>, equipped with the legs <span class="m">π<sub>1</sub> ∘ e</span> and <span class="m">π<sub>2</sub> ∘ e</span>, satisfies the pullback&rsquo;s universal property. (Sanity-check the construction in <span class="cat">Set</span> first: what set does it build?)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>In <span class="cat">Set</span> the recipe builds <span class="m">{ (a,b) ∈ A × B : f(a) = g(b) }</span> — exactly the pullback of §3 — which is the right intuition to carry into the general proof.</p>
+          <p><strong>The square commutes:</strong> <span class="m">f ∘ (π<sub>1</sub> ∘ e) = (f ∘ π<sub>1</sub>) ∘ e = (g ∘ π<sub>2</sub>) ∘ e = g ∘ (π<sub>2</sub> ∘ e)</span>, the middle step being the equalizer&rsquo;s fork. <strong>Universality:</strong> take any <span class="m">X</span> with <span class="m">p : X → A</span>, <span class="m">q : X → B</span>, <span class="m">f ∘ p = g ∘ q</span>. The product gives <span class="m">⟨p, q⟩ : X → A × B</span>, and it equalizes the pair — <span class="m">(f ∘ π<sub>1</sub>) ∘ ⟨p,q⟩ = f ∘ p = g ∘ q = (g ∘ π<sub>2</sub>) ∘ ⟨p,q⟩</span> — so it factors through <span class="m">e</span> via a unique <span class="m">m : X → E</span>, and the legs check out: <span class="m">(π<sub>1</sub> ∘ e) ∘ m = π<sub>1</sub> ∘ ⟨p,q⟩ = p</span>, likewise for <span class="m">q</span>.</p>
+          <p><strong>Uniqueness of <span class="m">m</span>:</strong> any competitor <span class="m">m&prime;</span> with the same leg equations has <span class="m">e ∘ m&prime; = ⟨p, q⟩</span> — because <span class="m">e ∘ m&prime;</span> hits <span class="m">p</span> and <span class="m">q</span> under the projections, and the product&rsquo;s uniqueness clause pins such an arrow down — and then Exercise 6 (equalizer arrows are monic) forces <span class="m">m&prime; = m</span>. Three universal properties, each contributing its uniqueness exactly where needed: this is what &ldquo;assembling limits from parts&rdquo; looks like in practice.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Extend §5&rsquo;s zoo with a shape it has not seen: the <strong>span</strong> <span class="m">• ← • → •</span>. Build the index category (three objects; two non-identity arrows <em>out of</em> the middle object), define the diagram in <span class="m">Div</span> sending it to <span class="m">2 ← 1 → 3</span>, and compute both <code>find_limits</code> and <code>find_colimits</code> of it.</p>
+        <p>Predict both answers before running — in a thin category, what should the limit and colimit of this shape be?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Prediction: in a poset, extra arrows inside the diagram never change <em>which</em> bound is being computed, only add forced legs — so the limit should be the meet <span class="m">gcd(1, 2, 3)</span>... more precisely the greatest element below all three objects, which is <span class="m">1</span>; and the colimit (the pushout of the span!) should be the join of <span class="m">2</span> and <span class="m">3</span> over <span class="m">1</span>, namely <span class="m">lcm = 6</span>.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>span.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>sp_ar   = {&#x27;i0&#x27;:(0,0),&#x27;i1&#x27;:(1,1),&#x27;i2&#x27;:(2,2),&#x27;u&#x27;:(1,0),&#x27;v&#x27;:(1,2)}
+sp_comp = {(&#x27;i0&#x27;,&#x27;i0&#x27;):&#x27;i0&#x27;,(&#x27;i1&#x27;,&#x27;i1&#x27;):&#x27;i1&#x27;,(&#x27;i2&#x27;,&#x27;i2&#x27;):&#x27;i2&#x27;,
+            (&#x27;u&#x27;,&#x27;i1&#x27;):&#x27;u&#x27;,(&#x27;i0&#x27;,&#x27;u&#x27;):&#x27;u&#x27;,(&#x27;v&#x27;,&#x27;i1&#x27;):&#x27;v&#x27;,(&#x27;i2&#x27;,&#x27;v&#x27;):&#x27;v&#x27;}
+Span = FiniteCategory({0,1,2}, sp_ar, sp_comp, {0:&#x27;i0&#x27;,1:&#x27;i1&#x27;,2:&#x27;i2&#x27;})
+
+D_span = Functor(Span, Div, {0:2, 1:1, 2:3},
+                 {&#x27;i0&#x27;:&#x27;2|2&#x27;,&#x27;i1&#x27;:&#x27;1|1&#x27;,&#x27;i2&#x27;:&#x27;3|3&#x27;,
+                  &#x27;u&#x27;:&#x27;1|2&#x27;,&#x27;v&#x27;:&#x27;1|3&#x27;})
+
+print(find_limits(Div, D_span))
+print(find_colimits(Div, D_span))</code></pre>
+            <div class="out"><span class="lbl">output</span>[(1, {0: '1|2', 1: '1|1', 2: '1|3'})]
+[(6, {0: '2|6', 1: '1|6', 2: '3|6'})]</div>
+          </div>
+          <p style="margin-top:14px">Both predictions confirmed: limit <span class="m">1</span>, colimit <span class="m">6</span>. The colimit is your first machine-checked <strong>pushout</strong> — gluing <span class="m">2</span> and <span class="m">3</span> along their common divisor. Note how little work the new shape cost: one index category, one diagram, zero new finder code. That is the lesson&rsquo;s thesis in miniature.</p>
+        </div>
+      </details>
+    </div>
+  
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">think · new</span></div>
+      <div class="prob-body">
+
+        <p>Set up the pasting lemma&rsquo;s notation: objects <span class="m">X, Y, Z</span> across the top, <span class="m">A, B, C</span> across the bottom, vertical arrows <span class="m">x, y, z</span> downward, horizontal arrows completing a left square (<span class="m">X, Y, A, B</span>) and a right square (<span class="m">Y, Z, B, C</span>), both commuting. Assume the <strong>right square is a pullback</strong>.</p>
+        <p>Prove one direction: if the left square is a pullback, the outer rectangle is. (Take a cone over the outer cospan — <span class="m">T → A</span> and <span class="m">T → Z</span> agreeing in <span class="m">C</span> — and factor it in two stages, right square first.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Let <span class="m">a : T → A</span> and <span class="m">t : T → Z</span> agree in <span class="m">C</span>. <strong>Stage one:</strong> composing <span class="m">a</span> across the bottom gives <span class="m">T → B</span>, which together with <span class="m">t</span> forms a cone over the <em>right</em> cospan (they agree in <span class="m">C</span> by assumption); the right pullback yields a unique <span class="m">u : T → Y</span> compatible with both. <strong>Stage two:</strong> now <span class="m">a</span> and <span class="m">u</span> form a cone over the <em>left</em> cospan (compatibility from stage one is exactly agreement in <span class="m">B</span>); the left pullback yields a unique <span class="m">v : T → X</span>, and chasing the two triangles shows <span class="m">v</span> is compatible with the outer rectangle&rsquo;s legs <span class="m">a</span> and <span class="m">t</span>.</p>
+          <p><strong>Uniqueness:</strong> a competitor <span class="m">v&prime;</span> for the outer rectangle composes to a <span class="m">T → Y</span> that satisfies stage one&rsquo;s conditions, so it equals <span class="m">u</span> by the right square&rsquo;s uniqueness; then <span class="m">v&prime;</span> satisfies stage two&rsquo;s conditions and equals <span class="m">v</span> by the left square&rsquo;s. Existence built in two stages, uniqueness collapsed in two stages — Lesson 4&rsquo;s division of labor, run twice in sequence. (The converse direction, outer-implies-left, is the same game with the roles of the cones rearranged.)</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+
+        <p>§5 demonstrated equalizers in <span class="cat">Set</span> because thin categories have none worth seeing. Fix that: build the smallest category with a genuine equalizer — the <strong>fork</strong>. Objects <span class="m">E, A, B</span>; non-identity arrows <span class="m">e : E → A</span>, a parallel pair <span class="m">f, g : A → B</span>, and their common composite <span class="m">w = f ∘ e = g ∘ e</span>.</p>
+        <p>Encode it as a <code>FiniteCategory</code>, build the parallel-pair index shape, and run <code>find_limits</code>. Predict the answer first: what should the limiting cone be, and why is its mediator unique?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Prediction: the equalizer should be <span class="m">(E, e)</span> — the only cone over the pair, since <span class="m">f ∘ id<sub>A</sub> ≠ g ∘ id<sub>A</sub></span> rules out apex <span class="m">A</span> — with mediator uniqueness from <span class="m">E</span>&rsquo;s only endomorphism being <span class="m">id<sub>E</sub></span>.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>fork.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>fk_ar = {&#x27;iE&#x27;:(&#x27;E&#x27;,&#x27;E&#x27;),&#x27;iA&#x27;:(&#x27;A&#x27;,&#x27;A&#x27;),&#x27;iB&#x27;:(&#x27;B&#x27;,&#x27;B&#x27;),
+         &#x27;e&#x27;:(&#x27;E&#x27;,&#x27;A&#x27;),&#x27;f&#x27;:(&#x27;A&#x27;,&#x27;B&#x27;),&#x27;g&#x27;:(&#x27;A&#x27;,&#x27;B&#x27;),&#x27;w&#x27;:(&#x27;E&#x27;,&#x27;B&#x27;)}
+ident = {&#x27;E&#x27;:&#x27;iE&#x27;,&#x27;A&#x27;:&#x27;iA&#x27;,&#x27;B&#x27;:&#x27;iB&#x27;}
+fk_comp = {}
+for x, (u, v) in fk_ar.items():
+    fk_comp[(ident[v], x)] = x
+    fk_comp[(x, ident[u])] = x
+fk_comp[(&#x27;f&#x27;,&#x27;e&#x27;)] = &#x27;w&#x27;
+fk_comp[(&#x27;g&#x27;,&#x27;e&#x27;)] = &#x27;w&#x27;          # both composites land on w
+Fork = FiniteCategory({&#x27;E&#x27;,&#x27;A&#x27;,&#x27;B&#x27;}, fk_ar, fk_comp, ident)
+
+pp_ar = {&#x27;i0&#x27;:(0,0),&#x27;i1&#x27;:(1,1),&#x27;u&#x27;:(0,1),&#x27;v&#x27;:(0,1)}   # parallel pair
+pp_comp = {(&#x27;i0&#x27;,&#x27;i0&#x27;):&#x27;i0&#x27;,(&#x27;i1&#x27;,&#x27;i1&#x27;):&#x27;i1&#x27;,
+           (&#x27;u&#x27;,&#x27;i0&#x27;):&#x27;u&#x27;,(&#x27;i1&#x27;,&#x27;u&#x27;):&#x27;u&#x27;,
+           (&#x27;v&#x27;,&#x27;i0&#x27;):&#x27;v&#x27;,(&#x27;i1&#x27;,&#x27;v&#x27;):&#x27;v&#x27;}
+Pair = FiniteCategory({0,1}, pp_ar, pp_comp, {0:&#x27;i0&#x27;,1:&#x27;i1&#x27;})
+
+D_fg = Functor(Pair, Fork, {0:&#x27;A&#x27;,1:&#x27;B&#x27;},
+               {&#x27;i0&#x27;:&#x27;iA&#x27;,&#x27;i1&#x27;:&#x27;iB&#x27;,&#x27;u&#x27;:&#x27;f&#x27;,&#x27;v&#x27;:&#x27;g&#x27;})
+print(find_limits(Fork, D_fg))</code></pre>
+            <div class="out"><span class="lbl">output</span>[('E', {0: 'e', 1: 'w'})]</div>
+          </div>
+          <p style="margin-top:14px">Confirmed: the finder returns exactly the fork&rsquo;s handle, legs <span class="m">e</span> and the forced <span class="m">w</span>. This is the course&rsquo;s first machine-computed limit in a category that is not thin — the parallel arrows <span class="m">f ≠ g</span> are what make the equalizer&rsquo;s job nontrivial, and seven arrows are all it takes.</p>
+        </div>
+      </details>
+    </div>
+</div>
+</section>
+
+<!-- ============ RECAP / NEXT ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Recap</div>
+    <h2>What to carry forward</h2>
+    <ol class="takeaways">
+      <li>A <strong>diagram</strong> is a functor <span class="m">D : <span class="cat">𝒥</span> → <span class="cat">𝒞</span></span> from an index category; a <strong>cone</strong> is an apex with commuting legs to it — equivalently, a natural transformation <span class="m">Δ<sub>X</sub> ⇒ D</span>. The last three lessons&rsquo; machinery, cashed in.</li>
+      <li>A <strong>limit</strong> is a terminal object in the category of cones — so <strong>one</strong> application of Lesson 4&rsquo;s theorem gives uniqueness up to unique isomorphism for every limit of every shape, forever.</li>
+      <li>The shape is a dial: empty ↦ terminal object, two dots ↦ product, parallel pair ↦ <strong>equalizer</strong> (solution sets), cospan ↦ <strong>pullback</strong> (intersections, inverse images, joins).</li>
+      <li><strong>Colimits</strong> are the duals — initial cocones: coproducts, <strong>coequalizers</strong> (quotients), <strong>pushouts</strong> (gluing). Limits carve out; colimits glue together.</li>
+      <li>Products plus equalizers generate <strong>all finite limits</strong> — and in a finite category the whole theory is one search function with the shape as a parameter.</li>
+    </ol>
+
+    <div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="70" height="44" viewBox="0 0 70 44">
+          <path d="M13 14 L57 14" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M57 14 l-7 -3.5 M57 14 l-7 3.5" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M57 30 L13 30" fill="none" stroke="var(--amber)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M13 30 l7 -3.5 M13 30 l7 3.5" fill="none" stroke="var(--amber)" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">Coming next · Lesson 06</span>
+        <h3>Adjunctions — the concept the subject was built for</h3>
+        <p>Free constructions and forgetful functors have been circling each other since Lesson 2. An adjunction makes their relationship precise — a pair of functors trading arrows across a perfect correspondence — and limits, colimits, and half of mathematics turn out to be examples.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Intro to Category Theory · Lesson 05 · change the shape, keep the proof</footer>
+
+</main>
+</div>
+
+<script>
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+function setLabel(t, label){
+  const parts = String(label).split("~");
+  t.textContent = parts[0];
+  if(parts[1]){
+    const s = el("tspan", {dy:"5","font-size":"12"}, t);
+    s.textContent = parts[1];
+  }
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, labelAt;
+    let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+    let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+    let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+    const px=-uy, py=ux, off = a.curve ?? 0;
+    if(off){
+      const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
+      shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+      labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+    } else {
+      shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+      const lo = a.lo ?? 14;
+      labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+    }
+
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:full, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
+  });
+}
+
+const DIAGRAMS = {
+  hero: {
+    w:440, h:290,
+    nodes:[
+      {id:"X", x:220, y:52,  label:"X"},
+      {id:"A", x:65,  y:230, label:"A"},
+      {id:"B", x:220, y:242, label:"B"},
+      {id:"C", x:375, y:230, label:"C"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"u", lo:15, cls:"soft", lcls:"soft", delay:0},
+      {from:"C", to:"B", label:"v", lo:-15, cls:"soft", lcls:"soft", delay:140},
+      {from:"X", to:"A", label:"x~A", lo:-17, delay:340},
+      {from:"X", to:"B", label:"x~B", lo:15, delay:480},
+      {from:"X", to:"C", label:"x~C", lo:17, delay:620},
+    ]
+  },
+  equalizer: {
+    w:480, h:250,
+    nodes:[
+      {id:"E", x:80,  y:165, label:"E", cls:"amber"},
+      {id:"A", x:250, y:165, label:"A"},
+      {id:"B", x:420, y:165, label:"B"},
+      {id:"X", x:250, y:48,  label:"X"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"f", curve:-20, delay:0},
+      {from:"A", to:"B", label:"g", curve:20, delay:140},
+      {from:"E", to:"A", label:"e", lo:15, lcls:"amber", delay:320},
+      {from:"X", to:"A", label:"x", lo:-14, delay:500},
+      {from:"X", to:"E", label:"\u2203! m", lo:18, cls:"unique", lcls:"amber", delay:700},
+    ]
+  },
+  pullback: {
+    w:520, h:330,
+    nodes:[
+      {id:"X", x:70,  y:52,  label:"X"},
+      {id:"P", x:210, y:130, label:"P", cls:"amber"},
+      {id:"B", x:430, y:130, label:"B"},
+      {id:"A", x:210, y:290, label:"A"},
+      {id:"Z", x:430, y:290, label:"Z"},
+    ],
+    arrows:[
+      {from:"P", to:"B", label:"\u03c0~2", lo:-14, rs:34, delay:0},
+      {from:"P", to:"A", label:"\u03c0~1", lo:-16, delay:140},
+      {from:"B", to:"Z", label:"g", lo:-15, delay:280},
+      {from:"A", to:"Z", label:"f", lo:15, delay:420},
+      {from:"X", to:"B", label:"b", curve:-34, delay:560},
+      {from:"X", to:"A", label:"a", curve:34, delay:700},
+      {from:"X", to:"P", label:"\u2203! m", lo:20, cls:"unique", lcls:"amber", re:36, delay:900},
+    ]
+  },
+  cocone: {
+    w:440, h:290,
+    nodes:[
+      {id:"A", x:65,  y:60,  label:"A"},
+      {id:"B", x:220, y:48,  label:"B"},
+      {id:"C", x:375, y:60,  label:"C"},
+      {id:"X", x:220, y:238, label:"X"},
+    ],
+    arrows:[
+      {from:"B", to:"A", label:"u", lo:15, cls:"soft", lcls:"soft", delay:0},
+      {from:"B", to:"C", label:"v", lo:-15, cls:"soft", lcls:"soft", delay:140},
+      {from:"A", to:"X", label:"x~A", lo:17, delay:340},
+      {from:"B", to:"X", label:"x~B", lo:-15, delay:480},
+      {from:"C", to:"X", label:"x~C", lo:-17, delay:620},
+    ]
+  },
+};
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(spec) build(div.querySelector("svg"), spec);
+  });
+}
+renderAll();
+
+if(reduce){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "\u2014"; });
+  });
+});
+</script>

@@ -1,0 +1,180 @@
+<!-- Intro to Category Theory — Course Index -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intro to Category Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
+  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8; --maxw:760px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 20%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 20%,#000 0,transparent 78%)}
+.wrap{position:relative;z-index:1}
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+a{color:inherit}
+
+.hero{padding:76px 0 44px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{font-size:clamp(40px,7.4vw,76px);margin:0 0 .3em}
+.hero h1 .q{color:var(--arrow)}
+.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:44ch;margin:0 0 26px}
+.hero-mark{margin-top:34px}
+.hero-mark svg{display:block;max-width:340px;width:100%;height:auto}
+.hm-node{font-family:"Newsreader",serif;font-style:italic;font-size:22px;fill:var(--ink)}
+.hm-lab{font-family:"Newsreader",serif;font-style:italic;font-size:16px;fill:var(--arrow)}
+.hm-arrow{fill:none;stroke:var(--arrow);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hm-arrow.amber{stroke:var(--amber);stroke-dasharray:6 5}
+.hm-lab.amber{fill:var(--amber)}
+
+.section{padding:52px 0}
+.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:16px}
+.intro{color:var(--ink-soft);max-width:60ch}
+.intro .m{font-style:italic}
+.intro code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
+
+.cards{display:grid;gap:18px;margin-top:34px}
+.card{display:block;text-decoration:none;border:1px solid var(--rule);border-radius:4px;background:#fff;
+  padding:26px 28px;position:relative;transition:border-color .15s, transform .15s, box-shadow .15s}
+.card:hover{border-color:var(--arrow);transform:translateY(-2px);box-shadow:0 6px 22px rgba(42,63,166,.09)}
+.card:focus-visible{outline:2px solid var(--arrow);outline-offset:3px}
+.card .no{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.card h2{font-size:clamp(23px,3.2vw,29px);margin:0 0 .35em}
+.card .blurb{color:var(--ink-soft);font-size:17.5px;margin:0 0 14px;max-width:58ch}
+.card .topics{display:flex;flex-wrap:wrap;gap:8px}
+.card .topics span{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:3px 10px}
+.card .go{position:absolute;right:24px;top:26px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);opacity:0;transform:translateX(-6px);transition:.18s}
+.card:hover .go{opacity:1;transform:none}
+
+.card.ghost{background:transparent;border-style:dashed;pointer-events:none}
+.card.ghost .no{color:var(--ink-faint)}
+.card.ghost h2{color:var(--ink-soft)}
+.card.ghost .soon{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber);border-radius:20px;padding:3px 10px;position:absolute;right:24px;top:26px}
+
+.how{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin-top:44px;font-size:18px;color:var(--ink-soft)}
+.how .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.how p:last-child{margin-bottom:0}
+
+footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+::selection{background:#d7ddf6}
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:52px 0 34px}
+  .card{padding:22px 20px}
+  .card .go,.card.ghost .soon{display:none}
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero measure">
+  <div class="eyebrow">A short course <span class="dot">·</span> seven lessons · complete</div>
+  <h1>Intro to <span class="q">Category Theory</span></h1>
+  <p class="lede">Objects, arrows, and the discipline of never peeking inside — with animated diagrams and every claim checked in Python.</p>
+  <div class="hero-mark" aria-hidden="true">
+    <svg viewBox="0 0 340 150">
+      <text x="40"  y="118" class="hm-node" text-anchor="middle">A</text>
+      <text x="170" y="34"  class="hm-node" text-anchor="middle">B</text>
+      <text x="300" y="118" class="hm-node" text-anchor="middle">C</text>
+      <path d="M56 104 L152 46 M152 46 l-10 1 M152 46 l-4 9" class="hm-arrow"/>
+      <path d="M188 46 L284 104 M284 104 l-10 -1 M284 104 l-4 -9" class="hm-arrow"/>
+      <path d="M62 118 L278 118" class="hm-arrow amber"/>
+      <path d="M278 118 l-9 -4.5 M278 118 l-9 4.5" class="hm-arrow amber" style="stroke-dasharray:none"/>
+      <text x="96"  y="62"  class="hm-lab">f</text>
+      <text x="246" y="62"  class="hm-lab">g</text>
+      <text x="170" y="140" class="hm-lab amber">g ∘ f</text>
+    </svg>
+  </div>
+</header>
+
+<main>
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">The course</div>
+    <p class="intro">Each lesson is a self-contained page: motivation, a boxed definition, worked examples with commutative diagrams that draw themselves, a <span class="m">§5</span> where the day&rsquo;s concept is implemented and machine-checked in Python (every output shown was actually produced by the code), and a set of exercises with hidden solutions — from warm-ups to arrows-only proofs. The lessons build strictly in order; start at 01.</p>
+
+    <nav class="cards" aria-label="Lessons">
+      <a class="card" href="lesson-01-what-is-a-category.html">
+        <span class="no">Lesson 01</span>
+        <span class="go">read →</span>
+        <h2>What Is a Category?</h2>
+        <p class="blurb">Objects, arrows, identity, and composition — and the two laws that make the whole subject go. Sets, preorders, and monoids all turn out to be categories, and a 40-line Python checker verifies the axioms.</p>
+        <div class="topics"><span>objects &amp; arrows</span><span>composition</span><span>commuting diagrams</span><span>FiniteCategory</span></div>
+      </a>
+
+      <a class="card" href="lesson-02-functors.html">
+        <span class="no">Lesson 02</span>
+        <span class="go">read →</span>
+        <h2>Functors</h2>
+        <p class="blurb">Structure-preserving maps between categories. Why <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">map</code> obeying two laws is the same mathematics as monoid homomorphisms — and a proof that functors preserve isomorphisms, done without elements.</p>
+        <div class="topics"><span>functor laws</span><span>fmap</span><span>forgetful functors</span><span>Cat</span></div>
+      </a>
+
+      <a class="card" href="lesson-03-natural-transformations.html">
+        <span class="no">Lesson 03</span>
+        <span class="go">read →</span>
+        <h2>Natural Transformations</h2>
+        <p class="blurb">Morphisms between functors, and the naturality square that makes &ldquo;polymorphic&rdquo; precise: <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">reverse</code> is natural for free, <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">sorted</code> is not, and the checker knows the difference.</p>
+        <div class="topics"><span>components</span><span>naturality squares</span><span>functor categories</span><span>Nat</span></div>
+      </a>
+
+      <a class="card" href="lesson-04-universal-properties.html">
+        <span class="no">Lesson 04</span>
+        <span class="go">read →</span>
+        <h2>Universal Properties</h2>
+        <p class="blurb">Defining objects by the arrows into and out of them: terminal and initial objects, products and coproducts, the four-sentence uniqueness proof, and duality — with universal properties found (and shown missing) by exhaustive search.</p>
+        <div class="topics"><span>terminal &amp; initial</span><span>products</span><span>duality</span><span>exactly one arrow</span></div>
+      </a>
+
+      <a class="card" href="lesson-05-limits-and-colimits.html">
+        <span class="no">Lesson 05</span>
+        <span class="go">read →</span>
+        <h2>Limits &amp; Colimits</h2>
+        <p class="blurb">Every universal property so far was a cone in disguise. Diagrams as functors, limits as terminal cones — one uniqueness proof for all of them — plus equalizers as solution sets, pullbacks as database joins, and a single Python finder that computes the whole zoo.</p>
+        <div class="topics"><span>diagrams &amp; cones</span><span>equalizers</span><span>pullbacks</span><span>colimits</span></div>
+      </a>
+
+      <a class="card" href="lesson-06-adjunctions.html">
+        <span class="no">Lesson 06</span>
+        <span class="go">read →</span>
+        <h2>Adjunctions</h2>
+        <p class="blurb">What “free” has meant all along: a perfect exchange of arrows between two functors. Free ⊣ forgetful as foldMap, currying with eval as counit, floor and ceiling as a Galois sandwich, RAPL — and an adjoint finder whose search always returns exactly one partner, or none.</p>
+        <div class="topics"><span>hom-set bijection</span><span>unit &amp; counit</span><span>galois connections</span><span>RAPL</span></div>
+      </a>
+
+      <a class="card" href="lesson-07-yoneda-and-monads.html">
+        <span class="no">Lesson 07</span>
+        <span class="go">read →</span>
+        <h2>Yoneda &amp; Monads</h2>
+        <p class="blurb">The finale. The Yoneda lemma turns the course’s slogan into a theorem — an object is exactly the arrows into it, proved by tracking the identity and counted by machine — and every adjunction folds into a monad: List, Maybe, and Writer, with the Kleisli category revealing the monad laws as Lesson 1’s two axioms in disguise.</p>
+        <div class="topics"><span>yoneda lemma</span><span>representables</span><span>monads</span><span>kleisli</span></div>
+      </a>
+    </nav>
+
+    <div class="how">
+      <span class="tag">How to use these pages</span>
+      <p>Keep all the <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">.html</code> files in one folder so the links between lessons work. Each lesson ships with a matching <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">.py</code> file containing the lesson&rsquo;s verified code, runnable with plain Python 3 — no packages required. Do the exercises before opening the solutions; the arrows-only ones are the course. Each lesson also ships as a JupyterLab notebook (in <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em">notebooks/</code>) containing all of its verified code, ready to run and modify.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>Intro to Category Theory · index · composition is the only verb</footer>
+
+</div>

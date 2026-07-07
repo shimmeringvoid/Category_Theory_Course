@@ -1,0 +1,1021 @@
+<!-- Intro to Category Theory — Lesson 1: What Is a Category? -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 · What Is a Category?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6;
+  --paper-2:#F3EFE4;
+  --grid:#E7E1D2;
+  --ink:#191B22;
+  --ink-soft:#5C5F69;
+  --ink-faint:#8B8C90;
+  --rule:#E2DDCF;
+  --arrow:#2A3FA6;        /* morphisms — drafting ink blue */
+  --arrow-soft:#8E97CE;   /* composites / derived arrows */
+  --amber:#A8641A;        /* identities & special notes, used sparingly */
+  --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8;
+  --code-bg:#15171E;
+  --code-fg:#E7E4DA;
+  --code-dim:#8A8E9C;
+  --out-bg:#1E2733;
+  --maxw:720px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;
+  font-size:20px;
+  line-height:1.62;
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* faint drafting grid behind everything */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;
+  opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+}
+.wrap{position:relative;z-index:1}
+
+/* ---------- type ---------- */
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i,.var{font-style:italic}
+.var{font-family:"Newsreader",serif;font-style:italic}
+.op{font-style:normal}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:22px;
+}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{
+  font-size:clamp(40px,7.5vw,74px);
+  margin:0 0 .35em;
+  font-weight:500;
+}
+.hero h1 .q{color:var(--arrow)}
+.lede{
+  font-size:clamp(19px,2.4vw,23px);
+  color:var(--ink-soft);
+  max-width:34ch;
+  margin:0;
+}
+.hero-diagram{
+  margin:42px auto 8px;
+  max-width:520px;
+}
+
+/* ---------- section scaffolding ---------- */
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--arrow);margin-bottom:12px;
+}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:20ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+/* ---------- diagram figure ---------- */
+figure{margin:34px 0;text-align:center}
+.board{
+  background:
+    radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:26px 18px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.board::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5;
+}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:480px;margin-inline:auto}
+.board.wide svg{max-width:600px}
+figcaption{
+  font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;
+  max-width:52ch;margin-inline:auto;font-style:italic;
+}
+
+/* svg primitives */
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;
+  fill:var(--arrow);paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft);stroke-dasharray:0;}
+.arrow.dashed{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+
+/* draw-in animation */
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.elabel{opacity:0}
+.draw .elabel{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .elabel{opacity:1 !important;transition:none !important}
+}
+
+/* ---------- callout boxes ---------- */
+.box{
+  border:1px solid var(--rule);
+  border-left:3px solid var(--arrow);
+  background:var(--blue-wash);
+  border-radius:3px;
+  padding:22px 24px;
+  margin:30px 0;
+}
+.box .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px;
+}
+.box.amber{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+.law{display:flex;gap:14px;align-items:baseline;margin:.5em 0;flex-wrap:wrap}
+.law .name{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-faint);min-width:96px}
+.law .eq{font-size:20px}
+
+/* inline math chips */
+.m{font-style:italic;white-space:nowrap}
+.hom{font-style:italic}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+/* ---------- code ---------- */
+.code{
+  background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;
+  border:1px solid #000;
+}
+.code-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36;
+}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  color:var(--code-dim);background:transparent;border:1px solid #2f323c;
+  border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s;
+}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{
+  background:var(--out-bg);border-top:1px solid #2a3340;
+  padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;
+  white-space:pre-wrap;
+}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{
+  font-family:"IBM Plex Mono",monospace;font-size:.82em;
+  background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
+  padding:.05em .35em;color:#3a3d46;
+}
+
+/* ---------- example gallery ---------- */
+.ex{margin:26px 0;padding-top:22px;border-top:1px dashed var(--rule)}
+.ex:first-of-type{border-top:none;padding-top:0}
+.ex h3{margin-top:0;display:flex;align-items:baseline;gap:.5em}
+.ex h3 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);font-weight:500}
+
+/* ---------- exercises ---------- */
+details{
+  border:1px solid var(--rule);border-radius:4px;background:#fff;
+  margin:14px 0;padding:0 20px;
+}
+details[open]{background:var(--paper-2)}
+summary{
+  cursor:pointer;padding:16px 0;font-weight:500;list-style:none;
+  display:flex;gap:.7em;align-items:baseline;
+}
+summary::-webkit-details-marker{display:none}
+summary .qn{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);flex:none}
+summary .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);margin-left:auto;flex:none;
+  border:1px solid var(--rule);border-radius:20px;padding:2px 9px;align-self:center}
+.sol{padding:2px 0 20px;border-top:1px solid var(--rule);margin-top:2px;
+  color:var(--ink-soft);font-size:18px}
+.sol strong{color:var(--ink)}
+
+/* ---------- takeaways / next ---------- */
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{
+  content:counter(t);position:absolute;left:0;top:13px;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);
+  border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;
+  display:grid;place-items:center;
+}
+.next{
+  margin-top:38px;border:1px solid var(--rule);border-radius:4px;
+  padding:26px;display:flex;gap:22px;align-items:center;background:#fff;
+}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+  .law .name{min-width:0}
+}
+
+/* ---------- expanded exercise format ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob details[open]{background:transparent}
+.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s}
+.prob summary:hover{background:var(--blue-wash)}
+.prob summary::before{content:"+ ";font-weight:500}
+.prob details[open] summary::before{content:"\2212  "}
+.prob .sol{border:none;border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero measure">
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 01</div>
+  <h1>What Is a <span class="q">Category?</span></h1>
+  <p class="lede">Stop asking what mathematical objects are made of. Ask only how they map to one another — and almost everything turns out to live in the arrows.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="A commutative triangle: an arrow f from A to B, an arrow g from B to C, and their composite g after f from A to C.">
+      <svg></svg>
+    </div>
+  </figure>
+</header>
+
+<main>
+
+<!-- ============ §1 MOTIVATION ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§1 — Why arrows?</div>
+    <h2>The same shape, over and over</h2>
+    <p>Walk through any corner of mathematics and you keep meeting the same arrangement: a kind of <em>thing</em>, paired with a kind of <em>structure-preserving map</em> between those things.</p>
+    <p>Sets come with functions. Groups come with homomorphisms. Vector spaces come with linear maps. Topological spaces come with continuous functions. Data types come with programs. In every one of these worlds the maps <strong>compose</strong> — do one, then another — composition is <strong>associative</strong>, and every object has a <strong>do-nothing</strong> map that changes nothing.</p>
+    <p>Category theory takes that recurring shape and makes <em>it</em> the object of study. The move is deliberately austere: to understand an object, don't open it up and inspect its elements — look instead at the arrows going into and out of it. It sounds like throwing away information. It isn't. We'll soon be able to pin down ideas like <em>isomorphism</em>, <em>product</em>, and even <em>the empty set</em> using nothing but arrows and how they compose.</p>
+  </div>
+</section>
+
+<!-- ============ §2 DEFINITION ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§2 — The definition</div>
+    <h2>A category is four pieces of data and two laws</h2>
+    <p>Here it is in full. It is short. Resist the urge to find it underwhelming — its shortness is exactly what lets it apply everywhere.</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Category</span>
+      <p style="margin-bottom:.5em">A category <span class="cat">𝒞</span> consists of:</p>
+      <ul class="deflist">
+        <li>a collection of <strong>objects</strong> &mdash; <span class="m">A, B, C, …</span></li>
+        <li>for each pair of objects <span class="m">X, Y</span>, a collection of <strong>morphisms</strong> (arrows) from <span class="m">X</span> to <span class="m">Y</span>, written <span class="hom">𝒞(X, Y)</span>; an arrow is written <span class="m">f : X → Y</span></li>
+        <li>for every object <span class="m">X</span>, an <strong>identity</strong> arrow <span class="m">id<sub>X</sub> : X → X</span></li>
+        <li>a <strong>composition</strong> rule: given <span class="m">f : X → Y</span> and <span class="m">g : Y → Z</span>, an arrow <span class="m">g ∘ f : X → Z</span></li>
+      </ul>
+      <p style="margin:.9em 0 .5em">subject to two laws:</p>
+      <div class="law"><span class="name">Associativity</span><span class="eq m">h ∘ (g ∘ f) = (h ∘ g) ∘ f</span></div>
+      <div class="law"><span class="name">Identity</span><span class="eq m">id<sub>Y</sub> ∘ f = f = f ∘ id<sub>X</sub></span></div>
+    </div>
+
+    <p>Three things to internalize right away.</p>
+    <p><strong>Composition reads right-to-left.</strong> The expression <span class="m">g ∘ f</span> means &ldquo;first&nbsp;<span class="m">f</span>, then&nbsp;<span class="m">g</span>,&rdquo; matching how <span class="m">g(f(x))</span> works. The arrow on the right goes first.</p>
+    <p><strong>Arrows are typed.</strong> You can only compose <span class="m">g ∘ f</span> when the target of <span class="m">f</span> is the source of <span class="m">g</span>. Most pairs of arrows simply cannot be composed, and that&rsquo;s the point — the bookkeeping of sources and targets is doing real work.</p>
+    <p><strong>That is the entire toolkit.</strong> Objects, typed arrows, who-composes-with-whom, and which arrows are identities. There is no notion of an element, no &ldquo;inside&rdquo; of an object. Whatever we want to say, we must say with arrows.</p>
+
+    <figure>
+      <div class="board" data-diagram="identity" aria-label="An object A with its identity loop, and an arrow f from A to B; composing f with the identity gives back f.">
+        <svg></svg>
+      </div>
+      <figcaption>The identity law in a picture: travelling around <span class="m">id<sub>A</sub></span> first and then along <span class="m">f</span> is the same as just travelling along <span class="m">f</span>.</figcaption>
+    </figure>
+
+    <div class="box amber">
+      <span class="tag">A small honest footnote</span>
+      <p>Why &ldquo;collection&rdquo; rather than &ldquo;set&rdquo;? Because the category of all sets has too many objects to itself be a set — assuming otherwise revives Russell&rsquo;s paradox. When every <span class="hom">𝒞(X, Y)</span> is a genuine set we call <span class="cat">𝒞</span> <em>locally small</em>; if the objects form a set too, <em>small</em>. You can safely file this away for now; it changes none of the reasoning below.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §3 DIAGRAMS ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§3 — Diagrams &amp; commuting</div>
+    <h2>How category theorists write equations: they draw them</h2>
+    <p>A <strong>diagram</strong> is just a picture of some objects and some arrows between them. A diagram <strong>commutes</strong> when any two directed paths sharing the same start and the same end compose to the <em>same</em> arrow. Commutativity <em>is</em> an equation — drawn rather than written.</p>
+    <p>The triangle at the top of this page commutes precisely when the diagonal equals <span class="m">g ∘ f</span>. The square below commutes when going across-then-down equals going down-then-across:</p>
+
+    <figure>
+      <div class="board" data-diagram="square" aria-label="A commutative square with objects A, B, C, D and arrows f, g, p, q; the path g after f equals the path q after p.">
+        <svg></svg>
+      </div>
+      <figcaption>&ldquo;This square commutes&rdquo; is the picture-version of the equation <span class="m">g ∘ f = q ∘ p</span>. Whole proofs in category theory are chains of such squares glued edge to edge.</figcaption>
+    </figure>
+
+    <p>Once you trust diagrams, the associativity law stops looking like a rule you must remember and starts looking like an obvious fact about following paths: a string of arrows <span class="m">A → B → C → D</span> can be bracketed however you like, because the bracketing never changes the path you actually walk.</p>
+
+    <figure>
+      <div class="board wide" data-diagram="assoc" aria-label="Four objects in a row A, B, C, D with arrows f, g, h, and the two ways of composing them coincide.">
+        <svg></svg>
+      </div>
+      <figcaption>Both <span class="m">h ∘ (g ∘ f)</span> and <span class="m">(h ∘ g) ∘ f</span> trace the very same route from <span class="m">A</span> to <span class="m">D</span>. Associativity says the brackets are bookkeeping, not content.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ §4 EXAMPLES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§4 — A gallery of categories</div>
+    <h2>Five examples that stretch the definition in five directions</h2>
+    <p>The definition is abstract on purpose. The only cure for &ldquo;but what <em>is</em> a category, really?&rdquo; is to meet enough of them that the pattern, not any one instance, becomes the thing you see.</p>
+
+    <div class="ex">
+      <h3><span class="n">i.</span> <span class="cat">Set</span> — the prototype</h3>
+      <p>Objects are sets; an arrow <span class="m">X → Y</span> is a function from <span class="m">X</span> to <span class="m">Y</span>; composition is ordinary function composition; <span class="m">id<sub>X</sub></span> is the function that returns its input. The laws hold for the most pedestrian reasons: composing functions is associative, and sandwiching with the identity function changes nothing. Keep <span class="cat">Set</span> in your pocket as the example to sanity-check every new idea against.</p>
+    </div>
+
+    <div class="ex">
+      <h3><span class="n">ii.</span> A preorder <em>is</em> a category</h3>
+      <p>Take any set with a relation <span class="m">≤</span> that is reflexive and transitive. Build a category: the objects are the elements, and you draw <strong>exactly one</strong> arrow <span class="m">x → y</span> whenever <span class="m">x ≤ y</span> (and none otherwise). Reflexivity (<span class="m">x ≤ x</span>) hands you every identity; transitivity (<span class="m">x ≤ y ≤ z</span> ⟹ <span class="m">x ≤ z</span>) hands you composition. The two laws come for free, because between any two objects there is at most one arrow, so any two arrows with matching ends are automatically equal.</p>
+      <figure>
+        <div class="board" data-diagram="poset" aria-label="Three objects x, y, z arranged as a chain with one arrow x to y, y to z, and x to z.">
+          <svg></svg>
+        </div>
+        <figcaption>Here an arrow carries no &ldquo;mapping&rdquo; at all — it is simply the recorded fact that <span class="m">x ≤ y</span>. Morphisms need not be functions.</figcaption>
+      </figure>
+    </div>
+
+    <div class="ex">
+      <h3><span class="n">iii.</span> A monoid <em>is</em> a one-object category</h3>
+      <p>A monoid is a set <span class="m">M</span> with an associative operation and a unit <span class="m">e</span>. Make a category with a <strong>single</strong> object&nbsp;<span class="m">•</span>, let the arrows <span class="m">• → •</span> be the elements of <span class="m">M</span>, let composition be the monoid&rsquo;s operation, and let <span class="m">id<sub>•</sub> = e</span>. The category axioms become, line for line, the monoid axioms. Run it backwards and the same is true: <em>any</em> category with one object is a monoid.</p>
+      <figure>
+        <div class="board" data-diagram="monoid" aria-label="A single object with several loop arrows representing the elements of a monoid.">
+          <svg></svg>
+        </div>
+        <figcaption>A monoid is a category that happens to have one object; a category is a monoid whose multiplication is typed and spread across many objects. (A <em>group</em> is the special case where every loop is invertible.)</figcaption>
+      </figure>
+    </div>
+
+    <div class="ex">
+      <h3><span class="n">iv.</span> Tiny categories you can draw in full</h3>
+      <p>Call <span class="cat">𝟙</span> the category with one object and nothing but its identity. Call <span class="cat">𝟚</span> the category with two objects and a single non-identity arrow <span class="m">0 → 1</span>. These look like toys, but they earn their keep: a structure-preserving map <em>out of</em> <span class="cat">𝟚</span> into some category <span class="cat">𝒞</span> is exactly a choice of one arrow in <span class="cat">𝒞</span>. Small categories are the &ldquo;shapes&rdquo; you probe other categories with.</p>
+      <figure>
+        <div class="board" data-diagram="two" aria-label="The category named 2: objects 0 and 1 with a single arrow from 0 to 1, plus the two identity loops.">
+          <svg></svg>
+        </div>
+        <figcaption>The category <span class="cat">𝟚</span>, drawn completely. The two loops are the identities you are obliged to include; the only real content is the arrow <span class="m">0 → 1</span>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="ex">
+      <h3><span class="n">v.</span> Types and programs</h3>
+      <p>In a typed programming language, take the types as objects and (pure, total) functions as arrows; composition is function composition and the identity is <code>lambda x: x</code>. This is the category programmers already work inside without naming it — which is exactly why the next section, where we drop into Python, will feel less like translation and more like recognition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §5 PYTHON ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§5 — Category theory in Python</div>
+    <h2>Make the laws concrete: turn them into assertions</h2>
+    <p>Abstraction earns trust faster when you can poke it. First, inside <span class="cat">Set</span>, functions really are morphisms — let&rsquo;s build a composite by hand and watch the identity and associativity laws hold on an actual example.</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>set_as_category.py</b> — morphisms are functions</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def compose(g, f):
+    &quot;g after f:  (g . f)(x) = g(f(x))&quot;
+    return lambda x: g(f(x))
+
+A = {1, 2, 3}
+B = {&#x27;a&#x27;, &#x27;b&#x27;}
+C = {True, False}
+
+f = {1: &#x27;a&#x27;, 2: &#x27;b&#x27;, 3: &#x27;a&#x27;}     # f : A -&gt; B
+g = {&#x27;a&#x27;: True, &#x27;b&#x27;: False}      # g : B -&gt; C
+
+gf = {x: g[f[x]] for x in A}     # the composite g . f : A -&gt; C
+print(gf)
+
+assert {x: f[x] for x in A} == f          # identity law:  f . id_A == f
+
+h = {True: 1, False: 0}                    # h : C -&gt; {0, 1}
+left  = {x: h[g[f[x]]] for x in A}         # (h . g) . f
+right = {x: h[g[f[x]]] for x in A}         #  h . (g . f)
+assert left == right                       # associativity
+print(&quot;laws ok&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>{1: True, 2: False, 3: True}
+laws ok</div>
+    </div>
+
+    <p>That checks <em>one</em> example in an infinite category. To do better, package the definition itself as data — objects, a typed list of arrows, a composition table, and a chosen identity per object — and write one function that verifies <strong>all four</strong> requirements at once. For a <em>finite</em> category, this is not a spot-check: it&rsquo;s a complete proof, because the laws are quantified over a finite set of arrows.</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>finite_category.py</b> — a law-checker</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product
+
+class FiniteCategory:
+    &quot;&quot;&quot;objects, arrows (name -&gt; (dom, cod)), a composition table,
+       and a chosen identity arrow for each object.&quot;&quot;&quot;
+    def __init__(self, objects, arrows, comp, ident):
+        self.obj, self.ar, self.comp, self.id = set(objects), arrows, comp, ident
+
+    def dom(self, a): return self.ar[a][0]
+    def cod(self, a): return self.ar[a][1]
+    def composable(self, g, f): return self.dom(g) == self.cod(f)
+
+    def check(self):
+        for X in self.obj:                              # identities typed X -&gt; X
+            assert self.ar[self.id[X]] == (X, X)
+        for g, f in product(self.ar, repeat=2):         # composition total &amp; typed
+            if self.composable(g, f):
+                gf = self.comp[(g, f)]
+                assert self.ar[gf] == (self.dom(f), self.cod(g))
+        for f in self.ar:                               # unit laws
+            X, Y = self.ar[f]
+            assert self.comp[(self.id[Y], f)] == f
+            assert self.comp[(f, self.id[X])] == f
+        for h, g, f in product(self.ar, repeat=3):      # associativity
+            if self.composable(h, g) and self.composable(g, f):
+                assert self.comp[(h, self.comp[(g, f)])] == \
+                       self.comp[(self.comp[(h, g)], f)]
+        return True
+
+# A monoid as a ONE-object category: integers mod 3 under addition.
+arrows = {n: (&#x27;*&#x27;, &#x27;*&#x27;) for n in range(3)}            # the arrows ARE the elements
+comp   = {(a, b): (a + b) % 3 for a in range(3) for b in range(3)}
+Z3 = FiniteCategory({&#x27;*&#x27;}, arrows, comp, ident={&#x27;*&#x27;: 0})
+print(Z3.check())</code></pre>
+      <div class="out"><span class="lbl">output</span>True</div>
+    </div>
+
+    <p>The same <code>check()</code> validates the preorder of example&nbsp;(ii) and the category <span class="cat">𝟚</span> of example&nbsp;(iv) without a single change — you only feed it different data. Building <span class="cat">𝟛</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span> and running the checker on it is the last exercise below.</p>
+  </div>
+</section>
+
+<!-- ============ GOING DEEPER ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Going deeper</div>
+    <h2>Special arrows: monomorphisms and epimorphisms</h2>
+
+    <p>In <span class="cat">Set</span> the injective and surjective functions play starring roles — but &ldquo;injective&rdquo; and &ldquo;surjective&rdquo; are defined by talking about elements, which this course has forsworn. The arrows-only surrogates are <em>cancellation</em> properties, and they will follow us through the whole course (equalizers produce them in Lesson 5; adjunctions detect them in Lesson 6).</p>
+    <div class="box def">
+      <span class="tag">Definition · Mono &amp; epi</span>
+      <p>An arrow <span class="m">m : X → Y</span> is a <strong>monomorphism</strong> (<em>monic</em>) if it is left-cancellable: <span class="m">m ∘ h = m ∘ k</span> implies <span class="m">h = k</span>. Dually, <span class="m">e</span> is an <strong>epimorphism</strong> (<em>epic</em>) if it is right-cancellable: <span class="m">h ∘ e = k ∘ e</span> implies <span class="m">h = k</span>.</p>
+    </div>
+    <p>In <span class="cat">Set</span>, monic is exactly injective and epic is exactly surjective — an injective function can be &ldquo;undone from the left,&rdquo; conceptually, so nothing precomposed with it can hide. But the translation is not perfect across categories, and the standard warning is the point of Exercise 11: <em>mono + epi need not imply iso</em>, even though &ldquo;injective + surjective = bijective&rdquo; in <span class="cat">Set</span>. The failure happens in the humblest categories we have — a lesson in how much of one&rsquo;s intuition is secretly about sets.</p>
+  </div>
+</section>
+
+<!-- ============ §6 EXERCISES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§6 — Exercises</div>
+    <h2>Twelve problems, from finger exercises to small proofs</h2>
+    <p>Work each one before opening its solution — the arrows-only proofs especially, since the discipline of never mentioning an element is the skill this course is training. Several exercises reuse the <code>FiniteCategory</code> checker from §5, so keep a Python session open.</p>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>Let <span class="m">A = {1, 2}</span>, <span class="m">B = {&#x27;a&#x27;, &#x27;b&#x27;}</span>, and <span class="m">C = {10, 20}</span>, with functions given as dictionaries: <code>f = {1:&#x27;a&#x27;, 2:&#x27;b&#x27;}</code> representing <span class="m">f : A → B</span>, and <code>g = {&#x27;a&#x27;:10, &#x27;b&#x27;:20}</code> representing <span class="m">g : B → C</span>.</p>
+        <p>Write down the dictionary representing the composite <span class="m">g ∘ f : A → C</span>. Then say, in one sentence, why the notation <span class="m">g ∘ f</span> — with <span class="m">g</span> written first — nevertheless means &ldquo;apply <span class="m">f</span> first.&rdquo;</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Tracing each element: <span class="m">1 ↦ &#x27;a&#x27; ↦ 10</span> and <span class="m">2 ↦ &#x27;b&#x27; ↦ 20</span>, so <span class="m">g ∘ f</span> is the dictionary <code>{1: 10, 2: 20}</code>, or in code, <code>{x: g[f[x]] for x in f}</code>.</p>
+          <p>The order comes from function application: <span class="m">(g ∘ f)(x)</span> is defined to be <span class="m">g(f(x))</span>, and reading <span class="m">g(f(x))</span> inside-out, the innermost function — <span class="m">f</span> — acts first. The arrow written <em>last</em> is applied <em>first</em>. This right-to-left convention trips up almost everyone at least once, which is why it is Exercise 1.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>The definition of a category asks for <em>an</em> identity arrow on each object. This exercise shows the wording could have said <em>the</em> identity arrow.</p>
+        <p>Suppose <span class="m">i : X → X</span> and <span class="m">i&prime; : X → X</span> both behave as identities on <span class="m">X</span> — that is, each satisfies the identity law: composing with either of them, on either side, changes nothing. Prove that <span class="m">i = i&prime;</span>, using nothing but the identity law itself.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Consider the single composite <span class="m">i&prime; ∘ i</span> and evaluate it twice. Because <span class="m">i&prime;</span> acts as an identity (applied on the left), <span class="m">i&prime; ∘ i = i</span>. Because <span class="m">i</span> acts as an identity (applied on the right), <span class="m">i&prime; ∘ i = i&prime;</span>. One arrow, two names: <span class="m">i = i&prime;</span>.</p>
+          <p>Notice what the proof did <em>not</em> use: anything about what <span class="m">X</span> is, or contains. It is pure arrow-pushing, and it licenses the notation <span class="m">id<sub>X</sub></span> — <em>the</em> identity on <span class="m">X</span> — for the rest of the course.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Lesson 1 claimed that a monoid is the same thing as a one-object category. A <em>group</em> is a monoid in which every element has an inverse.</p>
+        <p>State the full dictionary that translates &ldquo;one-object category in which every arrow is invertible&rdquo; into &ldquo;group,&rdquo; and back: say what the arrows, the composition, the identity arrow, and the invertibility condition each become on the group side, and check that the axioms match up.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The single object carries no information — it is just a peg to hang arrows on. The <strong>arrows</strong> become the group&rsquo;s elements; <strong>composition</strong> of arrows becomes the group operation; the <strong>identity arrow</strong> becomes the identity element <span class="m">e</span>; and &ldquo;<strong>every arrow is invertible</strong>&rdquo; — for each <span class="m">f</span> there is a <span class="m">g</span> with <span class="m">g ∘ f = f ∘ g = id</span> — becomes the existence of inverses.</p>
+          <p>The category axioms translate line for line: associativity of composition is associativity of the operation, and the identity law is the unit law. So: <strong>groups are exactly the one-object categories in which every arrow is invertible.</strong> Drop the invertibility requirement and the same dictionary yields monoids, as in example (iii) of §4.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>Each of the following proposes a category whose objects are all sets. For each, decide whether it really is a category, and if not, identify exactly which requirement fails.</p>
+        <ol>
+          <li>Arrows are the <strong>injective</strong> functions.</li>
+          <li>Arrows are the <strong>surjective</strong> functions.</li>
+          <li>Arrows are the functions that are <strong>not the identity</strong>.</li>
+          <li>Arrows are the functions that have <strong>at least one fixed point</strong> (some <span class="m">x</span> with <span class="m">f(x) = x</span>).</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a) Yes</strong> and <strong>(b) yes.</strong> A composite of injections is an injection, a composite of surjections is a surjection, and the identity function is both — each class is closed under composition and contains all the identities it needs. Associativity is inherited from ordinary function composition.</p>
+          <p><strong>(c) No</strong>, twice over: it excludes the identity arrows by fiat, and it is not even closed under composition — a bijection composed with its inverse lands exactly on an identity, which the class forbids.</p>
+          <p><strong>(d) No</strong>, and this one is sneakier: the identities are all present (every point of <span class="m">id</span> is fixed), but closure fails. On <span class="m">{a, b, c}</span>, let <span class="m">f</span> swap <span class="m">a, b</span> and fix <span class="m">c</span>, and let <span class="m">g</span> swap <span class="m">b, c</span> and fix <span class="m">a</span>. Each has a fixed point, but tracing the composite <span class="m">g ∘ f</span> element by element gives the 3-cycle <span class="m">a ↦ c, b ↦ a, c ↦ b</span>, which fixes nothing. The moral of (c) and (d): the closure conditions are not bureaucratic fine print; drop them and the structure genuinely collapses.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>In §4, example (ii), we turned any preorder into a category by drawing exactly one arrow <span class="m">x → y</span> whenever <span class="m">x ≤ y</span>.</p>
+        <p>Explain why, in such a category, <em>every</em> diagram commutes — no matter how many objects and arrows it has, and without checking a single composite.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>A diagram commutes when any two directed paths with the same start and end compose to the same arrow. In a preorder-as-category there is <em>at most one</em> arrow between any ordered pair of objects. Two paths from <span class="m">x</span> to <span class="m">y</span> compose to two arrows <span class="m">x → y</span> — and since at most one such arrow exists, they are forced to be equal. Commutativity is automatic.</p>
+          <p>Categories with this at-most-one-arrow property are called <em>thin</em>. They carry order information but no information about <em>how</em> one object maps to another — which is exactly why they make such clean test cases for definitions later in the course.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">counting</span></div>
+      <div class="prob-body">
+        <p>Build the category <span class="cat">𝟛</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span>, the same way <span class="cat">𝟚</span> was built from <span class="m">0 ≤ 1</span>.</p>
+        <p>How many arrows does <span class="cat">𝟛</span> have in total? List them. Then generalize: how many arrows does the chain <span class="m">0 ≤ 1 ≤ ⋯ ≤ n</span> have as a category?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><span class="cat">𝟛</span> has <strong>6 arrows</strong>: the three identities on <span class="m">0, 1, 2</span>, the two generating arrows <span class="m">0 → 1</span> and <span class="m">1 → 2</span>, and the composite <span class="m">0 → 2</span>. The last one is the arrow people forget — but transitivity of <span class="m">≤</span> means it is there, and closure under composition <em>obliges</em> you to include it.</p>
+          <p>In general there is exactly one arrow <span class="m">i → j</span> for each ordered pair with <span class="m">i ≤ j</span>. Counting pairs: <strong>(n+1)(n+2)/2</strong> arrows — the triangular numbers. For <span class="m">n = 2</span> this gives 6, as counted by hand.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure · new</span></div>
+      <div class="prob-body">
+        <p>Every category has an evil twin. Given a category <span class="cat">𝒞</span>, define its <strong>opposite category</strong> <span class="cat">𝒞</span><sup>op</sup> as follows: the objects are the same, but each arrow <span class="m">f : X → Y</span> of <span class="cat">𝒞</span> is reinterpreted as an arrow <span class="m">f : Y → X</span> of <span class="cat">𝒞</span><sup>op</sup>, and composition is defined by <span class="m">g ∘<sup>op</sup> f = f ∘ g</span>, using the composition of <span class="cat">𝒞</span> on the right.</p>
+        <p>Verify that <span class="cat">𝒞</span><sup>op</sup> satisfies the two category laws, taking care with the order of composition. What is <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup></span>?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Typing.</strong> If in <span class="cat">𝒞</span><sup>op</sup> we can form <span class="m">g ∘<sup>op</sup> f</span>, then (unwinding the reversed directions) <span class="m">f ∘ g</span> is composable in <span class="cat">𝒞</span>, and its reinterpretation has exactly the right source and target — so the definition makes sense.</p>
+          <p><strong>Identities.</strong> The same arrows <span class="m">id<sub>X</sub></span> serve: <span class="m">id ∘<sup>op</sup> f = f ∘ id = f</span> and <span class="m">f ∘<sup>op</sup> id = id ∘ f = f</span>, both by the identity law of <span class="cat">𝒞</span>.</p>
+          <p><strong>Associativity.</strong> <span class="m">h ∘<sup>op</sup> (g ∘<sup>op</sup> f) = (f ∘ g) ∘ h</span> and <span class="m">(h ∘<sup>op</sup> g) ∘<sup>op</sup> f = f ∘ (g ∘ h)</span>; these agree by associativity in <span class="cat">𝒞</span>.</p>
+          <p>Finally, reversing all arrows twice restores every arrow to its original direction, and the composition unwinds too: <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup> = <span class="cat">𝒞</span></span>. Remember this construction — in Lesson 4 it becomes the <em>duality principle</em>, which lets every theorem be proved twice for the price of once.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-body">
+        <p>An arrow <span class="m">f : X → Y</span> is an <strong>isomorphism</strong> if there exists <span class="m">g : Y → X</span> with <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. Prove three basic facts, each by pure arrow-pushing:</p>
+        <ol>
+          <li>Every identity arrow is an isomorphism.</li>
+          <li>The inverse of an isomorphism is unique (so we may write <span class="m">f<sup>−1</sup></span>).</li>
+          <li>A composite of isomorphisms is an isomorphism, and <span class="m">(g ∘ f)<sup>−1</sup> = f<sup>−1</sup> ∘ g<sup>−1</sup></span> — note the reversal of order.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> <span class="m">id<sub>X</sub></span> is its own inverse: <span class="m">id ∘ id = id</span>, twice over.</p>
+          <p><strong>(b)</strong> Suppose <span class="m">g</span> and <span class="m">g&prime;</span> are both two-sided inverses of <span class="m">f</span>. Then <span class="m">g = g ∘ id = g ∘ (f ∘ g&prime;) = (g ∘ f) ∘ g&prime; = id ∘ g&prime; = g&prime;</span>. The middle step is associativity; everything else is the inverse and identity laws. This mirrors Exercise 2 — uniqueness proofs in category theory tend to have exactly this shape.</p>
+          <p><strong>(c)</strong> Check that <span class="m">f<sup>−1</sup> ∘ g<sup>−1</sup></span> inverts <span class="m">g ∘ f</span>: <span class="m">(f<sup>−1</sup> ∘ g<sup>−1</sup>) ∘ (g ∘ f) = f<sup>−1</sup> ∘ (g<sup>−1</sup> ∘ g) ∘ f = f<sup>−1</sup> ∘ id ∘ f = f<sup>−1</sup> ∘ f = id</span>, and symmetrically on the other side. The reversal of order is forced by the typing: to undo &ldquo;first <span class="m">f</span>, then <span class="m">g</span>,&rdquo; you must undo <span class="m">g</span> first — socks and shoes.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Encode the category <span class="cat">𝟛</span> from Exercise 6 as a <code>FiniteCategory</code> — objects, all six arrows, the composition table, and the identities — and run <code>.check()</code> to confirm it satisfies all four requirements.</p>
+        <p>Hint: because <span class="cat">𝟛</span> is thin, there is at most one arrow between any two objects, so every entry of the composition table is forced; you can generate the table with a small helper rather than writing it out by hand.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Name the three identities and the three non-trivial arrows, then let a helper fill the forced composition table:</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>three.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>objs = {0, 1, 2}
+ar = {&#x27;i0&#x27;:(0,0), &#x27;i1&#x27;:(1,1), &#x27;i2&#x27;:(2,2),
+      &#x27;a&#x27;:(0,1), &#x27;b&#x27;:(1,2), &#x27;c&#x27;:(0,2)}        # c is forced:  b . a
+ident = {0:&#x27;i0&#x27;, 1:&#x27;i1&#x27;, 2:&#x27;i2&#x27;}
+
+# at most one arrow per ordered pair, so each composite is determined
+def only(s, t):
+    return next(n for n,(d,c) in ar.items() if d==s and c==t)
+comp = {(g,f): only(ar[f][0], ar[g][1])
+        for g in ar for f in ar if ar[f][1]==ar[g][0]}
+
+print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
+            <div class="out"><span class="lbl">output</span>True</div>
+          </div>
+          <p style="margin-top:14px">The comment on the arrow <code>c</code> is the real content: once you accept <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span>, the category has no choice but to contain their composite.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+        <p>A checker is only trustworthy if you have seen it catch a mistake. Starting from your working <span class="cat">𝟛</span> of Exercise 9, corrupt the composition table on purpose: set <code>comp[(&#x27;b&#x27;,&#x27;a&#x27;)] = &#x27;i0&#x27;</code>, claiming that the composite of <span class="m">0 → 1</span> followed by <span class="m">1 → 2</span> is the identity on <span class="m">0</span>.</p>
+        <p>Before running it: which of the four checks in <code>check()</code> should fail, and why? Then run it and confirm.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The <strong>typing check on composites</strong> fails first. The composite of <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span> must be an arrow <span class="m">0 → 2</span>, but <code>i0</code> is typed <span class="m">(0, 0)</span> — so the assertion <code>ar[gf] == (dom(f), cod(g))</code> raises <code>AssertionError</code> before the identity or associativity checks are even reached.</p>
+          <p>This is worth internalizing: most bookkeeping errors in category theory are <em>typing</em> errors, and they are caught mechanically, before any interesting law is consulted. It is the same discipline a type-checker imposes on a program — which is not a coincidence.</p>
+        </div>
+      </details>
+    </div>
+  
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-body">
+
+        <p>Using only the cancellation definitions from the Going-deeper section:</p>
+        <ol>
+          <li>Show every isomorphism is both monic and epic.</li>
+          <li>Show that in a preorder-as-category <em>every</em> arrow is both monic and epic — and conclude, using an arrow of the chain <span class="cat">𝟚</span>, that &ldquo;mono and epi&rdquo; does not imply &ldquo;iso.&rdquo;</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p><strong>(a)</strong> Suppose <span class="m">m</span> has inverse <span class="m">m<sup>−1</sup></span> and <span class="m">m ∘ h = m ∘ k</span>. Precompose both sides with <span class="m">m<sup>−1</sup></span> and use associativity: <span class="m">h = (m<sup>−1</sup> ∘ m) ∘ h = (m<sup>−1</sup> ∘ m) ∘ k = k</span>. Right-cancellation is the mirror computation with <span class="m">m<sup>−1</sup></span> on the other side.</p>
+          <p><strong>(b)</strong> In a thin category, any two parallel arrows <span class="m">h, k</span> with the same source and target are <em>already</em> equal — so the implication &ldquo;<span class="m">m ∘ h = m ∘ k ⟹ h = k</span>&rdquo; holds vacuously for every <span class="m">m</span>, and likewise its dual. Now take the unique arrow <span class="m">u : 0 → 1</span> in <span class="cat">𝟚</span>: it is monic and epic by the above, but it is not an isomorphism, since there is no arrow <span class="m">1 → 0</span> at all. The moral: bijectivity is a theorem <em>about <span class="cat">Set</span></em>, not a consequence of the axioms — cancellation and invertibility are genuinely different ideas that happen to coincide there.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure · new</span></div>
+      <div class="prob-body">
+
+        <p>Given categories <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, define the <strong>product category</strong> <span class="cat">𝒞</span> × <span class="cat">𝒟</span>: objects are pairs <span class="m">(C, D)</span>, arrows are pairs <span class="m">(f, g)</span> of arrows, composed slotwise: <span class="m">(f&prime;, g&prime;) ∘ (f, g) = (f&prime; ∘ f, g&prime; ∘ g)</span>.</p>
+        <p>Say what the identity on <span class="m">(C, D)</span> must be, and verify both category laws. (File this construction away — it is the stage on which Lesson 6 exhibits products and coproducts as adjoints.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>The identity is <span class="m">(id<sub>C</sub>, id<sub>D</sub>)</span>, since composing slotwise with it applies each ordinary identity law in its own slot: <span class="m">(f, g) ∘ (id, id) = (f ∘ id, g ∘ id) = (f, g)</span>, and likewise on the left.</p>
+          <p>Associativity is the same story: <span class="m">((f&Prime;, g&Prime;) ∘ (f&prime;, g&prime;)) ∘ (f, g)</span> and <span class="m">(f&Prime;, g&Prime;) ∘ ((f&prime;, g&prime;) ∘ (f, g))</span> both compute, slot by slot, to <span class="m">(f&Prime; ∘ f&prime; ∘ f,&nbsp; g&Prime; ∘ g&prime; ∘ g)</span> — each slot protected by the associativity of its own category. Nothing interacts across slots, which is the whole design. Constructions like this, where the laws hold &ldquo;componentwise for free,&rdquo; recur constantly: the functor category of Lesson 3 inherited its laws pointwise in exactly the same way.</p>
+        </div>
+      </details>
+    </div>
+</div>
+</section>
+
+<!-- ============ SUMMARY / NEXT ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Recap</div>
+    <h2>What to carry forward</h2>
+    <ol class="takeaways">
+      <li>A category is <strong>objects + typed arrows + composition + identities</strong>, obeying associativity and the identity law. Nothing more.</li>
+      <li>The arrows are the content. Whenever you&rsquo;re tempted to reach inside an object, ask whether you can say the same thing with arrows instead — you usually can.</li>
+      <li><strong>Commutative diagrams are equations.</strong> A diagram commutes when same-endpoint paths compose equally.</li>
+      <li>The definition is a wide net: <span class="cat">Set</span>, every preorder, every monoid, every group, and the world of typed programs are all categories.</li>
+      <li>For a finite category the laws are <em>checkable</em> — and you wrote the checker.</li>
+    </ol>
+
+    <div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="64" height="40" viewBox="0 0 64 40"><defs></defs>
+          <path d="M4 20 L52 20" fill="none" stroke="var(--arrow)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M44 12 L52 20 L44 28" fill="none" stroke="var(--arrow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="26" y="14" text-anchor="middle" font-family="Newsreader" font-style="italic" font-size="15" fill="var(--arrow)">F</text>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">Coming next · Lesson 02</span>
+        <h3>Functors — maps between categories</h3>
+        <p>If categories are the new objects, what are the structure-preserving maps between <em>them</em>? A functor sends objects to objects and arrows to arrows while respecting identities and composition — and with it, categories themselves become the objects of a category, <span class="cat">Cat</span>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Intro to Category Theory · Lesson 01 · made for curious people who like arrows</footer>
+
+</main>
+</div>
+
+<script>
+/* ----- generic commutative-diagram renderer ----------------------------- */
+const SVGNS = "http://www.w3.org/2000/svg";
+
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  // draw arrows first (so labels/nodes sit on top)
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, tip, tan, labelAt;
+
+    if(a.from === a.to){
+      // self-loop pointing outward in direction `deg` (0 = up, clockwise)
+      const x = from.x, y = from.y;
+      const deg = (a.deg ?? 0) * Math.PI/180;
+      const ca = Math.cos(deg), sa = Math.sin(deg);
+      const rot = (px,py)=>[ x + px*ca - py*sa, y + px*sa + py*ca ];
+      const [sx,sy]   = rot(-12, -16);
+      const [c1x,c1y] = rot(-26, -54);
+      const [c2x,c2y] = rot( 26, -54);
+      const [ex,ey]   = rot( 12, -16);
+      const [lx,ly]   = rot(  0, -64);
+      shaft = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
+      labelAt = [lx, ly];
+    } else {
+      let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+      let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+      const px=-uy, py=ux, off = a.curve ?? 0;
+      if(off){
+        const mx=(sx+ex)/2, my=(sy+ey)/2;
+        const cx=mx+px*off, cy=my+py*off;
+        shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+        labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+      } else {
+        shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+        const lo = a.lo ?? 14;
+        labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+      }
+    }
+
+    // measure true end tangent to orient the arrowhead
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl = 8.5, ang = 0.42;
+    const cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x = pEnd.x - bl*(tx*cos - ty*sin), b1y = pEnd.y - bl*(ty*cos + tx*sin);
+    const b2x = pEnd.x - bl*(tx*cos + ty*sin), b2y = pEnd.y - bl*(ty*cos - tx*sin);
+    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const cls = "arrow" + (a.cls ? " "+a.cls : "");
+    const path = el("path", {d:full, class:cls}, svg);
+    if(a.dash) path.setAttribute("stroke-dasharray-base", a.dash); // (unused, draw uses len)
+    const len = path.getTotalLength();
+    path.style.setProperty("--len", len);
+    path.setAttribute("stroke-dasharray", len);
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle", "dominant-baseline":"middle"}, svg);
+      t.textContent = a.label;
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  // nodes on top
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node", "text-anchor":"middle",
+      "dominant-baseline":"central"}, svg);
+    t.textContent = n.label;
+    if(n.sub){
+      const s = el("tspan", {dy:"6","font-size":"13"}, t); s.textContent = n.sub;
+    }
+  });
+}
+
+/* ----- the diagrams ----------------------------------------------------- */
+const DIAGRAMS = {
+  hero: {
+    w:400, h:260,
+    nodes:[
+      {id:"A", x:60,  y:70,  label:"A"},
+      {id:"B", x:340, y:70,  label:"B"},
+      {id:"C", x:200, y:210, label:"C"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"f", lo:-16, delay:0},
+      {from:"B", to:"C", label:"g", lo:-16, delay:260},
+      {from:"A", to:"C", label:"g \u2218 f", lo:16, cls:"soft", lcls:"soft", delay:560},
+    ]
+  },
+  identity: {
+    w:380, h:200,
+    nodes:[
+      {id:"A", x:90,  y:120, label:"A"},
+      {id:"B", x:300, y:120, label:"B"},
+    ],
+    arrows:[
+      {from:"A", to:"A", deg:0, label:"id", lcls:"amber", cls:"amber", delay:0},
+      {from:"A", to:"B", label:"f", lo:-16, delay:280},
+    ]
+  },
+  square: {
+    w:320, h:300,
+    nodes:[
+      {id:"A", x:60,  y:60,  label:"A"},
+      {id:"B", x:260, y:60,  label:"B"},
+      {id:"C", x:60,  y:250, label:"C"},
+      {id:"D", x:260, y:250, label:"D"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"f", lo:-16, delay:0},
+      {from:"A", to:"C", label:"p", lo:16, delay:200},
+      {from:"B", to:"D", label:"q", lo:-16, delay:400},
+      {from:"C", to:"D", label:"g", lo:16, delay:600},
+    ]
+  },
+  assoc: {
+    w:560, h:230,
+    nodes:[
+      {id:"A", x:50,  y:150, label:"A"},
+      {id:"B", x:220, y:150, label:"B"},
+      {id:"C", x:380, y:150, label:"C"},
+      {id:"D", x:520, y:150, label:"D"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"f", lo:18, delay:0},
+      {from:"B", to:"C", label:"g", lo:18, delay:180},
+      {from:"C", to:"D", label:"h", lo:18, delay:360},
+      {from:"A", to:"C", label:"g \u2218 f", curve:-70, cls:"soft", lcls:"soft", delay:560},
+      {from:"B", to:"D", label:"h \u2218 g", curve:70, cls:"soft", lcls:"soft", delay:760},
+    ]
+  },
+  poset: {
+    w:300, h:300,
+    nodes:[
+      {id:"x", x:70,  y:240, label:"x"},
+      {id:"y", x:70,  y:60,  label:"y"},
+      {id:"z", x:240, y:150, label:"z"},
+    ],
+    arrows:[
+      {from:"x", to:"y", label:"x \u2264 y", lo:-30, delay:0},
+      {from:"y", to:"z", label:"y \u2264 z", lo:-16, delay:220},
+      {from:"x", to:"z", label:"x \u2264 z", lo:18, delay:440},
+    ]
+  },
+  monoid: {
+    w:320, h:280,
+    nodes:[
+      {id:"M", x:160, y:185, label:"\u2022"},
+    ],
+    arrows:[
+      {from:"M", to:"M", deg:0,   label:"e", lcls:"amber", cls:"amber", delay:0},
+      {from:"M", to:"M", deg:-58, label:"a", delay:220},
+      {from:"M", to:"M", deg:58,  label:"b", lcls:"soft", cls:"soft", delay:440},
+    ]
+  },
+  two: {
+    w:340, h:180,
+    nodes:[
+      {id:"z", x:80,  y:90, label:"0"},
+      {id:"o", x:260, y:90, label:"1"},
+    ],
+    arrows:[
+      {from:"z", to:"z", deg:0, label:"id", lcls:"amber", cls:"amber", delay:120},
+      {from:"o", to:"o", deg:0, label:"id", lcls:"amber", cls:"amber", delay:120},
+      {from:"z", to:"o", label:"0 \u2192 1", lo:-16, delay:0},
+    ]
+  },
+};
+
+/* monoid needs two distinct loops on the same side — nudge the second */
+function patchMonoid(svg){
+  // re-render handled in build; the two up-loops overlap, so shift labels visually
+}
+
+/* ----- render + reveal on scroll --------------------------------------- */
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(!spec) return;
+    const svg = div.querySelector("svg");
+    build(svg, spec);
+  });
+}
+renderAll();
+
+if(reduce){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); }
+    });
+  }, {threshold:0.35});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  // hero draws immediately
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+/* re-render on resize so text metrics stay crisp (debounced) */
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+/* ----- copy buttons ----------------------------------------------------- */
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "—"; });
+  });
+});
+</script>

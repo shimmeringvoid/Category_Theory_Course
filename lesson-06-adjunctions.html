@@ -1,0 +1,825 @@
+<!-- Intro to Category Theory — Lesson 6: Adjunctions -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6 · Adjunctions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
+  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8; --code-bg:#15171E; --code-fg:#E7E4DA; --code-dim:#8A8E9C;
+  --out-bg:#1E2733; --maxw:720px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%)}
+.wrap{position:relative;z-index:1}
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i{font-style:italic}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{font-size:clamp(38px,7vw,70px);margin:0 0 .35em;font-weight:500}
+.hero h1 .q{color:var(--arrow)}
+.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:38ch;margin:0}
+.hero-diagram{margin:42px auto 8px;max-width:440px}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:12px}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+figure{margin:34px 0;text-align:center}
+.board{background:radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);border-radius:3px;padding:26px 18px 18px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:460px;margin-inline:auto}
+.board.wide svg{max-width:560px}
+figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;max-width:54ch;margin-inline:auto;font-style:italic}
+
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.amber{fill:var(--amber)}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;fill:var(--arrow);
+  paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+.elabel{opacity:0}
+.draw .elabel{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .arrow.unique{opacity:1 !important}
+  .elabel{opacity:1 !important;transition:none !important}
+}
+
+.box{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin:30px 0}
+.box .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+.box.amber,.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag,.box.thm .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+
+.m{font-style:italic;white-space:nowrap}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+.zoo{width:100%;border-collapse:collapse;margin:28px 0;font-size:17.5px}
+.zoo th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);text-align:left;padding:10px 12px;border-bottom:2px solid var(--rule)}
+.zoo td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+.zoo td:first-child{color:var(--ink)}
+.zoo td .m{color:var(--ink)}
+
+.code{background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;border:1px solid #000}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--code-dim);background:transparent;border:1px solid #2f323c;border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{background:var(--out-bg);border-top:1px solid #2a3340;padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;white-space:pre-wrap}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
+
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{content:counter(t);position:absolute;left:0;top:13px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.next{margin-top:38px;border:1px solid var(--rule);border-radius:4px;padding:26px;display:flex;gap:22px;align-items:center;background:#fff}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+/* ---------- expanded exercise format ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob details[open]{background:transparent}
+.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob summary::-webkit-details-marker{display:none}
+.prob summary:hover{background:var(--blue-wash)}
+.prob summary::before{content:"+ ";font-weight:500}
+.prob details[open] summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+.prob .sol strong{color:var(--ink)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+  .zoo{font-size:15.5px}
+}
+</style>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero measure">
+  <div class="crumbs">Lesson 05 — Limits &amp; colimits &nbsp;›&nbsp; <b>Lesson 06 — Adjunctions</b> &nbsp;›&nbsp; Lesson 07 — Yoneda &amp; monads</div>
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 06</div>
+  <h1>Adjunc<span class="q">tions</span></h1>
+  <p class="lede">Two functors pointing opposite ways, and a perfect exchange of arrows between them. The concept category theory was invented to state.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="Two categories C and D with a functor F from C to D above and a functor U from D to C below, forming an adjunction F left adjoint to U.">
+      <svg></svg>
+    </div>
+  </figure>
+</header>
+
+<main>
+
+<!-- ============ §1 ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§1 — What does &ldquo;free&rdquo; mean?</div>
+    <h2>A word we have owed a definition since Lesson 2</h2>
+    <p>Lesson 2 introduced the forgetful functor <span class="m">U : <span class="cat">Mon</span> → <span class="cat">Set</span></span> and gestured at its partner going the other way: the <em>free</em> monoid functor. It is time to pay that debt. The free monoid on a set <span class="m">X</span> is the set of finite lists over <span class="m">X</span>, with concatenation as the operation and the empty list as the unit — but &ldquo;lists with concatenation&rdquo; is an <em>implementation</em>. What is the <em>interface</em>? What property makes this monoid, and no other, the free one?</p>
+    <p>Here it is. To give a monoid homomorphism <em>out of</em> <span class="m">List X</span> into any monoid <span class="m">M</span>, it is enough — and necessary — to say where the generators go: any function <span class="m">f : X → U M</span> extends to <strong>exactly one</strong> homomorphism <span class="m">f̂ : List X → M</span>, namely <span class="m">f̂([x₁, …, xₙ]) = f(x₁) · ⋯ · f(xₙ)</span>. Programmers know this operation as <code>foldMap</code>. &ldquo;Free&rdquo; means: <em>no relations beyond the forced ones, so homomorphisms out are as easy as functions in.</em></p>
+    <p>Squint at the phrase &ldquo;exactly one&rdquo; and you will recognize a universal property; but this one has a new shape. It is not about arrows into a single object — it is a correspondence between two different kinds of arrow, living in two different categories:</p>
+    <p style="text-align:center;font-size:22px" class="m"><span class="cat">Mon</span>(List X, M) &nbsp;≅&nbsp; <span class="cat">Set</span>(X, U M).</p>
+    <p>Homomorphisms from the free thing on one side; plain functions to the underlying set on the other; a perfect bijection between them. Abstract the pattern — replace <span class="m">List</span> and <span class="m">U</span> by any pair of opposite-pointing functors — and you have the definition of an adjunction. This lesson is a tour of how much of mathematics turns out to have exactly this shape.</p>
+  </div>
+</section>
+
+<!-- ============ §2 DEFINITION ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§2 — The definition</div>
+    <h2>Arrows traded at par</h2>
+
+    <div class="box def">
+      <span class="tag">Definition · Adjunction</span>
+      <p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">U : <span class="cat">𝒟</span> → <span class="cat">𝒞</span></span> be functors. An <strong>adjunction</strong> <span class="m">F ⊣ U</span> (&ldquo;<span class="m">F</span> is left adjoint to <span class="m">U</span>&rdquo;) is a bijection</p>
+      <p style="text-align:center" class="m"><span class="cat">𝒟</span>(F X, Y) &nbsp;≅&nbsp; <span class="cat">𝒞</span>(X, U Y)</p>
+      <p>for every <span class="m">X</span> in <span class="cat">𝒞</span> and <span class="m">Y</span> in <span class="cat">𝒟</span>, <strong>natural in both</strong>. The matched arrows <span class="m">f̂ : F X → Y</span> and <span class="m">f : X → U Y</span> are called each other&rsquo;s <strong>transposes</strong>.</p>
+    </div>
+
+    <figure>
+      <div class="board" data-diagram="transpose" aria-label="Two hom-sets in correspondence: an arrow from F X to Y in D on top, an arrow from X to U Y in C below, with F and U connecting the corners and an isomorphism sign between the rows.">
+        <svg></svg>
+      </div>
+      <figcaption>One datum, two costumes: every <span class="m">f̂ : F X → Y</span> in <span class="cat">𝒟</span> corresponds to exactly one <span class="m">f : X → U Y</span> in <span class="cat">𝒞</span>, and back.</figcaption>
+    </figure>
+
+    <p>The mnemonic for the direction: the <em>left</em> adjoint appears on the <em>left</em> of the hom-set. And &ldquo;natural in both&rdquo; is not fine print — it is what makes the bijection a single coherent conversion rather than a family of coincidences. Concretely it says transposition commutes with composition on both flanks: for any <span class="m">h : X&prime; → X</span> in <span class="cat">𝒞</span> and <span class="m">k : Y → Y&prime;</span> in <span class="cat">𝒟</span>, the transpose of <span class="m">k ∘ f̂ ∘ F h</span> is <span class="m">U k ∘ f ∘ h</span>. Pre-process the input or post-process the output, then transpose — or transpose first and do the same on the other side; you land on the same arrow. (This is the naturality of Lesson 3, applied in both variables at once; the checker-friendly square formulation appears in Exercise 4.)</p>
+    <p>In the free-monoid case the bijection is exactly <code>foldMap</code> one way and &ldquo;restrict to generators&rdquo; the other. And the definition immediately explains a Lesson 2 mystery: why the forgetful functor felt canonical while ordinary functions felt structureless. They are two halves of one mechanism — <span class="m">U</span> throws away structure, <span class="m">F</span> adds the least possible structure, and the adjunction is the precise sense in which those are inverse <em>tendencies</em> without being inverse <em>functors</em>.</p>
+  </div>
+</section>
+
+<!-- ============ §3 GALLERY ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§3 — The gallery</div>
+    <h2>Half of mathematics, filing past</h2>
+
+    <table class="zoo">
+      <tr><th>Left adjoint F</th><th>Right adjoint U</th><th>The bijection says</th></tr>
+      <tr><td>free monoid <span class="m">List</span></td><td>forgetful <span class="m">U</span></td><td>homs from free = functions on generators</td></tr>
+      <tr><td><span class="m">(−) × A</span></td><td><span class="m">(−)<span style="font-size:.75em;vertical-align:super">A</span></span></td><td>currying: two arguments = one at a time</td></tr>
+      <tr><td>ceiling <span class="m">⌈−⌉</span></td><td colspan="2">inclusion <span class="m">ℤ ↪ ℝ</span> &nbsp;(which is itself left adjoint to floor <span class="m">⌊−⌋</span>)</td></tr>
+      <tr><td>coproduct <span class="m">+</span></td><td colspan="2">diagonal <span class="m">Δ</span> &nbsp;(which is itself left adjoint to product <span class="m">×</span>)</td></tr>
+    </table>
+
+    <h3>Currying</h3>
+    <p>Fix a set <span class="m">A</span>. A function of two arguments <span class="m">X × A → Y</span> and a function-valued function <span class="m">X → Y<sup>A</sup></span> carry the same information — <code>curry</code> and <code>uncurry</code> convert between them, and the conversion respects pre- and post-composition. That is an adjunction <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>, and it is the universal property that <em>defines</em> function types: <span class="m">Y<sup>A</sup></span> is the object that makes the bijection <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> work. The counit is the most familiar function in programming:</p>
+
+    <figure>
+      <div class="board wide" data-diagram="eval" aria-label="The universal property of the exponential: any g from X times A to Y factors through eval from Y-to-the-A times A, via the dashed arrow curry of g times the identity.">
+        <svg></svg>
+      </div>
+      <figcaption><span class="m">eval</span> applies a function to an argument; every two-argument <span class="m">g</span> factors through it via <span class="m">curry(g) × id</span>, uniquely.</figcaption>
+    </figure>
+
+    <h3>Galois connections: adjunctions between posets</h3>
+    <p>Run the definition in thin categories. Functors between posets are monotone maps (Lesson 2), each hom-set has at most one element, so &ldquo;bijection of hom-sets&rdquo; collapses to a two-way implication: monotone <span class="m">f</span> and <span class="m">g</span> form an adjunction <span class="m">f ⊣ g</span> exactly when</p>
+    <p style="text-align:center" class="m">f(x) ≤ y &nbsp;⟺&nbsp; x ≤ g(y) &nbsp;&nbsp;for all x, y.</p>
+    <p>Order theorists call this a <strong>Galois connection</strong>. The everyday example: include the integers into the reals, <span class="m">i : ℤ ↪ ℝ</span>. Then <span class="m">⌈r⌉ ≤ n ⟺ r ≤ n</span> makes <strong>ceiling a left adjoint</strong> of the inclusion, and <span class="m">n ≤ ⌊r⌋ ⟺ n ≤ r</span> makes <strong>floor a right adjoint</strong>: <span class="m">⌈−⌉ ⊣ i ⊣ ⌊−⌋</span>. Rounding up is the <em>best over-approximation</em>, rounding down the <em>best under-approximation</em> — left adjoints approach from one side, right adjoints from the other, and the inclusion sits between its own two corrections. §5 verifies both equivalences on 1,586 instances, and builds a finder that computes adjoints of arbitrary monotone maps between finite posets.</p>
+
+    <h3>The diagonal, flanked</h3>
+    <p>Lesson 4&rsquo;s constructions join the gallery too. The diagonal functor <span class="m">Δ : <span class="cat">𝒞</span> → <span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> sends <span class="m">X</span> to the pair <span class="m">(X, X)</span>; a right adjoint to it must convert arrows <span class="m">(X, X) → (A, B)</span> — i.e. <em>pairs</em> of arrows — into single arrows <span class="m">X → ?</span>, and Lesson 4&rsquo;s product definition says the product does exactly that. Dually the coproduct is Δ&rsquo;s left adjoint: <span class="m">+ ⊣ Δ ⊣ ×</span>, another sandwich (Exercise 6). This generalizes: replacing Δ by the constant-diagram functor of Lesson 5, <em>limits are right adjoints and colimits are left adjoints</em> — the previous two lessons were secretly case studies of this one.</p>
+  </div>
+</section>
+
+<!-- ============ §4 UNIT, COUNIT, RAPL ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§4 — Unit, counit, and consequences</div>
+    <h2>The adjunction, repackaged as two natural transformations</h2>
+    <p>The bijection can be distilled into two canonical arrows. Transpose the identity <span class="m">id<sub>F X</sub> : F X → F X</span> and get the <strong>unit</strong> <span class="m">η<sub>X</sub> : X → U F X</span>; transpose <span class="m">id<sub>U Y</sub></span> the other way and get the <strong>counit</strong> <span class="m">ε<sub>Y</sub> : F U Y → Y</span>. Naturality of the bijection makes <span class="m">η : Id ⇒ U∘F</span> and <span class="m">ε : F∘U ⇒ Id</span> natural transformations — Lesson 3&rsquo;s machinery, in a starring role. In the free-monoid adjunction, <span class="m">η</span> is the singleton map <span class="m">x ↦ [x]</span> (&ldquo;a generator, regarded as a one-term word&rdquo;) and <span class="m">ε</span> evaluates a formal word of monoid elements down to an actual product. In currying, <span class="m">ε</span> is <span class="m">eval</span>.</p>
+
+    <div class="box def">
+      <span class="tag">Definition · Adjunction, take two</span>
+      <p>An adjunction <span class="m">F ⊣ U</span> may equivalently be given by natural transformations <span class="m">η : Id ⇒ U∘F</span> and <span class="m">ε : F∘U ⇒ Id</span> satisfying the two <strong>triangle identities</strong>:</p>
+      <p style="text-align:center" class="m">ε<sub>F X</sub> ∘ F(η<sub>X</sub>) = id<sub>F X</sub> &nbsp;&nbsp;and&nbsp;&nbsp; U(ε<sub>Y</sub>) ∘ η<sub>U Y</sub> = id<sub>U Y</sub>.</p>
+    </div>
+
+    <figure>
+      <div class="board" data-diagram="triangle" aria-label="The first triangle identity: F X maps to F U F X by F of the unit, then back to F X by the counit at F X, composing to the identity.">
+        <svg></svg>
+      </div>
+      <figcaption>The first triangle identity: inflate with the unit, deflate with the counit, arrive where you started. The second is its mirror image on the <span class="m">U</span> side.</figcaption>
+    </figure>
+
+    <p>Each direction of the equivalence is a construction: from a bijection, transpose identities to get <span class="m">η, ε</span> and derive the triangles; from <span class="m">η, ε</span>, define transposition by <span class="m">f̂ ↦ U f̂ ∘ η<sub>X</sub></span> and <span class="m">f ↦ ε<sub>Y</sub> ∘ F f</span>, and the triangle identities are exactly what force these to be mutually inverse. Exercise 4 walks the second direction in full — it is the best composition workout the course has to offer. In the free-monoid case the triangles say something you can whisper in plain language: &ldquo;wrap each generator as a word, then evaluate: you get the word back&rdquo; and &ldquo;wrap a monoid element, then evaluate: you get the element back.&rdquo;</p>
+
+    <div class="box thm">
+      <span class="tag">Theorem · RAPL</span>
+      <p><strong>Right adjoints preserve limits; left adjoints preserve colimits.</strong> If <span class="m">U</span> has a left adjoint, then <span class="m">U(lim D) ≅ lim (U∘D)</span> for every diagram <span class="m">D</span> with a limit — and dually for <span class="m">F</span> and colimits.</p>
+    </div>
+
+    <p>You have known an instance of this for years: the underlying set of a product of groups is the product of the underlying sets. Now you know <em>why</em> — <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has a left adjoint (free groups), so it must preserve products, terminal objects, equalizers, pullbacks, all of Lesson 5&rsquo;s zoo at once. The contrapositive is a weapon: a functor that fails to preserve even one colimit <em>cannot</em> have a right adjoint, full stop. Exercise 7 uses it to prove a non-existence theorem in two lines, and §5&rsquo;s finder shows the same phenomenon numerically: the monotone map that crushes the divisibility poset&rsquo;s bottom element fails to preserve the initial object, and the search for its right adjoint comes back empty.</p>
+
+    <div class="box amber">
+      <span class="tag">Aside · Adjoints are unique</span>
+      <p>If <span class="m">U</span> has a left adjoint, it has exactly one up to natural isomorphism — the adjunction pins its partner down, just as universal properties pinned objects down in Lesson 4 (and for the same reason; Exercise 5 makes the connection concrete for free monoids). This is why one says <em>the</em> free monoid, <em>the</em> exponential, <em>the</em> product. §5&rsquo;s finder returns a list of all right adjoints of a given map; in every successful run, that list has length exactly one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §5 PYTHON ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§5 — Adjunctions in Python</div>
+    <h2>Bijections you can run, adjoints you can search for</h2>
+    <p>Three experiments, in increasing order of generality. First, the floor/ceiling sandwich: a Galois connection is a finite conjunction of biconditionals, so it can be checked wholesale on a grid of test values — both adjunctions in the chain <span class="m">⌈−⌉ ⊣ i ⊣ ⌊−⌋</span>, no instance spared:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>galois.py</b> — the sandwich, verified</span><button class="copy" type="button">Copy</button></div>
+<pre><code>import math
+
+reals = [i / 7 for i in range(-30, 31)]
+ints  = range(-6, 7)
+checks = 0
+for r in reals:
+    for n in ints:
+        assert (math.ceil(r) &lt;= n) == (r &lt;= n)    # ceiling  -|  inclusion
+        assert (n &lt;= math.floor(r)) == (n &lt;= r)   # inclusion -|  floor
+        checks += 2
+print(f&quot;ceiling -| inclusion -| floor: verified on {checks} instances&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>ceiling -| inclusion -| floor: verified on 1586 instances</div>
+    </div>
+
+    <p>Second, the adjunction that opened the lesson, as running code. <code>fold_map</code> constructs the transpose <span class="m">f̂</span> from <span class="m">f</span>; we then check the three claims the adjunction makes about it — it is a homomorphism (empty list to unit, concatenation to the operation), and composing with the unit <span class="m">η(x) = [x]</span> recovers <span class="m">f</span> exactly:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>free.py</b> — foldMap is the transpose</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def fold_map(f, unit, op):
+    &quot;the unique monoid hom  List X -&gt; M  extending  f : X -&gt; M&quot;
+    def hat(xs):
+        acc = unit
+        for x in xs:
+            acc = op(acc, f(x))
+        return acc
+    return hat
+
+f   = {&#x27;a&#x27;: 2, &#x27;b&#x27;: 3}.get
+hat = fold_map(f, 0, lambda m, n: m + n)      # target monoid (Z, +, 0)
+
+import itertools
+samples = [list(t) for k in range(4)
+                   for t in itertools.product(&#x27;ab&#x27;, repeat=k)]
+assert hat([]) == 0                            # unit to unit
+assert all(hat(xs + ys) == hat(xs) + hat(ys)   # concat to +
+           for xs in samples for ys in samples)
+assert all(hat([x]) == f(x) for x in &#x27;ab&#x27;)     # hat . eta == f
+print(&quot;fold_map is a monoid hom; hat.eta == f;&quot;,
+      &quot;hat([&#x27;a&#x27;,&#x27;b&#x27;,&#x27;a&#x27;]) =&quot;, hat([&#x27;a&#x27;,&#x27;b&#x27;,&#x27;a&#x27;]))</code></pre>
+      <div class="out"><span class="lbl">output</span>fold_map is a monoid hom; hat.eta == f; hat(['a','b','a']) = 7</div>
+    </div>
+
+    <p>Third, the finder. Between finite posets — Lesson 4&rsquo;s divisibility order and a three-element chain, built as <code>FiniteCategory</code> objects — an adjunction is the Galois biconditional, so the set of <em>all</em> right adjoints of a given monotone map is computable by brute force, in the style of Lessons 4 and 5:</p>
+
+    <div class="code">
+      <div class="code-bar"><span class="fname"><b>adjoint_finder.py</b> — search for a partner</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def monotone_maps(C, D):
+    &quot;all monotone maps C -&gt; D between finite posets&quot;
+    Cobjs = sorted(C.obj, key=str)
+    for values in cartesian(sorted(D.obj, key=str), repeat=len(Cobjs)):
+        g = dict(zip(Cobjs, values))
+        if all(not arrows_between(C, x, y) or arrows_between(D, g[x], g[y])
+               for x in C.obj for y in C.obj):
+            yield g
+
+def find_right_adjoints(f, C, D):
+    &quot;all monotone g : D -&gt; C  with   f(x) &lt;= y   iff   x &lt;= g(y)&quot;
+    return [g for g in monotone_maps(D, C)
+            if all(bool(arrows_between(D, f[x], y)) ==
+                   bool(arrows_between(C, x, g[y]))
+                   for x in C.obj for y in D.obj)]
+
+f = {0: 1, 1: 2, 2: 6}              # Chain {0,1,2}  -&gt;  Div {1,2,3,6}
+print(&quot;right adjoints of f    :&quot;, find_right_adjoints(f, Chain, Div))
+
+f_bad = {1: 1, 2: 1, 3: 1, 6: 1}    # Div -&gt; Chain, constant at 1
+print(&quot;right adjoints of f_bad:&quot;, find_right_adjoints(f_bad, Div, Chain))</code></pre>
+      <div class="out"><span class="lbl">output</span>right adjoints of f    : [{1: 0, 2: 1, 3: 0, 6: 2}]
+right adjoints of f_bad: []</div>
+    </div>
+
+    <p>Two lessons in one output. The first search returns a list of length <strong>exactly one</strong> — the uniqueness of adjoints, witnessed by exhaustion — and the adjoint it finds is <span class="m">g(y) = </span> the largest chain element whose image divides <span class="m">y</span>, the &ldquo;best under-approximation&rdquo; pattern again. The second search returns <strong>nothing</strong>, and RAPL told us it must: <code>f_bad</code> sends the initial object <span class="m">1</span> of the divisibility poset to <span class="m">1</span> rather than to the chain&rsquo;s bottom <span class="m">0</span>, so it fails to preserve a colimit and cannot be a left adjoint. A non-existence theorem, machine-checked.</p>
+  </div>
+</section>
+
+<!-- ============ GOING DEEPER ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Going deeper</div>
+    <h2>Quantifiers are adjoints</h2>
+
+    <p>The most startling entry in the adjunction gallery was left for last. Fix a function <span class="m">f : A → B</span> and consider the two powersets <span class="m">P(A)</span> and <span class="m">P(B)</span>, each a poset under inclusion. Preimage <span class="m">f<sup>*</sup> : P(B) → P(A)</span> is monotone — and it is flanked by two adjoints, both of which every mathematician already uses daily:</p>
+    <p style="text-align:center" class="m">∃<sub>f</sub> ⊣ f<sup>*</sup> ⊣ ∀<sub>f</sub></p>
+    <p>where <span class="m">∃<sub>f</sub>(S) = { f(x) : x ∈ S }</span> is the direct image (&ldquo;some preimage lies in <span class="m">S</span>&rdquo;) and <span class="m">∀<sub>f</sub>(S) = { b : f<sup>−1</sup>(b) ⊆ S }</span> (&ldquo;every preimage lies in <span class="m">S</span>&rdquo;). The two Galois biconditionals — <span class="m">∃<sub>f</sub>(S) ⊆ T ⟺ S ⊆ f<sup>*</sup>(T)</span> and <span class="m">f<sup>*</sup>(T) ⊆ S ⟺ T ⊆ ∀<sub>f</sub>(S)</span> — are, read logically, the introduction and elimination rules for the quantifiers. This observation (Lawvere&rsquo;s, from the 1960s) is a doorway into categorical logic: <em>the logical quantifiers are not primitive; they are the adjoints of substitution.</em> Exercise 10 verifies both adjunctions exhaustively; the sandwich shape — a right adjoint that is itself a left adjoint — is the ceiling/inclusion/floor pattern again, one floor up.</p>
+  </div>
+</section>
+
+<!-- ============ §6 EXERCISES ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">§6 — Exercises</div>
+    <h2>Eleven problems on adjunctions</h2>
+    <p>Exercise 4 is the summit of the set — the full derivation that unit, counit, and triangles reconstruct the bijection. Everything before it is preparation; everything after it is reward.</p>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>Write out <code>curry</code> and <code>uncurry</code> in Python for functions given as dictionaries: <code>curry</code> should turn a dict keyed on pairs <span class="m">(x, a)</span> into a dict of dicts, and <code>uncurry</code> should invert it.</p>
+        <p>Apply them to <span class="m">g(x, a) = x + a</span> on <span class="m">X = A = {0, 1}</span>, confirm the round trip returns the original, and state — carefully, with the sets in the right places — which hom-set bijection your round trip witnesses.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><code>curry = lambda h: {x: {a: h[(x, a)] for a in A} for x in X}</code> and <code>uncurry = lambda k: {(x, a): k[x][a] for x in X for a in A}</code>. On <span class="m">g</span>: <code>curry(g) = {0: {0: 0, 1: 1}, 1: {0: 1, 1: 2}}</code>, and <code>uncurry(curry(g)) == g</code> holds.</p>
+          <p>The round trip witnesses <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> — with <span class="m">X</span> in the variable slot, <span class="m">A</span> fixed as the adjunction&rsquo;s parameter, and <span class="m">Y<sup>A</sup></span> the set of dictionaries keyed on <span class="m">A</span>. It is the unit-level evidence for <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>; Exercise 8 upgrades it from &ldquo;these two functions invert each other on one example&rdquo; to a counted bijection of entire hom-sets.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>Prove both halves of the floor/ceiling sandwich from the definitions &ldquo;<span class="m">⌈r⌉</span> is the least integer <span class="m">≥ r</span>&rdquo; and &ldquo;<span class="m">⌊r⌋</span> is the greatest integer <span class="m">≤ r</span>&rdquo;:</p>
+        <ol>
+          <li><span class="m">⌈r⌉ ≤ n ⟺ r ≤ n</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
+          <li><span class="m">n ≤ ⌊r⌋ ⟺ n ≤ r</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
+        </ol>
+        <p>Then answer in one sentence: why is ceiling the <em>left</em> adjoint and floor the <em>right</em>?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> (⇒) <span class="m">r ≤ ⌈r⌉</span> always, so <span class="m">⌈r⌉ ≤ n</span> gives <span class="m">r ≤ n</span> by transitivity. (⇐) If <span class="m">r ≤ n</span> then <span class="m">n</span> is an integer <span class="m">≥ r</span>, and <span class="m">⌈r⌉</span> is the <em>least</em> such, so <span class="m">⌈r⌉ ≤ n</span>. <strong>(b)</strong> is the mirror argument through &ldquo;greatest integer <span class="m">≤ r</span>.&rdquo;</p>
+          <p>Position in the biconditional decides handedness: in <span class="m">⌈r⌉ ≤ n ⟺ r ≤ i(n)</span> the ceiling occupies the left slot of <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span>, so <span class="m">⌈−⌉ ⊣ i</span>; in <span class="m">i(n) ≤ r ⟺ n ≤ ⌊r⌋</span> the inclusion occupies it, so <span class="m">i ⊣ ⌊−⌋</span>. Note the pattern of the proofs: each &ldquo;⇒&rdquo; used a unit-style inequality (<span class="m">r ≤ ⌈r⌉</span>), each &ldquo;⇐&rdquo; used an extremality clause — the same division of labor as existence and uniqueness in Lesson 4.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Let <span class="m">f : P → Q</span> and <span class="m">g : Q → P</span> be functions between posets (not assumed monotone) satisfying the Galois biconditional <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span> for all <span class="m">x, y</span>.</p>
+        <ol>
+          <li>Derive the unit and counit inequalities: <span class="m">x ≤ g(f(x))</span> and <span class="m">f(g(y)) ≤ y</span>.</li>
+          <li>Show that <span class="m">f</span> and <span class="m">g</span> are automatically monotone — the biconditional alone forces it.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> Instantiate the biconditional at <span class="m">y = f(x)</span>: the left side <span class="m">f(x) ≤ f(x)</span> holds, so <span class="m">x ≤ g(f(x))</span>. Dually, at <span class="m">x = g(y)</span>: the right side holds, so <span class="m">f(g(y)) ≤ y</span>. These are <span class="m">η</span> and <span class="m">ε</span> in a world where a natural transformation is just a family of inequalities (Lesson 3, Exercise 5).</p>
+          <p><strong>(b)</strong> Suppose <span class="m">x ≤ x&prime;</span>. By (a), <span class="m">x&prime; ≤ g(f(x&prime;))</span>, so <span class="m">x ≤ g(f(x&prime;))</span> by transitivity — and the biconditional, read right-to-left with <span class="m">y = f(x&prime;)</span>, converts this to <span class="m">f(x) ≤ f(x&prime;)</span>. Monotonicity of <span class="m">g</span> is the mirror argument. The moral generalizes: an adjunction is such a tightly-coupled structure that properties of one side leak to the other — here, even <em>functoriality</em> came for free.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>The summit. Let <span class="m">η : Id ⇒ U∘F</span> and <span class="m">ε : F∘U ⇒ Id</span> satisfy the triangle identities. Define the two candidate transpositions:</p>
+        <p style="text-align:center" class="m">φ(f̂) = U f̂ ∘ η<sub>X</sub> &nbsp;&nbsp;for f̂ : F X → Y, &nbsp;&nbsp;&nbsp; ψ(f) = ε<sub>Y</sub> ∘ F f &nbsp;&nbsp;for f : X → U Y.</p>
+        <p>Prove <span class="m">φ(ψ(f)) = f</span> and <span class="m">ψ(φ(f̂)) = f̂</span>. Each proof is three steps: expand the definition, slide one arrow across a naturality square (of <span class="m">η</span> in the first proof, of <span class="m">ε</span> in the second), and finish with a triangle identity. Write out which square and which triangle, at which object.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>First round trip.</strong> <span class="m">φ(ψ(f)) = U(ε<sub>Y</sub> ∘ F f) ∘ η<sub>X</sub> = U ε<sub>Y</sub> ∘ U F f ∘ η<sub>X</sub></span> (functoriality of <span class="m">U</span>). Now the naturality square of <span class="m">η</span> at the arrow <span class="m">f : X → U Y</span> says <span class="m">U F f ∘ η<sub>X</sub> = η<sub>U Y</sub> ∘ f</span> — slide it in: <span class="m">= U ε<sub>Y</sub> ∘ η<sub>U Y</sub> ∘ f</span>. The second triangle identity, at the object <span class="m">Y</span>, says <span class="m">U ε<sub>Y</sub> ∘ η<sub>U Y</sub> = id<sub>U Y</sub></span>. Hence <span class="m">φ(ψ(f)) = f</span>.</p>
+          <p><strong>Second round trip.</strong> <span class="m">ψ(φ(f̂)) = ε<sub>Y</sub> ∘ F(U f̂ ∘ η<sub>X</sub>) = ε<sub>Y</sub> ∘ F U f̂ ∘ F η<sub>X</sub></span>. Naturality of <span class="m">ε</span> at the arrow <span class="m">f̂ : F X → Y</span> gives <span class="m">ε<sub>Y</sub> ∘ F U f̂ = f̂ ∘ ε<sub>F X</sub></span>: <span class="m">= f̂ ∘ ε<sub>F X</sub> ∘ F η<sub>X</sub></span>, and the first triangle identity at <span class="m">X</span> collapses the tail to <span class="m">id<sub>F X</sub></span>. Hence <span class="m">ψ(φ(f̂)) = f̂</span>.</p>
+          <p>Every tool in the proof was built in an earlier lesson: functor laws (Lesson 2), naturality squares (Lesson 3), and a pair of equations playing exactly the role the &ldquo;exactly one&rdquo; clause played in Lessons 4–5. This exercise is the course&rsquo;s machinery operating as a single machine.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>Freeness in action. Let <span class="m">X = {a, b}</span> and let <span class="m">M = (ℕ, +, 0)</span>, with <span class="m">f(a) = 2</span>, <span class="m">f(b) = 3</span>.</p>
+        <ol>
+          <li>Compute <span class="m">f̂([a, b, a])</span>.</li>
+          <li>Prove the uniqueness half of the universal property by hand: any monoid homomorphism <span class="m">h : List X → M</span> with <span class="m">h([x]) = f(x)</span> for all <span class="m">x</span> must equal <span class="m">f̂</span> on every list. Where do the two homomorphism laws each get used?</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> <span class="m">f̂([a, b, a]) = f(a) + f(b) + f(a) = 2 + 3 + 2 = 7</span> — as §5&rsquo;s run printed.</p>
+          <p><strong>(b)</strong> Any list factors as a concatenation of singletons: <span class="m">[x₁, …, xₙ] = [x₁] ⧺ ⋯ ⧺ [xₙ]</span>. Since <span class="m">h</span> preserves the operation, <span class="m">h([x₁, …, xₙ]) = h([x₁]) + ⋯ + h([xₙ]) = f(x₁) + ⋯ + f(xₙ) = f̂([x₁, …, xₙ])</span>; and the empty list is the unit, so preservation of units forces <span class="m">h([]) = 0</span>, covering the base case. Operation-preservation handled every list of length <span class="m">≥ 1</span>; unit-preservation handled length 0; no room was left anywhere.</p>
+          <p>This is what &ldquo;no relations beyond the forced ones&rdquo; buys: the generators generate, so agreement on generators plus the homomorphism laws leaves zero freedom. It is also why the adjoint is unique — any two candidate free monoids on <span class="m">X</span> receive mutually inverse homomorphisms by exactly this argument, Lesson 4&rsquo;s uniqueness proof wearing a new hat.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>The product category <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> has pairs of objects as objects and pairs of arrows as arrows, composed slotwise; the diagonal functor <span class="m">Δ</span> sends <span class="m">X</span> to <span class="m">(X, X)</span> and <span class="m">f</span> to <span class="m">(f, f)</span>.</p>
+        <ol>
+          <li>Describe the hom-set <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B))</span> and show that Lesson 4&rsquo;s product universal property is exactly the statement <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B)) ≅ <span class="cat">𝒞</span>(X, A × B)</span> — i.e. <span class="m">Δ ⊣ ×</span>.</li>
+          <li>Dualize to show <span class="m">+ ⊣ Δ</span>, and name the counit of <span class="m">Δ ⊣ ×</span> and the unit of <span class="m">+ ⊣ Δ</span> — both are old friends.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> An arrow <span class="m">Δ X → (A, B)</span> is a pair <span class="m">(f, g)</span> with <span class="m">f : X → A</span> and <span class="m">g : X → B</span> — nothing more. Lesson 4&rsquo;s product says exactly that such pairs correspond bijectively (and naturally — the pairing construction respects composition) to single arrows <span class="m">X → A × B</span>, via <span class="m">(f, g) ↔ ⟨f, g⟩</span>. That bijection <em>is</em> the adjunction <span class="m">Δ ⊣ ×</span>.</p>
+          <p><strong>(b)</strong> Reversing arrows: <span class="m"><span class="cat">𝒞</span>(A + B, X) ≅ (<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)((A, B), Δ X)</span> — a map out of the coproduct is a pair of maps — putting <span class="m">+</span> in the left slot: <span class="m">+ ⊣ Δ ⊣ ×</span>, a sandwich with Δ as the bread, just like the inclusion between ceiling and floor. The counit of <span class="m">Δ ⊣ ×</span> at <span class="m">(A, B)</span> is the pair of <strong>projections</strong> <span class="m">(π₁, π₂) : (A×B, A×B) → (A, B)</span>; the unit of <span class="m">+ ⊣ Δ</span> is the pair of <strong>injections</strong>. Lesson 4&rsquo;s cast of characters were unit and counit all along — and replacing Δ by Lesson 5&rsquo;s constant-diagram functor makes every limit a right adjoint and every colimit a left one.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">think</span></div>
+      <div class="prob-body">
+        <p>A two-line non-existence theorem. Using RAPL&rsquo;s dual — <em>left adjoints preserve colimits</em>, in particular initial objects — prove that the forgetful functor <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has <strong>no right adjoint</strong>.</p>
+        <p>(You will need Lesson 4&rsquo;s inventory: the initial object of <span class="cat">Grp</span> is the trivial group; the initial object of <span class="cat">Set</span> is the empty set.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>If <span class="m">U</span> had a right adjoint, <span class="m">U</span> would be a left adjoint, and would therefore preserve initial objects. But <span class="m">U</span> sends the initial object of <span class="cat">Grp</span> — the trivial group — to a <em>one-element</em> set, and the initial object of <span class="cat">Set</span> is the <em>empty</em> set. One-element sets are not initial (they receive many maps, and Lesson 4, Exercise 1 counted them), so <span class="m">U</span> does not preserve the initial object, and no right adjoint exists. ∎</p>
+          <p>Notice the asymmetry with the other flank: <span class="m">U</span> <em>does</em> have a left adjoint (free groups), which is why it preserves all limits — products, kernels-as-equalizers, pullbacks. The two adjoint questions about a single functor are genuinely independent, and RAPL turns each into a checklist of concrete preservation tests. §5&rsquo;s <code>f_bad</code> is this exact argument run by machine in a six-element universe.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Upgrade Exercise 1 to a census. For <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, enumerate <em>all</em> functions <span class="m">X × A → Y</span>, curry each one, and verify that currying is a bijection onto the functions <span class="m">X → Y<sup>A</sup></span> — by checking injectivity and comparing counts against <span class="m">|Y|<sup>|X|·|A|</sup></span> and <span class="m">(|Y|<sup>|A|</sup>)<sup>|X|</sup></span>.</p>
+        <p>Before running: why must those two counts be equal, and what law of arithmetic is the adjunction reproving?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The counts are <span class="m">3⁴ = 81</span> on both sides, and they must agree because currying is a bijection — the adjunction, restricted to finite sets and counted, is the exponent law <span class="m">y<sup>x·a</sup> = (y<sup>a</sup>)<sup>x</sup></span>. High-school algebra is the decategorified shadow of <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>census.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product as cartesian
+
+X, A, Y = range(2), range(2), range(3)
+pairs = [(x, a) for x in X for a in A]
+hs = [dict(zip(pairs, vs)) for vs in cartesian(Y, repeat=len(pairs))]
+
+curry  = lambda h: tuple(tuple(h[(x, a)] for a in A) for x in X)
+images = {curry(h) for h in hs}
+
+print(&quot;|Hom(XxA,Y)| =&quot;, len(hs), &quot; distinct curried =&quot;, len(images),
+      &quot; (|Y|^|A|)^|X| =&quot;, (len(Y) ** len(A)) ** len(X))</code></pre>
+            <div class="out"><span class="lbl">output</span>|Hom(XxA,Y)| = 81  distinct curried = 81  (|Y|^|A|)^|X| = 81</div>
+          </div>
+          <p style="margin-top:14px">81 inputs, 81 distinct curried outputs (injectivity), 81 possible targets: injective + equal finite cardinalities = bijection. The same three-number certificate would verify the bijection for any finite <span class="m">X, A, Y</span>.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
+      <div class="prob-body">
+        <p>Dualize the finder, in the tradition of Lessons 4 and 5: write <code>find_left_adjoints(g, D, C)</code>, which searches for all monotone <span class="m">f : C → D</span> satisfying the biconditional against a <em>given</em> <span class="m">g : D → C</span>.</p>
+        <p>Run it on the adjoint that §5 discovered, <span class="m">g = {1:0, 2:1, 3:0, 6:2}</span>. Predict the output first: how long should the list be, and what should be in it?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>Prediction: adjoints determine each other, so the list should have length exactly one, containing the original <span class="m">f = {0:1, 1:2, 2:6}</span> — the finder run in reverse should return us to our starting point.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>reverse.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>def find_left_adjoints(g, D, C):
+    &quot;all monotone f : C -&gt; D  with   f(x) &lt;= y   iff   x &lt;= g(y)&quot;
+    return [f for f in monotone_maps(C, D)
+            if all(bool(arrows_between(D, f[x], y)) ==
+                   bool(arrows_between(C, x, g[y]))
+                   for x in C.obj for y in D.obj)]
+
+g = {1: 0, 2: 1, 3: 0, 6: 2}
+print(find_left_adjoints(g, Div, Chain))</code></pre>
+            <div class="out"><span class="lbl">output</span>[{0: 1, 1: 2, 2: 6}]</div>
+          </div>
+          <p style="margin-top:14px">Confirmed: exactly one left adjoint, and it is the original <span class="m">f</span>. The biconditional is symmetric in the data it constrains, so each partner pins the other down — uniqueness of adjoints, demonstrated in both directions by the same search. Note what the dualization changed: only <em>which side of the biconditional is quantified over candidates</em>; the condition itself is untouched. Duality economizes even on code.</p>
+        </div>
+      </details>
+    </div>
+  
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">code · new</span></div>
+      <div class="prob-body">
+
+        <p>Verify the quantifier sandwich by exhaustion. Take <span class="m">A = {1, 2, 3}</span>, <span class="m">B = {a, b}</span>, and <span class="m">f(1) = f(2) = a, f(3) = b</span>. Implement <span class="m">∃<sub>f</sub></span>, <span class="m">f<sup>*</sup></span>, and <span class="m">∀<sub>f</sub></span>, and check both Galois biconditionals over <em>all</em> pairs of subsets — 8 × 4 pairs, two biconditionals each.</p>
+        <p>One subtlety to handle before running: what should <span class="m">∀<sub>f</sub></span> do with an element of <span class="m">B</span> that has <em>no</em> preimages at all?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>An element with empty preimage satisfies &ldquo;every preimage lies in <span class="m">S</span>&rdquo; vacuously, so it belongs to <span class="m">∀<sub>f</sub>(S)</span> for every <span class="m">S</span> — the code&rsquo;s <code>all(...)</code> over an empty iterable returns <code>True</code>, which is the right answer for the same vacuous reason the empty function made <span class="m">∅</span> initial in Lesson 4.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>quantifiers.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import combinations
+
+A = {1, 2, 3}; B = {&#x27;a&#x27;, &#x27;b&#x27;}
+fpt = {1: &#x27;a&#x27;, 2: &#x27;a&#x27;, 3: &#x27;b&#x27;}
+f = lambda x: fpt[x]
+
+def subsets(S):
+    S = list(S)
+    return [set(c) for r in range(len(S)+1) for c in combinations(S, r)]
+
+E   = lambda S: {f(x) for x in S}                     # ∃f : direct image
+pre = lambda T: {x for x in A if f(x) in T}           # f* : preimage
+All = lambda S: {b for b in B                         # ∀f
+                 if all(x in S for x in A if f(x) == b)}
+
+n = 0
+for S in subsets(A):
+    for T in subsets(B):
+        assert (E(S) &lt;= T) == (S &lt;= pre(T))     # ∃f  -|  f*
+        assert (pre(T) &lt;= S) == (T &lt;= All(S))   # f*  -|  ∀f
+        n += 2
+print(f&quot;quantifier sandwich verified on {n} biconditionals&quot;)</code></pre>
+            <div class="out"><span class="lbl">output</span>quantifier sandwich verified on 64 biconditionals</div>
+          </div>
+          <p style="margin-top:14px">Sixty-four checks, zero exceptions. Reading the units: <span class="m">S ⊆ f<sup>*</sup>(∃<sub>f</sub> S)</span> says &ldquo;everything in <span class="m">S</span> maps into the image of <span class="m">S</span>&rdquo; — a tautology, which is what units of adjunctions usually are once decoded. Quantifiers, images, preimages: the logic you already knew, filed under Lesson 6.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-body">
+
+        <p>Adjunctions compose. Given <span class="m">F ⊣ U</span> between <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, and <span class="m">F&prime; ⊣ U&prime;</span> between <span class="cat">𝒟</span> and <span class="cat">ℰ</span>, show that <span class="m">F&prime; ∘ F ⊣ U ∘ U&prime;</span> — and note carefully which functor ends up on which side.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Chain the two bijections: <span class="m"><span class="cat">ℰ</span>(F&prime;F X, Z) ≅ <span class="cat">𝒟</span>(F X, U&prime;Z) ≅ <span class="cat">𝒞</span>(X, U U&prime; Z)</span> — the first by <span class="m">F&prime; ⊣ U&prime;</span> at the pair <span class="m">(F X, Z)</span>, the second by <span class="m">F ⊣ U</span> at <span class="m">(X, U&prime;Z)</span>. A composite of bijections is a bijection, and each stage is natural in both slots, so the composite is too. Note the order: the left adjoints compose as <span class="m">F&prime; ∘ F</span> (apply <span class="m">F</span> first) while the right adjoints compose as <span class="m">U ∘ U&prime;</span> (apply <span class="m">U&prime;</span> first) — reversed, socks-and-shoes yet again.</p>
+          <p>Instances are everywhere once you look: free monoid on a set factors as &ldquo;free semigroup, then adjoin a unit&rdquo;; and in the quantifier sandwich, <span class="m">∃</span> along a composite function is the composite of the <span class="m">∃</span>&rsquo;s — image-of-image, the covariant powerset functor law of Lesson 2&rsquo;s new Exercise 11, now recognized as composed left adjoints.</p>
+        </div>
+      </details>
+    </div>
+</div>
+</section>
+
+<!-- ============ RECAP / NEXT ============ -->
+<section class="section">
+  <div class="measure">
+    <div class="sec-no">Recap</div>
+    <h2>What to carry forward</h2>
+    <ol class="takeaways">
+      <li>An <strong>adjunction</strong> <span class="m">F ⊣ U</span> is a bijection <span class="m"><span class="cat">𝒟</span>(F X, Y) ≅ <span class="cat">𝒞</span>(X, U Y)</span>, natural in both variables — a perfect exchange rate between two kinds of arrow. The left adjoint sits on the left of the hom-set.</li>
+      <li>Equivalently: a <strong>unit</strong> <span class="m">η : Id ⇒ UF</span> and <strong>counit</strong> <span class="m">ε : FU ⇒ Id</span> satisfying the two triangle identities. Transposition is <span class="m">U(−) ∘ η</span> one way and <span class="m">ε ∘ F(−)</span> the other.</li>
+      <li>The gallery: <strong>free ⊣ forgetful</strong> (foldMap), <strong>currying</strong> <span class="m">(−) × A ⊣ (−)<sup>A</sup></span> with <span class="m">eval</span> as counit, <strong>Galois connections</strong> in posets (<span class="m">⌈−⌉ ⊣ i ⊣ ⌊−⌋</span>), and <span class="m">+ ⊣ Δ ⊣ ×</span> — limits and colimits are adjoints of diagonal functors.</li>
+      <li><strong>RAPL</strong>: right adjoints preserve limits, left adjoints preserve colimits — and the contrapositive proves non-existence of adjoints in two lines.</li>
+      <li><strong>Adjoints are unique</strong> up to natural isomorphism, and in finite posets they are literally findable by search — with the found list always of length one or zero.</li>
+    </ol>
+
+    <div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="70" height="44" viewBox="0 0 70 44">
+          <circle cx="22" cy="22" r="13" fill="none" stroke="var(--arrow)" stroke-width="1.6"/>
+          <path d="M35 22 L57 22" fill="none" stroke="var(--amber)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M57 22 l-7 -3.5 M57 22 l-7 3.5" fill="none" stroke="var(--amber)" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">Coming next · Lesson 07</span>
+        <h3>Yoneda &amp; monads — the course&rsquo;s two punchlines</h3>
+        <p>Yoneda makes the course&rsquo;s slogan a theorem: an object is exactly the arrows into it. And composing the two halves of any adjunction breeds a <strong>monad</strong> — the algebra of effects that programmers have been using all along. <span class="m">U∘F</span> for the free-monoid adjunction is <span class="m">List</span>; Lesson 3&rsquo;s <code>flatten</code> was its multiplication.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Intro to Category Theory · Lesson 06 · arrows traded at par</footer>
+
+</main>
+</div>
+
+<script>
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+function setLabel(t, label){
+  const parts = String(label).split("~");
+  t.textContent = parts[0];
+  if(parts[1]){
+    const s = el("tspan", {dy:"5","font-size":"12"}, t);
+    s.textContent = parts[1];
+  }
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, labelAt;
+    let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+    let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+    let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+    const px=-uy, py=ux, off = a.curve ?? 0;
+    if(off){
+      const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
+      shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+      labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+    } else {
+      shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+      const lo = a.lo ?? 14;
+      labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+    }
+
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:full, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
+  });
+}
+
+const DIAGRAMS = {
+  hero: {
+    w:440, h:270,
+    nodes:[
+      {id:"C", x:95,  y:135, label:"\ud835\udc9e", cls:"region"},
+      {id:"D", x:345, y:135, label:"\ud835\udc9f", cls:"region"},
+      {id:"adj", x:220, y:135, label:"\u22a3", cls:"amber"},
+    ],
+    arrows:[
+      {from:"C", to:"D", label:"F", curve:-58, rs:30, re:32, delay:0},
+      {from:"D", to:"C", label:"U", curve:-58, rs:30, re:32, delay:260},
+    ]
+  },
+  transpose: {
+    w:460, h:290,
+    nodes:[
+      {id:"FX", x:95,  y:75,  label:"FX"},
+      {id:"Y",  x:365, y:75,  label:"Y"},
+      {id:"X",  x:95,  y:225, label:"X"},
+      {id:"UY", x:365, y:225, label:"UY"},
+      {id:"iso", x:230, y:150, label:"\u2245", cls:"amber"},
+    ],
+    arrows:[
+      {from:"FX", to:"Y",  label:"f\u0302", lo:-14, rs:24, delay:0},
+      {from:"X",  to:"UY", label:"f", lo:15, re:26, delay:200},
+      {from:"X",  to:"FX", label:"F", lo:-13, cls:"soft", lcls:"soft", delay:420},
+      {from:"Y",  to:"UY", label:"U", lo:-13, cls:"soft", lcls:"soft", delay:560},
+    ]
+  },
+  eval: {
+    w:520, h:300,
+    nodes:[
+      {id:"XA", x:110, y:70,  label:"X\u00d7A"},
+      {id:"Y",  x:430, y:160, label:"Y"},
+      {id:"EA", x:110, y:250, label:"Y^A\u00d7A", cls:"amber"},
+    ],
+    arrows:[
+      {from:"XA", to:"Y", label:"g", lo:-16, rs:30, delay:0},
+      {from:"EA", to:"Y", label:"eval", lo:16, rs:36, delay:200},
+      {from:"XA", to:"EA", label:"curry(g)\u00d7id", lo:-64, cls:"unique", lcls:"amber", delay:460},
+    ]
+  },
+  triangle: {
+    w:460, h:280,
+    nodes:[
+      {id:"FX1",  x:90,  y:75,  label:"FX"},
+      {id:"FUFX", x:355, y:75,  label:"FUFX"},
+      {id:"FX2",  x:355, y:225, label:"FX"},
+    ],
+    arrows:[
+      {from:"FX1", to:"FUFX", label:"F\u03b7~X", lo:-15, rs:24, re:38, delay:0},
+      {from:"FUFX", to:"FX2", label:"\u03b5~FX", lo:-16, rs:22, delay:200},
+      {from:"FX1", to:"FX2", label:"id~FX", lo:20, cls:"soft", lcls:"soft", rs:24, delay:420},
+    ]
+  },
+};
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(spec) build(div.querySelector("svg"), spec);
+  });
+}
+renderAll();
+
+if(reduce){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "\u2014"; });
+  });
+});
+</script>
