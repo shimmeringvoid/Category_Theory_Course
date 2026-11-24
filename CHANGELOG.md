@@ -150,9 +150,10 @@ Mathematics and wording, by first-edition lesson number.
     Eilenberg–Moore to "the next course" although the lesson introduced
     both. Both constructions are now treated in full.
   - Exercise 9(b)'s hand computation followed the other bracketing from the
-    one asked for; "seven lessons later" was six; JavaScript promises were
-    listed as a lawful instance of bind; the Kleisli diagram's label put its
-    subscript on the wrong symbol.
+    one asked for; "seven lessons later" was six; JavaScript promise
+    chaining was given as an instance of bind with no caveat (promises
+    flatten themselves, so the laws do not hold in every case); the Kleisli
+    diagram's label put its subscript on the wrong symbol.
 
 Code and claims.
 
