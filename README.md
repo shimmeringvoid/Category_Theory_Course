@@ -1,68 +1,97 @@
 # Intro to Category Theory
 
 *Objects, arrows, and the discipline of never peeking inside — with animated
-diagrams and every claim checked in Python.*
+diagrams, full proofs, and optional Python labs in which every claim is checked.*
 
-A complete, self-contained seven-lesson course. Each lesson is a single
-polished HTML page — motivation, boxed definitions, worked examples with
-commutative diagrams that draw themselves, a "Going deeper" section, and a
-large exercise set with hidden solutions — paired with a runnable Python
-script and a JupyterLab notebook containing **every program in the lesson,
-verified**: each output shown in the pages was actually produced by the code.
+A complete, self-contained ten-lesson course. Each lesson is a single HTML
+page: motivation, boxed definitions and theorems with their proofs, worked
+examples with commutative diagrams that draw themselves, a section of
+computations carried out by hand, a "Going deeper" section, and a large
+exercise set with hidden solutions.
+
+**No programming is required.** Python is an optional track. Every lesson
+reads from start to finish without code; the Python lives in clearly marked,
+collapsible labs, and an exercise with a Python part always offers it as an
+optional extra beside a pen-and-paper version. For readers who do want it,
+each lesson's code is also collected in a script and a Jupyter notebook.
 
 ## The lessons
 
 | # | Lesson | Highlights |
 |---|--------|-----------|
-| 01 | [What Is a Category?](lesson-01-what-is-a-category.html) | The two laws; a `FiniteCategory` axiom checker; monos & epis |
-| 02 | [Functors](lesson-02-functors.html) | `map` fusion as a theorem; contravariance; the powerset functors |
-| 03 | [Natural Transformations](lesson-03-natural-transformations.html) | Naturality squares; why `sorted` and `dedupe` fail; interchange |
-| 04 | [Universal Properties](lesson-04-universal-properties.html) | Products = gcds; a category with *no* products, proved by search |
-| 05 | [Limits & Colimits](lesson-05-limits-and-colimits.html) | One general limit finder; pullbacks are database joins; pasting |
-| 06 | [Adjunctions](lesson-06-adjunctions.html) | foldMap; Galois connections; an adjoint *finder*; ∃ ⊣ f\* ⊣ ∀ |
-| 07 | [Yoneda & Monads](lesson-07-yoneda-and-monads.html) | Yoneda *counted*; List/Maybe/Writer laws by enumeration; Kleisli |
+| 01 | [What Is a Category?](lesson-01-what-is-a-category.html) | The two laws; sets, orders, monoids, relations, matrices; isomorphisms; monos & epis |
+| 02 | [Functors](lesson-02-functors.html) | `map` fusion as a theorem; hom functors; full, faithful, essentially surjective |
+| 03 | [Natural Transformations](lesson-03-natural-transformations.html) | Naturality squares; why `sorted` fails; the functor category; "natural in *X*" |
+| 04 | [Equivalence of Categories](lesson-04-equivalence-of-categories.html) | Why isomorphism is too strict; the recognition theorem; skeletons; dualities |
+| 05 | [New Categories from Old](lesson-05-new-categories-from-old.html) | Opposites and the duality principle; products; slices; comma categories |
+| 06 | [Universal Properties](lesson-06-universal-properties.html) | Products = gcds; a category with *no* products; the uniqueness argument |
+| 07 | [Limits & Colimits](lesson-07-limits-and-colimits.html) | Pullbacks are database joins; a formula for every limit of sets; hom functors preserve limits |
+| 08 | [Adjunctions](lesson-08-adjunctions.html) | Free ⊣ forgetful; Galois connections; universal arrows; RAPL proved twice; ∃ ⊣ f\* ⊣ ∀ |
+| 09 | [Representables & the Yoneda Lemma](lesson-09-representables-and-yoneda.html) | Graphs as presheaves; "track the identity"; Cayley; universal properties as representations |
+| 10 | [Monads & Algebras](lesson-10-monads-and-algebras.html) | Monads from adjunctions; Kleisli = partial functions, relations; the algebras of List are the monoids |
 
 Start at [`index.html`](index.html) and read in order — the lessons build
-strictly on one another.
+strictly on one another. Lessons 1–5 set up the language, 6–8 are about
+universal constructions, and 9–10 are the two summits.
 
-## Repository layout
+## Two ways through the course
 
-```
-index.html, lesson-0*.html    the course website (open index.html locally,
-                              or serve via GitHub Pages)
-notebooks/lesson-0*.ipynb     one JupyterLab notebook per lesson: all of the
-                              lesson's verified code, sectioned and annotated
-code/lesson-0*.py             the same code as plain scripts (python3 file.py
-                              runs a lesson's entire verification suite)
-```
+**With pencil and paper.** Read the lesson, work through the "by hand"
+section, and do the exercises. Nothing else is needed.
 
-## Running the code
-
-No dependencies beyond the Python 3 standard library.
+**With Python as well.** Open the optional labs inside each lesson (the
+button at the top of a lesson page opens or closes all of them) and run the
+code as you go:
 
 ```bash
-# any lesson's full verification suite, as a script:
-python3 code/lesson-05-limits-and-colimits.py
+# a lesson's labs, as a script:
+python3 code/lesson-07-limits-and-colimits.py
 
 # or interactively:
 pip install jupyterlab
 jupyter lab notebooks/
 ```
 
-Run notebook cells top to bottom. The best exercise is breaking an assertion
-on purpose and understanding exactly which law objected.
+There are no dependencies beyond the Python 3 standard library. Run notebook
+cells top to bottom. A good exercise is to break an assertion on purpose and
+understand exactly which law objected.
+
+## Repository layout
+
+```
+index.html                     the course's front page
+lesson-NN-<topic>.html         the ten lessons; each page is self-contained
+                               (styles, diagrams and scripts are inline)
+code/lesson-NN-<topic>.py      a lesson's optional Python, as a plain script
+notebooks/lesson-NN-….ipynb    the same code as a Jupyter notebook, with outputs
+tools/sync_code.py             regenerates code/ and notebooks/ from the pages
+tools/check_course.py          checks pages, links, code and generated files
+CHANGELOG.md                   what changed between editions
+```
+
+## Reproducibility
+
+The lesson pages are the single source of truth for the code. Every code box
+on a page runs from the page alone, top to bottom, and every output box is the
+verbatim output of the code above it. The files in `code/` and `notebooks/`
+are generated from the pages, never edited by hand.
+
+```bash
+python3 tools/check_course.py    # run every code box and compare its output with
+                                 # the page; check links, anchors, exercise
+                                 # numbering and the generated files
+python3 tools/sync_code.py       # after editing code on a page: regenerate
+                                 # code/ and notebooks/
+```
+
+If a page and a program ever disagree, the checker fails — and if you find a
+mathematical slip the checker cannot see, please open an issue.
 
 ## Publishing with GitHub Pages
 
 The site is plain static HTML at the repository root. In the repository
 settings choose **Pages → Deploy from a branch → main / (root)** and the
 course will be served at `https://<user>.github.io/<repo>/`.
-
-## Reproducibility
-
-Every output block in the HTML pages is the verbatim output of the
-corresponding code, which lives in `code/` and `notebooks/`. If a page and a
-program ever disagree, the program wins — please open an issue.
 
 ## Author & license
 

@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <!-- Intro to Category Theory — Lesson 1: What Is a Category? -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lesson 1 · What Is a Category?</title>
+<title>What Is a Category? — Intro to Category Theory, Lesson 1</title>
+<meta name="description" content="Stop asking what mathematical objects are made of. Ask only how they map to one another — and almost everything turns out to live in the arrows.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -74,7 +78,7 @@ h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;l
 }
 .eyebrow .dot{color:var(--arrow)}
 .hero h1{
-  font-size:clamp(40px,7.5vw,74px);
+  font-size:clamp(38px,7vw,70px);
   margin:0 0 .35em;
   font-weight:500;
 }
@@ -82,13 +86,14 @@ h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;l
 .lede{
   font-size:clamp(19px,2.4vw,23px);
   color:var(--ink-soft);
-  max-width:34ch;
+  max-width:38ch;
   margin:0;
 }
 .hero-diagram{
   margin:42px auto 8px;
-  max-width:520px;
+  max-width:480px;
 }
+.hero-diagram:has(.board.wide){max-width:600px}
 
 /* ---------- section scaffolding ---------- */
 .section{padding:54px 0}
@@ -98,7 +103,7 @@ h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;l
   font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--arrow);margin-bottom:12px;
 }
-.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:20ch}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
 .section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
 
 /* ---------- diagram figure ---------- */
@@ -119,11 +124,11 @@ figure{margin:34px 0;text-align:center}
     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:22px 22px;opacity:.5;
 }
-.board svg{position:relative;display:block;width:100%;height:auto;max-width:480px;margin-inline:auto}
-.board.wide svg{max-width:600px}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:470px;margin-inline:auto}
+.board.wide svg{max-width:580px}
 figcaption{
   font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;
-  max-width:52ch;margin-inline:auto;font-style:italic;
+  max-width:54ch;margin-inline:auto;font-style:italic;
 }
 
 /* svg primitives */
@@ -133,7 +138,7 @@ figcaption{
 .elabel.soft{fill:#5b62a0}
 .elabel.amber{fill:var(--amber)}
 .arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.arrow.soft{stroke:var(--arrow-soft);stroke-dasharray:0;}
+.arrow.soft{stroke:var(--arrow-soft)}
 .arrow.dashed{stroke:var(--arrow-soft)}
 .arrow.amber{stroke:var(--amber)}
 
@@ -214,25 +219,6 @@ pre code{color:var(--code-fg);font-size:13.5px;background:none}
 .ex h3{margin-top:0;display:flex;align-items:baseline;gap:.5em}
 .ex h3 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);font-weight:500}
 
-/* ---------- exercises ---------- */
-details{
-  border:1px solid var(--rule);border-radius:4px;background:#fff;
-  margin:14px 0;padding:0 20px;
-}
-details[open]{background:var(--paper-2)}
-summary{
-  cursor:pointer;padding:16px 0;font-weight:500;list-style:none;
-  display:flex;gap:.7em;align-items:baseline;
-}
-summary::-webkit-details-marker{display:none}
-summary .qn{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);flex:none}
-summary .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-faint);margin-left:auto;flex:none;
-  border:1px solid var(--rule);border-radius:20px;padding:2px 9px;align-self:center}
-.sol{padding:2px 0 20px;border-top:1px solid var(--rule);margin-top:2px;
-  color:var(--ink-soft);font-size:18px}
-.sol strong{color:var(--ink)}
-
 /* ---------- takeaways / next ---------- */
 .takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
 .takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
@@ -266,7 +252,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   .law .name{min-width:0}
 }
 
-/* ---------- expanded exercise format ---------- */
+/* ---------- exercises ---------- */
 .prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
 .prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
 .prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
@@ -276,21 +262,152 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 .prob-body p:last-child{margin-bottom:0}
 .prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
 .prob-body ol li{margin:.35em 0}
-.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
-.prob details[open]{background:transparent}
-.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s}
-.prob summary:hover{background:var(--blue-wash)}
-.prob summary::before{content:"+ ";font-weight:500}
-.prob details[open] summary::before{content:"\2212  "}
-.prob .sol{border:none;border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob > details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob > details[open]{background:transparent}
+.prob > details > summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob > details > summary::-webkit-details-marker{display:none}
+.prob > details > summary:hover{background:var(--blue-wash)}
+.prob > details > summary::before{content:"+ ";font-weight:500}
+.prob > details[open] > summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol strong{color:var(--ink)}
 .prob .sol p{margin:0 0 .9em}
 .prob .sol p:last-child{margin-bottom:0}
+
+/* ---------- diagram extras ---------- */
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.small{font-size:19px}
+.node.tiny{font-size:16px}
+.node.amber{fill:var(--amber)}
+.node.plain{font-style:normal}
+.node.dbl{font-family:"Fraunces",serif;font-style:normal;font-size:34px;fill:var(--arrow);opacity:0}
+.draw .node.dbl{opacity:1;transition:opacity .5s ease .35s}
+.elabel.big{font-size:25px;fill:var(--ink);stroke-width:5px}
+.elabel.mono{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:14px}
+.elabel.small{font-size:15px}
+.arrow.big{stroke-width:2.5}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+@media (prefers-reduced-motion:reduce){
+  .arrow.unique,.node.dbl{opacity:1 !important;transition:none !important}
+}
+
+/* ---------- theorem boxes, tables, breadcrumbs ---------- */
+.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.thm .tag{color:var(--amber)}
+.box ol,.box ul{margin:.4em 0 .6em;padding-left:1.3em}
+.box li{margin:.3em 0}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+.crumbs a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--ink-faint)}
+.crumbs a:hover{color:var(--arrow);border-bottom-color:var(--arrow)}
+.zoo{width:100%;border-collapse:collapse;margin:28px 0;font-size:17.5px}
+.zoo th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);text-align:left;padding:10px 12px;border-bottom:2px solid var(--rule)}
+.zoo td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+.zoo td:first-child{color:var(--ink)}
+.zoo td .m{color:var(--ink)}
+.zoo.shapes td:first-child{font-family:"IBM Plex Mono",monospace;font-size:14px;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+
+/* ---------- second edition: reading aids ---------- */
+h3.sub{font-size:23px;margin:1.7em 0 .6em}
+.eq{text-align:center;margin:1.1em 0 1.25em;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-bottom:2px}
+.eq .m{font-size:1.04em}
+.m sub,.m sup{font-size:.72em;line-height:0}
+.topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:20px;
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-faint)}
+.topnav a{color:var(--ink-faint);text-decoration:none}
+.topnav a:hover{color:var(--arrow)}
+.topnav + .hero{padding-top:44px}
+.pytoggle{font:inherit;letter-spacing:.06em;color:var(--amber);background:transparent;border:1px solid var(--amber);
+  border-radius:20px;padding:4px 13px;cursor:pointer;transition:.15s}
+.pytoggle:hover{background:var(--amber-wash)}
+.pytoggle[aria-pressed="true"]{background:var(--amber);color:#fff}
+.toc{border:1px solid var(--rule);border-radius:4px;background:#fff;padding:20px 24px;margin-top:34px}
+.toc .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:10px}
+.toc ul{list-style:none;margin:0;padding:0;columns:2;column-gap:34px;font-size:17px}
+.toc .n{display:inline-block;min-width:2.3em;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--arrow)}
+.toc li{margin:.22em 0;break-inside:avoid}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--arrow);text-decoration:underline}
+.toc .opt{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em}
+.tbl{border-collapse:collapse;margin:20px auto;font-size:17.5px}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:6px 13px;text-align:center}
+.tbl th{font-weight:500;font-style:italic;color:var(--arrow);background:var(--paper-2)}
+.tbl td{background:#fff;font-style:italic}
+.tbl caption{caption-side:bottom;font-size:15px;color:var(--ink-soft);font-style:italic;padding-top:10px}
+.box.hand .tag::before{content:"\270E\00a0";font-size:1.15em}
+.proof{color:var(--ink)}
+.qed{float:right}
+
+/* ---------- second edition: the optional Python track ---------- */
+details.pylab{margin:32px 0;border:1px solid #2f323c;border-radius:6px;overflow:hidden;background:#fff}
+details.pylab > summary{list-style:none;cursor:pointer;background:var(--code-bg);color:var(--code-fg);
+  padding:13px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.03em}
+details.pylab > summary::-webkit-details-marker{display:none}
+details.pylab > summary::after{content:"+ open";margin-left:auto;color:var(--code-dim);font-size:11.5px;letter-spacing:.08em}
+details.pylab[open] > summary::after{content:"\2212  close"}
+details.pylab > summary .badge{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#15171E;
+  background:#E3B36A;border-radius:20px;padding:2px 10px;font-weight:600;flex:none}
+details.pylab > summary:hover{background:#1d2029}
+details.pylab > .pybody{padding:22px 22px 8px;font-size:18.5px}
+details.pylab > .pybody > p:first-child{margin-top:0}
+details.pylab .code{margin:20px 0}
+.pynote{font-size:16.5px;color:var(--ink-soft);border-left:3px solid #E3B36A;padding:2px 0 2px 14px;margin:18px 0}
+.pytask{border:1px dashed var(--amber);border-radius:4px;background:rgba(246,236,220,.5);padding:14px 18px;margin:16px 0 4px;font-size:17.5px}
+.pytask .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:6px}
+.pytask p:last-child{margin-bottom:0}
+.sol .pytask{background:rgba(255,255,255,.55)}
+.prob-head .tier.py{color:var(--amber);border-color:var(--amber)}
+body.py-off .pyonly{display:none}
+
+/* ---------- second edition: pager ---------- */
+.next a{color:inherit;text-decoration:none}
+.next a:hover h3{color:var(--arrow)}
+.pager{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:26px;
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.05em}
+.pager a{color:var(--arrow);text-decoration:none;border:1px solid var(--rule);border-radius:22px;padding:7px 16px;background:#fff}
+.pager a:hover{border-color:var(--arrow)}
+.dl{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft);margin:14px 0 0}
+.dl a{color:var(--arrow)}
+
+@media (max-width:800px){
+  /* keep the title block off the edges of a narrow screen */
+  .hero.measure{padding-inline:26px}
+}
+@media (max-width:760px){
+  /* on narrow screens an inline formula may break at its spaces;
+     displayed formulas, tables and code scroll sideways instead */
+  .m{white-space:normal}
+  .eq .m,.tbl .m{white-space:nowrap}
+  .tablewrap{-webkit-overflow-scrolling:touch}
+}
+@media (max-width:560px){
+  .zoo{font-size:15.5px}
+  .toc ul{columns:1}
+  .tbl{font-size:15.5px}
+  .tbl th,.tbl td{padding:5px 8px}
+  details.pylab > .pybody{padding:16px 14px 4px}
+}
+@media print{
+  body::before{display:none}
+  .topnav,.pager,.copy,.pytoggle{display:none}
+  .board{break-inside:avoid}
+}
 </style>
+</head>
+<body>
 
 <div class="wrap">
 
-<!-- ============ HERO ============ -->
+<nav class="topnav measure" aria-label="Course">
+  <a href="index.html">← Intro to Category Theory · all lessons</a>
+  <button class="pytoggle" type="button" aria-pressed="false" title="Open or close every optional Python lab on this page">Python labs: closed</button>
+</nav>
+
 <header class="hero measure">
+  <div class="crumbs"><a href="index.html">Course index</a> &nbsp;›&nbsp; <b>Lesson 01 — Categories</b> &nbsp;›&nbsp; <a href="lesson-02-functors.html">Lesson 02 — Functors</a></div>
   <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 01</div>
   <h1>What Is a <span class="q">Category?</span></h1>
   <p class="lede">Stop asking what mathematical objects are made of. Ask only how they map to one another — and almost everything turns out to live in the arrows.</p>
@@ -299,23 +416,40 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
       <svg></svg>
     </div>
   </figure>
+  <nav class="toc" aria-label="In this lesson">
+    <span class="tag">In this lesson</span>
+    <ul>
+      <li><a href="#s1"><span class="n">§1</span>Why arrows?</a></li>
+      <li><a href="#s2"><span class="n">§2</span>The definition</a></li>
+      <li><a href="#s3"><span class="n">§3</span>Diagrams &amp; commuting</a></li>
+      <li><a href="#s4"><span class="n">§4</span>A gallery of categories</a></li>
+      <li><a href="#iso"><span class="n">§5</span>Isomorphisms</a></li>
+      <li><a href="#byhand"><span class="n">§6</span>Finite categories by hand</a></li>
+      <li><a href="#deeper"><span class="n"></span>Going deeper</a></li>
+      <li><a href="#s7"><span class="n">§7</span>Exercises</a></li>
+      <li><a href="#recap"><span class="n"></span>Recap</a></li>
+    </ul>
+    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-01-what-is-a-category.py">a script</a> and <a href="notebooks/lesson-01-what-is-a-category.ipynb">a notebook</a>.</p>
+  </nav>
 </header>
 
 <main>
 
-<!-- ============ §1 MOTIVATION ============ -->
-<section class="section">
+<section class="section" id="s1">
   <div class="measure">
     <div class="sec-no">§1 — Why arrows?</div>
     <h2>The same shape, over and over</h2>
     <p>Walk through any corner of mathematics and you keep meeting the same arrangement: a kind of <em>thing</em>, paired with a kind of <em>structure-preserving map</em> between those things.</p>
     <p>Sets come with functions. Groups come with homomorphisms. Vector spaces come with linear maps. Topological spaces come with continuous functions. Data types come with programs. In every one of these worlds the maps <strong>compose</strong> — do one, then another — composition is <strong>associative</strong>, and every object has a <strong>do-nothing</strong> map that changes nothing.</p>
     <p>Category theory takes that recurring shape and makes <em>it</em> the object of study. The move is deliberately austere: to understand an object, don't open it up and inspect its elements — look instead at the arrows going into and out of it. It sounds like throwing away information. It isn't. We'll soon be able to pin down ideas like <em>isomorphism</em>, <em>product</em>, and even <em>the empty set</em> using nothing but arrows and how they compose.</p>
+<div class="box">
+<span class="tag">Two ways through this course</span>
+<p>Everything here can be done with pencil and paper. Each lesson is complete as mathematics: definitions, examples, proofs, and exercises to work by hand. Alongside runs an <strong>optional Python track</strong> — dark panels marked <em>Optional · Python</em> that open when you click them (the switch at the top of the page opens or closes all of them at once). The labs re-check the lesson&rsquo;s claims by machine, and nothing outside them depends on them. If you have never written a line of code, skip every one and you will miss no mathematics. If you enjoy code, open them: watching a law fail an assertion is a memorable way to learn what the law says.</p>
+</div>
   </div>
 </section>
 
-<!-- ============ §2 DEFINITION ============ -->
-<section class="section">
+<section class="section" id="s2">
   <div class="measure">
     <div class="sec-no">§2 — The definition</div>
     <h2>A category is four pieces of data and two laws</h2>
@@ -354,8 +488,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   </div>
 </section>
 
-<!-- ============ §3 DIAGRAMS ============ -->
-<section class="section">
+<section class="section" id="s3">
   <div class="measure">
     <div class="sec-no">§3 — Diagrams &amp; commuting</div>
     <h2>How category theorists write equations: they draw them</h2>
@@ -363,10 +496,10 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
     <p>The triangle at the top of this page commutes precisely when the diagonal equals <span class="m">g ∘ f</span>. The square below commutes when going across-then-down equals going down-then-across:</p>
 
     <figure>
-      <div class="board" data-diagram="square" aria-label="A commutative square with objects A, B, C, D and arrows f, g, p, q; the path g after f equals the path q after p.">
+      <div class="board" data-diagram="square" aria-label="A commutative square with objects A, B, C, D and arrows f, g, p, q; the path q after f equals the path g after p.">
         <svg></svg>
       </div>
-      <figcaption>&ldquo;This square commutes&rdquo; is the picture-version of the equation <span class="m">g ∘ f = q ∘ p</span>. Whole proofs in category theory are chains of such squares glued edge to edge.</figcaption>
+      <figcaption>&ldquo;This square commutes&rdquo; is the picture-version of the equation <span class="m">q ∘ f = g ∘ p</span>. Whole proofs in category theory are chains of such squares glued edge to edge.</figcaption>
     </figure>
 
     <p>Once you trust diagrams, the associativity law stops looking like a rule you must remember and starts looking like an obvious fact about following paths: a string of arrows <span class="m">A → B → C → D</span> can be bracketed however you like, because the bracketing never changes the path you actually walk.</p>
@@ -380,11 +513,10 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   </div>
 </section>
 
-<!-- ============ §4 EXAMPLES ============ -->
-<section class="section">
+<section class="section" id="s4">
   <div class="measure">
     <div class="sec-no">§4 — A gallery of categories</div>
-    <h2>Five examples that stretch the definition in five directions</h2>
+    <h2>Nine examples that stretch the definition in every direction</h2>
     <p>The definition is abstract on purpose. The only cure for &ldquo;but what <em>is</em> a category, really?&rdquo; is to meet enough of them that the pattern, not any one instance, becomes the thing you see.</p>
 
     <div class="ex">
@@ -427,44 +559,158 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 
     <div class="ex">
       <h3><span class="n">v.</span> Types and programs</h3>
-      <p>In a typed programming language, take the types as objects and (pure, total) functions as arrows; composition is function composition and the identity is <code>lambda x: x</code>. This is the category programmers already work inside without naming it — which is exactly why the next section, where we drop into Python, will feel less like translation and more like recognition.</p>
+      <p>In a typed programming language, take the types as objects and (pure, total) functions as arrows; composition is function composition and the identity is the function that returns its argument unchanged. This is the category programmers already work inside without naming it — which is exactly why this course can offer an optional Python track: for a programmer, much of what follows is less translation than recognition.</p>
     </div>
+<div class="ex">
+<h3><span class="n">vi.</span> <span class="m"><span class="cat">Rel</span></span> — arrows that are not functions</h3>
+<p>Keep sets as the objects but let an arrow <span class="m">X → Y</span> be a <strong>relation</strong> from <span class="m">X</span> to <span class="m">Y</span>: any subset <span class="m">R ⊆ X × Y</span>, with <span class="m">x R y</span> read &ldquo;<span class="m">x</span> is related to <span class="m">y</span>.&rdquo; Relations compose by chaining through a middle element:</p>
+<p class="eq"><span class="m">S ∘ R = { (x, z) : there is some y with x R y and y S z },</span></p>
+<p>and the identity on <span class="m">X</span> is the equality relation <span class="m">{ (x, x) : x ∈ X }</span>. Associativity holds because both bracketings of <span class="m">T ∘ S ∘ R</span> unwind to the same statement — &ldquo;there are <span class="m">y</span> and <span class="m">z</span> with <span class="m">x R y</span>, <span class="m">y S z</span>, and <span class="m">z T w</span>&rdquo; — and composing with equality changes nothing. Every function is a relation (its graph), so <span class="m"><span class="cat">Set</span></span> sits inside <span class="m"><span class="cat">Rel</span></span>: same objects, fewer arrows. But a general arrow of <span class="m"><span class="cat">Rel</span></span> may relate one <span class="m">x</span> to several <span class="m">y</span>&rsquo;s, or to none. Nothing in the definition of a category asked arrows to be functions, and here they are not.</p>
+</div>
+<div class="ex">
+<h3><span class="n">vii.</span> <span class="m"><span class="cat">Mat</span></span> — where composition is matrix multiplication</h3>
+<p>Take the natural numbers <span class="m">0, 1, 2, …</span> as objects, and let an arrow <span class="m">n → m</span> be an <span class="m">m × n</span> matrix of real numbers (so a <span class="m">3 × 2</span> matrix is an arrow <span class="m">2 → 3</span>). Composition is matrix multiplication: for <span class="m">A : n → m</span> and <span class="m">B : m → p</span>, the composite <span class="m">B ∘ A</span> is the product <span class="m">BA</span>, a <span class="m">p × n</span> matrix. The identity on <span class="m">n</span> is the <span class="m">n × n</span> identity matrix. Here &ldquo;arrows are typed&rdquo; is a fact you already know under another name: the product <span class="m">BA</span> exists exactly when the shapes match, and the category laws are the associativity of matrix multiplication and <span class="m">IA = A = AI</span>. Notice that the objects of <span class="m"><span class="cat">Mat</span></span> have no elements whatsoever — the object <span class="m">3</span> is just the number three. (The object <span class="m">0</span> is included: there is exactly one &ldquo;empty&rdquo; matrix <span class="m">n → 0</span> and one <span class="m">0 → n</span> for each <span class="m">n</span>.)</p>
+</div>
+<div class="ex">
+<h3><span class="n">viii.</span> The big categories of mathematics</h3>
+<p>The examples that motivated the subject follow one template — sets with structure, functions that preserve it — and each is a category for the same reason <span class="m"><span class="cat">Set</span></span> is: a composite of structure-preserving functions preserves structure, and so does the identity function.</p>
+<div class="tablewrap"><table class="zoo">
+<tr><th>Category</th><th>Objects</th><th>Arrows</th></tr>
+<tr><td><span class="m"><span class="cat">Mon</span></span></td><td>monoids</td><td>monoid homomorphisms</td></tr>
+<tr><td><span class="m"><span class="cat">Grp</span></span>, <span class="m"><span class="cat">Ab</span></span></td><td>groups, abelian groups</td><td>group homomorphisms</td></tr>
+<tr><td><span class="m"><span class="cat">Ring</span></span></td><td>rings with <span class="m">1</span></td><td>ring homomorphisms (preserving <span class="m">1</span>)</td></tr>
+<tr><td><span class="m"><span class="cat">Vect</span></span></td><td>real vector spaces</td><td>linear maps</td></tr>
+<tr><td><span class="m"><span class="cat">Pos</span></span></td><td>partially ordered sets</td><td>monotone (order-preserving) functions</td></tr>
+<tr><td><span class="m"><span class="cat">Top</span></span></td><td>topological spaces</td><td>continuous functions</td></tr>
+</table></div>
+<p>You do not need to know all of these to follow the course. Use whichever you have met as a source of examples, and treat the rest as names to recognise later. Notice the two levels on which a monoid can now appear: a single monoid <em>is</em> a category (example iii), and all monoids together <em>form</em> one (<span class="m"><span class="cat">Mon</span></span>). Both viewpoints will be used.</p>
+</div>
+<div class="ex">
+<h3><span class="n">ix.</span> The smallest categories of all</h3>
+<p>Any set <span class="m">S</span> becomes a <strong>discrete category</strong>: the objects are the elements of <span class="m">S</span> and the only arrows are the identities. There is nothing to compose, so the laws hold with no work — a set is a category with no interesting arrows. The extreme case is the <strong>empty category</strong> <span class="m"><span class="cat">𝟘</span></span>, with no objects and no arrows; every requirement in the definition begins &ldquo;for every object&rdquo; or &ldquo;for every arrow,&rdquo; so all of them hold vacuously. Discrete categories and one-object categories are the two ends of a spectrum: all objects and no arrows, or one object and all arrows. A general category mixes the two.</p>
+</div>
   </div>
 </section>
 
-<!-- ============ §5 PYTHON ============ -->
-<section class="section">
-  <div class="measure">
-    <div class="sec-no">§5 — Category theory in Python</div>
-    <h2>Make the laws concrete: turn them into assertions</h2>
-    <p>Abstraction earns trust faster when you can poke it. First, inside <span class="cat">Set</span>, functions really are morphisms — let&rsquo;s build a composite by hand and watch the identity and associativity laws hold on an actual example.</p>
+
+
+<section class="section" id="iso">
+<div class="measure">
+<div class="sec-no">§5 — Isomorphisms</div>
+<h2>When two objects are the same for every arrows-only purpose</h2>
+<p>The first payoff of the arrows-only discipline is a definition of <em>sameness</em> that never mentions an element.</p>
+<div class="box def">
+<span class="tag">Definition · Isomorphism</span>
+<p>An arrow <span class="m">f : X → Y</span> is an <strong>isomorphism</strong> if there is an arrow <span class="m">g : Y → X</span> with</p>
+<p class="eq"><span class="m">g ∘ f = id<sub>X</sub> &nbsp;&nbsp;and&nbsp;&nbsp; f ∘ g = id<sub>Y</sub>.</span></p>
+<p>Such a <span class="m">g</span> is an <strong>inverse</strong> of <span class="m">f</span>. When an inverse exists it is unique (Exercise 8), and is written <span class="m">f<sup>−1</sup></span>. Two objects are <strong>isomorphic</strong>, written <span class="m">X ≅ Y</span>, when some isomorphism runs between them.</p>
+</div>
+<figure>
+<div class="board" data-diagram="iso" aria-label="Two objects X and Y joined by an arrow f from X to Y and its inverse from Y to X.">
+<svg></svg>
+</div>
+<figcaption>An isomorphism is a round trip in each direction that returns exactly where it began: <span class="m">f<sup>−1</sup> ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ f<sup>−1</sup> = id<sub>Y</sub></span>.</figcaption>
+</figure>
+<p>What an isomorphism <em>is</em> depends on the category, and the gallery of §4 gives the tour.</p>
+<ul>
+<li>In <span class="m"><span class="cat">Set</span></span> the isomorphisms are exactly the <strong>bijections</strong>: a function has a two-sided inverse precisely when it is one-to-one and onto. So two finite sets are isomorphic exactly when they have the same number of elements — <span class="m">{1, 2, 3} ≅ {a, b, c}</span> — and nothing about what the elements <em>are</em> survives.</li>
+<li>In a preorder, <span class="m">x ≅ y</span> means <span class="m">x ≤ y</span> and <span class="m">y ≤ x</span>. In a <em>partial</em> order that forces <span class="m">x = y</span>; in a general preorder it does not. Order the integers by divisibility: <span class="m">3</span> divides <span class="m">−3</span> and <span class="m">−3</span> divides <span class="m">3</span>, so <span class="m">3 ≅ −3</span> although <span class="m">3 ≠ −3</span>.</li>
+<li>In a monoid viewed as a one-object category, the isomorphisms are the <strong>invertible elements</strong>. In the monoid of integers under multiplication these are <span class="m">1</span> and <span class="m">−1</span>; in <span class="m">(ℤ/3, +)</span> every element is invertible, which is what makes it a group.</li>
+<li>In <span class="m"><span class="cat">Mat</span></span> an arrow is an isomorphism exactly when the matrix is invertible. Invertible matrices are square, so in <span class="m"><span class="cat">Mat</span></span> two <em>different</em> objects are never isomorphic.</li>
+<li>In <span class="m"><span class="cat">Grp</span></span>, <span class="m"><span class="cat">Vect</span></span> and <span class="m"><span class="cat">Top</span></span> the isomorphisms are the group isomorphisms, the invertible linear maps, and the homeomorphisms.</li>
+</ul>
+<div class="box amber">
+<span class="tag">Careful · Isomorphism is not &ldquo;bijective arrow&rdquo;</span>
+<p>In <span class="m"><span class="cat">Grp</span></span> and <span class="m"><span class="cat">Vect</span></span>, a homomorphism that happens to be a bijection always has a homomorphism for its inverse. In <span class="m"><span class="cat">Pos</span></span> and <span class="m"><span class="cat">Top</span></span> that fails. Take the two-element set <span class="m">{a, b}</span> twice: once with no order relation between <span class="m">a</span> and <span class="m">b</span>, once with <span class="m">a ≤ b</span>. The identity function from the first to the second is monotone and bijective, but its inverse is not monotone — so it is <em>not</em> an isomorphism in <span class="m"><span class="cat">Pos</span></span>. The arrow-theoretic definition gets every case right for one reason: it demands an inverse <strong>in the category</strong>.</p>
+</div>
+<p>Three facts, each a short exercise in arrow-pushing (Exercise 8), make <span class="m">≅</span> behave like equality: every identity is an isomorphism; the inverse of an isomorphism is an isomorphism; a composite of isomorphisms is an isomorphism. Together they say:</p>
+<div class="box thm">
+<span class="tag">Proposition · Isomorphism is an equivalence relation</span>
+<p>In any category: <span class="m">X ≅ X</span>; if <span class="m">X ≅ Y</span> then <span class="m">Y ≅ X</span>; and if <span class="m">X ≅ Y</span> and <span class="m">Y ≅ Z</span> then <span class="m">X ≅ Z</span>.</p>
+</div>
+<p><strong>Proof.</strong> The identity <span class="m">id<sub>X</sub></span> is its own inverse, giving <span class="m">X ≅ X</span>. If <span class="m">f : X → Y</span> has inverse <span class="m">g</span>, then the two defining equations, read with the roles of <span class="m">f</span> and <span class="m">g</span> exchanged, say that <span class="m">g : Y → X</span> has inverse <span class="m">f</span>. And if <span class="m">f : X → Y</span> and <span class="m">f′ : Y → Z</span> are isomorphisms, then <span class="m">f′ ∘ f</span> has inverse <span class="m">f<sup>−1</sup> ∘ f′<sup>−1</sup></span> by Exercise 8(c). ∎</p>
+<h3 class="sub">Isomorphic objects have the same arrows</h3>
+<p>Here is the reason category theory treats isomorphic objects as interchangeable. Suppose <span class="m">f : X → Y</span> is an isomorphism, and let <span class="m">W</span> be any object at all. Then composing with <span class="m">f</span> converts arrows into <span class="m">X</span> to arrows into <span class="m">Y</span>,</p>
+<p class="eq"><span class="m">(h : W → X) &nbsp;↦&nbsp; (f ∘ h : W → Y),</span></p>
+<p>and this conversion is a bijection: its inverse is <span class="m">k ↦ f<sup>−1</sup> ∘ k</span>, since <span class="m">f<sup>−1</sup> ∘ (f ∘ h) = (f<sup>−1</sup> ∘ f) ∘ h = h</span> and <span class="m">f ∘ (f<sup>−1</sup> ∘ k) = k</span>. The same works for arrows <em>out of</em> <span class="m">X</span> and <span class="m">Y</span>, composing on the other side. So <span class="m">X</span> and <span class="m">Y</span> have, in a precise sense, the same arrows to and from every other object, and anything you can say about <span class="m">X</span> in the language of arrows can be translated along <span class="m">f</span> into a statement about <span class="m">Y</span>. A property is called <strong>categorical</strong> when isomorphic objects always share it. &ldquo;Has exactly three elements&rdquo; is a categorical property of a set; &ldquo;contains the number 7&rdquo; is not, and category theory will never ask.</p>
+<p>Lesson 9 turns this observation around into a theorem, the Yoneda lemma: an object is <em>determined</em> up to isomorphism by its arrows.</p>
+<h3 class="sub">Symmetries</h3>
+<p>An arrow <span class="m">X → X</span> is an <strong>endomorphism</strong> of <span class="m">X</span>, and an isomorphism <span class="m">X → X</span> is an <strong>automorphism</strong>. The automorphisms of an object can always be composed with one another, composition is associative, <span class="m">id<sub>X</sub></span> is a unit, and each has an inverse: they form a group, written <span class="m">Aut(X)</span>. In <span class="m"><span class="cat">Set</span></span>, the automorphisms of <span class="m">{1, 2, 3}</span> are its <span class="m">3! = 6</span> permutations. Groups are what the symmetries of an object look like, in any category whatever — which is one reason the one-object categories of example (iii) deserve their place in the gallery. A category in which <em>every</em> arrow is an isomorphism is called a <strong>groupoid</strong>; a group is exactly a groupoid with one object (Exercise 3).</p>
+</div>
+</section>
+
+<section class="section" id="byhand">
+<div class="measure">
+<div class="sec-no">§6 — Finite categories by hand</div>
+<h2>Make the laws concrete: write the whole category down</h2>
+<p>A category with finitely many arrows is a finite amount of information, and all of it fits on one sheet of paper. List the objects; list the arrows with their sources and targets; then fill in a <strong>composition table</strong> recording <span class="m">g ∘ f</span> for every composable pair. Once that is done the two laws stop being abstractions. They are finitely many equations, and you can check every one.</p>
+<h3 class="sub">First table: the chain <span class="m"><span class="cat">𝟛</span></span></h3>
+<p>Build a category from the chain <span class="m">0 ≤ 1 ≤ 2</span> as in example (ii): one arrow for each true inequality. That gives three identities <span class="m">i<sub>0</sub>, i<sub>1</sub>, i<sub>2</sub></span>, the arrows <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span>, and — because <span class="m">0 ≤ 2</span> as well — an arrow <span class="m">c : 0 → 2</span>. Six arrows in all. In the table below, the entry in row <span class="m">g</span> and column <span class="m">f</span> is <span class="m">g ∘ f</span>, and a dash marks a pair that cannot be composed because the target of <span class="m">f</span> is not the source of <span class="m">g</span>.</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>g ∘ f</th><th>i₀</th><th>i₁</th><th>i₂</th><th>a</th><th>b</th><th>c</th></tr>
+<tr><th>i₀</th><td>i₀</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+<tr><th>i₁</th><td>–</td><td>i₁</td><td>–</td><td>a</td><td>–</td><td>–</td></tr>
+<tr><th>i₂</th><td>–</td><td>–</td><td>i₂</td><td>–</td><td>b</td><td>c</td></tr>
+<tr><th>a</th><td>a</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+<tr><th>b</th><td>–</td><td>b</td><td>–</td><td>c</td><td>–</td><td>–</td></tr>
+<tr><th>c</th><td>c</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+<caption>The category <span class="m"><span class="cat">𝟛</span></span>, complete: ten composable pairs out of thirty-six.</caption>
+</table></div>
+<p>Only one entry carries real information: <span class="m">b ∘ a = c</span>. Every other entry involves an identity, and the identity law dictates it. Now check the definition against the table, one requirement at a time.</p>
+<ol>
+<li><strong>Typing.</strong> Each entry <span class="m">g ∘ f</span> must run from the source of <span class="m">f</span> to the target of <span class="m">g</span>. For the interesting entry: <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span>, and the table gives <span class="m">c : 0 → 2</span>. Correct.</li>
+<li><strong>Identity law.</strong> The row of an identity, and the column of an identity, must copy the other arrow unchanged — <span class="m">i<sub>1</sub> ∘ a = a</span>, <span class="m">b ∘ i<sub>1</sub> = b</span>, and so on. Scan the table: every identity row and column does exactly that.</li>
+<li><strong>Associativity.</strong> For every composable triple, <span class="m">h ∘ (g ∘ f)</span> must equal <span class="m">(h ∘ g) ∘ f</span>. If one of the three arrows is an identity the equation follows from the identity law, so only triples of non-identity arrows need attention — and <span class="m"><span class="cat">𝟛</span></span> has none, since three steps up a chain need four objects.</li>
+</ol>
+<p>So <span class="m"><span class="cat">𝟛</span></span> is a category, verified completely by hand. The reasoning in step 3 can be made even shorter. In a category built from a preorder there is at most one arrow between any two objects, so two arrows with the same source and target are automatically equal — and <span class="m">h ∘ (g ∘ f)</span> and <span class="m">(h ∘ g) ∘ f</span> always have the same source and target. Such categories are called <strong>thin</strong>, and in a thin category associativity never needs checking.</p>
+<h3 class="sub">Second table: a monoid</h3>
+<p>The monoid <span class="m">(ℤ/3, +)</span> of example (iii) is a category with one object <span class="m">∗</span> and three arrows <span class="m">0, 1, 2 : ∗ → ∗</span>. Now every pair is composable, and the composition table is just the addition table modulo 3:</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>g ∘ f</th><th>0</th><th>1</th><th>2</th></tr>
+<tr><th>0</th><td>0</td><td>1</td><td>2</td></tr>
+<tr><th>1</th><td>1</td><td>2</td><td>0</td></tr>
+<tr><th>2</th><td>2</td><td>0</td><td>1</td></tr>
+</table></div>
+<p>The identity arrow is <span class="m">0</span>, and its row and column copy the headings: that is the identity law. This category is as far from thin as possible, so associativity is a real claim about <span class="m">3 × 3 × 3 = 27</span> triples. One of them, to see what a check looks like: <span class="m">(1 ∘ 2) ∘ 2 = 0 ∘ 2 = 2</span> and <span class="m">1 ∘ (2 ∘ 2) = 1 ∘ 1 = 2</span>. Checking all twenty-seven by hand is possible but dull; the efficient argument is that addition of integers is associative and reducing modulo 3 respects sums. Either way, the law is a finite, checkable statement.</p>
+<h3 class="sub">Third table: a failure</h3>
+<p>It is worth seeing a table that <em>fails</em>. Keep one object, with arrows <span class="m">e, a, b</span>, and try the table</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>g ∘ f</th><th>e</th><th>a</th><th>b</th></tr>
+<tr><th>e</th><td>e</td><td>a</td><td>b</td></tr>
+<tr><th>a</th><td>a</td><td>b</td><td>b</td></tr>
+<tr><th>b</th><td>b</td><td>a</td><td>a</td></tr>
+</table></div>
+<p>Typing is fine (there is only one object), and <span class="m">e</span> obeys the identity law: its row and column copy the headings. But compare the two bracketings of <span class="m">a, a, b</span>:</p>
+<p class="eq"><span class="m">(a ∘ a) ∘ b = b ∘ b = a, &nbsp;&nbsp;&nbsp;while&nbsp;&nbsp;&nbsp; a ∘ (a ∘ b) = a ∘ b = b.</span></p>
+<p>Associativity fails, so this table does <em>not</em> describe a category. The moral is that associativity is a genuine constraint: most ways of filling in a table violate it. (In this table every one of the eight triples of non-identity arrows fails; the optional lab below confirms the count.)</p>
+<details class="pylab">
+<summary><span class="badge">Optional · Python</span><span class="t">Finite categories, checked by machine</span></summary>
+<div class="pybody">
+    <p>Abstraction earns trust faster when you can poke it. First, inside <span class="cat">Set</span>, functions really are morphisms: store each function as a dictionary, build composites with one small helper, and test the identity and associativity laws on an actual example.</p>
 
     <div class="code">
-      <div class="code-bar"><span class="fname"><b>set_as_category.py</b> — morphisms are functions</span><button class="copy" type="button">Copy</button></div>
+  <div class="code-bar"><span class="fname"><b>set_as_category.py</b> — morphisms are functions</span><button class="copy" type="button">Copy</button></div>
 <pre><code>def compose(g, f):
-    &quot;g after f:  (g . f)(x) = g(f(x))&quot;
-    return lambda x: g(f(x))
+    &quot;g after f, for functions stored as dictionaries&quot;
+    return {x: g[f[x]] for x in f}
 
 A = {1, 2, 3}
-B = {&#x27;a&#x27;, &#x27;b&#x27;}
-C = {True, False}
+f = {1: &#x27;a&#x27;, 2: &#x27;b&#x27;, 3: &#x27;a&#x27;}     # f : A -&gt; B,  B = {&#x27;a&#x27;, &#x27;b&#x27;}
+g = {&#x27;a&#x27;: &#x27;yes&#x27;, &#x27;b&#x27;: &#x27;no&#x27;}      # g : B -&gt; C,  C = {&#x27;yes&#x27;, &#x27;no&#x27;}
+h = {&#x27;yes&#x27;: 1, &#x27;no&#x27;: 0}          # h : C -&gt; D,  D = {0, 1}
+id_A = {x: x for x in A}
+id_B = {y: y for y in &#x27;ab&#x27;}
 
-f = {1: &#x27;a&#x27;, 2: &#x27;b&#x27;, 3: &#x27;a&#x27;}     # f : A -&gt; B
-g = {&#x27;a&#x27;: True, &#x27;b&#x27;: False}      # g : B -&gt; C
+print(compose(g, f))             # the composite g . f : A -&gt; C
 
-gf = {x: g[f[x]] for x in A}     # the composite g . f : A -&gt; C
-print(gf)
-
-assert {x: f[x] for x in A} == f          # identity law:  f . id_A == f
-
-h = {True: 1, False: 0}                    # h : C -&gt; {0, 1}
-left  = {x: h[g[f[x]]] for x in A}         # (h . g) . f
-right = {x: h[g[f[x]]] for x in A}         #  h . (g . f)
-assert left == right                       # associativity
+# identity law, on both sides
+assert compose(f, id_A) == f == compose(id_B, f)
+# associativity:  h . (g . f)  ==  (h . g) . f
+assert compose(h, compose(g, f)) == compose(compose(h, g), f)
 print(&quot;laws ok&quot;)</code></pre>
-      <div class="out"><span class="lbl">output</span>{1: True, 2: False, 3: True}
+  <div class="out"><span class="lbl">output</span>{1: 'yes', 2: 'no', 3: 'yes'}
 laws ok</div>
-    </div>
+</div>
 
     <p>That checks <em>one</em> example in an infinite category. To do better, package the definition itself as data — objects, a typed list of arrows, a composition table, and a chosen identity per object — and write one function that verifies <strong>all four</strong> requirements at once. For a <em>finite</em> category, this is not a spot-check: it&rsquo;s a complete proof, because the laws are quantified over a finite set of arrows.</p>
 
@@ -507,41 +753,87 @@ print(Z3.check())</code></pre>
       <div class="out"><span class="lbl">output</span>True</div>
     </div>
 
-    <p>The same <code>check()</code> validates the preorder of example&nbsp;(ii) and the category <span class="cat">𝟚</span> of example&nbsp;(iv) without a single change — you only feed it different data. Building <span class="cat">𝟛</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span> and running the checker on it is the last exercise below.</p>
-  </div>
+    <p>The same <code>check()</code> validates the preorder of example&nbsp;(ii) and the category <span class="cat">𝟚</span> of example&nbsp;(iv) without a single change — you only feed it different data. Running it on the chain <span class="cat">𝟛</span> of the first table is the optional part of Exercise 9.</p>
+  
+<p>Finally, the failing table from above. The checker accepts its typing and its identity law and then stops at associativity; a short loop counts how many of the eight non-identity triples break.</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>broken_table.py</b> — a table that is not a category</span><button class="copy" type="button">Copy</button></div>
+<pre><code>tbl = {(&#x27;e&#x27;,&#x27;e&#x27;):&#x27;e&#x27;, (&#x27;e&#x27;,&#x27;a&#x27;):&#x27;a&#x27;, (&#x27;e&#x27;,&#x27;b&#x27;):&#x27;b&#x27;,
+       (&#x27;a&#x27;,&#x27;e&#x27;):&#x27;a&#x27;, (&#x27;a&#x27;,&#x27;a&#x27;):&#x27;b&#x27;, (&#x27;a&#x27;,&#x27;b&#x27;):&#x27;b&#x27;,
+       (&#x27;b&#x27;,&#x27;e&#x27;):&#x27;b&#x27;, (&#x27;b&#x27;,&#x27;a&#x27;):&#x27;a&#x27;, (&#x27;b&#x27;,&#x27;b&#x27;):&#x27;a&#x27;}
+Bad = FiniteCategory({&#x27;*&#x27;}, {x: (&#x27;*&#x27;, &#x27;*&#x27;) for x in &#x27;eab&#x27;}, tbl, {&#x27;*&#x27;: &#x27;e&#x27;})
+try:
+    Bad.check()
+except AssertionError:
+    print(&quot;rejected: associativity fails&quot;)
+
+fails = [(h, g, f) for h in &#x27;ab&#x27; for g in &#x27;ab&#x27; for f in &#x27;ab&#x27;
+         if tbl[(h, tbl[(g, f)])] != tbl[(tbl[(h, g)], f)]]
+print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
+  <div class="out"><span class="lbl">output</span>rejected: associativity fails
+8 of 8 non-identity triples fail</div>
+</div>
+</div>
+</details>
+</div>
 </section>
 
-<!-- ============ GOING DEEPER ============ -->
-<section class="section">
-  <div class="measure">
-    <div class="sec-no">Going deeper</div>
-    <h2>Special arrows: monomorphisms and epimorphisms</h2>
-
-    <p>In <span class="cat">Set</span> the injective and surjective functions play starring roles — but &ldquo;injective&rdquo; and &ldquo;surjective&rdquo; are defined by talking about elements, which this course has forsworn. The arrows-only surrogates are <em>cancellation</em> properties, and they will follow us through the whole course (equalizers produce them in Lesson 5; adjunctions detect them in Lesson 6).</p>
-    <div class="box def">
-      <span class="tag">Definition · Mono &amp; epi</span>
-      <p>An arrow <span class="m">m : X → Y</span> is a <strong>monomorphism</strong> (<em>monic</em>) if it is left-cancellable: <span class="m">m ∘ h = m ∘ k</span> implies <span class="m">h = k</span>. Dually, <span class="m">e</span> is an <strong>epimorphism</strong> (<em>epic</em>) if it is right-cancellable: <span class="m">h ∘ e = k ∘ e</span> implies <span class="m">h = k</span>.</p>
-    </div>
-    <p>In <span class="cat">Set</span>, monic is exactly injective and epic is exactly surjective — an injective function can be &ldquo;undone from the left,&rdquo; conceptually, so nothing precomposed with it can hide. But the translation is not perfect across categories, and the standard warning is the point of Exercise 11: <em>mono + epi need not imply iso</em>, even though &ldquo;injective + surjective = bijective&rdquo; in <span class="cat">Set</span>. The failure happens in the humblest categories we have — a lesson in how much of one&rsquo;s intuition is secretly about sets.</p>
-  </div>
+<section class="section" id="deeper">
+<div class="measure">
+<div class="sec-no">Going deeper</div>
+<h2>Special arrows: monomorphisms, epimorphisms, and one-sided inverses</h2>
+<p>In <span class="m"><span class="cat">Set</span></span> the injective and surjective functions play starring roles — but &ldquo;injective&rdquo; and &ldquo;surjective&rdquo; are defined by talking about elements, which this course has forsworn. The arrows-only surrogates are <em>cancellation</em> properties, and they will follow us through the whole course (equalizers produce them in Lesson 7; right adjoints preserve them in Lesson 8).</p>
+<div class="box def">
+<span class="tag">Definition · Mono &amp; epi</span>
+<p>An arrow <span class="m">m : X → Y</span> is a <strong>monomorphism</strong> (<em>monic</em>) if it is left-cancellable: <span class="m">m ∘ h = m ∘ k</span> implies <span class="m">h = k</span>, for every pair of arrows <span class="m">h, k : W → X</span>. Dually, <span class="m">e : X → Y</span> is an <strong>epimorphism</strong> (<em>epic</em>) if it is right-cancellable: <span class="m">h ∘ e = k ∘ e</span> implies <span class="m">h = k</span>, for every pair <span class="m">h, k : Y → Z</span>.</p>
+</div>
+<p>The definitions are designed so that the following is true — and the proof shows <em>why</em> they are the right translation.</p>
+<div class="box thm">
+<span class="tag">Theorem · In <span class="m"><span class="cat">Set</span></span>: monic = injective, epic = surjective</span>
+<p>A function is a monomorphism in <span class="m"><span class="cat">Set</span></span> exactly when it is injective, and an epimorphism exactly when it is surjective.</p>
+</div>
+<p><strong>Proof.</strong> <em>Injective implies monic.</em> Let <span class="m">m</span> be injective and <span class="m">m ∘ h = m ∘ k</span>. For each <span class="m">w</span> we have <span class="m">m(h(w)) = m(k(w))</span>, hence <span class="m">h(w) = k(w)</span>; so <span class="m">h = k</span>.</p>
+<p><em>Monic implies injective.</em> Let <span class="m">m : X → Y</span> be monic and suppose <span class="m">m(x) = m(x′)</span>. Let <span class="m">W = {∗}</span> be a one-element set and let <span class="m">h, k : W → X</span> be the functions sending <span class="m">∗</span> to <span class="m">x</span> and to <span class="m">x′</span>. Then <span class="m">m ∘ h = m ∘ k</span>, so <span class="m">h = k</span>, which says <span class="m">x = x′</span>.</p>
+<p><em>Surjective implies epic.</em> Let <span class="m">e : X → Y</span> be surjective and <span class="m">h ∘ e = k ∘ e</span>. Every <span class="m">y</span> is <span class="m">e(x)</span> for some <span class="m">x</span>, so <span class="m">h(y) = h(e(x)) = k(e(x)) = k(y)</span>; so <span class="m">h = k</span>.</p>
+<p><em>Epic implies surjective.</em> Let <span class="m">e : X → Y</span> be epic, and define two functions <span class="m">h, k : Y → {0, 1}</span>: let <span class="m">h(y) = 1</span> when <span class="m">y</span> is a value of <span class="m">e</span> and <span class="m">h(y) = 0</span> otherwise, and let <span class="m">k(y) = 1</span> always. Then <span class="m">h ∘ e = k ∘ e</span>, both being constantly <span class="m">1</span>. Cancelling <span class="m">e</span> gives <span class="m">h = k</span>, which says every <span class="m">y</span> is a value of <span class="m">e</span>. ∎</p>
+<p>Look at the two harder halves. To test a function we <em>probed</em> it with a well-chosen set — a one-element set to detect injectivity, a two-element set to detect surjectivity. Studying an object through the arrows from or to a few special objects is a technique this course keeps returning to.</p>
+<h3 class="sub">One-sided inverses</h3>
+<p>Between &ldquo;cancellable&rdquo; and &ldquo;invertible&rdquo; sits a useful middle notion.</p>
+<div class="box def">
+<span class="tag">Definition · Section &amp; retraction</span>
+<p>If <span class="m">r ∘ s = id<sub>X</sub></span>, for arrows <span class="m">s : X → Y</span> and <span class="m">r : Y → X</span>, then <span class="m">s</span> is called a <strong>section</strong> of <span class="m">r</span>, and <span class="m">r</span> a <strong>retraction</strong> of <span class="m">s</span>. An arrow that has a retraction is a <em>split monomorphism</em>; an arrow that has a section is a <em>split epimorphism</em>.</p>
+</div>
+<div class="box thm">
+<span class="tag">Proposition · Split implies cancellable</span>
+<p>Every section is monic, and every retraction is epic.</p>
+</div>
+<p><strong>Proof.</strong> Let <span class="m">r ∘ s = id</span>. If <span class="m">s ∘ h = s ∘ k</span>, compose with <span class="m">r</span> on the left: <span class="m">h = r ∘ s ∘ h = r ∘ s ∘ k = k</span>. If <span class="m">h ∘ r = k ∘ r</span>, compose with <span class="m">s</span> on the right: <span class="m">h = h ∘ r ∘ s = k ∘ r ∘ s = k</span>. ∎</p>
+<p>So the special arrows form two ladders:</p>
+<p class="eq"><span class="m">isomorphism &nbsp;⟹&nbsp; split mono &nbsp;⟹&nbsp; mono,</span></p>
+<p class="eq"><span class="m">isomorphism &nbsp;⟹&nbsp; split epi &nbsp;⟹&nbsp; epi.</span></p>
+<p>None of the implications reverses in general. In <span class="m"><span class="cat">Set</span></span> an injective function with non-empty domain always has a retraction (send the points outside its image anywhere you like), but the empty function <span class="m">∅ → Y</span> into a non-empty set is monic and has none. And the statement &ldquo;every surjective function has a section&rdquo; is precisely the axiom of choice.</p>
+<h3 class="sub">Mono and epi together are not iso</h3>
+<p>In <span class="m"><span class="cat">Set</span></span>, injective plus surjective equals bijective. It is tempting to guess that &ldquo;monic and epic&rdquo; always means &ldquo;isomorphism.&rdquo; It does not, and the failure happens in the humblest categories we have. In the chain <span class="m"><span class="cat">𝟚</span></span>, the arrow <span class="m">0 → 1</span> is monic and epic — in a thin category every arrow is, since any two parallel arrows are already equal — yet it is not an isomorphism, because there is no arrow <span class="m">1 → 0</span> at all (Exercise 11).</p>
+<p>The same thing happens among honest structure-preserving functions. In <span class="m"><span class="cat">Mon</span></span>, consider the inclusion <span class="m">i : (ℕ, +) → (ℤ, +)</span>. It is injective, hence monic. It is certainly not surjective. But it <em>is</em> epic. Suppose <span class="m">h, k : ℤ → M</span> are monoid homomorphisms that agree on <span class="m">ℕ</span>, and take <span class="m">n ≥ 0</span>. Then <span class="m">h(−n)</span> is a two-sided inverse of <span class="m">h(n)</span> in <span class="m">M</span>, because <span class="m">h(−n) · h(n) = h(0) = e = h(n) · h(−n)</span>; likewise <span class="m">k(−n)</span> is a two-sided inverse of <span class="m">k(n)</span>, which equals <span class="m">h(n)</span>. Inverses in a monoid are unique — the argument of Exercise 8(b) — so <span class="m">h(−n) = k(−n)</span>. Hence <span class="m">h = k</span>. A homomorphism out of <span class="m">ℤ</span> is determined by what it does on <span class="m">ℕ</span>, even though <span class="m">ℕ</span> is not all of <span class="m">ℤ</span>.</p>
+<p>So <span class="m">i</span> is monic and epic but not an isomorphism, and &ldquo;epic&rdquo; does not mean &ldquo;onto&rdquo; outside <span class="m"><span class="cat">Set</span></span>. Cancellation and invertibility are different ideas that happen to coincide for sets. What <em>is</em> true in every category is a slightly weaker statement, which Exercise 17 asks you to prove: an arrow that is monic <strong>and</strong> has a section is an isomorphism.</p>
+</div>
 </section>
 
-<!-- ============ §6 EXERCISES ============ -->
-<section class="section">
+<section class="section" id="s7">
   <div class="measure">
-    <div class="sec-no">§6 — Exercises</div>
-    <h2>Twelve problems, from finger exercises to small proofs</h2>
-    <p>Work each one before opening its solution — the arrows-only proofs especially, since the discipline of never mentioning an element is the skill this course is training. Several exercises reuse the <code>FiniteCategory</code> checker from §5, so keep a Python session open.</p>
+    <div class="sec-no">§7 — Exercises</div>
+    <h2>Nineteen problems, from finger exercises to small proofs</h2>
+    <p>Work each one before opening its solution — the arrows-only proofs especially, since the discipline of never mentioning an element is the skill this course is training. Every exercise can be done with pencil and paper. Exercises 9 and 10 also carry an optional Python version, which reuses the <code>FiniteCategory</code> checker from the lab in §6.</p>
 
     <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
-        <p>Let <span class="m">A = {1, 2}</span>, <span class="m">B = {&#x27;a&#x27;, &#x27;b&#x27;}</span>, and <span class="m">C = {10, 20}</span>, with functions given as dictionaries: <code>f = {1:&#x27;a&#x27;, 2:&#x27;b&#x27;}</code> representing <span class="m">f : A → B</span>, and <code>g = {&#x27;a&#x27;:10, &#x27;b&#x27;:20}</code> representing <span class="m">g : B → C</span>.</p>
-        <p>Write down the dictionary representing the composite <span class="m">g ∘ f : A → C</span>. Then say, in one sentence, why the notation <span class="m">g ∘ f</span> — with <span class="m">g</span> written first — nevertheless means &ldquo;apply <span class="m">f</span> first.&rdquo;</p>
+        <p>Let <span class="m">A = {1, 2}</span>, <span class="m">B = {a, b}</span> and <span class="m">C = {10, 20}</span>. Let <span class="m">f : A → B</span> be the function with <span class="m">f(1) = a</span> and <span class="m">f(2) = b</span>, and let <span class="m">g : B → C</span> be the function with <span class="m">g(a) = 10</span> and <span class="m">g(b) = 20</span>.</p>
+        <p>Write down the composite <span class="m">g ∘ f : A → C</span> by saying where it sends each element of <span class="m">A</span>. Then say, in one sentence, why the notation <span class="m">g ∘ f</span> — with <span class="m">g</span> written first — nevertheless means &ldquo;apply <span class="m">f</span> first.&rdquo;</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>Tracing each element: <span class="m">1 ↦ &#x27;a&#x27; ↦ 10</span> and <span class="m">2 ↦ &#x27;b&#x27; ↦ 20</span>, so <span class="m">g ∘ f</span> is the dictionary <code>{1: 10, 2: 20}</code>, or in code, <code>{x: g[f[x]] for x in f}</code>.</p>
+          <p>Tracing each element: <span class="m">1 ↦ a ↦ 10</span> and <span class="m">2 ↦ b ↦ 20</span>, so <span class="m">g ∘ f</span> sends <span class="m">1</span> to <span class="m">10</span> and <span class="m">2</span> to <span class="m">20</span>. (For readers following the Python track: with the two functions stored as dictionaries <code>f</code> and <code>g</code>, the composite is <code>{x: g[f[x]] for x in f}</code>.)</p>
           <p>The order comes from function application: <span class="m">(g ∘ f)(x)</span> is defined to be <span class="m">g(f(x))</span>, and reading <span class="m">g(f(x))</span> inside-out, the innermost function — <span class="m">f</span> — acts first. The arrow written <em>last</em> is applied <em>first</em>. This right-to-left convention trips up almost everyone at least once, which is why it is Exercise 1.</p>
         </div>
       </details>
@@ -564,7 +856,7 @@ print(Z3.check())</code></pre>
     <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
       <div class="prob-body">
-        <p>Lesson 1 claimed that a monoid is the same thing as a one-object category. A <em>group</em> is a monoid in which every element has an inverse.</p>
+        <p>§4 claimed that a monoid is the same thing as a one-object category. A <em>group</em> is a monoid in which every element has an inverse.</p>
         <p>State the full dictionary that translates &ldquo;one-object category in which every arrow is invertible&rdquo; into &ldquo;group,&rdquo; and back: say what the arrows, the composition, the identity arrow, and the invertibility condition each become on the group side, and check that the axioms match up.</p>
       </div>
       <details><summary>Show solution</summary>
@@ -590,7 +882,7 @@ print(Z3.check())</code></pre>
         <div class="sol">
           <p><strong>(a) Yes</strong> and <strong>(b) yes.</strong> A composite of injections is an injection, a composite of surjections is a surjection, and the identity function is both — each class is closed under composition and contains all the identities it needs. Associativity is inherited from ordinary function composition.</p>
           <p><strong>(c) No</strong>, twice over: it excludes the identity arrows by fiat, and it is not even closed under composition — a bijection composed with its inverse lands exactly on an identity, which the class forbids.</p>
-          <p><strong>(d) No</strong>, and this one is sneakier: the identities are all present (every point of <span class="m">id</span> is fixed), but closure fails. On <span class="m">{a, b, c}</span>, let <span class="m">f</span> swap <span class="m">a, b</span> and fix <span class="m">c</span>, and let <span class="m">g</span> swap <span class="m">b, c</span> and fix <span class="m">a</span>. Each has a fixed point, but tracing the composite <span class="m">g ∘ f</span> element by element gives the 3-cycle <span class="m">a ↦ c, b ↦ a, c ↦ b</span>, which fixes nothing. The moral of (c) and (d): the closure conditions are not bureaucratic fine print; drop them and the structure genuinely collapses.</p>
+          <p><strong>(d) No</strong>, and this one is sneakier. Almost all the identities are present — every point of <span class="m">id<sub>X</sub></span> is fixed — but not quite all: the identity on the <em>empty</em> set has no points, hence no fixed point, so <span class="m">∅</span> is left without an identity. And even among non-empty sets, closure fails. On <span class="m">{a, b, c}</span>, let <span class="m">f</span> swap <span class="m">a, b</span> and fix <span class="m">c</span>, and let <span class="m">g</span> swap <span class="m">b, c</span> and fix <span class="m">a</span>. Each has a fixed point, but tracing the composite <span class="m">g ∘ f</span> element by element gives the 3-cycle <span class="m">a ↦ c, b ↦ a, c ↦ b</span>, which fixes nothing. The moral of (c) and (d): the closure conditions are not bureaucratic fine print; drop them and the structure genuinely collapses.</p>
         </div>
       </details>
     </div>
@@ -624,7 +916,7 @@ print(Z3.check())</code></pre>
     </div>
 
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure · new</span></div>
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure</span></div>
       <div class="prob-body">
         <p>Every category has an evil twin. Given a category <span class="cat">𝒞</span>, define its <strong>opposite category</strong> <span class="cat">𝒞</span><sup>op</sup> as follows: the objects are the same, but each arrow <span class="m">f : X → Y</span> of <span class="cat">𝒞</span> is reinterpreted as an arrow <span class="m">f : Y → X</span> of <span class="cat">𝒞</span><sup>op</sup>, and composition is defined by <span class="m">g ∘<sup>op</sup> f = f ∘ g</span>, using the composition of <span class="cat">𝒞</span> on the right.</p>
         <p>Verify that <span class="cat">𝒞</span><sup>op</sup> satisfies the two category laws, taking care with the order of composition. What is <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup></span>?</p>
@@ -634,13 +926,13 @@ print(Z3.check())</code></pre>
           <p><strong>Typing.</strong> If in <span class="cat">𝒞</span><sup>op</sup> we can form <span class="m">g ∘<sup>op</sup> f</span>, then (unwinding the reversed directions) <span class="m">f ∘ g</span> is composable in <span class="cat">𝒞</span>, and its reinterpretation has exactly the right source and target — so the definition makes sense.</p>
           <p><strong>Identities.</strong> The same arrows <span class="m">id<sub>X</sub></span> serve: <span class="m">id ∘<sup>op</sup> f = f ∘ id = f</span> and <span class="m">f ∘<sup>op</sup> id = id ∘ f = f</span>, both by the identity law of <span class="cat">𝒞</span>.</p>
           <p><strong>Associativity.</strong> <span class="m">h ∘<sup>op</sup> (g ∘<sup>op</sup> f) = (f ∘ g) ∘ h</span> and <span class="m">(h ∘<sup>op</sup> g) ∘<sup>op</sup> f = f ∘ (g ∘ h)</span>; these agree by associativity in <span class="cat">𝒞</span>.</p>
-          <p>Finally, reversing all arrows twice restores every arrow to its original direction, and the composition unwinds too: <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup> = <span class="cat">𝒞</span></span>. Remember this construction — in Lesson 4 it becomes the <em>duality principle</em>, which lets every theorem be proved twice for the price of once.</p>
+          <p>Finally, reversing all arrows twice restores every arrow to its original direction, and the composition unwinds too: <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup> = <span class="cat">𝒞</span></span>. Remember this construction — in Lessons 5 and 6 it becomes the <em>duality principle</em>, which lets every theorem be proved twice for the price of once.</p>
         </div>
       </details>
     </div>
 
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
         <p>An arrow <span class="m">f : X → Y</span> is an <strong>isomorphism</strong> if there exists <span class="m">g : Y → X</span> with <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. Prove three basic facts, each by pure arrow-pushing:</p>
         <ol>
@@ -659,14 +951,21 @@ print(Z3.check())</code></pre>
     </div>
 
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
-        <p>Encode the category <span class="cat">𝟛</span> from Exercise 6 as a <code>FiniteCategory</code> — objects, all six arrows, the composition table, and the identities — and run <code>.check()</code> to confirm it satisfies all four requirements.</p>
+        <p>The <em>commuting square</em> is the category with four objects <span class="m">A, B, C, D</span>, their four identities, and five more arrows: <span class="m">f : A → B</span>, <span class="m">p : A → C</span>, <span class="m">q : B → D</span>, <span class="m">g : C → D</span>, and a diagonal <span class="m">d : A → D</span> with <span class="m">q ∘ f = d = g ∘ p</span> — the square of §3, with its diagonal given a name.</p>
+        <p>Write out its composition table in the style of §6. How many composable pairs are there? Then explain why associativity needs no checking.</p>
+        <div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Encode the category <span class="m"><span class="cat">𝟛</span></span> of §6 as a <code>FiniteCategory</code> — objects, all six arrows, the composition table, and the identities — and run <code>.check()</code> to confirm it satisfies all four requirements.</p>
         <p>Hint: because <span class="cat">𝟛</span> is thin, there is at most one arrow between any two objects, so every entry of the composition table is forced; you can generate the table with a small helper rather than writing it out by hand.</p>
+        </div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>Name the three identities and the three non-trivial arrows, then let a helper fill the forced composition table:</p>
+          <p><strong>By hand.</strong> There are nine arrows. Each arrow <span class="m">x</span> composes with an identity at either end, giving <span class="m">id ∘ x</span> and <span class="m">x ∘ id</span>: that is <span class="m">9 + 9 = 18</span> pairs, of which the four pairs &ldquo;identity with itself&rdquo; were counted twice, leaving <span class="m">14</span>. The only composable pairs of non-identity arrows are <span class="m">(q, f)</span> and <span class="m">(g, p)</span>, each with composite <span class="m">d</span>. So the table has <span class="m">16</span> entries out of <span class="m">81</span>, and only two of them — <span class="m">q ∘ f = d</span> and <span class="m">g ∘ p = d</span> — are not dictated by the identity law.</p>
+          <p>Associativity: a composable triple of non-identity arrows would be a path of three steps, and the longest paths here (<span class="m">A → B → D</span> and <span class="m">A → C → D</span>) have two. Triples containing an identity are covered by the identity law. (Alternatively: the category is thin, so nothing needs checking.)</p>
+          <div class="pytask"><span class="tag">Optional · Python</span>
+          <p>For <span class="m"><span class="cat">𝟛</span></span>: name the three identities and the three non-trivial arrows, then let a helper fill the forced composition table:</p>
           <div class="code" style="margin-top:14px">
             <div class="code-bar"><span class="fname"><b>three.py</b></span><button class="copy" type="button">Copy</button></div>
 <pre><code>objs = {0, 1, 2}
@@ -684,26 +983,47 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
             <div class="out"><span class="lbl">output</span>True</div>
           </div>
           <p style="margin-top:14px">The comment on the arrow <code>c</code> is the real content: once you accept <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span>, the category has no choice but to contain their composite.</p>
+          </div>
         </div>
       </details>
     </div>
 
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">code · new</span></div>
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
-        <p>A checker is only trustworthy if you have seen it catch a mistake. Starting from your working <span class="cat">𝟛</span> of Exercise 9, corrupt the composition table on purpose: set <code>comp[(&#x27;b&#x27;,&#x27;a&#x27;)] = &#x27;i0&#x27;</code>, claiming that the composite of <span class="m">0 → 1</span> followed by <span class="m">1 → 2</span> is the identity on <span class="m">0</span>.</p>
-        <p>Before running it: which of the four checks in <code>check()</code> should fail, and why? Then run it and confirm.</p>
+        <p>A checker — human or machine — is only trustworthy once you have seen it catch a mistake. Corrupt two of §6&rsquo;s tables on purpose.</p>
+        <ol>
+          <li>In the table of <span class="m"><span class="cat">𝟛</span></span>, change one entry: declare <span class="m">b ∘ a = i<sub>0</sub></span>, claiming that <span class="m">0 → 1</span> followed by <span class="m">1 → 2</span> is the identity on <span class="m">0</span>. Which requirement of the definition does the new table violate, and why?</li>
+          <li>In the table of <span class="m">(ℤ/3, +)</span>, change the single entry <span class="m">1 ∘ 1</span> from <span class="m">2</span> to <span class="m">0</span>. Typing is untouched and the identity law still holds. Find a triple at which associativity fails.</li>
+        </ol>
+        <div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Make corruption (a) in your encoding of <span class="m"><span class="cat">𝟛</span></span> from Exercise 9: set <code>comp[('b','a')] = 'i0'</code>. Predict which of the four checks in <code>check()</code> fires, then run it.</p>
+        </div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>The <strong>typing check on composites</strong> fails first. The composite of <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span> must be an arrow <span class="m">0 → 2</span>, but <code>i0</code> is typed <span class="m">(0, 0)</span> — so the assertion <code>ar[gf] == (dom(f), cod(g))</code> raises <code>AssertionError</code> before the identity or associativity checks are even reached.</p>
+          <p><strong>(a) Typing.</strong> The composite of <span class="m">a : 0 → 1</span> and <span class="m">b : 1 → 2</span> must be an arrow <span class="m">0 → 2</span>, but <span class="m">i<sub>0</sub></span> runs <span class="m">0 → 0</span>. The table is rejected before the identity law or associativity is even consulted.</p>
           <p>This is worth internalizing: most bookkeeping errors in category theory are <em>typing</em> errors, and they are caught mechanically, before any interesting law is consulted. It is the same discipline a type-checker imposes on a program — which is not a coincidence.</p>
+          <p><strong>(b) Associativity.</strong> The row and column of the identity <span class="m">0</span> are unchanged, so the identity law survives. But <span class="m">(1 ∘ 1) ∘ 2 = 0 ∘ 2 = 2</span>, while <span class="m">1 ∘ (1 ∘ 2) = 1 ∘ 0 = 1</span>. One altered entry, and the table no longer describes a category.</p>
+          <div class="pytask"><span class="tag">Optional · Python</span>
+          <p>The typing check on composites fails first: the assertion <code>ar[gf] == (dom(f), cod(g))</code> raises <code>AssertionError</code>.</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>corrupt.py</b> — the checker must object</span><button class="copy" type="button">Copy</button></div>
+<pre><code>bad_comp = dict(comp)            # comp: the table of THREE (Exercise 9)
+bad_comp[(&#x27;b&#x27;, &#x27;a&#x27;)] = &#x27;i0&#x27;      # claim: 0 -&gt; 1 -&gt; 2 composes to id_0
+try:
+    FiniteCategory(objs, ar, bad_comp, ident).check()
+except AssertionError:
+    print(&quot;rejected: b . a must be an arrow 0 -&gt; 2&quot;)</code></pre>
+  <div class="out"><span class="lbl">output</span>rejected: b . a must be an arrow 0 -&gt; 2</div>
+</div>
+          </div>
         </div>
       </details>
     </div>
-  
+
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only · new</span></div>
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
 
         <p>Using only the cancellation definitions from the Going-deeper section:</p>
@@ -715,32 +1035,150 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
       <details><summary>Show solution</summary>
         <div class="sol">
 
-          <p><strong>(a)</strong> Suppose <span class="m">m</span> has inverse <span class="m">m<sup>−1</sup></span> and <span class="m">m ∘ h = m ∘ k</span>. Precompose both sides with <span class="m">m<sup>−1</sup></span> and use associativity: <span class="m">h = (m<sup>−1</sup> ∘ m) ∘ h = (m<sup>−1</sup> ∘ m) ∘ k = k</span>. Right-cancellation is the mirror computation with <span class="m">m<sup>−1</sup></span> on the other side.</p>
-          <p><strong>(b)</strong> In a thin category, any two parallel arrows <span class="m">h, k</span> with the same source and target are <em>already</em> equal — so the implication &ldquo;<span class="m">m ∘ h = m ∘ k ⟹ h = k</span>&rdquo; holds vacuously for every <span class="m">m</span>, and likewise its dual. Now take the unique arrow <span class="m">u : 0 → 1</span> in <span class="cat">𝟚</span>: it is monic and epic by the above, but it is not an isomorphism, since there is no arrow <span class="m">1 → 0</span> at all. The moral: bijectivity is a theorem <em>about <span class="cat">Set</span></em>, not a consequence of the axioms — cancellation and invertibility are genuinely different ideas that happen to coincide there.</p>
+          <p><strong>(a)</strong> Suppose <span class="m">m</span> has inverse <span class="m">m<sup>−1</sup></span> and <span class="m">m ∘ h = m ∘ k</span>. Compose both sides on the left with <span class="m">m<sup>−1</sup></span> and use associativity: <span class="m">h = (m<sup>−1</sup> ∘ m) ∘ h = (m<sup>−1</sup> ∘ m) ∘ k = k</span>. Right-cancellation is the mirror computation with <span class="m">m<sup>−1</sup></span> on the other side.</p>
+          <p><strong>(b)</strong> In a thin category, any two parallel arrows <span class="m">h, k</span> with the same source and target are <em>already</em> equal — so the implication &ldquo;<span class="m">m ∘ h = m ∘ k ⟹ h = k</span>&rdquo; holds trivially for every <span class="m">m</span>, its conclusion being always true, and likewise its dual. Now take the unique arrow <span class="m">u : 0 → 1</span> in <span class="cat">𝟚</span>: it is monic and epic by the above, but it is not an isomorphism, since there is no arrow <span class="m">1 → 0</span> at all. The moral: bijectivity is a theorem <em>about <span class="cat">Set</span></em>, not a consequence of the axioms — cancellation and invertibility are genuinely different ideas that happen to coincide there.</p>
         </div>
       </details>
     </div>
 
     <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure · new</span></div>
+      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure</span></div>
       <div class="prob-body">
 
         <p>Given categories <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, define the <strong>product category</strong> <span class="cat">𝒞</span> × <span class="cat">𝒟</span>: objects are pairs <span class="m">(C, D)</span>, arrows are pairs <span class="m">(f, g)</span> of arrows, composed slotwise: <span class="m">(f&prime;, g&prime;) ∘ (f, g) = (f&prime; ∘ f, g&prime; ∘ g)</span>.</p>
-        <p>Say what the identity on <span class="m">(C, D)</span> must be, and verify both category laws. (File this construction away — it is the stage on which Lesson 6 exhibits products and coproducts as adjoints.)</p>
+        <p>Say what the identity on <span class="m">(C, D)</span> must be, and verify both category laws. (File this construction away — Lesson 5 studies it alongside other ways of building new categories from old, and it is the stage on which Lesson 8 exhibits products and coproducts as adjoints.)</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
 
           <p>The identity is <span class="m">(id<sub>C</sub>, id<sub>D</sub>)</span>, since composing slotwise with it applies each ordinary identity law in its own slot: <span class="m">(f, g) ∘ (id, id) = (f ∘ id, g ∘ id) = (f, g)</span>, and likewise on the left.</p>
-          <p>Associativity is the same story: <span class="m">((f&Prime;, g&Prime;) ∘ (f&prime;, g&prime;)) ∘ (f, g)</span> and <span class="m">(f&Prime;, g&Prime;) ∘ ((f&prime;, g&prime;) ∘ (f, g))</span> both compute, slot by slot, to <span class="m">(f&Prime; ∘ f&prime; ∘ f,&nbsp; g&Prime; ∘ g&prime; ∘ g)</span> — each slot protected by the associativity of its own category. Nothing interacts across slots, which is the whole design. Constructions like this, where the laws hold &ldquo;componentwise for free,&rdquo; recur constantly: the functor category of Lesson 3 inherited its laws pointwise in exactly the same way.</p>
+          <p>Associativity is the same story: <span class="m">((f&Prime;, g&Prime;) ∘ (f&prime;, g&prime;)) ∘ (f, g)</span> and <span class="m">(f&Prime;, g&Prime;) ∘ ((f&prime;, g&prime;) ∘ (f, g))</span> both compute, slot by slot, to <span class="m">(f&Prime; ∘ f&prime; ∘ f,&nbsp; g&Prime; ∘ g&prime; ∘ g)</span> — each slot protected by the associativity of its own category. Nothing interacts across slots, which is the whole design. Constructions like this, where the laws hold &ldquo;componentwise for free,&rdquo; recur constantly: the functor category of Lesson 3 will inherit its laws pointwise in exactly the same way.</p>
         </div>
       </details>
     </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">warm-up</span></div>
+<div class="prob-body">
+<p>Isomorphic or not? Decide each case, and where the answer is yes, exhibit an isomorphism.</p>
+<ol>
+<li>In <span class="m"><span class="cat">Set</span></span>: the sets <span class="m">{1, 2, 3}</span> and <span class="m">{x, y, z}</span>. How many different isomorphisms are there between them?</li>
+<li>In the integers ordered by divisibility (a preorder, as in §5): <span class="m">4</span> and <span class="m">6</span>; then <span class="m">5</span> and <span class="m">−5</span>.</li>
+<li>In <span class="m"><span class="cat">Mat</span></span>: the objects <span class="m">2</span> and <span class="m">3</span>.</li>
+<li>In the one-object category of the monoid <span class="m">(ℤ/4, ·)</span> — the numbers <span class="m">0, 1, 2, 3</span> under multiplication modulo 4 — which arrows are isomorphisms?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Yes.</strong> Any bijection is an isomorphism, for instance <span class="m">1 ↦ x, 2 ↦ y, 3 ↦ z</span>. There are <span class="m">3! = 6</span> of them: three choices for the image of <span class="m">1</span>, two remaining for <span class="m">2</span>, one for <span class="m">3</span>.</p>
+<p><strong>(b)</strong> <span class="m">4</span> and <span class="m">6</span>: <strong>no</strong> — isomorphic would mean each divides the other, and neither does. <span class="m">5</span> and <span class="m">−5</span>: <strong>yes</strong> — <span class="m">5</span> divides <span class="m">−5</span> and <span class="m">−5</span> divides <span class="m">5</span>. The two arrows compose to identities automatically, because a preorder has at most one arrow <span class="m">5 → 5</span>.</p>
+<p><strong>(c) No.</strong> An isomorphism <span class="m">2 → 3</span> would be an invertible <span class="m">3 × 2</span> matrix, and invertible matrices are square.</p>
+<p><strong>(d)</strong> The isomorphisms are the elements with a multiplicative inverse modulo 4: <span class="m">1</span> (its own inverse) and <span class="m">3</span> (since <span class="m">3 · 3 = 9 ≡ 1</span>). The elements <span class="m">0</span> and <span class="m">2</span> are not invertible: every multiple of <span class="m">0</span> is <span class="m">0</span>, and every multiple of <span class="m">2</span> is even, so neither can reach <span class="m">1</span>.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>Work in <span class="m"><span class="cat">Rel</span></span> (§4, example vi). Let <span class="m">R</span> be the relation from <span class="m">{1, 2}</span> to <span class="m">{a, b, c}</span> consisting of the pairs <span class="m">(1, a), (1, b), (2, c)</span>, and let <span class="m">S</span> be the relation from <span class="m">{a, b, c}</span> to <span class="m">{x, y}</span> consisting of <span class="m">(a, x), (b, y), (c, y)</span>.</p>
+<ol>
+<li>Compute the composite <span class="m">S ∘ R</span>.</li>
+<li>Every relation <span class="m">R</span> from <span class="m">X</span> to <span class="m">Y</span> has a <strong>converse</strong> <span class="m">R°</span> from <span class="m">Y</span> to <span class="m">X</span>, obtained by reversing every pair. Show that <span class="m">(S ∘ R)° = R° ∘ S°</span> for all composable relations.</li>
+<li>Which arrows of <span class="m"><span class="cat">Rel</span></span> are graphs of functions? State the two conditions on <span class="m">R</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Chain each pair of <span class="m">R</span> through a matching pair of <span class="m">S</span>: <span class="m">1 R a</span> and <span class="m">a S x</span> give <span class="m">(1, x)</span>; <span class="m">1 R b</span> and <span class="m">b S y</span> give <span class="m">(1, y)</span>; <span class="m">2 R c</span> and <span class="m">c S y</span> give <span class="m">(2, y)</span>. So <span class="m">S ∘ R = { (1, x), (1, y), (2, y) }</span> — note that <span class="m">1</span> is related to two different elements.</p>
+<p><strong>(b)</strong> The pair <span class="m">(z, x)</span> lies in <span class="m">(S ∘ R)°</span> exactly when <span class="m">(x, z) ∈ S ∘ R</span>, that is, when there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S z</span>. Reversing both pairs, that says: there is a <span class="m">y</span> with <span class="m">z S° y</span> and <span class="m">y R° x</span> — which is the definition of <span class="m">(z, x) ∈ R° ∘ S°</span>. The order of composition flips, exactly as for inverses in Exercise 8(c).</p>
+<p><strong>(c)</strong> <span class="m">R</span> is the graph of a function <span class="m">X → Y</span> when every <span class="m">x</span> is related to <strong>at least one</strong> <span class="m">y</span> (the function is defined everywhere) and to <strong>at most one</strong> <span class="m">y</span> (it is single-valued). The relation <span class="m">S ∘ R</span> of part (a) fails the second condition at <span class="m">x = 1</span>.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Let <span class="m">f : X → Y</span> be an isomorphism in any category. Show that the automorphism groups of <span class="m">X</span> and <span class="m">Y</span> are isomorphic as groups, by checking that</p>
+<p class="eq"><span class="m">φ &nbsp;↦&nbsp; f ∘ φ ∘ f<sup>−1</sup></span></p>
+<p>sends automorphisms of <span class="m">X</span> to automorphisms of <span class="m">Y</span>, respects composition and identities, and has an inverse of the same form.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Write <span class="m">c(φ) = f ∘ φ ∘ f<sup>−1</sup></span>. If <span class="m">φ : X → X</span> is an isomorphism then <span class="m">c(φ) : Y → Y</span> is a composite of three isomorphisms, hence an isomorphism (Exercise 8(c)): an automorphism of <span class="m">Y</span>.</p>
+<p><strong>Composition.</strong> <span class="m">c(φ) ∘ c(ψ) = f ∘ φ ∘ f<sup>−1</sup> ∘ f ∘ ψ ∘ f<sup>−1</sup> = f ∘ φ ∘ ψ ∘ f<sup>−1</sup> = c(φ ∘ ψ)</span>, the middle pair <span class="m">f<sup>−1</sup> ∘ f</span> cancelling. <strong>Identity.</strong> <span class="m">c(id<sub>X</sub>) = f ∘ f<sup>−1</sup> = id<sub>Y</sub></span>.</p>
+<p><strong>Inverse.</strong> The map <span class="m">d(θ) = f<sup>−1</sup> ∘ θ ∘ f</span> goes back from <span class="m">Aut(Y)</span> to <span class="m">Aut(X)</span>, and <span class="m">d(c(φ)) = f<sup>−1</sup> ∘ f ∘ φ ∘ f<sup>−1</sup> ∘ f = φ</span>; likewise <span class="m">c(d(θ)) = θ</span>. So <span class="m">c</span> is a bijective homomorphism of groups whose inverse <span class="m">d</span> is also a homomorphism: <span class="m">Aut(X) ≅ Aut(Y)</span>. This is the slogan of §5 at work — isomorphic objects cannot be told apart, not even by their symmetries.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">counting</span></div>
+<div class="prob-body">
+<p>Classify small categories by hand. Two categories count as &ldquo;the same&rdquo; here if one becomes the other by renaming objects and arrows.</p>
+<ol>
+<li>How many categories have exactly one object and two arrows?</li>
+<li>How many categories have exactly two objects and three arrows?</li>
+</ol>
+<p>Hint: decide where the non-identity arrows can go, then ask which composition tables the laws allow.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Two.</strong> One arrow must be the identity <span class="m">e</span>; call the other <span class="m">a</span>. The only free entry in the composition table is <span class="m">a ∘ a</span>, which is either <span class="m">e</span> or <span class="m">a</span>. Both choices are associative (with a single non-identity arrow, every bracketing of <span class="m">a ∘ a ∘ a</span> gives the same result — check both cases), so both are categories: the group <span class="m">ℤ/2</span>, where <span class="m">a ∘ a = e</span>, and the monoid with an <em>idempotent</em>, where <span class="m">a ∘ a = a</span> (for instance <span class="m">{1, 0}</span> under multiplication). They are genuinely different: in the first <span class="m">a</span> is an isomorphism, in the second it is not.</p>
+<p><strong>(b) Three.</strong> Two of the three arrows are the identities, leaving one more arrow <span class="m">u</span>. Either <span class="m">u</span> runs between the two objects — say <span class="m">u : X → Y</span>, the other direction being the same up to renaming — and then no composite is free: this is <span class="m"><span class="cat">𝟚</span></span>. Or <span class="m">u</span> is a loop at one object, and as in part (a) either <span class="m">u ∘ u = id</span> or <span class="m">u ∘ u = u</span>. So there are three: <span class="m"><span class="cat">𝟚</span></span>, and the two monoids of part (a) each sitting beside a lone extra object.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Cancellation, practised. In any category, prove:</p>
+<ol>
+<li>A composite of two monomorphisms is a monomorphism.</li>
+<li>If <span class="m">g ∘ f</span> is monic, then <span class="m">f</span> is monic.</li>
+<li>If <span class="m">g ∘ f</span> is epic, then <span class="m">g</span> is epic.</li>
+<li>If <span class="m">f</span> is monic and has a section — an arrow <span class="m">s</span> with <span class="m">f ∘ s = id</span> — then <span class="m">f</span> is an isomorphism.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Let <span class="m">f : X → Y</span> and <span class="m">g : Y → Z</span> be monic and suppose <span class="m">(g ∘ f) ∘ h = (g ∘ f) ∘ k</span>. Re-bracket: <span class="m">g ∘ (f ∘ h) = g ∘ (f ∘ k)</span>. Cancel <span class="m">g</span>, then cancel <span class="m">f</span>: <span class="m">h = k</span>.</p>
+<p><strong>(b)</strong> Suppose <span class="m">f ∘ h = f ∘ k</span>. Compose with <span class="m">g</span> on the left: <span class="m">(g ∘ f) ∘ h = (g ∘ f) ∘ k</span>. Since <span class="m">g ∘ f</span> is monic, <span class="m">h = k</span>.</p>
+<p><strong>(c)</strong> The mirror image of (b): if <span class="m">h ∘ g = k ∘ g</span>, compose with <span class="m">f</span> on the right to get <span class="m">h ∘ (g ∘ f) = k ∘ (g ∘ f)</span> and cancel the epimorphism <span class="m">g ∘ f</span>.</p>
+<p><strong>(d)</strong> We know <span class="m">f ∘ s = id<sub>Y</sub></span> and must show <span class="m">s ∘ f = id<sub>X</sub></span>. Compute <span class="m">f ∘ (s ∘ f) = (f ∘ s) ∘ f = id<sub>Y</sub> ∘ f = f = f ∘ id<sub>X</sub></span>. Now cancel the monomorphism <span class="m">f</span> on the left: <span class="m">s ∘ f = id<sub>X</sub></span>. So <span class="m">s</span> is a two-sided inverse.</p>
+<p>Part (d) is the precise sense in which &ldquo;mono and epi&rdquo; falls short of &ldquo;iso&rdquo;: an epimorphism is merely right-cancellable, while a section is an actual right inverse, and it takes the stronger property to finish the proof.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 18</span><span class="tier">think</span></div>
+<div class="prob-body">
+<p>Which arrows of <span class="m"><span class="cat">Rel</span></span> are isomorphisms? Show that a relation <span class="m">R</span> from <span class="m">X</span> to <span class="m">Y</span> has a two-sided inverse in <span class="m"><span class="cat">Rel</span></span> exactly when it is the graph of a bijection.</p>
+<p>Hint: let <span class="m">S</span> be the inverse, so that <span class="m">S ∘ R</span> and <span class="m">R ∘ S</span> are the equality relations. Use the first to find, for each <span class="m">x</span>, some <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S x</span>; use the second to show that <span class="m">y</span> is the only element related to <span class="m">x</span>.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>If <span class="m">R</span> is the graph of a bijection <span class="m">f</span>, its converse <span class="m">R°</span> is the graph of <span class="m">f<sup>−1</sup></span>, and the two composites are the equality relations. So graphs of bijections are isomorphisms.</p>
+<p>Conversely, suppose <span class="m">S ∘ R</span> is equality on <span class="m">X</span> and <span class="m">R ∘ S</span> is equality on <span class="m">Y</span>. Fix <span class="m">x</span>. Since <span class="m">(x, x) ∈ S ∘ R</span>, there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S x</span>: so <span class="m">x</span> is related to <strong>at least one</strong> element. Suppose also <span class="m">x R y′</span>. Then <span class="m">y S x</span> and <span class="m">x R y′</span> give <span class="m">(y, y′) ∈ R ∘ S</span>, and <span class="m">R ∘ S</span> is equality, so <span class="m">y = y′</span>: <span class="m">x</span> is related to <strong>at most one</strong> element. By Exercise 14(c), <span class="m">R</span> is the graph of a function <span class="m">f</span>. The same argument with the roles of <span class="m">R</span> and <span class="m">S</span> exchanged shows <span class="m">S</span> is the graph of a function <span class="m">g</span>, and the two equations say <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. So <span class="m">f</span> is a bijection.</p>
+<p>The isomorphisms of <span class="m"><span class="cat">Rel</span></span> are therefore the same as the isomorphisms of <span class="m"><span class="cat">Set</span></span>, even though <span class="m"><span class="cat">Rel</span></span> has vastly more arrows. Adding arrows to a category can create new isomorphisms; here it happens not to.</p>
+</div>
+</details>
+</div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 19</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>The <strong>converse</strong> operation of Exercise 14 can be read as a comparison between <span class="m"><span class="cat">Rel</span></span> and its opposite category (Exercise 7).</p>
+<p>Describe a way of turning each arrow <span class="m">R : X → Y</span> of <span class="m"><span class="cat">Rel</span></span> into an arrow <span class="m">X → Y</span> of <span class="m"><span class="cat">Rel</span><sup>op</sup></span> that respects identities and composition and can be undone. What does this say about the relationship between a relation and its converse?</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>An arrow <span class="m">X → Y</span> of <span class="m"><span class="cat">Rel</span><sup>op</sup></span> is, by definition, an arrow <span class="m">Y → X</span> of <span class="m"><span class="cat">Rel</span></span> — a relation from <span class="m">Y</span> to <span class="m">X</span>. Send <span class="m">R</span> to its converse <span class="m">R°</span>, which is exactly such a relation. Identities are respected, since the converse of an equality relation is itself. Composition is respected: the composite of <span class="m">R°</span> and <span class="m">S°</span> <em>in the opposite category</em> is, by definition, the composite in the other order in <span class="m"><span class="cat">Rel</span></span>, namely <span class="m">R° ∘ S°</span>, and Exercise 14(b) says this is <span class="m">(S ∘ R)°</span>. And the assignment undoes itself, because <span class="m">R°° = R</span>.</p>
+<p>So <span class="m"><span class="cat">Rel</span></span> is the same as its own opposite: every statement about relations has a mirror image obtained by reversing them. In Lesson 2 an assignment like this — objects to objects, arrows to arrows, identities and composites preserved — gets a name, <em>functor</em>, and Lesson 5 returns to categories that are their own duals.</p>
+</div>
+</details>
+</div>
 </div>
 </section>
 
-<!-- ============ SUMMARY / NEXT ============ -->
-<section class="section">
+<section class="section" id="recap">
   <div class="measure">
     <div class="sec-no">Recap</div>
     <h2>What to carry forward</h2>
@@ -749,7 +1187,8 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
       <li>The arrows are the content. Whenever you&rsquo;re tempted to reach inside an object, ask whether you can say the same thing with arrows instead — you usually can.</li>
       <li><strong>Commutative diagrams are equations.</strong> A diagram commutes when same-endpoint paths compose equally.</li>
       <li>The definition is a wide net: <span class="cat">Set</span>, every preorder, every monoid, every group, and the world of typed programs are all categories.</li>
-      <li>For a finite category the laws are <em>checkable</em> — and you wrote the checker.</li>
+      <li>An <strong>isomorphism</strong> is an arrow with a two-sided inverse: the arrows-only notion of sameness. Isomorphic objects have the same arrows to and from everything else; <strong>monic</strong> and <strong>epic</strong> arrows are the cancellable ones, and being both does not make an arrow an isomorphism.</li>
+      <li>For a finite category the laws are <em>checkable</em> — by hand from its composition table, or by the optional checker.</li>
     </ol>
 
     <div class="next">
@@ -762,27 +1201,46 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
       </span>
       <div>
         <span class="ntag">Coming next · Lesson 02</span>
-        <h3>Functors — maps between categories</h3>
+        <h3><a href="lesson-02-functors.html">Functors — maps between categories</a></h3>
         <p>If categories are the new objects, what are the structure-preserving maps between <em>them</em>? A functor sends objects to objects and arrows to arrows while respecting identities and composition — and with it, categories themselves become the objects of a category, <span class="cat">Cat</span>.</p>
       </div>
     </div>
+    <nav class="pager" aria-label="Lesson navigation"><a href="index.html">← Course index</a><a href="lesson-02-functors.html">Lesson 02 — Functors →</a></nav>
+  
   </div>
 </section>
 
 <footer>Intro to Category Theory · Lesson 01 · made for curious people who like arrows</footer>
 
 </main>
+
 </div>
 
 <script>
-/* ----- generic commutative-diagram renderer ----------------------------- */
+/* ----- commutative-diagram renderer (shared by every lesson page) ----- */
 const SVGNS = "http://www.w3.org/2000/svg";
-
 function el(tag, attrs, parent){
   const n = document.createElementNS(SVGNS, tag);
   for(const k in attrs) n.setAttribute(k, attrs[k]);
   if(parent) parent.appendChild(n);
   return n;
+}
+/* label mini-syntax:  "α~X" = α with subscript X;  "g ∘~K~ f" = subscript K mid-label;
+   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end. */
+function setLabel(t, label){
+  const parts = String(label).split(/([~^])/);
+  let mode = "", shift = 0;
+  t.textContent = "";
+  for(let i = 0; i < parts.length; i++){
+    const p = parts[i];
+    if(p === "~" || p === "^"){ mode = (mode === p) ? "" : p; continue; }
+    if(!p) continue;
+    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0;
+    const s = el("tspan", {dy: want - shift}, t);
+    if(mode) s.setAttribute("font-size", "12");
+    s.textContent = p;
+    shift = want;
+  }
 }
 
 function build(svg, spec){
@@ -791,14 +1249,13 @@ function build(svg, spec){
   const nodeOf = {};
   spec.nodes.forEach(n => nodeOf[n.id] = n);
 
-  // draw arrows first (so labels/nodes sit on top)
   spec.arrows.forEach(a => {
     const from = nodeOf[a.from], to = nodeOf[a.to];
     const rS = a.rs ?? 17, rE = a.re ?? 19;
-    let shaft, tip, tan, labelAt;
+    let shaft, labelAt;
 
     if(a.from === a.to){
-      // self-loop pointing outward in direction `deg` (0 = up, clockwise)
+      /* self-loop, pointing outward in direction `deg` (0 = up, clockwise) */
       const x = from.x, y = from.y;
       const deg = (a.deg ?? 0) * Math.PI/180;
       const ca = Math.cos(deg), sa = Math.sin(deg);
@@ -811,13 +1268,12 @@ function build(svg, spec){
       shaft = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
       labelAt = [lx, ly];
     } else {
-      let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
-      let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
-      let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+      const x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+      const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      const sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
       const px=-uy, py=ux, off = a.curve ?? 0;
       if(off){
-        const mx=(sx+ex)/2, my=(sy+ey)/2;
-        const cx=mx+px*off, cy=my+py*off;
+        const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
         shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
         labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
       } else {
@@ -827,7 +1283,7 @@ function build(svg, spec){
       }
     }
 
-    // measure true end tangent to orient the arrowhead
+    /* measure the true end tangent to orient the arrowhead */
     const probe = el("path", {d:shaft}, svg);
     const Ltot = probe.getTotalLength();
     const pEnd = probe.getPointAtLength(Ltot);
@@ -835,40 +1291,36 @@ function build(svg, spec){
     svg.removeChild(probe);
     let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
     const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
-    const bl = 8.5, ang = 0.42;
-    const cos=Math.cos(ang), sin=Math.sin(ang);
-    const b1x = pEnd.x - bl*(tx*cos - ty*sin), b1y = pEnd.y - bl*(ty*cos + tx*sin);
-    const b2x = pEnd.x - bl*(tx*cos + ty*sin), b2y = pEnd.y - bl*(ty*cos - tx*sin);
-    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const head = a.nohead ? "" : ` M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
 
-    const cls = "arrow" + (a.cls ? " "+a.cls : "");
-    const path = el("path", {d:full, class:cls}, svg);
-    if(a.dash) path.setAttribute("stroke-dasharray-base", a.dash); // (unused, draw uses len)
-    const len = path.getTotalLength();
-    path.style.setProperty("--len", len);
-    path.setAttribute("stroke-dasharray", len);
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:shaft + head, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
     path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
 
     if(a.label){
       const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
-        "text-anchor":"middle", "dominant-baseline":"middle"}, svg);
-      t.textContent = a.label;
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
       t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
     }
   });
 
-  // nodes on top
   spec.nodes.forEach(n => {
-    const t = el("text", {x:n.x, y:n.y, class:"node", "text-anchor":"middle",
-      "dominant-baseline":"central"}, svg);
-    t.textContent = n.label;
-    if(n.sub){
-      const s = el("tspan", {dy:"6","font-size":"13"}, t); s.textContent = n.sub;
-    }
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
   });
 }
 
-/* ----- the diagrams ----------------------------------------------------- */
+/* ----- this lesson's diagrams ----- */
 const DIAGRAMS = {
   hero: {
     w:400, h:260,
@@ -910,19 +1362,19 @@ const DIAGRAMS = {
     ]
   },
   assoc: {
-    w:560, h:230,
+    w:560, h:256,
     nodes:[
-      {id:"A", x:50,  y:150, label:"A"},
-      {id:"B", x:220, y:150, label:"B"},
-      {id:"C", x:380, y:150, label:"C"},
-      {id:"D", x:520, y:150, label:"D"},
+      {id:"A", x:50,  y:132, label:"A"},
+      {id:"B", x:220, y:132, label:"B"},
+      {id:"C", x:380, y:132, label:"C"},
+      {id:"D", x:520, y:132, label:"D"},
     ],
     arrows:[
-      {from:"A", to:"B", label:"f", lo:18, delay:0},
-      {from:"B", to:"C", label:"g", lo:18, delay:180},
-      {from:"C", to:"D", label:"h", lo:18, delay:360},
-      {from:"A", to:"C", label:"g \u2218 f", curve:-70, cls:"soft", lcls:"soft", delay:560},
-      {from:"B", to:"D", label:"h \u2218 g", curve:70, cls:"soft", lcls:"soft", delay:760},
+      {from:"A", to:"B", label:"f", lo:-15, delay:0},
+      {from:"B", to:"C", label:"g", lo:-15, delay:180},
+      {from:"C", to:"D", label:"h", lo:-15, delay:360},
+      {from:"A", to:"C", label:"g \u2218 f", curve:-96, cls:"soft", lcls:"soft", delay:560},
+      {from:"B", to:"D", label:"h \u2218 g", curve:96, cls:"soft", lcls:"soft", delay:760},
     ]
   },
   poset: {
@@ -945,8 +1397,8 @@ const DIAGRAMS = {
     ],
     arrows:[
       {from:"M", to:"M", deg:0,   label:"e", lcls:"amber", cls:"amber", delay:0},
-      {from:"M", to:"M", deg:-58, label:"a", delay:220},
-      {from:"M", to:"M", deg:58,  label:"b", lcls:"soft", cls:"soft", delay:440},
+      {from:"M", to:"M", deg:-82, label:"a", delay:220},
+      {from:"M", to:"M", deg:82,  label:"b", lcls:"soft", cls:"soft", delay:440},
     ]
   },
   two: {
@@ -961,41 +1413,40 @@ const DIAGRAMS = {
       {from:"z", to:"o", label:"0 \u2192 1", lo:-16, delay:0},
     ]
   },
+  iso: {
+    w:380, h:170,
+    nodes:[
+      {id:"X", x:90, y:85, label:"X"},
+      {id:"Y", x:290, y:85, label:"Y"},
+    ],
+    arrows:[
+      {from:"X", to:"Y", label:"f", rs:17.0, re:19.0, curve:-34, delay:0},
+      {from:"Y", to:"X", label:"f^−1", rs:17.0, re:19.0, curve:-34, delay:170},
+    ]
+  }
 };
 
-/* monoid needs two distinct loops on the same side — nudge the second */
-function patchMonoid(svg){
-  // re-render handled in build; the two up-loops overlap, so shift labels visually
-}
-
-/* ----- render + reveal on scroll --------------------------------------- */
+/* ----- render, then draw each diagram as it scrolls into view ----- */
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 function renderAll(){
   document.querySelectorAll("[data-diagram]").forEach(div => {
     const spec = DIAGRAMS[div.dataset.diagram];
-    if(!spec) return;
-    const svg = div.querySelector("svg");
-    build(svg, spec);
+    if(spec) build(div.querySelector("svg"), spec);
   });
 }
 renderAll();
 
-if(reduce){
+if(reduce || !("IntersectionObserver" in window)){
   document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
 } else {
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); }
-    });
-  }, {threshold:0.35});
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
   document.querySelectorAll(".board").forEach(b => io.observe(b));
-  // hero draws immediately
   const hero = document.querySelector('[data-diagram="hero"]');
   if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
 }
 
-/* re-render on resize so text metrics stay crisp (debounced) */
 let rt;
 window.addEventListener("resize", ()=>{
   clearTimeout(rt);
@@ -1008,7 +1459,7 @@ window.addEventListener("resize", ()=>{
   }, 200);
 });
 
-/* ----- copy buttons ----------------------------------------------------- */
+/* ----- copy buttons on code blocks ----- */
 document.querySelectorAll(".copy").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     const code = btn.closest(".code").querySelector("code").innerText;
@@ -1018,4 +1469,28 @@ document.querySelectorAll(".copy").forEach(btn=>{
     }).catch(()=>{ btn.textContent = "—"; });
   });
 });
+
+/* ----- the optional Python track: one switch opens or closes every lab ----- */
+(function(){
+  const labs = [...document.querySelectorAll("details.pylab")];
+  const btn = document.querySelector(".pytoggle");
+  if(!btn) return;
+  if(!labs.length){ btn.hidden = true; return; }
+  const KEY = "ct-python-labs";
+  let open = false;
+  try { open = window.localStorage.getItem(KEY) === "open"; } catch(e) {}
+  function apply(){
+    labs.forEach(d => { d.open = open; });
+    btn.setAttribute("aria-pressed", open ? "true" : "false");
+    btn.textContent = open ? "Python labs: open" : "Python labs: closed";
+  }
+  apply();
+  btn.addEventListener("click", ()=>{
+    open = !open;
+    try { window.localStorage.setItem(KEY, open ? "open" : "closed"); } catch(e) {}
+    apply();
+  });
+})();
 </script>
+</body>
+</html>
