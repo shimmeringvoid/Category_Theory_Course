@@ -8,20 +8,20 @@
 <meta name="description" content="Reverse the arrows, pair things up, keep only some of them, or promote the arrows themselves to objects. A small kit of constructions turns the categories we have into the categories we need.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --paper:#FBFAF6;
   --paper-2:#F3EFE4;
   --grid:#E7E1D2;
-  --ink:#191B22;
-  --ink-soft:#5C5F69;
-  --ink-faint:#8B8C90;
+  --ink:#121318;
+  --ink-soft:#33363F;     /* solutions, captions: 10:1 on the blue wash */
+  --ink-faint:#5A5D66;    /* small labels: 6:1 */
   --rule:#E2DDCF;
   --arrow:#2A3FA6;        /* morphisms — drafting ink blue */
-  --arrow-soft:#8E97CE;   /* composites / derived arrows */
-  --amber:#A8641A;        /* identities & special notes, used sparingly */
+  --arrow-soft:#7983C2;   /* composites / derived arrows */
+  --amber:#8F5212;        /* identities & special notes, used sparingly */
   --amber-wash:#F6ECDC;
   --blue-wash:#EBEDF8;
   --code-bg:#15171E;
@@ -39,6 +39,7 @@ body{
   color:var(--ink);
   font-family:"Newsreader",Georgia,serif;
   font-size:20px;
+  font-weight:460;
   line-height:1.62;
   font-optical-sizing:auto;
   -webkit-font-smoothing:antialiased;
@@ -64,7 +65,7 @@ p{margin:0 0 1.15em}
 em,i,.var{font-style:italic}
 .var{font-family:"Newsreader",serif;font-style:italic}
 .op{font-style:normal}
-strong{font-weight:600}
+strong{font-weight:650}
 a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
 
 h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
@@ -135,7 +136,7 @@ figcaption{
 .node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
 .elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;
   fill:var(--arrow);paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
-.elabel.soft{fill:#5b62a0}
+.elabel.soft{fill:#454c8f}
 .elabel.amber{fill:var(--amber)}
 .arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .arrow.soft{stroke:var(--arrow-soft)}
@@ -257,7 +258,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 .prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
 .prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
-.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
 .prob-body p{margin:0 0 .9em}
 .prob-body p:last-child{margin-bottom:0}
 .prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
@@ -404,6 +405,20 @@ p + .exgroup{margin-top:40px}
 .exgroup .exmeta a{color:var(--arrow);text-decoration:none}
 .exgroup .exmeta a:hover{text-decoration:underline}
 .exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
+
+/* ---------- second edition: typography ---------- */
+/* in math and in italic prose, only letters lean: brackets, operators, digits are upright */
+.up{font-style:normal}
+
+/* italic corrections, used by tools/typeset.py */
+.pl2{padding-left:.02em} .pl3{padding-left:.03em} .pl4{padding-left:.04em} .pl5{padding-left:.05em} .pl6{padding-left:.06em} .pl7{padding-left:.07em} .pl8{padding-left:.08em} .pl9{padding-left:.09em}
+.pl10{padding-left:.10em} .pl11{padding-left:.11em} .pl12{padding-left:.12em} .pl13{padding-left:.13em} .pl14{padding-left:.14em} .pl15{padding-left:.15em} .pl16{padding-left:.16em} .pl17{padding-left:.17em}
+.pl18{padding-left:.18em} .pl19{padding-left:.19em} .pl20{padding-left:.20em} .pl21{padding-left:.21em} .pl22{padding-left:.22em} .pl23{padding-left:.23em} .pl24{padding-left:.24em} .pl25{padding-left:.25em}
+.pl26{padding-left:.26em} .pl27{padding-left:.27em} .pl28{padding-left:.28em} .pl29{padding-left:.29em} .pl30{padding-left:.30em} .pr2{padding-right:.02em} .pr3{padding-right:.03em} .pr4{padding-right:.04em}
+.pr5{padding-right:.05em} .pr6{padding-right:.06em} .pr7{padding-right:.07em} .pr8{padding-right:.08em} .pr9{padding-right:.09em} .pr10{padding-right:.10em} .pr11{padding-right:.11em} .pr12{padding-right:.12em}
+.pr13{padding-right:.13em} .pr14{padding-right:.14em} .pr15{padding-right:.15em} .pr16{padding-right:.16em} .pr17{padding-right:.17em} .pr18{padding-right:.18em} .pr19{padding-right:.19em} .pr20{padding-right:.20em}
+.pr21{padding-right:.21em} .pr22{padding-right:.22em} .pr23{padding-right:.23em} .pr24{padding-right:.24em} .pr25{padding-right:.25em} .pr26{padding-right:.26em} .pr27{padding-right:.27em} .pr28{padding-right:.28em}
+.pr29{padding-right:.29em} .pr30{padding-right:.30em}
 </style>
 </head>
 <body>
@@ -419,7 +434,7 @@ p + .exgroup{margin-top:40px}
   <div class="crumbs"><a href="lesson-04-equivalence-of-categories.html">Lesson 04 — Equivalence</a> &nbsp;›&nbsp; <b>Lesson 05 — Constructions</b> &nbsp;›&nbsp; <a href="lesson-06-universal-properties.html">Lesson 06 — Universal properties</a></div>
   <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 05</div>
   <h1>New Categories <span class="q">from Old</span></h1>
-  <p class="lede">Reverse the arrows, pair things up, keep only some of them, or promote the arrows themselves to objects. A small kit of constructions turns the categories we have into the categories we need.</p>
+  <p class="lede">Reverse the arrows, pair things up, keep only some of them, or promote the arrows themselves to objects. A small kit of constructions turns the categories we have into the categories we need.</p>
   <figure class="hero-diagram">
     <div class="board" data-diagram="hero" aria-label="A commuting triangle: arrows f from X to A and g from Y to A, and an arrow h from X to Y with g after h equal to f. It is one arrow of the slice category over A.">
       <svg></svg>
@@ -440,7 +455,7 @@ p + .exgroup{margin-top:40px}
       <li><a href="#exercises"><span class="n">§9</span>Exercises</a></li>
       <li><a href="#recap"><span class="n"></span>Recap</a></li>
     </ul>
-    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-05-new-categories-from-old.py">a script</a> and <a href="notebooks/lesson-05-new-categories-from-old.ipynb">a notebook</a>.</p>
+    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-05-new-categories-from-old.py">a script</a> and <a href="notebooks/lesson-05-new-categories-from-old.ipynb">a notebook</a>.</p>
   </nav>
 </header>
 
@@ -449,19 +464,19 @@ p + .exgroup{margin-top:40px}
 <div class="measure">
 <div class="sec-no">§1 — Why build categories?</div>
 <h2>Because the best object is always best <em>in some category</em></h2>
-<p>Until now categories were found: sets, groups, orders, monoids. This lesson manufactures them. Each construction takes one or two categories and returns a new one, and the reason to care is a single observation that organises the second half of the course.</p>
-<p>Lessons 6 to 8 are about objects that are <em>best possible</em> solutions to a problem — the best lower bound, the best pair, the best approximation. &ldquo;Best&rdquo; will always be given the same meaning: there is exactly one arrow to it from every competitor, or exactly one arrow from it to every competitor. But the competitors are not usually the objects of the category we started with. They are objects <em>equipped with something</em> — an object with a pair of arrows, an object with an arrow to <span class="m">A</span> — and for &ldquo;exactly one arrow&rdquo; to make sense they must form a category of their own. The constructions of this lesson are how those categories get built. The triangle at the top of the page is one arrow in the most important of them.</p>
-<p>Here is the whole kit. Half of it you have met in exercises; this lesson makes it systematic.</p>
+<p>Until now categories were found: sets, groups, orders, monoids. This lesson manufactures them. Each construction takes one or two categories and returns a new one, and the reason to care is a single observation that organises the second half of the course.</p>
+<p>Lessons 6 to 8 are about objects that are <em>best possible</em> solutions to a problem — the best lower bound, the best pair, the best approximation. &ldquo;Best&rdquo; will always be given the same meaning: there is exactly one arrow to it from every competitor, or exactly one arrow from it to every competitor. But the competitors are not usually the objects of the category we started with. They are objects <em class="pr5">equipped with something</em> — an object with a pair of arrows, an object with an arrow to <span class="m">A</span> — and for &ldquo;exactly one arrow&rdquo; to make sense they must form a category of their own. The constructions of this lesson are how those categories get built. The triangle at the top of the page is one arrow in the most important of them.</p>
+<p>Here is the whole kit. Half of it you have met in exercises; this lesson makes it systematic.</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>Construction</th><th>Objects</th><th>Arrows</th><th>Section</th></tr>
 <tr><td>opposite <span class="m"><span class="cat">𝒞</span><sup>op</sup></span></td><td>those of <span class="m"><span class="cat">𝒞</span></span></td><td>those of <span class="m"><span class="cat">𝒞</span></span>, reversed</td><td>§2</td></tr>
-<tr><td>product <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span></td><td>pairs of objects</td><td>pairs of arrows</td><td>§3</td></tr>
+<tr><td>product <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span></td><td>pairs of objects</td><td>pairs of arrows</td><td>§3</td></tr>
 <tr><td>subcategory</td><td>some objects of <span class="m"><span class="cat">𝒞</span></span></td><td>some arrows of <span class="m"><span class="cat">𝒞</span></span></td><td>§4</td></tr>
-<tr><td>functor category <span class="m">[<span class="cat">𝒞</span>, <span class="cat">𝒟</span>]</span></td><td>functors</td><td>natural transformations</td><td>Lesson 3</td></tr>
-<tr><td>arrow category <span class="m"><span class="cat">𝒞</span><sup>→</sup></span></td><td>arrows of <span class="m"><span class="cat">𝒞</span></span></td><td>commuting squares</td><td>§5</td></tr>
-<tr><td>slice <span class="m"><span class="cat">𝒞</span>/A</span></td><td>arrows into <span class="m">A</span></td><td>commuting triangles</td><td>§6</td></tr>
-<tr><td>coslice <span class="m">A/<span class="cat">𝒞</span></span></td><td>arrows out of <span class="m">A</span></td><td>commuting triangles</td><td>§6</td></tr>
-<tr><td>comma <span class="m">(F ↓ G)</span></td><td>arrows <span class="m">F X → G Y</span></td><td>commuting squares</td><td>§7</td></tr>
+<tr><td>functor category <span class="m"><span class="up">[</span><span class="cat">𝒞</span><span class="up">, </span><span class="cat">𝒟</span><span class="up">]</span></span></td><td>functors</td><td>natural transformations</td><td>Lesson 3</td></tr>
+<tr><td>arrow category <span class="m"><span class="cat">𝒞</span><sup><span class="up">→</span></sup></span></td><td>arrows of <span class="m"><span class="cat">𝒞</span></span></td><td>commuting squares</td><td>§5</td></tr>
+<tr><td>slice <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span></td><td>arrows into <span class="m">A</span></td><td>commuting triangles</td><td>§6</td></tr>
+<tr><td>coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span></td><td>arrows out of <span class="m">A</span></td><td>commuting triangles</td><td>§6</td></tr>
+<tr><td>comma <span class="m"><span class="up">(</span>F <span class="up pl7">↓ </span>G<span class="up">)</span></span></td><td>arrows <span class="m pr10">F X <span class="up pl8">→ </span>G Y</span></td><td>commuting squares</td><td>§7</td></tr>
 </table></div>
 </div>
 </section>
@@ -469,68 +484,68 @@ p + .exgroup{margin-top:40px}
 <div class="measure">
 <div class="sec-no">§2 — Opposites</div>
 <h2>Reverse every arrow, and get a second theorem free</h2>
-<p>Lesson 1, Exercise 4 built the <strong>opposite category</strong> <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>: the same objects, and for each arrow <span class="m">f : X → Y</span> of <span class="m"><span class="cat">𝒞</span></span> an arrow <span class="m">f : Y → X</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, composed in the reverse order.</p>
+<p>Lesson 1, Exercise 4 built the <strong>opposite category</strong> <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>: the same objects, and for each arrow <span class="m pr10">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>Y</span> of <span class="m"><span class="cat">𝒞</span></span> an arrow <span class="m pr8">f <span class="up pl18">: </span>Y <span class="up pl10">→ </span>X</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, composed in the reverse order.</p>
 <figure>
 <div class="board" data-diagram="opp" aria-label="Three objects A, B, C with arrows f and g in a category, and beside it the same three objects with both arrows reversed in the opposite category.">
 <svg></svg>
 </div>
-<figcaption>The same data, read backwards. The composite <span class="m">g ∘ f</span> of <span class="m"><span class="cat">𝒞</span></span> is the composite <span class="m">f ∘ g</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>.</figcaption>
+<figcaption>The same data, read backwards. The composite <span class="m pr18">g <span class="up pl5">∘ </span>f</span> of <span class="m"><span class="cat">𝒞</span></span> is the composite <span class="m pr5">f <span class="up pl18">∘ </span>g</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>.</figcaption>
 </figure>
 <p>In familiar cases the opposite is a familiar thing:</p>
 <ul>
-<li>The opposite of a preorder is the same set with the order <strong>reversed</strong>: <span class="m">(ℕ, ≤)<sup>op</sup> = (ℕ, ≥)</span>.</li>
-<li>The opposite of a monoid, viewed as a one-object category, is the monoid with its multiplication <strong>reversed</strong>: <span class="m">a ∗ b = b · a</span>. For a commutative monoid nothing changes.</li>
+<li>The opposite of a preorder is the same set with the order <strong>reversed</strong>: <span class="m"><span class="up">(ℕ, ≤)</span><sup>op</sup> <span class="up">= (ℕ, ≥)</span></span>.</li>
+<li>The opposite of a monoid, viewed as a one-object category, is the monoid with its multiplication <strong>reversed</strong>: <span class="m">a <span class="up">∗ </span>b <span class="up">= </span>b <span class="up">· </span>a</span>. For a commutative monoid nothing changes.</li>
 <li><span class="m"><span class="cat">Rel</span><sup>op</sup></span> is isomorphic to <span class="m"><span class="cat">Rel</span></span>, by taking converses (Lesson 1, Exercise 19).</li>
-<li><span class="m"><span class="cat">Set</span><sup>op</sup></span> is something genuinely new. An arrow <span class="m">X → Y</span> in <span class="m"><span class="cat">Set</span><sup>op</sup></span> is a function from <span class="m">Y</span> to <span class="m">X</span>, and there is no way to reinterpret it as a function from <span class="m">X</span> to <span class="m">Y</span>. Opposite categories need not be categories &ldquo;of functions&rdquo; in any sense — which is one reason the abstract definition of Lesson 1 earns its keep.</li>
+<li><span class="m"><span class="cat">Set</span><sup>op</sup></span> is something genuinely new. An arrow <span class="m pr10">X <span class="up pl8">→ </span>Y</span> in <span class="m"><span class="cat">Set</span><sup>op</sup></span> is a function from <span class="m pr10">Y</span> to <span class="m">X</span>, and there is no way to reinterpret it as a function from <span class="m pr8">X</span> to <span class="m">Y</span>. Opposite categories need not be categories &ldquo;of functions&rdquo; in any sense — which is one reason the abstract definition of Lesson 1 earns its keep.</li>
 </ul>
 <h3 class="sub">Dual notions</h3>
-<p>Every notion defined by arrows has a <strong>dual</strong>: interpret the definition in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and see what it says about <span class="m"><span class="cat">𝒞</span></span>. Reversal exchanges sources with targets, &ldquo;composing before&rdquo; with &ldquo;composing after,&rdquo; and so:</p>
+<p>Every notion defined by arrows has a <strong>dual</strong>: interpret the definition in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and see what it says about <span class="m"><span class="cat">𝒞</span></span>. Reversal exchanges sources with targets, &ldquo;composing before&rdquo; with &ldquo;composing after,&rdquo; and so:</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>Notion</th><th>Its dual</th></tr>
 <tr><td>source of an arrow</td><td>target of an arrow</td></tr>
 <tr><td>monomorphism (left-cancellable)</td><td>epimorphism (right-cancellable)</td></tr>
 <tr><td>section</td><td>retraction</td></tr>
 <tr><td>isomorphism</td><td>isomorphism (self-dual)</td></tr>
-<tr><td>covariant hom functor <span class="m"><span class="cat">𝒞</span>(A, −)</span></td><td>contravariant hom functor <span class="m"><span class="cat">𝒞</span>(−, A)</span></td></tr>
-<tr><td>slice <span class="m"><span class="cat">𝒞</span>/A</span></td><td>coslice <span class="m">A/<span class="cat">𝒞</span></span></td></tr>
+<tr><td>covariant hom functor <span class="m"><span class="cat">𝒞</span><span class="up pr5">(</span>A<span class="up">, −)</span></span></td><td>contravariant hom functor <span class="m"><span class="cat">𝒞</span><span class="up">(−, </span>A<span class="up">)</span></span></td></tr>
+<tr><td>slice <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span></td><td>coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span></td></tr>
 </table></div>
-<p>For instance: <span class="m">f</span> is monic in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> means that <span class="m">f ∘<sup>op</sup> h = f ∘<sup>op</sup> k</span> implies <span class="m">h = k</span>; unwinding the reversed composition, that says <span class="m">h ∘ f = k ∘ f</span> implies <span class="m">h = k</span> in <span class="m"><span class="cat">𝒞</span></span> — which is the statement that <span class="m">f</span> is <strong>epic</strong> in <span class="m"><span class="cat">𝒞</span></span>.</p>
+<p>For instance: <span class="m pr18">f</span> is monic in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> means that <span class="m">f <span class="up pl18">∘</span><sup>op</sup> h <span class="up">= </span>f <span class="up pl18">∘</span><sup>op</sup> k</span> implies <span class="m">h <span class="up">= </span>k</span>; unwinding the reversed composition, that says <span class="m pr18">h <span class="up">∘ </span>f <span class="up pl18">= </span>k <span class="up">∘ </span>f</span> implies <span class="m">h <span class="up">= </span>k</span> in <span class="m"><span class="cat">𝒞</span></span> — which is the statement that <span class="m pr18">f</span> is <strong>epic</strong> in <span class="m"><span class="cat">𝒞</span></span>.</p>
 <div class="box thm">
 <span class="tag">Theorem · The duality principle</span>
-<p>Suppose a statement about categories, phrased in terms of objects, arrows, identities and composition, is true in <em>every</em> category. Then its dual — the statement obtained by reversing every arrow and the order of every composite — is also true in every category.</p>
+<p>Suppose a statement about categories, phrased in terms of objects, arrows, identities and composition, is true in <em>every</em> category. Then its dual — the statement obtained by reversing every arrow and the order of every composite — is also true in every category.</p>
 </div>
-<p><strong>Proof.</strong> Let <span class="m">S</span> be the statement and <span class="m">S<sup>op</sup></span> its dual, and let <span class="m"><span class="cat">𝒞</span></span> be any category. Saying that <span class="m">S<sup>op</sup></span> holds in <span class="m"><span class="cat">𝒞</span></span> is, by construction, the same as saying that <span class="m">S</span> holds in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>. But <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> is a category (Lesson 1, Exercise 4), and <span class="m">S</span> holds in every category. ∎</p>
-<p>The principle halves the work of the subject. Lesson 1 proved that every section is monic, and then, separately, that every retraction is epic. The second proof was unnecessary: it is the dual of the first. From here on, proofs of dual statements will simply be omitted, with the words &ldquo;dually&rdquo; or &ldquo;by duality.&rdquo;</p>
-<p>One caution. Duality applies to statements true in <strong>all</strong> categories. A statement about one particular category — &ldquo;in <span class="m"><span class="cat">Set</span></span> every epimorphism has a section&rdquo; — dualizes to a statement about <span class="m"><span class="cat">Set</span><sup>op</sup></span>, not about <span class="m"><span class="cat">Set</span></span>.</p>
+<p><strong>Proof.</strong> Let <span class="m">S</span> be the statement and <span class="m">S<sup>op</sup></span> its dual, and let <span class="m"><span class="cat">𝒞</span></span> be any category. Saying that <span class="m">S<sup>op</sup></span> holds in <span class="m"><span class="cat">𝒞</span></span> is, by construction, the same as saying that <span class="m">S</span> holds in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>. But <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> is a category (Lesson 1, Exercise 4), and <span class="m">S</span> holds in every category. ∎</p>
+<p>The principle halves the work of the subject. Lesson 1 proved that every section is monic, and then, separately, that every retraction is epic. The second proof was unnecessary: it is the dual of the first. From here on, proofs of dual statements will simply be omitted, with the words &ldquo;dually&rdquo; or &ldquo;by duality.&rdquo;</p>
+<p>One caution. Duality applies to statements true in <strong>all</strong> categories. A statement about one particular category — &ldquo;in <span class="m"><span class="cat">Set</span></span> every epimorphism has a section&rdquo; — dualizes to a statement about <span class="m"><span class="cat">Set</span><sup>op</sup></span>, not about <span class="m"><span class="cat">Set</span></span>.</p>
 </div>
 </section>
 <section class="section" id="s3">
 <div class="measure">
 <div class="sec-no">§3 — Products of categories</div>
 <h2>Two categories, side by side in each coordinate</h2>
-<p>Lesson 1, Exercise 5 defined the <strong>product category</strong> <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span>. Its objects are pairs <span class="m">(C, D)</span>, its arrows are pairs <span class="m">(f, g)</span>, and everything — sources, targets, identities, composition — is done separately in each slot:</p>
-<p class="eq"><span class="m">(f′, g′) ∘ (f, g) = (f′ ∘ f, g′ ∘ g).</span></p>
+<p>Lesson 1, Exercise 5 defined the <strong>product category</strong> <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span>. Its objects are pairs <span class="m"><span class="up">(</span>C<span class="up">, </span>D<span class="up">)</span></span>, its arrows are pairs <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span>, and everything — sources, targets, identities, composition — is done separately in each slot:</p>
+<p class="eq"><span class="m"><span class="up pr14">(</span>f<span class="up pl18">′, </span>g<span class="up pl5 pr14">′) ∘ (</span>f<span class="up">, </span>g<span class="up pl5 pr14">) = (</span>f<span class="up pl18">′ ∘ </span>f<span class="up">, </span>g<span class="up pl5">′ ∘ </span>g<span class="up pl5">).</span></span></p>
 <ul>
-<li>The product of two preorders is their product set with the <strong>componentwise</strong> order: <span class="m">(x, y) ≤ (x′, y′)</span> when <span class="m">x ≤ x′</span> and <span class="m">y ≤ y′</span>.</li>
+<li>The product of two preorders is their product set with the <strong>componentwise</strong> order: <span class="m"><span class="up">(</span>x<span class="up">, </span>y<span class="up">) ≤ (</span>x<span class="up">′, </span>y<span class="up">′)</span></span> when <span class="m">x <span class="up">≤ </span>x<span class="up">′</span></span> and <span class="m">y <span class="up">≤ </span>y<span class="up">′</span></span>.</li>
 <li>The product of two monoids, as one-object categories, is their <strong>direct product</strong>.</li>
-<li><span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> has four objects and <span class="m">3 × 3 = 9</span> arrows, and it is the commuting square of Lesson 1, Exercise 12. The diagonal of the square is the arrow <span class="m">(u, u)</span>.</li>
+<li><span class="m"><span class="cat">𝟚</span> <span class="up">× </span><span class="cat">𝟚</span></span> has four objects and <span class="m"><span class="up">3 × 3 = 9</span></span> arrows, and it is the commuting square of Lesson 1, Exercise 12. The diagonal of the square is the arrow <span class="m"><span class="up">(</span>u<span class="up">, </span>u<span class="up">)</span></span>.</li>
 </ul>
 <figure>
 <div class="board" data-diagram="prod" aria-label="The product of the category 2 with itself: four objects 00, 10, 01 and 11 in a square, with an arrow along each side and one along the diagonal.">
 <svg></svg>
 </div>
-<figcaption><span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> is the commuting square: the two routes around it are <span class="m">(u, id) ∘ (id, u)</span> and <span class="m">(id, u) ∘ (u, id)</span>, and both equal the diagonal <span class="m">(u, u)</span>.</figcaption>
+<figcaption><span class="m"><span class="cat">𝟚</span> <span class="up">× </span><span class="cat">𝟚</span></span> is the commuting square: the two routes around it are <span class="m"><span class="up">(</span>u<span class="up">, </span>id<span class="up pl5">) ∘ (</span>id<span class="up">, </span>u<span class="up">)</span></span> and <span class="m"><span class="up pl5">(</span>id<span class="up">, </span>u<span class="up">) ∘ (</span>u<span class="up">, </span>id<span class="up pl5">)</span></span>, and both equal the diagonal <span class="m"><span class="up pl4">(</span>u<span class="up">, </span>u<span class="up">)</span></span>.</figcaption>
 </figure>
-<p>There are projection functors <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span> → <span class="cat">𝒞</span></span> and <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span> → <span class="cat">𝒟</span></span>, which forget one coordinate. The main use of product categories, though, is to give an exact meaning to &ldquo;a functor of two variables.&rdquo;</p>
+<p>There are projection functors <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span> <span class="up">→ </span><span class="cat">𝒞</span></span> and <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span> <span class="up">→ </span><span class="cat">𝒟</span></span>, which forget one coordinate. The main use of product categories, though, is to give an exact meaning to &ldquo;a functor of two variables.&rdquo;</p>
 <div class="box def">
 <span class="tag">Definition · Bifunctor</span>
-<p>A <strong>bifunctor</strong> is a functor out of a product category, <span class="m">T : <span class="cat">𝒞</span> × <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span>.</p>
+<p>A <strong>bifunctor</strong> is a functor out of a product category, <span class="m">T <span class="up pl8">: </span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span> <span class="up">→ </span><span class="cat">ℰ</span></span>.</p>
 </div>
 <p>A bifunctor is functorial in each variable separately — fix an object in one slot and what remains is a functor in the other — and the two actions commute with each other, since in the product category</p>
-<p class="eq"><span class="m">(f, g) = (f, id) ∘ (id, g) = (id, g) ∘ (f, id).</span></p>
-<p>Two bifunctors matter above all others. The cartesian product of sets is a bifunctor <span class="m"><span class="cat">Set</span> × <span class="cat">Set</span> → <span class="cat">Set</span></span>: it sends a pair of functions <span class="m">(f, g)</span> to the function <span class="m">f × g</span> acting coordinatewise. And the hom-sets of any locally small category form a bifunctor, covariant in one variable and contravariant in the other:</p>
-<p class="eq"><span class="m"><span class="cat">𝒞</span>(−, −) : <span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒞</span> → <span class="cat">Set</span>, &nbsp;&nbsp;&nbsp; (f, g) ↦ (h ↦ g ∘ h ∘ f).</span></p>
-<p>It packages the two hom functors of Lesson 2 into one: fixing the first variable gives <span class="m"><span class="cat">𝒞</span>(A, −)</span>, fixing the second gives <span class="m"><span class="cat">𝒞</span>(−, A)</span>. When Lesson 3 called a family of isomorphisms &ldquo;natural in both variables,&rdquo; it meant: a natural isomorphism between two bifunctors.</p>
+<p class="eq"><span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5 pr14">) = (</span>f<span class="up">, </span>id<span class="up pl5">) ∘ (</span>id<span class="up">, </span>g<span class="up pl5">) = (</span>id<span class="up">, </span>g<span class="up pl5 pr14">) ∘ (</span>f<span class="up">, </span>id<span class="up pl5">).</span></span></p>
+<p>Two bifunctors matter above all others. The cartesian product of sets is a bifunctor <span class="m"><span class="cat">Set</span> <span class="up">× </span><span class="cat">Set</span> <span class="up">→ </span><span class="cat">Set</span></span>: it sends a pair of functions <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> to the function <span class="m pr5">f <span class="up pl18">× </span>g</span> acting coordinatewise. And the hom-sets of any locally small category form a bifunctor, covariant in one variable and contravariant in the other:</p>
+<p class="eq"><span class="m"><span class="cat">𝒞</span><span class="up">(−, −) : </span><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒞</span> <span class="up">→ </span><span class="cat">Set</span><span class="up pr14">, &nbsp;&nbsp;&nbsp; (</span>f<span class="up">, </span>g<span class="up pl5">) ↦ (</span>h <span class="up">↦ </span>g <span class="up pl5">∘ </span>h <span class="up">∘ </span>f<span class="up pl18">).</span></span></p>
+<p>It packages the two hom functors of Lesson 2 into one: fixing the first variable gives <span class="m"><span class="cat">𝒞</span><span class="up pr5">(</span>A<span class="up">, −)</span></span>, fixing the second gives <span class="m"><span class="cat">𝒞</span><span class="up">(−, </span>A<span class="up">)</span></span>. When Lesson 3 called a family of isomorphisms &ldquo;natural in both variables,&rdquo; it meant: a natural isomorphism between two bifunctors.</p>
 </div>
 </section>
 <section class="section" id="s4">
@@ -545,9 +560,9 @@ p + .exgroup{margin-top:40px}
 <li>the identity of every selected object is selected;</li>
 <li>the composite of two selected arrows is selected.</li>
 </ul>
-<p>Then <span class="m"><span class="cat">𝒮</span></span> is a category in its own right, with composition inherited from <span class="m"><span class="cat">𝒞</span></span>. It is a <strong>full</strong> subcategory if it contains <em>every</em> arrow of <span class="m"><span class="cat">𝒞</span></span> between its objects, and a <strong>wide</strong> subcategory if it contains every object of <span class="m"><span class="cat">𝒞</span></span>.</p>
+<p>Then <span class="m"><span class="cat">𝒮</span></span> is a category in its own right, with composition inherited from <span class="m"><span class="cat">𝒞</span></span>. It is a <strong>full</strong> subcategory if it contains <em>every</em> arrow of <span class="m"><span class="cat">𝒞</span></span> between its objects, and a <strong>wide</strong> subcategory if it contains every object of <span class="m"><span class="cat">𝒞</span></span>.</p>
 </div>
-<p>A full subcategory is specified by choosing objects only; a wide one by choosing arrows only. Most subcategories in practice are one or the other.</p>
+<p>A full subcategory is specified by choosing objects only; a wide one by choosing arrows only. Most subcategories in practice are one or the other.</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>Subcategory</th><th>of</th><th>Kind</th></tr>
 <tr><td>finite sets <span class="m"><span class="cat">FinSet</span></span></td><td><span class="m"><span class="cat">Set</span></span></td><td>full: all functions between finite sets</td></tr>
@@ -557,11 +572,11 @@ p + .exgroup{margin-top:40px}
 <tr><td>sets and functions</td><td><span class="m"><span class="cat">Rel</span></span></td><td>wide: functions are special relations</td></tr>
 <tr><td>the isomorphisms of <span class="m"><span class="cat">𝒞</span></span></td><td><span class="m"><span class="cat">𝒞</span></span></td><td>wide: all objects, only invertible arrows</td></tr>
 </table></div>
-<p>The last row deserves a name: the isomorphisms of any category, together with all its objects, form a wide subcategory called its <strong>core</strong>. The three conditions hold by Lesson 1, Exercise 10 — identities are isomorphisms, and isomorphisms compose — and the core is a groupoid.</p>
-<p>The inclusion of a subcategory is a functor, always faithful, and full exactly when the subcategory is full: the two uses of the word agree. The closure conditions are not automatic, as Lesson 1, Exercise 3 showed: the functions with a fixed point, or the functions that are not identities, do not form subcategories of <span class="m"><span class="cat">Set</span></span>.</p>
+<p>The last row deserves a name: the isomorphisms of any category, together with all its objects, form a wide subcategory called its <strong>core</strong>. The three conditions hold by Lesson 1, Exercise 10 — identities are isomorphisms, and isomorphisms compose — and the core is a groupoid.</p>
+<p>The inclusion of a subcategory is a functor, always faithful, and full exactly when the subcategory is full: the two uses of the word agree. The closure conditions are not automatic, as Lesson 1, Exercise 3 showed: the functions with a fixed point, or the functions that are not identities, do not form subcategories of <span class="m"><span class="cat">Set</span></span>.</p>
 <div class="box amber">
 <span class="tag">Careful · The image of a functor need not be a subcategory</span>
-<p>It is tempting to think that the objects and arrows hit by a functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> always form a subcategory of <span class="m"><span class="cat">𝒟</span></span>. They need not. Let <span class="m"><span class="cat">𝒞</span></span> have four objects <span class="m">A, B, B′, C</span> and just two non-identity arrows, <span class="m">f : A → B</span> and <span class="m">g : B′ → C</span> — which cannot be composed, since <span class="m">B ≠ B′</span>. Let <span class="m">F</span> map <span class="m"><span class="cat">𝒞</span></span> to the chain <span class="m"><span class="cat">𝟛</span></span> by sending <span class="m">A ↦ 0</span>, both <span class="m">B</span> and <span class="m">B′</span> to <span class="m">1</span>, and <span class="m">C ↦ 2</span>. The image contains the arrows <span class="m">0 → 1</span> and <span class="m">1 → 2</span> but not their composite <span class="m">0 → 2</span>. Gluing two objects together created a composable pair that the source never had. (When <span class="m">F</span> is injective on objects this cannot happen: Exercise 6.)</p>
+<p>It is tempting to think that the objects and arrows hit by a functor <span class="m">F <span class="up pl7">: </span><span class="cat">𝒞</span> <span class="up">→ </span><span class="cat">𝒟</span></span> always form a subcategory of <span class="m"><span class="cat">𝒟</span></span>. They need not. Let <span class="m"><span class="cat">𝒞</span></span> have four objects <span class="m pr4">A<span class="up">, </span>B<span class="up">, </span>B<span class="up">′, </span>C</span> and just two non-identity arrows, <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>B</span> and <span class="m pr4">g <span class="up pl5">: </span>B<span class="up">′ → </span>C</span> — which cannot be composed, since <span class="m">B <span class="up">≠ </span>B<span class="up">′</span></span>. Let <span class="m pr7">F</span> map <span class="m"><span class="cat">𝒞</span></span> to the chain <span class="m"><span class="cat">𝟛</span></span> by sending <span class="m">A <span class="up">↦ 0</span></span>, both <span class="m">B</span> and <span class="m">B<span class="up">′</span></span> to <span class="m"><span class="up">1</span></span>, and <span class="m">C <span class="up pl4">↦ 2</span></span>. The image contains the arrows <span class="m"><span class="up">0 → 1</span></span> and <span class="m"><span class="up">1 → 2</span></span> but not their composite <span class="m"><span class="up">0 → 2</span></span>. Gluing two objects together created a composable pair that the source never had. (When <span class="m pr7">F</span> is injective on objects this cannot happen: Exercise 6.)</p>
 </div>
 </div>
 </section>
@@ -569,74 +584,74 @@ p + .exgroup{margin-top:40px}
 <div class="measure">
 <div class="sec-no">§5 — Arrow categories</div>
 <h2>Promote the arrows to objects</h2>
-<p>So far the objects of each new category were objects of an old one. The next constructions take the decisive step of treating <strong>arrows as objects</strong>.</p>
+<p>So far the objects of each new category were objects of an old one. The next constructions take the decisive step of treating <strong>arrows as objects</strong>.</p>
 <div class="box def">
 <span class="tag">Definition · The arrow category</span>
-<p>The <strong>arrow category</strong> <span class="m"><span class="cat">𝒞</span><sup>→</sup></span> has</p>
+<p>The <strong>arrow category</strong> <span class="m"><span class="cat">𝒞</span><sup><span class="up">→</span></sup></span> has</p>
 <ul class="deflist">
-<li>as objects, the arrows <span class="m">f : A → B</span> of <span class="m"><span class="cat">𝒞</span></span>;</li>
-<li>as arrows from <span class="m">f : A → B</span> to <span class="m">g : C → D</span>, the pairs <span class="m">(a, b)</span> of arrows <span class="m">a : A → C</span> and <span class="m">b : B → D</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m">g ∘ a = b ∘ f</span> — the commuting squares with <span class="m">f</span> and <span class="m">g</span> as opposite sides.</li>
+<li>as objects, the arrows <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>B</span> of <span class="m"><span class="cat">𝒞</span></span>;</li>
+<li>as arrows from <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>B</span> to <span class="m">g <span class="up pl5">: </span>C <span class="up pl4">→ </span>D</span>, the pairs <span class="m"><span class="up">(</span>a<span class="up">, </span>b<span class="up">)</span></span> of arrows <span class="m pr4">a <span class="up">: </span>A <span class="up">→ </span>C</span> and <span class="m">b <span class="up">: </span>B <span class="up">→ </span>D</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m pr18">g <span class="up pl5">∘ </span>a <span class="up">= </span>b <span class="up">∘ </span>f</span> — the commuting squares with <span class="m pr18">f</span> and <span class="m pr5">g</span> as opposite sides.</li>
 </ul>
-<p>Composition places two squares side by side: <span class="m">(a′, b′) ∘ (a, b) = (a′ ∘ a, b′ ∘ b)</span>. The identity on <span class="m">f</span> is <span class="m">(id<sub>A</sub>, id<sub>B</sub>)</span>.</p>
+<p>Composition places two squares side by side: <span class="m"><span class="up">(</span>a<span class="up">′, </span>b<span class="up">′) ∘ (</span>a<span class="up">, </span>b<span class="up">) = (</span>a<span class="up">′ ∘ </span>a<span class="up">, </span>b<span class="up">′ ∘ </span>b<span class="up">)</span></span>. The identity on <span class="m pr18">f</span> is <span class="m"><span class="up">(</span>id<sub>A</sub><span class="up">, </span>id<sub>B</sub><span class="up">)</span></span>.</p>
 </div>
 <figure>
 <div class="board" data-diagram="arrowcat" aria-label="A commuting square: f from A to B on the left, g from C to D on the right, a from A to C along the top, b from B to D along the bottom.">
 <svg></svg>
 </div>
-<figcaption>One arrow of <span class="m"><span class="cat">𝒞</span><sup>→</sup></span>, from the object <span class="m">f</span> to the object <span class="m">g</span>: a square with <span class="m">g ∘ a = b ∘ f</span>.</figcaption>
+<figcaption>One arrow of <span class="m"><span class="cat">𝒞</span><sup><span class="up">→</span></sup></span>, from the object <span class="m pr18">f</span> to the object <span class="m pr5">g</span>: a square with <span class="m">g <span class="up pl5">∘ </span>a <span class="up">= </span>b <span class="up">∘ </span>f</span>.</figcaption>
 </figure>
-<p>That squares compose is the pasting argument of Lesson 3: if two adjacent squares commute then so does the outer rectangle. Indeed Lesson 3 met this category already, as the functor category <span class="m">[<span class="cat">𝟚</span>, <span class="cat">𝒞</span>]</span> — a functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> is an arrow, and a natural transformation between two of them is a commuting square.</p>
-<p>Three functors connect <span class="m"><span class="cat">𝒞</span><sup>→</sup></span> with <span class="m"><span class="cat">𝒞</span></span>: <em>source</em> and <em>target</em>, which send the object <span class="m">f : A → B</span> to <span class="m">A</span> and to <span class="m">B</span> (and a square to its top or bottom side), and in the other direction the functor sending each object <span class="m">A</span> to its identity arrow.</p>
-<p>In a preorder, an object of the arrow category is a pair <span class="m">x ≤ y</span> — an <em>interval</em> — and there is an arrow from the interval <span class="m">x ≤ y</span> to the interval <span class="m">x′ ≤ y′</span> exactly when <span class="m">x ≤ x′</span> and <span class="m">y ≤ y′</span>. So the arrow category of a preorder is again a preorder, the preorder of its intervals. For the chain <span class="m"><span class="cat">𝟚</span></span> the intervals are <span class="m">0 ≤ 0</span>, <span class="m">0 ≤ 1</span> and <span class="m">1 ≤ 1</span>, each below the next:</p>
-<p class="eq"><span class="m"><span class="cat">𝟚</span><sup>→</sup> ≅ <span class="cat">𝟛</span>.</span></p>
+<p>That squares compose is the pasting argument of Lesson 3: if two adjacent squares commute then so does the outer rectangle. Indeed Lesson 3 met this category already, as the functor category <span class="m"><span class="up">[</span><span class="cat">𝟚</span><span class="up">, </span><span class="cat">𝒞</span><span class="up">]</span></span> — a functor <span class="m"><span class="cat">𝟚</span> <span class="up">→ </span><span class="cat">𝒞</span></span> is an arrow, and a natural transformation between two of them is a commuting square.</p>
+<p>Three functors connect <span class="m"><span class="cat">𝒞</span><sup><span class="up">→</span></sup></span> with <span class="m"><span class="cat">𝒞</span></span>: <em>source</em> and <em>target</em>, which send the object <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>B</span> to <span class="m">A</span> and to <span class="m">B</span> (and a square to its top or bottom side), and in the other direction the functor sending each object <span class="m">A</span> to its identity arrow.</p>
+<p>In a preorder, an object of the arrow category is a pair <span class="m">x <span class="up">≤ </span>y</span> — an <em class="pr4">interval</em> — and there is an arrow from the interval <span class="m">x <span class="up">≤ </span>y</span> to the interval <span class="m">x<span class="up">′ ≤ </span>y<span class="up">′</span></span> exactly when <span class="m">x <span class="up">≤ </span>x<span class="up">′</span></span> and <span class="m">y <span class="up">≤ </span>y<span class="up">′</span></span>. So the arrow category of a preorder is again a preorder, the preorder of its intervals. For the chain <span class="m"><span class="cat">𝟚</span></span> the intervals are <span class="m"><span class="up">0 ≤ 0</span></span>, <span class="m"><span class="up">0 ≤ 1</span></span> and <span class="m"><span class="up">1 ≤ 1</span></span>, each below the next:</p>
+<p class="eq"><span class="m"><span class="cat">𝟚</span><sup><span class="up">→</span></sup> <span class="up">≅ </span><span class="cat">𝟛</span><span class="up">.</span></span></p>
 </div>
 </section>
 <section class="section" id="s6">
 <div class="measure">
 <div class="sec-no">§6 — Slice categories</div>
 <h2>Everything, as seen from one object</h2>
-<p>The triangle at the top of the page is the picture for the most useful construction in the kit. Fix an object <span class="m">A</span> of <span class="m"><span class="cat">𝒞</span></span>, and consider not the objects of <span class="m"><span class="cat">𝒞</span></span> but the objects <strong>equipped with an arrow to <span class="m">A</span></strong>.</p>
+<p>The triangle at the top of the page is the picture for the most useful construction in the kit. Fix an object <span class="m">A</span> of <span class="m"><span class="cat">𝒞</span></span>, and consider not the objects of <span class="m"><span class="cat">𝒞</span></span> but the objects <strong>equipped with an arrow to <span class="m">A</span></strong>.</p>
 <div class="box def">
 <span class="tag">Definition · Slice category</span>
-<p>The <strong>slice category</strong> <span class="m"><span class="cat">𝒞</span>/A</span> has</p>
+<p>The <strong>slice category</strong> <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> has</p>
 <ul class="deflist">
-<li>as objects, the arrows of <span class="m"><span class="cat">𝒞</span></span> with target <span class="m">A</span> — pairs <span class="m">(X, f)</span> with <span class="m">f : X → A</span>;</li>
-<li>as arrows from <span class="m">(X, f)</span> to <span class="m">(Y, g)</span>, the arrows <span class="m">h : X → Y</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m">g ∘ h = f</span> — the commuting triangles over <span class="m">A</span>.</li>
+<li>as objects, the arrows of <span class="m"><span class="cat">𝒞</span></span> with target <span class="m">A</span> — pairs <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> with <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span>;</li>
+<li>as arrows from <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> to <span class="m"><span class="up">(</span>Y<span class="up">, </span>g<span class="up pl5">)</span></span>, the arrows <span class="m pr10">h <span class="up">: </span>X <span class="up pl8">→ </span>Y</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m pr18">g <span class="up pl5">∘ </span>h <span class="up">= </span>f</span> — the commuting triangles over <span class="m">A</span>.</li>
 </ul>
 <p>Composition and identities are those of <span class="m"><span class="cat">𝒞</span></span>.</p>
 </div>
-<p>Composition stays inside the slice: if <span class="m">g ∘ h = f</span> and <span class="m">k ∘ h′ = g</span>, then <span class="m">k ∘ (h′ ∘ h) = (k ∘ h′) ∘ h = g ∘ h = f</span>. The associativity and identity laws are inherited from <span class="m"><span class="cat">𝒞</span></span>. An object of <span class="m"><span class="cat">𝒞</span>/A</span> is often called an object <strong>over</strong> <span class="m">A</span>, and an arrow of the slice a map over <span class="m">A</span>.</p>
+<p>Composition stays inside the slice: if <span class="m pr18">g <span class="up pl5">∘ </span>h <span class="up">= </span>f</span> and <span class="m">k <span class="up">∘ </span>h<span class="up">′ = </span>g</span>, then <span class="m">k <span class="up">∘ (</span>h<span class="up">′ ∘ </span>h<span class="up">) = (</span>k <span class="up">∘ </span>h<span class="up">′) ∘ </span>h <span class="up">= </span>g <span class="up pl5">∘ </span>h <span class="up">= </span>f</span>. The associativity and identity laws are inherited from <span class="m"><span class="cat">𝒞</span></span>. An object of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> is often called an object <strong>over</strong> <span class="m">A</span>, and an arrow of the slice a map over <span class="m">A</span>.</p>
 <h3 class="sub">Four slices worth knowing</h3>
 <div class="ex">
 <h3><span class="n">i.</span> In an order, the slice is a down-set</h3>
-<p>Let <span class="m">P</span> be a preorder and <span class="m">a</span> one of its elements. An object of <span class="m">P/a</span> is an arrow into <span class="m">a</span>, that is, an element <span class="m">x</span> with <span class="m">x ≤ a</span>. An arrow from <span class="m">x</span> to <span class="m">y</span> over <span class="m">a</span> is just <span class="m">x ≤ y</span>, the triangle commuting automatically. So <span class="m">P/a</span> is the <strong>down-set</strong> of <span class="m">a</span>: everything below it, with the same order. In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, the slice over <span class="m">2</span> is the chain <span class="m">1 | 2</span>, and the slice over <span class="m">6</span> is the whole diamond.</p>
+<p>Let <span class="m pr4">P</span> be a preorder and <span class="m">a</span> one of its elements. An object of <span class="m">P<span class="up pl4">/</span>a</span> is an arrow into <span class="m">a</span>, that is, an element <span class="m">x</span> with <span class="m">x <span class="up">≤ </span>a</span>. An arrow from <span class="m">x</span> to <span class="m">y</span> over <span class="m">a</span> is just <span class="m">x <span class="up">≤ </span>y</span>, the triangle commuting automatically. So <span class="m">P<span class="up pl4">/</span>a</span> is the <strong>down-set</strong> of <span class="m">a</span>: everything below it, with the same order. In the divisibility order on <span class="m"><span class="up">{1, 2, 3, 6}</span></span>, the slice over <span class="m"><span class="up">2</span></span> is the chain <span class="m"><span class="up">1 | 2</span></span>, and the slice over <span class="m"><span class="up">6</span></span> is the whole diamond.</p>
 </div>
 <div class="ex">
 <h3><span class="n">ii.</span> Sets over <span class="m">A</span> are families of sets</h3>
-<p>An object of <span class="m"><span class="cat">Set</span>/A</span> is a function <span class="m">p : E → A</span>. Read it as a <strong>family of sets indexed by <span class="m">A</span></strong>: for each <span class="m">a ∈ A</span> there is the <em>fibre</em> <span class="m">p<sup>−1</sup>(a)</span>, the set of elements lying over <span class="m">a</span>, and <span class="m">E</span> is the union of its fibres. If <span class="m">A</span> is a set of dormitories and <span class="m">E</span> a set of students, <span class="m">p</span> assigns each student a dormitory and the fibres are the residents of each one.</p>
-<p>An arrow of <span class="m"><span class="cat">Set</span>/A</span> from <span class="m">p : E → A</span> to <span class="m">q : E′ → A</span> is a function <span class="m">h</span> with <span class="m">q ∘ h = p</span>: it must send each element to an element over the <em>same</em> point of <span class="m">A</span>. So <span class="m">h</span> is the same thing as a family of functions, one between each pair of corresponding fibres. This can be stated as an equivalence in the sense of Lesson 4. Regard the set <span class="m">A</span> as a discrete category; a functor <span class="m">A → <span class="cat">Set</span></span> is then exactly a family of sets indexed by <span class="m">A</span>, and</p>
-<p class="eq"><span class="m"><span class="cat">Set</span>/A ≃ [A, <span class="cat">Set</span>].</span></p>
-<p>The functor from left to right sends <span class="m">p</span> to its family of fibres. It is full and faithful by what was just said, and essentially surjective because any family <span class="m">(S<sub>a</sub>)</span> is the family of fibres of the evident map from the disjoint union of the <span class="m">S<sub>a</sub></span> to <span class="m">A</span>. For a two-element set this reads <span class="m"><span class="cat">Set</span>/2 ≃ <span class="cat">Set</span> × <span class="cat">Set</span></span>: a set over <span class="m">{0, 1}</span> is a pair of sets.</p>
+<p>An object of <span class="m"><span class="cat">Set</span><span class="up pr5">/</span>A</span> is a function <span class="m">p <span class="up">: </span>E <span class="up pl4">→ </span>A</span>. Read it as a <strong>family of sets indexed by <span class="m">A</span></strong>: for each <span class="m">a <span class="up">∈ </span>A</span> there is the <em>fibre</em> <span class="m">p<sup><span class="up">−1</span></sup><span class="up">(</span>a<span class="up">)</span></span>, the set of elements lying over <span class="m">a</span>, and <span class="m pr4">E</span> is the union of its fibres. If <span class="m">A</span> is a set of dormitories and <span class="m pr4">E</span> a set of students, <span class="m">p</span> assigns each student a dormitory and the fibres are the residents of each one.</p>
+<p>An arrow of <span class="m"><span class="cat">Set</span><span class="up pr5">/</span>A</span> from <span class="m">p <span class="up">: </span>E <span class="up pl4">→ </span>A</span> to <span class="m">q <span class="up">: </span>E<span class="up pl4">′ → </span>A</span> is a function <span class="m">h</span> with <span class="m">q <span class="up">∘ </span>h <span class="up">= </span>p</span>: it must send each element to an element over the <em>same</em> point of <span class="m">A</span>. So <span class="m">h</span> is the same thing as a family of functions, one between each pair of corresponding fibres. This can be stated as an equivalence in the sense of Lesson 4. Regard the set <span class="m">A</span> as a discrete category; a functor <span class="m">A <span class="up">→ </span><span class="cat">Set</span></span> is then exactly a family of sets indexed by <span class="m">A</span>, and</p>
+<p class="eq"><span class="m"><span class="cat">Set</span><span class="up pr5">/</span>A <span class="up pr5">≃ [</span>A<span class="up">, </span><span class="cat">Set</span><span class="up">].</span></span></p>
+<p>The functor from left to right sends <span class="m">p</span> to its family of fibres. It is full and faithful by what was just said, and essentially surjective because any family <span class="m"><span class="up">(</span>S<sub>a</sub><span class="up">)</span></span> is the family of fibres of the evident map from the disjoint union of the <span class="m">S<sub>a</sub></span> to <span class="m">A</span>. For a two-element set this reads <span class="m"><span class="cat">Set</span><span class="up">/2 ≃ </span><span class="cat">Set</span> <span class="up">× </span><span class="cat">Set</span></span>: a set over <span class="m"><span class="up">{0, 1}</span></span> is a pair of sets.</p>
 </div>
 <div class="ex">
 <h3><span class="n">iii.</span> The slice of a monoid</h3>
-<p>Let <span class="m">M</span> be a monoid, as a category with one object <span class="m">∗</span>. An object of <span class="m">M/∗</span> is an arrow into <span class="m">∗</span> — an element <span class="m">m</span>. An arrow from <span class="m">m</span> to <span class="m">n</span> is an element <span class="m">h</span> with <span class="m">n · h = m</span>. For the monoid <span class="m">(ℕ, +)</span> this says <span class="m">n + h = m</span>: there is such an <span class="m">h</span> exactly when <span class="m">n ≤ m</span>, and then only one. So</p>
-<p class="eq"><span class="m">(ℕ, +)/∗ ≅ (ℕ, ≥),</span></p>
-<p>the natural numbers in <em>descending</em> order. A construction can change the character of a category completely: here a one-object category became a thin one.</p>
+<p>Let <span class="m pr5">M</span> be a monoid, as a category with one object <span class="m"><span class="up">∗</span></span>. An object of <span class="m">M<span class="up pl5">/∗</span></span> is an arrow into <span class="m"><span class="up">∗</span></span> — an element <span class="m">m</span>. An arrow from <span class="m">m</span> to <span class="m">n</span> is an element <span class="m">h</span> with <span class="m">n <span class="up">· </span>h <span class="up">= </span>m</span>. For the monoid <span class="m"><span class="up">(ℕ, +)</span></span> this says <span class="m">n <span class="up">+ </span>h <span class="up">= </span>m</span>: there is such an <span class="m">h</span> exactly when <span class="m">n <span class="up">≤ </span>m</span>, and then only one. So</p>
+<p class="eq"><span class="m"><span class="up">(ℕ, +)/∗ ≅ (ℕ, ≥),</span></span></p>
+<p>the natural numbers in <em class="pr5">descending</em> order. A construction can change the character of a category completely: here a one-object category became a thin one.</p>
 </div>
 <div class="ex">
 <h3><span class="n">iv.</span> The identity is the best object over <span class="m">A</span></h3>
-<p>Every slice has one distinguished object: <span class="m">A</span> itself, with its identity arrow. From any object <span class="m">(X, f)</span> there is <strong>exactly one</strong> arrow to <span class="m">(A, id<sub>A</sub>)</span> — an arrow <span class="m">h</span> with <span class="m">id<sub>A</sub> ∘ h = f</span> can only be <span class="m">h = f</span>, and <span class="m">f</span> qualifies. Lesson 6 will call an object with this property <em>terminal</em>. The identity arrow is the terminal object of the slice.</p>
+<p>Every slice has one distinguished object: <span class="m">A</span> itself, with its identity arrow. From any object <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> there is <strong>exactly one</strong> arrow to <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">)</span></span> — an arrow <span class="m">h</span> with <span class="m pr18">id<sub>A</sub> <span class="up">∘ </span>h <span class="up">= </span>f</span> can only be <span class="m">h <span class="up">= </span>f</span>, and <span class="m pr18">f</span> qualifies. Lesson 6 will call an object with this property <em>terminal</em>. The identity arrow is the terminal object of the slice.</p>
 </div>
 <h3 class="sub">Coslices</h3>
-<p>Dually, the <strong>coslice category</strong> <span class="m">A/<span class="cat">𝒞</span></span> has as objects the arrows <em>out of</em> <span class="m">A</span>, pairs <span class="m">(X, f)</span> with <span class="m">f : A → X</span>, and as arrows from <span class="m">(X, f)</span> to <span class="m">(Y, g)</span> the arrows <span class="m">h : X → Y</span> with <span class="m">h ∘ f = g</span>. An object of the coslice is an object <strong>under</strong> <span class="m">A</span>. Nothing new needs proving: <span class="m">A/<span class="cat">𝒞</span></span> is the opposite of the slice of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> over <span class="m">A</span>.</p>
+<p>Dually, the <strong>coslice category</strong> <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span> has as objects the arrows <em class="pr18">out of</em> <span class="m">A</span>, pairs <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> with <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>X</span>, and as arrows from <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> to <span class="m"><span class="up">(</span>Y<span class="up">, </span>g<span class="up pl5">)</span></span> the arrows <span class="m pr10">h <span class="up">: </span>X <span class="up pl8">→ </span>Y</span> with <span class="m">h <span class="up">∘ </span>f <span class="up pl18">= </span>g</span>. An object of the coslice is an object <strong>under</strong> <span class="m">A</span>. Nothing new needs proving: <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span> is the opposite of the slice of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> over <span class="m">A</span>.</p>
 <figure>
 <div class="board" data-diagram="coslice" aria-label="A commuting triangle under A: arrows f from A to X and g from A to Y, and an arrow h from X to Y with h after f equal to g.">
 <svg></svg>
 </div>
-<figcaption>An arrow of the coslice <span class="m">A/<span class="cat">𝒞</span></span>: a triangle under <span class="m">A</span>.</figcaption>
+<figcaption>An arrow of the coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span>: a triangle under <span class="m">A</span>.</figcaption>
 </figure>
-<p>The standard example brings back a category from Lesson 4. Let <span class="m">1</span> be a one-element set. An object of <span class="m">1/<span class="cat">Set</span></span> is a function <span class="m">1 → X</span>, which is a set <span class="m">X</span> together with a chosen element; an arrow is a function that carries the chosen element to the chosen element. So <span class="m">1/<span class="cat">Set</span></span> is the category <span class="m"><span class="cat">Set<sub>∗</sub></span></span> of pointed sets. In a preorder, the coslice <span class="m">a/P</span> is the <em>up-set</em> of <span class="m">a</span>.</p>
+<p>The standard example brings back a category from Lesson 4. Let <span class="m"><span class="up">1</span></span> be a one-element set. An object of <span class="m"><span class="up">1/</span><span class="cat">Set</span></span> is a function <span class="m"><span class="up">1 → </span>X</span>, which is a set <span class="m pr8">X</span> together with a chosen element; an arrow is a function that carries the chosen element to the chosen element. So <span class="m"><span class="up">1/</span><span class="cat">Set</span></span> is the category <span class="m"><span class="cat">Set<sub>∗</sub></span></span> of pointed sets. In a preorder, the coslice <span class="m pr4">a<span class="up">/</span>P</span> is the <em>up-set</em> of <span class="m">a</span>.</p>
 </div>
 </section>
 <section class="section" id="s7">
@@ -646,62 +661,62 @@ p + .exgroup{margin-top:40px}
 <p>Arrow categories, slices and coslices are three instances of a single construction, and the general form is the one that the second half of the course will lean on.</p>
 <div class="box def">
 <span class="tag">Definition · Comma category</span>
-<p>Let <span class="m">F : <span class="cat">𝒜</span> → <span class="cat">𝒞</span></span> and <span class="m">G : <span class="cat">ℬ</span> → <span class="cat">𝒞</span></span> be two functors into the same category. The <strong>comma category</strong> <span class="m">(F ↓ G)</span> has</p>
+<p>Let <span class="m">F <span class="up pl7">: </span><span class="cat">𝒜</span> <span class="up">→ </span><span class="cat">𝒞</span></span> and <span class="m">G <span class="up">: </span><span class="cat">ℬ</span> <span class="up">→ </span><span class="cat">𝒞</span></span> be two functors into the same category. The <strong>comma category</strong> <span class="m"><span class="up">(</span>F <span class="up pl7">↓ </span>G<span class="up">)</span></span> has</p>
 <ul class="deflist">
-<li>as objects, the triples <span class="m">(X, Y, f)</span> where <span class="m">X</span> is an object of <span class="m"><span class="cat">𝒜</span></span>, <span class="m">Y</span> an object of <span class="m"><span class="cat">ℬ</span></span>, and <span class="m">f : F X → G Y</span> an arrow of <span class="m"><span class="cat">𝒞</span></span>;</li>
-<li>as arrows from <span class="m">(X, Y, f)</span> to <span class="m">(X′, Y′, f′)</span>, the pairs <span class="m">(a, b)</span> with <span class="m">a : X → X′</span> in <span class="m"><span class="cat">𝒜</span></span> and <span class="m">b : Y → Y′</span> in <span class="m"><span class="cat">ℬ</span></span> such that <span class="m">f′ ∘ F a = G b ∘ f</span>.</li>
+<li>as objects, the triples <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>Y<span class="up">, </span>f<span class="up pl18">)</span></span> where <span class="m pr8">X</span> is an object of <span class="m"><span class="cat">𝒜</span></span>, <span class="m pr10">Y</span> an object of <span class="m"><span class="cat">ℬ</span></span>, and <span class="m pr10">f <span class="up pl18">: </span>F X <span class="up pl8">→ </span>G Y</span> an arrow of <span class="m"><span class="cat">𝒞</span></span>;</li>
+<li>as arrows from <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>Y<span class="up">, </span>f<span class="up pl18">)</span></span> to <span class="m"><span class="up pr5">(</span>X<span class="up pl8">′, </span>Y<span class="up pl10">′, </span>f<span class="up pl18">′)</span></span>, the pairs <span class="m"><span class="up">(</span>a<span class="up">, </span>b<span class="up">)</span></span> with <span class="m">a <span class="up">: </span>X <span class="up pl8">→ </span>X<span class="up pl8">′</span></span> in <span class="m"><span class="cat">𝒜</span></span> and <span class="m">b <span class="up">: </span>Y <span class="up pl10">→ </span>Y<span class="up pl10">′</span></span> in <span class="m"><span class="cat">ℬ</span></span> such that <span class="m">f<span class="up pl18">′ ∘ </span>F a <span class="up">= </span>G b <span class="up">∘ </span>f</span>.</li>
 </ul>
 </div>
 <figure>
 <div class="board" data-diagram="comma" aria-label="A commuting square with F X and F X prime along the top joined by F a, G Y and G Y prime along the bottom joined by G b, and the arrows f and f prime down the sides.">
 <svg></svg>
 </div>
-<figcaption>An arrow of <span class="m">(F ↓ G)</span>: the objects are the vertical arrows, and the square must commute.</figcaption>
+<figcaption>An arrow of <span class="m"><span class="up pl18">(</span>F <span class="up pl7">↓ </span>G<span class="up">)</span></span>: the objects are the vertical arrows, and the square must commute.</figcaption>
 </figure>
-<p>An object is an arrow of <span class="m"><span class="cat">𝒞</span></span> that starts in the image of <span class="m">F</span> and ends in the image of <span class="m">G</span>; an arrow is a commuting square whose top comes from <span class="m"><span class="cat">𝒜</span></span> and whose bottom comes from <span class="m"><span class="cat">ℬ</span></span>. The earlier constructions are recovered by special choices, writing <span class="m">A</span> also for the functor <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> that picks out the object <span class="m">A</span>:</p>
+<p>An object is an arrow of <span class="m"><span class="cat">𝒞</span></span> that starts in the image of <span class="m pr7">F</span> and ends in the image of <span class="m">G</span>; an arrow is a commuting square whose top comes from <span class="m"><span class="cat">𝒜</span></span> and whose bottom comes from <span class="m"><span class="cat">ℬ</span></span>. The earlier constructions are recovered by special choices, writing <span class="m">A</span> also for the functor <span class="m"><span class="cat">𝟙</span> <span class="up">→ </span><span class="cat">𝒞</span></span> that picks out the object <span class="m">A</span>:</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>F</th><th>G</th><th>(F ↓ G) is</th></tr>
-<tr><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the arrow category <span class="m"><span class="cat">𝒞</span><sup>→</sup></span></td></tr>
-<tr><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the object <span class="m">A</span></td><td>the slice <span class="m"><span class="cat">𝒞</span>/A</span></td></tr>
-<tr><td>the object <span class="m">A</span></td><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the coslice <span class="m">A/<span class="cat">𝒞</span></span></td></tr>
+<tr><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the arrow category <span class="m"><span class="cat">𝒞</span><sup><span class="up">→</span></sup></span></td></tr>
+<tr><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the object <span class="m">A</span></td><td>the slice <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span></td></tr>
+<tr><td>the object <span class="m">A</span></td><td>identity of <span class="m"><span class="cat">𝒞</span></span></td><td>the coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span></td></tr>
 </table></div>
 <h3 class="sub">The comma category that explains &ldquo;free&rdquo;</h3>
-<p>The case to remember is neither of these. Let <span class="m">U : <span class="cat">𝒟</span> → <span class="cat">𝒞</span></span> be a functor — think of a forgetful functor — and <span class="m">X</span> an object of <span class="m"><span class="cat">𝒞</span></span>. The comma category <span class="m">(X ↓ U)</span> has as objects the pairs <span class="m">(Y, f)</span> with <span class="m">f : X → U Y</span>: <em>an object of <span class="m"><span class="cat">𝒟</span></span>, together with a way of mapping <span class="m">X</span> into its underlying object</em>. An arrow from <span class="m">(Y, f)</span> to <span class="m">(Y′, f′)</span> is an arrow <span class="m">k : Y → Y′</span> of <span class="m"><span class="cat">𝒟</span></span> with <span class="m">U k ∘ f = f′</span>.</p>
-<p>Take <span class="m">U</span> to be the forgetful functor <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span> and <span class="m">X</span> a set. An object of <span class="m">(X ↓ U)</span> is a monoid <span class="m">M</span> with a function from <span class="m">X</span> into its elements — a monoid in which each element of <span class="m">X</span> has been given a meaning. An arrow is a homomorphism that respects those meanings. Among all these objects one is special: the monoid of lists over <span class="m">X</span>, with <span class="m">x</span> interpreted as the one-element list <span class="m">[x]</span>. From it there is <strong>exactly one</strong> arrow to every other object. That is the precise sense in which lists are the <em>free</em> monoid on <span class="m">X</span>, and Lesson 8 builds the theory of adjunctions on this one observation.</p>
+<p>The case to remember is neither of these. Let <span class="m">U <span class="up pl8">: </span><span class="cat">𝒟</span> <span class="up">→ </span><span class="cat">𝒞</span></span> be a functor — think of a forgetful functor — and <span class="m pr8">X</span> an object of <span class="m"><span class="cat">𝒞</span></span>. The comma category <span class="m"><span class="up pr5">(</span>X <span class="up pl8">↓ </span>U<span class="up pl8">)</span></span> has as objects the pairs <span class="m"><span class="up">(</span>Y<span class="up">, </span>f<span class="up pl18">)</span></span> with <span class="m pr10">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>U Y</span>: <em>an object of <span class="m"><span class="cat">𝒟</span></span>, together with a way of mapping <span class="m pr8">X</span> into its underlying object</em>. An arrow from <span class="m"><span class="up">(</span>Y<span class="up">, </span>f<span class="up pl18">)</span></span> to <span class="m"><span class="up">(</span>Y<span class="up pl10">′, </span>f<span class="up pl18">′)</span></span> is an arrow <span class="m">k <span class="up">: </span>Y <span class="up pl10">→ </span>Y<span class="up pl10">′</span></span> of <span class="m"><span class="cat">𝒟</span></span> with <span class="m">U k <span class="up">∘ </span>f <span class="up pl18">= </span>f<span class="up pl18">′</span></span>.</p>
+<p>Take <span class="m pr8">U</span> to be the forgetful functor <span class="m"><span class="cat">Mon</span> <span class="up">→ </span><span class="cat">Set</span></span> and <span class="m pr8">X</span> a set. An object of <span class="m"><span class="up pr5">(</span>X <span class="up pl8">↓ </span>U<span class="up pl8">)</span></span> is a monoid <span class="m pr5">M</span> with a function from <span class="m pr8">X</span> into its elements — a monoid in which each element of <span class="m pr8">X</span> has been given a meaning. An arrow is a homomorphism that respects those meanings. Among all these objects one is special: the monoid of lists over <span class="m">X</span>, with <span class="m">x</span> interpreted as the one-element list <span class="m"><span class="up">[</span>x<span class="up">]</span></span>. From it there is <strong>exactly one</strong> arrow to every other object. That is the precise sense in which lists are the <em>free</em> monoid on <span class="m">X</span>, and Lesson 8 builds the theory of adjunctions on this one observation.</p>
 <h3 class="sub">A comma category you can compute</h3>
-<p>Let <span class="m">i : ℤ → ℝ</span> be the inclusion of the integers into the reals, both as orders, and let <span class="m">r</span> be a real number. The comma category <span class="m">(i ↓ r)</span> has as objects the integers <span class="m">n</span> with <span class="m">n ≤ r</span>, ordered as usual. It has a greatest element: the <strong>floor</strong> of <span class="m">r</span>. The other comma category, <span class="m">(r ↓ i)</span>, consists of the integers <span class="m">n</span> with <span class="m">r ≤ n</span>, and has a least element: the <strong>ceiling</strong> of <span class="m">r</span>. &ldquo;Round down&rdquo; and &ldquo;round up&rdquo; are the best objects of two comma categories — the pattern of §1, and a preview of Lesson 8, in the simplest possible setting.</p>
+<p>Let <span class="m">i <span class="up pl4">: ℤ → ℝ</span></span> be the inclusion of the integers into the reals, both as orders, and let <span class="m pr3">r</span> be a real number. The comma category <span class="m"><span class="up">(</span>i <span class="up pl4">↓ </span>r<span class="up pl3">)</span></span> has as objects the integers <span class="m">n</span> with <span class="m">n <span class="up">≤ </span>r</span>, ordered as usual. It has a greatest element: the <strong>floor</strong> of <span class="m">r</span>. The other comma category, <span class="m"><span class="up">(</span>r <span class="up pl3">↓ </span>i<span class="up pl4">)</span></span>, consists of the integers <span class="m">n</span> with <span class="m">r <span class="up pl3">≤ </span>n</span>, and has a least element: the <strong>ceiling</strong> of <span class="m">r</span>. &ldquo;Round down&rdquo; and &ldquo;round up&rdquo; are the best objects of two comma categories — the pattern of §1, and a preview of Lesson 8, in the simplest possible setting.</p>
 </div>
 </section>
 <section class="section" id="byhand">
 <div class="measure">
 <div class="sec-no">§8 — Constructions by hand</div>
 <h2>Small categories, rebuilt on paper</h2>
-<p>For a finite category each construction is a finite procedure. Four short computations, each with a surprise in it.</p>
+<p>For a finite category each construction is a finite procedure. Four short computations, each with a surprise in it.</p>
 <h3 class="sub">An opposite and a product</h3>
-<p>The category <span class="m"><span class="cat">𝟚</span></span> has objects <span class="m">0, 1</span> and one non-identity arrow <span class="m">u : 0 → 1</span>. Its opposite has the arrow pointing the other way, <span class="m">u : 1 → 0</span>. Renaming the objects — call <span class="m">1</span> &ldquo;<span class="m">0</span>&rdquo; and <span class="m">0</span> &ldquo;<span class="m">1</span>&rdquo; — turns it back into <span class="m"><span class="cat">𝟚</span></span>. So <span class="m"><span class="cat">𝟚</span><sup>op</sup> ≅ <span class="cat">𝟚</span></span>, though the two are not <em>equal</em>.</p>
-<p>For the product <span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟛</span></span>, count before drawing. The arrows of a product are pairs of arrows, so it has <span class="m">3 × 6 = 18</span> arrows, of which <span class="m">2 × 3 = 6</span> are identities. It is the order on pairs <span class="m">(i, j)</span> with <span class="m">i ∈ {0, 1}</span> and <span class="m">j ∈ {0, 1, 2}</span>: a ladder with two rails and three rungs.</p>
+<p>The category <span class="m"><span class="cat">𝟚</span></span> has objects <span class="m"><span class="up">0, 1</span></span> and one non-identity arrow <span class="m">u <span class="up">: 0 → 1</span></span>. Its opposite has the arrow pointing the other way, <span class="m">u <span class="up">: 1 → 0</span></span>. Renaming the objects — call <span class="m"><span class="up">1</span></span> &ldquo;<span class="m"><span class="up">0</span></span>&rdquo; and <span class="m"><span class="up">0</span></span> &ldquo;<span class="m"><span class="up">1</span></span>&rdquo; — turns it back into <span class="m"><span class="cat">𝟚</span></span>. So <span class="m"><span class="cat">𝟚</span><sup>op</sup> <span class="up">≅ </span><span class="cat">𝟚</span></span>, though the two are not <em>equal</em>.</p>
+<p>For the product <span class="m"><span class="cat">𝟚</span> <span class="up">× </span><span class="cat">𝟛</span></span>, count before drawing. The arrows of a product are pairs of arrows, so it has <span class="m"><span class="up">3 × 6 = 18</span></span> arrows, of which <span class="m"><span class="up">2 × 3 = 6</span></span> are identities. It is the order on pairs <span class="m"><span class="up">(</span>i<span class="up">, </span>j<span class="up pl5">)</span></span> with <span class="m">i <span class="up pl4">∈ {0, 1}</span></span> and <span class="m">j <span class="up pl5">∈ {0, 1, 2}</span></span>: a ladder with two rails and three rungs.</p>
 <h3 class="sub">An arrow category, counted</h3>
-<p>The arrow category of the chain <span class="m"><span class="cat">𝟛</span></span> is the preorder of its intervals (§5). The intervals are <span class="m">00, 01, 02, 11, 12, 22</span>, writing <span class="m">ij</span> for <span class="m">i ≤ j</span>, and <span class="m">ij ≤ i′j′</span> when <span class="m">i ≤ i′</span> and <span class="m">j ≤ j′</span>. Count the arrows by counting, for each interval, the intervals above it (including itself):</p>
+<p>The arrow category of the chain <span class="m"><span class="cat">𝟛</span></span> is the preorder of its intervals (§5). The intervals are <span class="m"><span class="up">00, 01, 02, 11, 12, 22</span></span>, writing <span class="m pr5">ij</span> for <span class="m">i <span class="up pl4">≤ </span>j</span>, and <span class="m">ij <span class="up pl5">≤ </span>i<span class="up pl4 pr17">′</span>j<span class="up pl5">′</span></span> when <span class="m">i <span class="up pl4">≤ </span>i<span class="up pl4">′</span></span> and <span class="m">j <span class="up pl5">≤ </span>j<span class="up pl5">′</span></span>. Count the arrows by counting, for each interval, the intervals above it (including itself):</p>
 <div class="tablewrap"><table class="tbl">
-<tr><th>interval</th><td>00</td><td>01</td><td>02</td><td>11</td><td>12</td><td>22</td></tr>
-<tr><th>intervals above it</th><td>6</td><td>5</td><td>3</td><td>3</td><td>2</td><td>1</td></tr>
+<tr><th>interval</th><td><span class="up">00</span></td><td><span class="up">01</span></td><td><span class="up">02</span></td><td><span class="up">11</span></td><td><span class="up">12</span></td><td><span class="up">22</span></td></tr>
+<tr><th>intervals above it</th><td><span class="up">6</span></td><td><span class="up">5</span></td><td><span class="up">3</span></td><td><span class="up">3</span></td><td><span class="up">2</span></td><td><span class="up">1</span></td></tr>
 </table></div>
-<p>For instance above <span class="m">01</span> lie <span class="m">01, 02, 11, 12, 22</span> but not <span class="m">00</span>. In total <span class="m"><span class="cat">𝟛</span><sup>→</sup></span> has <span class="m">6</span> objects and <span class="m">6 + 5 + 3 + 3 + 2 + 1 = 20</span> arrows.</p>
+<p>For instance above <span class="m"><span class="up">01</span></span> lie <span class="m"><span class="up">01, 02, 11, 12, 22</span></span> but not <span class="m"><span class="up">00</span></span>. In total <span class="m"><span class="cat">𝟛</span><sup><span class="up">→</span></sup></span> has <span class="m"><span class="up">6</span></span> objects and <span class="m"><span class="up">6 + 5 + 3 + 3 + 2 + 1 = 20</span></span> arrows.</p>
 <h3 class="sub">Two slices of the divisibility diamond</h3>
-<p>In the order <span class="m">{1, 2, 3, 6}</span> under divisibility, the slice over <span class="m">2</span> consists of the divisors of <span class="m">2</span>: the two-element chain <span class="m">1 | 2</span>, with three arrows. The slice over <span class="m">6</span> consists of all four elements — every one of them divides <span class="m">6</span> — with all nine arrows. Slicing over the top element changes nothing: for a preorder with a greatest element <span class="m">⊤</span>, the slice over <span class="m">⊤</span> is the whole preorder.</p>
+<p>In the order <span class="m"><span class="up">{1, 2, 3, 6}</span></span> under divisibility, the slice over <span class="m"><span class="up">2</span></span> consists of the divisors of <span class="m"><span class="up">2</span></span>: the two-element chain <span class="m"><span class="up">1 | 2</span></span>, with three arrows. The slice over <span class="m"><span class="up">6</span></span> consists of all four elements — every one of them divides <span class="m"><span class="up">6</span></span> — with all nine arrows. Slicing over the top element changes nothing: for a preorder with a greatest element <span class="m"><span class="up">⊤</span></span>, the slice over <span class="m"><span class="up">⊤</span></span> is the whole preorder.</p>
 <h3 class="sub">The slice of a group</h3>
-<p>Now a category that is not thin. Take the group <span class="m">ℤ/3</span> as a one-object category and form its slice over the one object. By §6(iii) the objects are the elements <span class="m">0, 1, 2</span>, and an arrow from <span class="m">m</span> to <span class="m">n</span> is an element <span class="m">h</span> with <span class="m">n + h = m</span>. In a group that equation has exactly one solution, <span class="m">h = m − n</span>. So between <strong>any</strong> two objects of the slice there is exactly one arrow:</p>
+<p>Now a category that is not thin. Take the group <span class="m"><span class="up">ℤ/3</span></span> as a one-object category and form its slice over the one object. By §6(iii) the objects are the elements <span class="m"><span class="up">0, 1, 2</span></span>, and an arrow from <span class="m">m</span> to <span class="m">n</span> is an element <span class="m">h</span> with <span class="m">n <span class="up">+ </span>h <span class="up">= </span>m</span>. In a group that equation has exactly one solution, <span class="m">h <span class="up">= </span>m <span class="up">− </span>n</span>. So between <strong>any</strong> two objects of the slice there is exactly one arrow:</p>
 <div class="tablewrap"><table class="tbl">
-<tr><th>arrow m → n</th><th>n = 0</th><th>n = 1</th><th>n = 2</th></tr>
-<tr><th>m = 0</th><td>0</td><td>2</td><td>1</td></tr>
-<tr><th>m = 1</th><td>1</td><td>0</td><td>2</td></tr>
-<tr><th>m = 2</th><td>2</td><td>1</td><td>0</td></tr>
+<tr><th>arrow m <span class="up">→ </span>n</th><th>n <span class="up">= 0</span></th><th>n <span class="up">= 1</span></th><th>n <span class="up">= 2</span></th></tr>
+<tr><th>m <span class="up">= 0</span></th><td><span class="up">0</span></td><td><span class="up">2</span></td><td><span class="up">1</span></td></tr>
+<tr><th>m <span class="up">= 1</span></th><td><span class="up">1</span></td><td><span class="up">0</span></td><td><span class="up">2</span></td></tr>
+<tr><th>m <span class="up">= 2</span></th><td><span class="up">2</span></td><td><span class="up">1</span></td><td><span class="up">0</span></td></tr>
 </table></div>
-<p>Nine arrows, each the unique one between its endpoints. Every arrow is therefore an isomorphism, all three objects are isomorphic, and by Lesson 4 the slice is <strong>equivalent to <span class="m"><span class="cat">𝟙</span></span></strong>. The group has vanished: slicing a group over its only object produces, up to equivalence, nothing at all. (The explanation is example (iv) of §6: every object of a slice has exactly one arrow to the identity, and here every arrow is invertible.)</p>
+<p>Nine arrows, each the unique one between its endpoints. Every arrow is therefore an isomorphism, all three objects are isomorphic, and by Lesson 4 the slice is <strong>equivalent to <span class="m"><span class="cat">𝟙</span></span></strong>. The group has vanished: slicing a group over its only object produces, up to equivalence, nothing at all. (The explanation is example (iv) of §6: every object of a slice has exactly one arrow to the identity, and here every arrow is invertible.)</p>
 <details class="pylab">
 <summary><span class="badge">Optional · Python</span><span class="t">The constructions as functions</span></summary>
 <div class="pybody">
-<p>Each construction of this lesson is a function from finite categories to finite categories, and Lesson 1&rsquo;s checker can certify every output. The setup block carries over the usual classes.</p>
+<p>Each construction of this lesson is a function from finite categories to finite categories, and Lesson 1&rsquo;s checker can certify every output. The setup block carries over the usual classes.</p>
 <div class="code">
   <div class="code-bar"><span class="fname"><b>setup.py</b> — carried over from Lessons 1 and 4</span><button class="copy" type="button">Copy</button></div>
 <pre><code>from itertools import product
@@ -835,21 +850,21 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="measure">
 <div class="sec-no">Going deeper</div>
 <h2>The algebra of constructions</h2>
-<p>The constructions of this lesson can be applied to their own outputs, and they obey laws of their own — an algebra one level up. A few are immediate from the definitions:</p>
-<p class="eq"><span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup> = <span class="cat">𝒞</span>, &nbsp;&nbsp;&nbsp; (<span class="cat">𝒞</span> × <span class="cat">𝒟</span>)<sup>op</sup> = <span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒟</span><sup>op</sup>, &nbsp;&nbsp;&nbsp; A/<span class="cat">𝒞</span> = (<span class="cat">𝒞</span><sup>op</sup>/A)<sup>op</sup>.</span></p>
-<p>Others are equivalences rather than equalities, and say something worth knowing. The functor category out of a product can be taken one variable at a time,</p>
-<p class="eq"><span class="m">[<span class="cat">𝒞</span> × <span class="cat">𝒟</span>, <span class="cat">ℰ</span>] ≅ [<span class="cat">𝒞</span>, [<span class="cat">𝒟</span>, <span class="cat">ℰ</span>]],</span></p>
+<p>The constructions of this lesson can be applied to their own outputs, and they obey laws of their own — an algebra one level up. A few are immediate from the definitions:</p>
+<p class="eq"><span class="m"><span class="up">(</span><span class="cat">𝒞</span><sup>op</sup><span class="up">)</span><sup>op</sup> <span class="up">= </span><span class="cat">𝒞</span><span class="up">, &nbsp;&nbsp;&nbsp; (</span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span><span class="up">)</span><sup>op</sup> <span class="up">= </span><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒟</span><sup>op</sup><span class="up">, &nbsp;&nbsp;&nbsp; </span>A<span class="up">/</span><span class="cat">𝒞</span> <span class="up">= (</span><span class="cat">𝒞</span><sup>op</sup><span class="up pr5">/</span>A<span class="up">)</span><sup>op</sup><span class="up">.</span></span></p>
+<p>Others are equivalences rather than equalities, and say something worth knowing. The functor category out of a product can be taken one variable at a time,</p>
+<p class="eq"><span class="m"><span class="up">[</span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span><span class="up">, </span><span class="cat">ℰ</span><span class="up">] ≅ [</span><span class="cat">𝒞</span><span class="up">, [</span><span class="cat">𝒟</span><span class="up">, </span><span class="cat">ℰ</span><span class="up">]],</span></span></p>
 <p>which is the reason a bifunctor can be regarded as a functor-valued functor — the same idea as a function of two variables being a function-valued function, which Lesson 8 studies under the name <em>currying</em>.</p>
-<p>The most striking law concerns slices. A slice category is a category, so it has slices of its own. Take an object <span class="m">(X, f)</span> of <span class="m"><span class="cat">𝒞</span>/A</span> and slice again. An object of the double slice is an arrow of <span class="m"><span class="cat">𝒞</span>/A</span> into <span class="m">(X, f)</span>: an arrow <span class="m">h : Y → X</span> of <span class="m"><span class="cat">𝒞</span></span>, regarded as an arrow from <span class="m">(Y, f ∘ h)</span> — and the arrow <span class="m">Y → A</span> carries no information, since it must be <span class="m">f ∘ h</span>. So an object of the double slice is just an arrow into <span class="m">X</span>, and the same collapse happens for arrows (Exercise 13):</p>
-<p class="eq"><span class="m">(<span class="cat">𝒞</span>/A)/(X, f) ≅ <span class="cat">𝒞</span>/X.</span></p>
-<p>Slicing twice is slicing once. In the dormitory picture of §6: a family of sets indexed by the students, who are themselves indexed by dormitories, is simply a family indexed by the students. Facts of this kind — that a construction, iterated, stays within the kit — are what make the kit usable. Lesson 7 adds one more construction to it, the category of <em>cones</em> over a diagram, and with that the kit is complete enough to define every limit there is.</p>
+<p>The most striking law concerns slices. A slice category is a category, so it has slices of its own. Take an object <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> and slice again. An object of the double slice is an arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> into <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span>: an arrow <span class="m pr8">h <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> of <span class="m"><span class="cat">𝒞</span></span>, regarded as an arrow from <span class="m"><span class="up">(</span>Y<span class="up">, </span>f <span class="up pl18">∘ </span>h<span class="up">)</span></span> — and the arrow <span class="m">Y <span class="up pl10">→ </span>A</span> carries no information, since it must be <span class="m">f <span class="up pl18">∘ </span>h</span>. So an object of the double slice is just an arrow into <span class="m">X</span>, and the same collapse happens for arrows (Exercise 13):</p>
+<p class="eq"><span class="m"><span class="up">(</span><span class="cat">𝒞</span><span class="up pr5">/</span>A<span class="up pr5">)/(</span>X<span class="up">, </span>f<span class="up pl18">) ≅ </span><span class="cat">𝒞</span><span class="up pr5">/</span>X<span class="up">.</span></span></p>
+<p>Slicing twice is slicing once. In the dormitory picture of §6: a family of sets indexed by the students, who are themselves indexed by dormitories, is simply a family indexed by the students. Facts of this kind — that a construction, iterated, stays within the kit — are what make the kit usable. Lesson 7 adds one more construction to it, the category of <em>cones</em> over a diagram, and with that the kit is complete enough to define every limit there is.</p>
 </div>
 </section>
 <section class="section" id="exercises">
 <div class="measure">
 <div class="sec-no">§9 — Exercises</div>
 <h2>Fourteen problems on building categories</h2>
-<p>Most of these ask you to carry out a construction on a small category and recognise the result. That is the right way to learn the kit: each construction has a personality, and it shows only when you watch it act. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 14, the last, is an optional machine check, in Python, of two of the others; everything else is pencil and paper.</p>
+<p>Most of these ask you to carry out a construction on a small category and recognise the result. That is the right way to learn the kit: each construction has a personality, and it shows only when you watch it act. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 14, the last, is an optional machine check, in Python, of two of the others; everything else is pencil and paper.</p>
 
 <div class="exgroup">
   <h3>Opposites</h3>
@@ -862,15 +877,15 @@ Z3 / *       3 objects, 9 arrows</div>
 <p>Describe the opposite of each category in familiar terms.</p>
 <ol>
 <li>The divisibility order on the positive integers.</li>
-<li>The monoid of strings over the alphabet <span class="m">{a, b}</span> under concatenation, as a one-object category.</li>
+<li>The monoid of strings over the alphabet <span class="m"><span class="up">{</span>a<span class="up">, </span>b<span class="up">}</span></span> under concatenation, as a one-object category.</li>
 <li>The discrete category on a set <span class="m">S</span>.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> The same integers with the order reversed: there is an arrow <span class="m">m → n</span> exactly when <span class="m">n</span> divides <span class="m">m</span> — the order &ldquo;is a multiple of.&rdquo;</p>
-<p><strong>(b)</strong> The same strings with concatenation in the other order: the composite of <span class="m">s</span> and <span class="m">t</span> is now <span class="m">t s</span> instead of <span class="m">s t</span>. This monoid is not commutative, so the opposite really is a different multiplication on the same set — although reversing each string, <span class="m">s ↦ s<sup>rev</sup></span>, is an isomorphism from the monoid to its opposite, because <span class="m">(s t)<sup>rev</sup> = t<sup>rev</sup> s<sup>rev</sup></span>.</p>
-<p><strong>(c)</strong> Itself. A discrete category has only identity arrows, and reversing an identity changes nothing: <span class="m"><span class="cat">𝒞</span><sup>op</sup> = <span class="cat">𝒞</span></span>.</p>
+<p><strong>(a)</strong> The same integers with the order reversed: there is an arrow <span class="m">m <span class="up">→ </span>n</span> exactly when <span class="m">n</span> divides <span class="m">m</span> — the order &ldquo;is a multiple of.&rdquo;</p>
+<p><strong>(b)</strong> The same strings with concatenation in the other order: the composite of <span class="m">s</span> and <span class="m">t</span> is now <span class="m">t s</span> instead of <span class="m">s t</span>. This monoid is not commutative, so the opposite really is a different multiplication on the same set — although reversing each string, <span class="m">s <span class="up">↦ </span>s<sup>rev</sup></span>, is an isomorphism from the monoid to its opposite, because <span class="m"><span class="up">(</span>s t<span class="up">)</span><sup>rev</sup> <span class="up">= </span>t<sup>rev</sup> s<sup>rev</sup></span>.</p>
+<p><strong>(c)</strong> Itself. A discrete category has only identity arrows, and reversing an identity changes nothing: <span class="m"><span class="cat">𝒞</span><sup>op</sup> <span class="up">= </span><span class="cat">𝒞</span></span>.</p>
 </div>
 </details>
 </div>
@@ -881,13 +896,13 @@ Z3 / *       3 objects, 9 arrows</div>
 <p>Practise the duality principle.</p>
 <ol>
 <li>Show directly from the definitions that an arrow is a section in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> exactly when it is a retraction in <span class="m"><span class="cat">𝒞</span></span>.</li>
-<li>Lesson 1, Exercise 16 proved: <em>if <span class="m">g ∘ f</span> is monic then <span class="m">f</span> is monic</em>. Write down the dual statement, being careful about which arrow it concerns, and explain why no new proof is needed.</li>
+<li>Lesson 1, Exercise 16 proved: <em>if <span class="m pr18">g <span class="up pl5">∘ </span>f</span> is monic then <span class="m pr18">f</span> is monic</em>. Write down the dual statement, being careful about which arrow it concerns, and explain why no new proof is needed.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> <span class="m">s</span> is a section in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> when <span class="m">r ∘<sup>op</sup> s = id</span> for some <span class="m">r</span>. By definition of the opposite composition this says <span class="m">s ∘ r = id</span> in <span class="m"><span class="cat">𝒞</span></span> — that <span class="m">s</span> has a right inverse, i.e. is a retraction of <span class="m">r</span>.</p>
-<p><strong>(b)</strong> Reverse every arrow and the order of every composite. &ldquo;<span class="m">g ∘ f</span>&rdquo; becomes &ldquo;<span class="m">f ∘ g</span>&rdquo; and &ldquo;monic&rdquo; becomes &ldquo;epic&rdquo;: <em>if <span class="m">f ∘ g</span> is epic then <span class="m">f</span> is epic</em>. Renaming the arrows to the usual convention: if <span class="m">g ∘ f</span> is epic then <span class="m">g</span> is epic — the arrow applied <strong>last</strong>, where the original statement concerned the arrow applied first. No proof is needed because the original statement holds in every category, in particular in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, where it says exactly this.</p>
+<p><strong>(a)</strong> <span class="m">s</span> is a section in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> when <span class="m pr5">r <span class="up pl3">∘</span><sup>op</sup> s <span class="up">= </span>id</span> for some <span class="m">r</span>. By definition of the opposite composition this says <span class="m pr5">s <span class="up">∘ </span>r <span class="up pl3">= </span>id</span> in <span class="m"><span class="cat">𝒞</span></span> — that <span class="m">s</span> has a right inverse, i.e. is a retraction of <span class="m">r</span>.</p>
+<p><strong>(b)</strong> Reverse every arrow and the order of every composite. &ldquo;<span class="m pr18">g <span class="up pl5">∘ </span>f</span>&rdquo; becomes &ldquo;<span class="m pr5">f <span class="up pl18">∘ </span>g</span>&rdquo; and &ldquo;monic&rdquo; becomes &ldquo;epic&rdquo;: <em>if <span class="m pr5">f <span class="up pl18">∘ </span>g</span> is epic then <span class="m pr18">f</span> is epic</em>. Renaming the arrows to the usual convention: if <span class="m pr18">g <span class="up pl5">∘ </span>f</span> is epic then <span class="m pr5">g</span> is epic — the arrow applied <strong>last</strong>, where the original statement concerned the arrow applied first. No proof is needed because the original statement holds in every category, in particular in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, where it says exactly this.</p>
 </div>
 </details>
 </div>
@@ -900,18 +915,18 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">by hand</span></div>
 <div class="prob-body">
-<p>Work out the product category <span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> explicitly.</p>
+<p>Work out the product category <span class="m"><span class="cat">𝟚</span> <span class="up">× </span><span class="cat">𝟚</span></span> explicitly.</p>
 <ol>
 <li>List its four objects and nine arrows, giving the source and target of each.</li>
-<li>Match them with the objects <span class="m">A, B, C, D</span> and arrows <span class="m">f, p, q, g, d</span> of the commuting square of Lesson 1, Exercise 12.</li>
-<li>Without listing: how many objects and arrows does <span class="m"><span class="cat">𝟛</span> × <span class="cat">𝟛</span></span> have?</li>
+<li>Match them with the objects <span class="m">A<span class="up">, </span>B<span class="up">, </span>C<span class="up">, </span>D</span> and arrows <span class="m pr5">f<span class="up">, </span>p<span class="up">, </span>q<span class="up">, </span>g<span class="up">, </span>d</span> of the commuting square of Lesson 1, Exercise 12.</li>
+<li>Without listing: how many objects and arrows does <span class="m"><span class="cat">𝟛</span> <span class="up">× </span><span class="cat">𝟛</span></span> have?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> Objects: <span class="m">(0,0), (1,0), (0,1), (1,1)</span>. Arrows are pairs of arrows of <span class="m"><span class="cat">𝟚</span></span>, and <span class="m"><span class="cat">𝟚</span></span> has the arrows <span class="m">i<sub>0</sub>, i<sub>1</sub>, u</span>. The four identities are <span class="m">(i<sub>0</sub>, i<sub>0</sub>), (i<sub>1</sub>, i<sub>0</sub>), (i<sub>0</sub>, i<sub>1</sub>), (i<sub>1</sub>, i<sub>1</sub>)</span>. The others: <span class="m">(u, i<sub>0</sub>) : (0,0) → (1,0)</span>; <span class="m">(i<sub>0</sub>, u) : (0,0) → (0,1)</span>; <span class="m">(i<sub>1</sub>, u) : (1,0) → (1,1)</span>; <span class="m">(u, i<sub>1</sub>) : (0,1) → (1,1)</span>; and <span class="m">(u, u) : (0,0) → (1,1)</span>.</p>
-<p><strong>(b)</strong> Take <span class="m">A = (0,0)</span>, <span class="m">B = (1,0)</span>, <span class="m">C = (0,1)</span>, <span class="m">D = (1,1)</span>. Then <span class="m">f = (u, i<sub>0</sub>)</span>, <span class="m">p = (i<sub>0</sub>, u)</span>, <span class="m">q = (i<sub>1</sub>, u)</span>, <span class="m">g = (u, i<sub>1</sub>)</span>, and the diagonal <span class="m">d = (u, u)</span>. The equation <span class="m">q ∘ f = d = g ∘ p</span> is componentwise composition: <span class="m">(i<sub>1</sub>, u) ∘ (u, i<sub>0</sub>) = (i<sub>1</sub> ∘ u, u ∘ i<sub>0</sub>) = (u, u)</span>, and likewise the other way round.</p>
-<p><strong>(c)</strong> <span class="m">3 × 3 = 9</span> objects, and <span class="m">6 × 6 = 36</span> arrows, since <span class="m"><span class="cat">𝟛</span></span> has six arrows.</p>
+<p><strong>(a)</strong> Objects: <span class="m"><span class="up">(0,0), (1,0), (0,1), (1,1)</span></span>. Arrows are pairs of arrows of <span class="m"><span class="cat">𝟚</span></span>, and <span class="m"><span class="cat">𝟚</span></span> has the arrows <span class="m">i<sub><span class="up pl4">0</span></sub><span class="up">, </span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>u</span>. The four identities are <span class="m"><span class="up">(</span>i<sub><span class="up pl4">0</span></sub><span class="up">, </span>i<sub><span class="up pl4">0</span></sub><span class="up">), (</span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>i<sub><span class="up pl4">0</span></sub><span class="up">), (</span>i<sub><span class="up pl4">0</span></sub><span class="up">, </span>i<sub><span class="up pl4">1</span></sub><span class="up">), (</span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>i<sub><span class="up pl4">1</span></sub><span class="up">)</span></span>. The others: <span class="m"><span class="up">(</span>u<span class="up">, </span>i<sub><span class="up pl4">0</span></sub><span class="up">) : (0,0) → (1,0)</span></span>; <span class="m"><span class="up">(</span>i<sub><span class="up pl4">0</span></sub><span class="up">, </span>u<span class="up">) : (0,0) → (0,1)</span></span>; <span class="m"><span class="up">(</span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>u<span class="up">) : (1,0) → (1,1)</span></span>; <span class="m"><span class="up">(</span>u<span class="up">, </span>i<sub><span class="up pl4">1</span></sub><span class="up">) : (0,1) → (1,1)</span></span>; and <span class="m"><span class="up">(</span>u<span class="up">, </span>u<span class="up">) : (0,0) → (1,1)</span></span>.</p>
+<p><strong>(b)</strong> Take <span class="m">A <span class="up">= (0,0)</span></span>, <span class="m">B <span class="up">= (1,0)</span></span>, <span class="m">C <span class="up pl4">= (0,1)</span></span>, <span class="m">D <span class="up">= (1,1)</span></span>. Then <span class="m">f <span class="up pl18">= (</span>u<span class="up">, </span>i<sub><span class="up pl4">0</span></sub><span class="up">)</span></span>, <span class="m">p <span class="up">= (</span>i<sub><span class="up pl4">0</span></sub><span class="up">, </span>u<span class="up">)</span></span>, <span class="m">q <span class="up">= (</span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>u<span class="up">)</span></span>, <span class="m">g <span class="up pl5">= (</span>u<span class="up">, </span>i<sub><span class="up pl4">1</span></sub><span class="up">)</span></span>, and the diagonal <span class="m">d <span class="up pl5">= (</span>u<span class="up">, </span>u<span class="up">)</span></span>. The equation <span class="m">q <span class="up">∘ </span>f <span class="up pl18">= </span>d <span class="up pl5">= </span>g <span class="up pl5">∘ </span>p</span> is componentwise composition: <span class="m"><span class="up">(</span>i<sub><span class="up pl4">1</span></sub><span class="up">, </span>u<span class="up">) ∘ (</span>u<span class="up">, </span>i<sub><span class="up pl4">0</span></sub><span class="up">) = (</span>i<sub><span class="up pl4">1</span></sub> <span class="up">∘ </span>u<span class="up">, </span>u <span class="up">∘ </span>i<sub><span class="up pl4">0</span></sub><span class="up">) = (</span>u<span class="up">, </span>u<span class="up">)</span></span>, and likewise the other way round.</p>
+<p><strong>(c)</strong> <span class="m"><span class="up">3 × 3 = 9</span></span> objects, and <span class="m"><span class="up">6 × 6 = 36</span></span> arrows, since <span class="m"><span class="cat">𝟛</span></span> has six arrows.</p>
 </div>
 </details>
 </div>
@@ -921,14 +936,14 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob-body">
 <p>Verify two laws from the Going-deeper section.</p>
 <ol>
-<li>Show that <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒟</span>)<sup>op</sup></span> and <span class="m"><span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒟</span><sup>op</sup></span> have the same objects, the same arrows, and the same composition.</li>
-<li>Let <span class="m">P</span> and <span class="m">Q</span> be preorders. Show that the product category <span class="m">P × Q</span> is the preorder on pairs with <span class="m">(x, y) ≤ (x′, y′)</span> exactly when <span class="m">x ≤ x′</span> and <span class="m">y ≤ y′</span>.</li>
+<li>Show that <span class="m"><span class="up">(</span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span><span class="up">)</span><sup>op</sup></span> and <span class="m"><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒟</span><sup>op</sup></span> have the same objects, the same arrows, and the same composition.</li>
+<li>Let <span class="m pr4">P</span> and <span class="m">Q</span> be preorders. Show that the product category <span class="m">P <span class="up pl4">× </span>Q</span> is the preorder on pairs with <span class="m"><span class="up">(</span>x<span class="up">, </span>y<span class="up">) ≤ (</span>x<span class="up">′, </span>y<span class="up">′)</span></span> exactly when <span class="m">x <span class="up">≤ </span>x<span class="up">′</span></span> and <span class="m">y <span class="up">≤ </span>y<span class="up">′</span></span>.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> Objects: pairs <span class="m">(C, D)</span> in both. An arrow <span class="m">(C, D) → (C′, D′)</span> of <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒟</span>)<sup>op</sup></span> is an arrow <span class="m">(C′, D′) → (C, D)</span> of <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span>, that is, a pair <span class="m">(f, g)</span> with <span class="m">f : C′ → C</span> and <span class="m">g : D′ → D</span>. An arrow <span class="m">(C, D) → (C′, D′)</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒟</span><sup>op</sup></span> is a pair consisting of an arrow <span class="m">C → C′</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and an arrow <span class="m">D → D′</span> of <span class="m"><span class="cat">𝒟</span><sup>op</sup></span> — again a pair <span class="m">(f, g)</span> with <span class="m">f : C′ → C</span> and <span class="m">g : D′ → D</span>. Composition in both is &ldquo;reverse the order, slot by slot.&rdquo;</p>
-<p><strong>(b)</strong> An arrow <span class="m">(x, y) → (x′, y′)</span> in <span class="m">P × Q</span> is a pair of arrows <span class="m">x → x′</span> and <span class="m">y → y′</span>. Each exists exactly when the corresponding inequality holds, and is then unique. So there is at most one arrow between two pairs, and there is one exactly when both inequalities hold.</p>
+<p><strong>(a)</strong> Objects: pairs <span class="m"><span class="up">(</span>C<span class="up">, </span>D<span class="up">)</span></span> in both. An arrow <span class="m"><span class="up">(</span>C<span class="up">, </span>D<span class="up">) → (</span>C<span class="up pl4">′, </span>D<span class="up">′)</span></span> of <span class="m"><span class="up">(</span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span><span class="up">)</span><sup>op</sup></span> is an arrow <span class="m"><span class="up">(</span>C<span class="up pl4">′, </span>D<span class="up">′) → (</span>C<span class="up">, </span>D<span class="up">)</span></span> of <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span>, that is, a pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> with <span class="m pr4">f <span class="up pl18">: </span>C<span class="up pl4">′ → </span>C</span> and <span class="m">g <span class="up pl5">: </span>D<span class="up">′ → </span>D</span>. An arrow <span class="m"><span class="up">(</span>C<span class="up">, </span>D<span class="up">) → (</span>C<span class="up pl4">′, </span>D<span class="up">′)</span></span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒟</span><sup>op</sup></span> is a pair consisting of an arrow <span class="m">C <span class="up pl4">→ </span>C<span class="up pl4">′</span></span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and an arrow <span class="m">D <span class="up">→ </span>D<span class="up">′</span></span> of <span class="m"><span class="cat">𝒟</span><sup>op</sup></span> — again a pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> with <span class="m pr4">f <span class="up pl18">: </span>C<span class="up pl4">′ → </span>C</span> and <span class="m">g <span class="up pl5">: </span>D<span class="up">′ → </span>D</span>. Composition in both is &ldquo;reverse the order, slot by slot.&rdquo;</p>
+<p><strong>(b)</strong> An arrow <span class="m"><span class="up">(</span>x<span class="up">, </span>y<span class="up">) → (</span>x<span class="up">′, </span>y<span class="up">′)</span></span> in <span class="m">P <span class="up pl4">× </span>Q</span> is a pair of arrows <span class="m">x <span class="up">→ </span>x<span class="up">′</span></span> and <span class="m">y <span class="up">→ </span>y<span class="up">′</span></span>. Each exists exactly when the corresponding inequality holds, and is then unique. So there is at most one arrow between two pairs, and there is one exactly when both inequalities hold.</p>
 </div>
 </details>
 </div>
@@ -947,14 +962,14 @@ Z3 / *       3 objects, 9 arrows</div>
 <li>Inside <span class="m"><span class="cat">Set</span></span>: all sets, with the surjective functions.</li>
 <li>Inside <span class="m"><span class="cat">Set</span></span>: the finite sets, with the injective functions.</li>
 <li>Inside <span class="m"><span class="cat">Mat</span></span>: all objects, with the matrices whose entries are all non-zero.</li>
-<li>Inside a preorder <span class="m">P</span>: an arbitrary subset, with all the inequalities between its elements.</li>
+<li>Inside a preorder <span class="m pr4">P</span>: an arbitrary subset, with all the inequalities between its elements.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a) Full,</strong> not wide. <strong>(b) Wide,</strong> not full: identities are surjective and surjections compose. <strong>(c) Neither:</strong> not all objects, and not all arrows between the ones chosen — but still a subcategory.</p>
-<p><strong>(d) Not a subcategory.</strong> The identity matrices have zero entries off the diagonal, so identities are missing. (Composition fails too: the product of two matrices without zero entries can have a zero entry.)</p>
-<p><strong>(e) Full.</strong> Any subset of a preorder is a full subcategory. Nothing needs checking, because a full subcategory is determined by its objects.</p>
+<p><strong>(a) Full,</strong> not wide. <strong>(b) Wide,</strong> not full: identities are surjective and surjections compose. <strong>(c) Neither:</strong> not all objects, and not all arrows between the ones chosen — but still a subcategory.</p>
+<p><strong>(d) Not a subcategory.</strong> The identity matrices have zero entries off the diagonal, so identities are missing. (Composition fails too: the product of two matrices without zero entries can have a zero entry.)</p>
+<p><strong>(e) Full.</strong> Any subset of a preorder is a full subcategory. Nothing needs checking, because a full subcategory is determined by its objects.</p>
 </div>
 </details>
 </div>
@@ -965,14 +980,14 @@ Z3 / *       3 objects, 9 arrows</div>
 <p>Return to the warning in §4.</p>
 <ol>
 <li>Verify that the assignment described there is a functor from <span class="m"><span class="cat">𝒞</span></span> to <span class="m"><span class="cat">𝟛</span></span>.</li>
-<li>Prove that if a functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> is <strong>injective on objects</strong>, then the objects and arrows in its image do form a subcategory of <span class="m"><span class="cat">𝒟</span></span>.</li>
+<li>Prove that if a functor <span class="m">F <span class="up pl7">: </span><span class="cat">𝒞</span> <span class="up">→ </span><span class="cat">𝒟</span></span> is <strong>injective on objects</strong>, then the objects and arrows in its image do form a subcategory of <span class="m"><span class="cat">𝒟</span></span>.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> The category <span class="m"><span class="cat">𝒞</span></span> has no composable pairs of non-identity arrows, so the only composites to check involve an identity, and those are preserved because identities go to identities. Typing is correct: <span class="m">f : A → B</span> goes to an arrow <span class="m">0 → 1</span>, and <span class="m">g : B′ → C</span> to an arrow <span class="m">1 → 2</span>. So <span class="m">F</span> is a functor.</p>
-<p><strong>(b)</strong> Identities: the identity of <span class="m">F X</span> is <span class="m">F(id<sub>X</sub>)</span>, in the image. Composition: let <span class="m">F f</span> and <span class="m">F g</span> be composable in <span class="m"><span class="cat">𝒟</span></span>, where <span class="m">f : X → Y</span> and <span class="m">g : Y′ → Z</span> in <span class="m"><span class="cat">𝒞</span></span>. Composable means the target of <span class="m">F f</span> equals the source of <span class="m">F g</span>: <span class="m">F Y = F Y′</span>. Since <span class="m">F</span> is injective on objects, <span class="m">Y = Y′</span>. So <span class="m">f</span> and <span class="m">g</span> were already composable in <span class="m"><span class="cat">𝒞</span></span>, and <span class="m">F g ∘ F f = F(g ∘ f)</span> is in the image.</p>
-<p>The warning&rsquo;s example fails for exactly the reason this proof needs injectivity: <span class="m">B</span> and <span class="m">B′</span> were sent to the same object.</p>
+<p><strong>(a)</strong> The category <span class="m"><span class="cat">𝒞</span></span> has no composable pairs of non-identity arrows, so the only composites to check involve an identity, and those are preserved because identities go to identities. Typing is correct: <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>B</span> goes to an arrow <span class="m"><span class="up">0 → 1</span></span>, and <span class="m pr4">g <span class="up pl5">: </span>B<span class="up">′ → </span>C</span> to an arrow <span class="m"><span class="up">1 → 2</span></span>. So <span class="m pr7">F</span> is a functor.</p>
+<p><strong>(b)</strong> Identities: the identity of <span class="m pr8">F X</span> is <span class="m">F<span class="up pl7">(</span>id<sub>X</sub><span class="up pl6">)</span></span>, in the image. Composition: let <span class="m pr18">F f</span> and <span class="m pr5">F g</span> be composable in <span class="m"><span class="cat">𝒟</span></span>, where <span class="m pr10">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>Y</span> and <span class="m pr7">g <span class="up pl5">: </span>Y<span class="up pl10">′ → </span>Z</span> in <span class="m"><span class="cat">𝒞</span></span>. Composable means the target of <span class="m pr18">F f</span> equals the source of <span class="m pr5">F g</span>: <span class="m">F Y <span class="up pl10">= </span>F Y<span class="up pl10">′</span></span>. Since <span class="m pr7">F</span> is injective on objects, <span class="m">Y <span class="up pl10">= </span>Y<span class="up pl10">′</span></span>. So <span class="m pr18">f</span> and <span class="m pr5">g</span> were already composable in <span class="m"><span class="cat">𝒞</span></span>, and <span class="m">F g <span class="up pl5">∘ </span>F f <span class="up pl18">= </span>F<span class="up pl7 pr4">(</span>g <span class="up pl5">∘ </span>f<span class="up pl18">)</span></span> is in the image.</p>
+<p>The warning&rsquo;s example fails for exactly the reason this proof needs injectivity: <span class="m">B</span> and <span class="m">B<span class="up">′</span></span> were sent to the same object.</p>
 </div>
 </details>
 </div>
@@ -987,14 +1002,14 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob-body">
 <p>Arrow categories of chains.</p>
 <ol>
-<li>List the objects of <span class="m"><span class="cat">𝟚</span><sup>→</sup></span> and all arrows between them, and confirm that <span class="m"><span class="cat">𝟚</span><sup>→</sup> ≅ <span class="cat">𝟛</span></span>.</li>
-<li>§8 found that <span class="m"><span class="cat">𝟛</span><sup>→</sup></span> has <span class="m">20</span> arrows. Which interval is the least element of this preorder, and which the greatest? Is <span class="m"><span class="cat">𝟛</span><sup>→</sup></span> a chain?</li>
+<li>List the objects of <span class="m"><span class="cat">𝟚</span><sup><span class="up">→</span></sup></span> and all arrows between them, and confirm that <span class="m"><span class="cat">𝟚</span><sup><span class="up">→</span></sup> <span class="up">≅ </span><span class="cat">𝟛</span></span>.</li>
+<li>§8 found that <span class="m"><span class="cat">𝟛</span><sup><span class="up">→</span></sup></span> has <span class="m"><span class="up">20</span></span> arrows. Which interval is the least element of this preorder, and which the greatest? Is <span class="m"><span class="cat">𝟛</span><sup><span class="up">→</span></sup></span> a chain?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> The objects are the three arrows of <span class="m"><span class="cat">𝟚</span></span>: the intervals <span class="m">00</span> (the identity on <span class="m">0</span>), <span class="m">01</span> (the arrow <span class="m">u</span>), and <span class="m">11</span> (the identity on <span class="m">1</span>). Then <span class="m">00 ≤ 01</span> since <span class="m">0 ≤ 0</span> and <span class="m">0 ≤ 1</span>; <span class="m">01 ≤ 11</span> since <span class="m">0 ≤ 1</span> and <span class="m">1 ≤ 1</span>; and <span class="m">00 ≤ 11</span>. With the three identities that makes six arrows forming a chain <span class="m">00 ≤ 01 ≤ 11</span> — the category <span class="m"><span class="cat">𝟛</span></span>.</p>
-<p><strong>(b)</strong> Least: <span class="m">00</span>, below every interval. Greatest: <span class="m">22</span>. But <span class="m"><span class="cat">𝟛</span><sup>→</sup></span> is not a chain: the intervals <span class="m">02</span> and <span class="m">11</span> are incomparable, since <span class="m">0 ≤ 1</span> but <span class="m">2 ≤ 1</span> fails, and <span class="m">1 ≤ 0</span> fails the other way.</p>
+<p><strong>(a)</strong> The objects are the three arrows of <span class="m"><span class="cat">𝟚</span></span>: the intervals <span class="m"><span class="up">00</span></span> (the identity on <span class="m"><span class="up">0</span></span>), <span class="m"><span class="up">01</span></span> (the arrow <span class="m">u</span>), and <span class="m"><span class="up">11</span></span> (the identity on <span class="m"><span class="up">1</span></span>). Then <span class="m"><span class="up">00 ≤ 01</span></span> since <span class="m"><span class="up">0 ≤ 0</span></span> and <span class="m"><span class="up">0 ≤ 1</span></span>; <span class="m"><span class="up">01 ≤ 11</span></span> since <span class="m"><span class="up">0 ≤ 1</span></span> and <span class="m"><span class="up">1 ≤ 1</span></span>; and <span class="m"><span class="up">00 ≤ 11</span></span>. With the three identities that makes six arrows forming a chain <span class="m"><span class="up">00 ≤ 01 ≤ 11</span></span> — the category <span class="m"><span class="cat">𝟛</span></span>.</p>
+<p><strong>(b)</strong> Least: <span class="m"><span class="up">00</span></span>, below every interval. Greatest: <span class="m"><span class="up">22</span></span>. But <span class="m"><span class="cat">𝟛</span><sup><span class="up">→</span></sup></span> is not a chain: the intervals <span class="m"><span class="up">02</span></span> and <span class="m"><span class="up">11</span></span> are incomparable, since <span class="m"><span class="up">0 ≤ 1</span></span> but <span class="m"><span class="up">2 ≤ 1</span></span> fails, and <span class="m"><span class="up">1 ≤ 0</span></span> fails the other way.</p>
 </div>
 </details>
 </div>
@@ -1004,18 +1019,18 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob-body">
 <p>Compute four slices.</p>
 <ol>
-<li>The slice of the divisibility order on <span class="m">{1, 2, 3, 6}</span> over the object <span class="m">3</span>.</li>
-<li>The slice of the chain <span class="m"><span class="cat">𝟛</span></span> over its middle object <span class="m">1</span>.</li>
-<li>The slice of the monoid <span class="m">(ℕ, ·)</span> of <em>positive</em> integers under multiplication over its one object. Which familiar order is it?</li>
-<li>The slice of the group <span class="m">ℤ/2</span> over its one object: list the objects and all arrows.</li>
+<li>The slice of the divisibility order on <span class="m"><span class="up">{1, 2, 3, 6}</span></span> over the object <span class="m"><span class="up">3</span></span>.</li>
+<li>The slice of the chain <span class="m"><span class="cat">𝟛</span></span> over its middle object <span class="m"><span class="up">1</span></span>.</li>
+<li>The slice of the monoid <span class="m"><span class="up">(ℕ, ·)</span></span> of <em>positive</em> integers under multiplication over its one object. Which familiar order is it?</li>
+<li>The slice of the group <span class="m"><span class="up">ℤ/2</span></span> over its one object: list the objects and all arrows.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> The divisors of <span class="m">3</span>: the two-element chain <span class="m">1 | 3</span>.</p>
-<p><strong>(b)</strong> The elements below <span class="m">1</span>: the chain <span class="m">0 ≤ 1</span>, a copy of <span class="m"><span class="cat">𝟚</span></span>.</p>
-<p><strong>(c)</strong> Objects are the positive integers. An arrow <span class="m">m → n</span> is an <span class="m">h</span> with <span class="m">n · h = m</span>, which exists exactly when <span class="m">n</span> divides <span class="m">m</span>, and is then unique. So the slice is the positive integers ordered by &ldquo;is a multiple of&rdquo; — the opposite of the divisibility order. Compare §6(iii), where addition produced the opposite of the usual order.</p>
-<p><strong>(d)</strong> Objects: <span class="m">0</span> and <span class="m">1</span>. An arrow <span class="m">m → n</span> is the unique <span class="m">h</span> with <span class="m">n + h = m</span>: so there are four arrows, <span class="m">0 → 0</span> and <span class="m">1 → 1</span> (both given by <span class="m">h = 0</span>, the identities) and <span class="m">0 → 1</span> and <span class="m">1 → 0</span> (both given by <span class="m">h = 1</span>). The two non-identity arrows are inverse to each other. This is the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4 — two objects and an isomorphism — and it is equivalent to <span class="m"><span class="cat">𝟙</span></span>.</p>
+<p><strong>(a)</strong> The divisors of <span class="m"><span class="up">3</span></span>: the two-element chain <span class="m"><span class="up">1 | 3</span></span>.</p>
+<p><strong>(b)</strong> The elements below <span class="m"><span class="up">1</span></span>: the chain <span class="m"><span class="up">0 ≤ 1</span></span>, a copy of <span class="m"><span class="cat">𝟚</span></span>.</p>
+<p><strong>(c)</strong> Objects are the positive integers. An arrow <span class="m">m <span class="up">→ </span>n</span> is an <span class="m">h</span> with <span class="m">n <span class="up">· </span>h <span class="up">= </span>m</span>, which exists exactly when <span class="m">n</span> divides <span class="m">m</span>, and is then unique. So the slice is the positive integers ordered by &ldquo;is a multiple of&rdquo; — the opposite of the divisibility order. Compare §6(iii), where addition produced the opposite of the usual order.</p>
+<p><strong>(d)</strong> Objects: <span class="m"><span class="up">0</span></span> and <span class="m"><span class="up">1</span></span>. An arrow <span class="m">m <span class="up">→ </span>n</span> is the unique <span class="m">h</span> with <span class="m">n <span class="up">+ </span>h <span class="up">= </span>m</span>: so there are four arrows, <span class="m"><span class="up">0 → 0</span></span> and <span class="m"><span class="up">1 → 1</span></span> (both given by <span class="m">h <span class="up">= 0</span></span>, the identities) and <span class="m"><span class="up">0 → 1</span></span> and <span class="m"><span class="up">1 → 0</span></span> (both given by <span class="m">h <span class="up">= 1</span></span>). The two non-identity arrows are inverse to each other. This is the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4 — two objects and an isomorphism — and it is equivalent to <span class="m"><span class="cat">𝟙</span></span>.</p>
 </div>
 </details>
 </div>
@@ -1023,19 +1038,19 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">structure</span></div>
 <div class="prob-body">
-<p>Families of sets as a slice (§6, example ii). Let <span class="m">A = {0, 1}</span>. Let <span class="m">p : {a, b, c} → A</span> send <span class="m">a, b ↦ 0</span> and <span class="m">c ↦ 1</span>, and let <span class="m">q : {x, y, z, w} → A</span> send <span class="m">x ↦ 0</span> and <span class="m">y, z, w ↦ 1</span>.</p>
+<p>Families of sets as a slice (§6, example ii). Let <span class="m">A <span class="up">= {0, 1}</span></span>. Let <span class="m">p <span class="up">: {</span>a<span class="up">, </span>b<span class="up">, </span>c<span class="up">} → </span>A</span> send <span class="m">a<span class="up">, </span>b <span class="up">↦ 0</span></span> and <span class="m">c <span class="up">↦ 1</span></span>, and let <span class="m">q <span class="up">: {</span>x<span class="up">, </span>y<span class="up">, </span>z<span class="up">, </span>w<span class="up">} → </span>A</span> send <span class="m">x <span class="up">↦ 0</span></span> and <span class="m">y<span class="up">, </span>z<span class="up">, </span>w <span class="up">↦ 1</span></span>.</p>
 <ol>
 <li>Write each of <span class="m">p</span> and <span class="m">q</span> as a pair of sets.</li>
-<li>How many arrows are there from <span class="m">p</span> to <span class="m">q</span> in <span class="m"><span class="cat">Set</span>/A</span>? Compare with the number of all functions <span class="m">{a, b, c} → {x, y, z, w}</span>.</li>
+<li>How many arrows are there from <span class="m">p</span> to <span class="m">q</span> in <span class="m"><span class="cat">Set</span><span class="up pr5">/</span>A</span>? Compare with the number of all functions <span class="m"><span class="up">{</span>a<span class="up">, </span>b<span class="up">, </span>c<span class="up">} → {</span>x<span class="up">, </span>y<span class="up">, </span>z<span class="up">, </span>w<span class="up">}</span></span>.</li>
 <li>How many arrows from <span class="m">q</span> to <span class="m">p</span>?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> <span class="m">p</span> is the family with fibres <span class="m">{a, b}</span> over <span class="m">0</span> and <span class="m">{c}</span> over <span class="m">1</span>. <span class="m">q</span> has fibres <span class="m">{x}</span> over <span class="m">0</span> and <span class="m">{y, z, w}</span> over <span class="m">1</span>.</p>
-<p><strong>(b)</strong> An arrow over <span class="m">A</span> maps each fibre of <span class="m">p</span> to the corresponding fibre of <span class="m">q</span>: a function <span class="m">{a, b} → {x}</span>, of which there is <span class="m">1</span>, and a function <span class="m">{c} → {y, z, w}</span>, of which there are <span class="m">3</span>. Total <span class="m">1 × 3 = 3</span>, out of <span class="m">4<sup>3</sup> = 64</span> functions in all.</p>
-<p><strong>(c)</strong> A function <span class="m">{x} → {a, b}</span>: <span class="m">2</span> choices. A function <span class="m">{y, z, w} → {c}</span>: <span class="m">1</span>. Total <span class="m">2</span>.</p>
-<p>The slice is far smaller than <span class="m"><span class="cat">Set</span></span> between the same sets, because its arrows must respect the indexing. That is the equivalence <span class="m"><span class="cat">Set</span>/A ≃ <span class="cat">Set</span> × <span class="cat">Set</span></span> at work: the count in (b) is the product of the counts in the two coordinates.</p>
+<p><strong>(a)</strong> <span class="m">p</span> is the family with fibres <span class="m"><span class="up">{</span>a<span class="up">, </span>b<span class="up">}</span></span> over <span class="m"><span class="up">0</span></span> and <span class="m"><span class="up">{</span>c<span class="up">}</span></span> over <span class="m"><span class="up">1</span></span>. <span class="m">q</span> has fibres <span class="m"><span class="up">{</span>x<span class="up">}</span></span> over <span class="m"><span class="up">0</span></span> and <span class="m"><span class="up pr6">{</span>y<span class="up">, </span>z<span class="up">, </span>w<span class="up">}</span></span> over <span class="m"><span class="up">1</span></span>.</p>
+<p><strong>(b)</strong> An arrow over <span class="m">A</span> maps each fibre of <span class="m">p</span> to the corresponding fibre of <span class="m">q</span>: a function <span class="m"><span class="up">{</span>a<span class="up">, </span>b<span class="up">} → {</span>x<span class="up">}</span></span>, of which there is <span class="m"><span class="up">1</span></span>, and a function <span class="m"><span class="up">{</span>c<span class="up pr6">} → {</span>y<span class="up">, </span>z<span class="up">, </span>w<span class="up">}</span></span>, of which there are <span class="m"><span class="up">3</span></span>. Total <span class="m"><span class="up">1 × 3 = 3</span></span>, out of <span class="m"><span class="up">4</span><sup><span class="up">3</span></sup> <span class="up">= 64</span></span> functions in all.</p>
+<p><strong>(c)</strong> A function <span class="m"><span class="up">{</span>x<span class="up">} → {</span>a<span class="up">, </span>b<span class="up">}</span></span>: <span class="m"><span class="up">2</span></span> choices. A function <span class="m"><span class="up pr6">{</span>y<span class="up">, </span>z<span class="up">, </span>w<span class="up">} → {</span>c<span class="up">}</span></span>: <span class="m"><span class="up">1</span></span>. Total <span class="m"><span class="up">2</span></span>.</p>
+<p>The slice is far smaller than <span class="m"><span class="cat">Set</span></span> between the same sets, because its arrows must respect the indexing. That is the equivalence <span class="m"><span class="cat">Set</span><span class="up pr5">/</span>A <span class="up">≃ </span><span class="cat">Set</span> <span class="up">× </span><span class="cat">Set</span></span> at work: the count in (b) is the product of the counts in the two coordinates.</p>
 </div>
 </details>
 </div>
@@ -1043,16 +1058,16 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
-<p>§6 showed that in any slice <span class="m"><span class="cat">𝒞</span>/A</span> there is exactly one arrow from each object to <span class="m">(A, id<sub>A</sub>)</span>.</p>
+<p>§6 showed that in any slice <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> there is exactly one arrow from each object to <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">)</span></span>.</p>
 <ol>
-<li>State and prove the dual fact about the coslice <span class="m">A/<span class="cat">𝒞</span></span>.</li>
-<li>In <span class="m">1/<span class="cat">Set</span></span>, the category of pointed sets, which pointed set is this distinguished object, and what is the unique arrow from it to a pointed set <span class="m">(X, x<sub>0</sub>)</span>?</li>
+<li>State and prove the dual fact about the coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span>.</li>
+<li>In <span class="m"><span class="up">1/</span><span class="cat">Set</span></span>, the category of pointed sets, which pointed set is this distinguished object, and what is the unique arrow from it to a pointed set <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>x<sub><span class="up">0</span></sub><span class="up">)</span></span>?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> In <span class="m">A/<span class="cat">𝒞</span></span> there is exactly one arrow from <span class="m">(A, id<sub>A</sub>)</span> <strong>to</strong> each object <span class="m">(X, f)</span>. An arrow <span class="m">(A, id<sub>A</sub>) → (X, f)</span> is an <span class="m">h : A → X</span> with <span class="m">h ∘ id<sub>A</sub> = f</span>, which forces <span class="m">h = f</span>; and <span class="m">h = f</span> does satisfy the condition. (Or: apply §6 to <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and reverse.)</p>
-<p><strong>(b)</strong> The object is <span class="m">(1, id<sub>1</sub>)</span>: the one-element set with its only point chosen. The unique base-point-preserving function from it to <span class="m">(X, x<sub>0</sub>)</span> sends the point to <span class="m">x<sub>0</sub></span>. In Lesson 6&rsquo;s language, the one-point set is the <em>initial</em> pointed set.</p>
+<p><strong>(a)</strong> In <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span> there is exactly one arrow from <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">)</span></span> <strong>to</strong> each object <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span>. An arrow <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up pr5">) → (</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> is an <span class="m pr8">h <span class="up">: </span>A <span class="up">→ </span>X</span> with <span class="m">h <span class="up">∘ </span>id<sub>A</sub> <span class="up">= </span>f</span>, which forces <span class="m pr18">h <span class="up">= </span>f</span>; and <span class="m pr18">h <span class="up">= </span>f</span> does satisfy the condition. (Or: apply §6 to <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and reverse.)</p>
+<p><strong>(b)</strong> The object is <span class="m"><span class="up">(1, </span>id<sub><span class="up pl5">1</span></sub><span class="up">)</span></span>: the one-element set with its only point chosen. The unique base-point-preserving function from it to <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>x<sub><span class="up">0</span></sub><span class="up">)</span></span> sends the point to <span class="m">x<sub><span class="up">0</span></sub></span>. In Lesson 6&rsquo;s language, the one-point set is the <em class="pr4">initial</em> pointed set.</p>
 </div>
 </details>
 </div>
@@ -1060,13 +1075,13 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
-<p>Isomorphisms in a slice. Let <span class="m">h : (X, f) → (Y, g)</span> be an arrow of <span class="m"><span class="cat">𝒞</span>/A</span>. Show that <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span>/A</span> if and only if <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span></span>.</p>
+<p>Isomorphisms in a slice. Let <span class="m">h <span class="up pr5">: (</span>X<span class="up">, </span>f<span class="up pl18">) → (</span>Y<span class="up">, </span>g<span class="up pl5">)</span></span> be an arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span>. Show that <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> if and only if <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span></span>.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>If <span class="m">h</span> has an inverse in the slice, that inverse is in particular an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m">k ∘ h = id</span> and <span class="m">h ∘ k = id</span>, so <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span></span>.</p>
-<p>Conversely, let <span class="m">h</span> be an isomorphism in <span class="m"><span class="cat">𝒞</span></span> with <span class="m">g ∘ h = f</span>. The only question is whether <span class="m">h<sup>−1</sup> : Y → X</span> is an arrow of the slice, from <span class="m">(Y, g)</span> to <span class="m">(X, f)</span> — that is, whether <span class="m">f ∘ h<sup>−1</sup> = g</span>. It is: <span class="m">f ∘ h<sup>−1</sup> = (g ∘ h) ∘ h<sup>−1</sup> = g</span>. Then <span class="m">h<sup>−1</sup></span> is an inverse of <span class="m">h</span> in the slice, since composition there is composition in <span class="m"><span class="cat">𝒞</span></span>.</p>
-<p>In the language of Lesson 2: the forgetful functor <span class="m"><span class="cat">𝒞</span>/A → <span class="cat">𝒞</span></span>, which sends <span class="m">(X, f)</span> to <span class="m">X</span>, reflects isomorphisms — although it is usually not full.</p>
+<p>If <span class="m">h</span> has an inverse in the slice, that inverse is in particular an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m pr5">k <span class="up">∘ </span>h <span class="up">= </span>id</span> and <span class="m">h <span class="up">∘ </span>k <span class="up">= </span>id</span>, so <span class="m">h</span> is an isomorphism in <span class="m"><span class="cat">𝒞</span></span>.</p>
+<p>Conversely, let <span class="m">h</span> be an isomorphism in <span class="m"><span class="cat">𝒞</span></span> with <span class="m">g <span class="up pl5">∘ </span>h <span class="up">= </span>f</span>. The only question is whether <span class="m pr8">h<sup><span class="up">−1</span></sup> <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> is an arrow of the slice, from <span class="m"><span class="up">(</span>Y<span class="up">, </span>g<span class="up pl5">)</span></span> to <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> — that is, whether <span class="m">f <span class="up pl18">∘ </span>h<sup><span class="up">−1</span></sup> <span class="up">= </span>g</span>. It is: <span class="m">f <span class="up pl18">∘ </span>h<sup><span class="up">−1</span></sup> <span class="up pr4">= (</span>g <span class="up pl5">∘ </span>h<span class="up">) ∘ </span>h<sup><span class="up">−1</span></sup> <span class="up">= </span>g</span>. Then <span class="m">h<sup><span class="up">−1</span></sup></span> is an inverse of <span class="m">h</span> in the slice, since composition there is composition in <span class="m"><span class="cat">𝒞</span></span>.</p>
+<p>In the language of Lesson 2: the forgetful functor <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A <span class="up">→ </span><span class="cat">𝒞</span></span>, which sends <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> to <span class="m">X</span>, reflects isomorphisms — although it is usually not full.</p>
 </div>
 </details>
 </div>
@@ -1079,18 +1094,18 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">think</span></div>
 <div class="prob-body">
-<p>Let <span class="m">i : ℤ → ℝ</span> be the inclusion, as in §7, and <span class="m">r = 2.5</span>.</p>
+<p>Let <span class="m">i <span class="up pl4">: ℤ → ℝ</span></span> be the inclusion, as in §7, and <span class="m">r <span class="up pl3">= 2.5</span></span>.</p>
 <ol>
-<li>List a few objects of <span class="m">(i ↓ r)</span> and of <span class="m">(r ↓ i)</span>, and identify the greatest element of the first and the least element of the second.</li>
-<li>For which real numbers <span class="m">r</span> do the two comma categories have an object in common?</li>
-<li>Replace <span class="m">i</span> by the inclusion of the <strong>even</strong> integers into <span class="m">ℝ</span>. What are the best objects of the two comma categories at <span class="m">r = 2.5</span> now?</li>
+<li>List a few objects of <span class="m"><span class="up">(</span>i <span class="up pl4">↓ </span>r<span class="up pl3">)</span></span> and of <span class="m"><span class="up">(</span>r <span class="up pl3">↓ </span>i<span class="up pl4">)</span></span>, and identify the greatest element of the first and the least element of the second.</li>
+<li>For which real numbers <span class="m pr3">r</span> do the two comma categories have an object in common?</li>
+<li>Replace <span class="m pr4">i</span> by the inclusion of the <strong>even</strong> integers into <span class="m"><span class="up">ℝ</span></span>. What are the best objects of the two comma categories at <span class="m">r <span class="up pl3">= 2.5</span></span> now?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> <span class="m">(i ↓ r)</span>: the integers <span class="m">n ≤ 2.5</span>, namely <span class="m">…, 0, 1, 2</span>; greatest element <span class="m">2</span>, the floor. <span class="m">(r ↓ i)</span>: the integers <span class="m">n ≥ 2.5</span>, namely <span class="m">3, 4, 5, …</span>; least element <span class="m">3</span>, the ceiling.</p>
-<p><strong>(b)</strong> An integer <span class="m">n</span> lies in both when <span class="m">n ≤ r</span> and <span class="m">r ≤ n</span>, that is, when <span class="m">r = n</span>. So exactly when <span class="m">r</span> is itself an integer — and then floor and ceiling coincide.</p>
-<p><strong>(c)</strong> The greatest even integer below <span class="m">2.5</span> is <span class="m">2</span>; the least even integer above it is <span class="m">4</span>. The construction does not care which functor is used: any monotone map into the reals has its own &ldquo;floor&rdquo; and &ldquo;ceiling,&rdquo; whenever the comma categories have greatest and least elements. Lesson 8 calls these the right and left <em>adjoints</em> of the map.</p>
+<p><strong>(a)</strong> <span class="m"><span class="up">(</span>i <span class="up pl4">↓ </span>r<span class="up pl3">)</span></span>: the integers <span class="m">n <span class="up">≤ 2.5</span></span>, namely <span class="m"><span class="up">…, 0, 1, 2</span></span>; greatest element <span class="m"><span class="up">2</span></span>, the floor. <span class="m"><span class="up">(</span>r <span class="up pl3">↓ </span>i<span class="up pl4">)</span></span>: the integers <span class="m">n <span class="up">≥ 2.5</span></span>, namely <span class="m"><span class="up">3, 4, 5, …</span></span>; least element <span class="m"><span class="up">3</span></span>, the ceiling.</p>
+<p><strong>(b)</strong> An integer <span class="m">n</span> lies in both when <span class="m pr3">n <span class="up">≤ </span>r</span> and <span class="m">r <span class="up pl3">≤ </span>n</span>, that is, when <span class="m">r <span class="up pl3">= </span>n</span>. So exactly when <span class="m pr3">r</span> is itself an integer — and then floor and ceiling coincide.</p>
+<p><strong>(c)</strong> The greatest even integer below <span class="m"><span class="up">2.5</span></span> is <span class="m"><span class="up">2</span></span>; the least even integer above it is <span class="m"><span class="up">4</span></span>. The construction does not care which functor is used: any monotone map into the reals has its own &ldquo;floor&rdquo; and &ldquo;ceiling,&rdquo; whenever the comma categories have greatest and least elements. Lesson 8 calls these the right and left <em>adjoints</em> of the map.</p>
 </div>
 </details>
 </div>
@@ -1098,16 +1113,16 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">structure</span></div>
 <div class="prob-body">
-<p>Slices of slices (Going deeper). Let <span class="m">f : X → A</span> be an arrow of <span class="m"><span class="cat">𝒞</span></span>, regarded as the object <span class="m">(X, f)</span> of <span class="m"><span class="cat">𝒞</span>/A</span>.</p>
+<p>Slices of slices (Going deeper). Let <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span> be an arrow of <span class="m"><span class="cat">𝒞</span></span>, regarded as the object <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span>.</p>
 <ol>
-<li>Show that an arrow of <span class="m"><span class="cat">𝒞</span>/A</span> into <span class="m">(X, f)</span> is determined by an arrow <span class="m">h : Y → X</span> of <span class="m"><span class="cat">𝒞</span></span> alone.</li>
-<li>Show that an arrow between two such objects, in the double slice <span class="m">(<span class="cat">𝒞</span>/A)/(X, f)</span>, is exactly an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m">h′ ∘ k = h</span> — and conclude that the double slice is isomorphic to <span class="m"><span class="cat">𝒞</span>/X</span>.</li>
+<li>Show that an arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> into <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> is determined by an arrow <span class="m pr8">h <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> of <span class="m"><span class="cat">𝒞</span></span> alone.</li>
+<li>Show that an arrow between two such objects, in the double slice <span class="m"><span class="up">(</span><span class="cat">𝒞</span><span class="up pr5">/</span>A<span class="up pr5">)/(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span>, is exactly an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span></span> with <span class="m">h<span class="up">′ ∘ </span>k <span class="up">= </span>h</span> — and conclude that the double slice is isomorphic to <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>X</span>.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> An arrow of <span class="m"><span class="cat">𝒞</span>/A</span> into <span class="m">(X, f)</span> is an arrow <span class="m">h : Y → X</span> of <span class="m"><span class="cat">𝒞</span></span> from some object <span class="m">(Y, g)</span>, satisfying <span class="m">f ∘ h = g</span>. So <span class="m">g</span> is not extra data: it is forced to be <span class="m">f ∘ h</span>. An object of the double slice is therefore just an arrow <span class="m">h : Y → X</span> — an object of <span class="m"><span class="cat">𝒞</span>/X</span>.</p>
-<p><strong>(b)</strong> Let <span class="m">h : Y → X</span> and <span class="m">h′ : Y′ → X</span> be two such objects. An arrow between them in the double slice is an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span>/A</span>, from <span class="m">(Y, f ∘ h)</span> to <span class="m">(Y′, f ∘ h′)</span>, with <span class="m">h′ ∘ k = h</span>. Being an arrow of <span class="m"><span class="cat">𝒞</span>/A</span> requires <span class="m">(f ∘ h′) ∘ k = f ∘ h</span> — but that follows from <span class="m">h′ ∘ k = h</span> by composing with <span class="m">f</span>. So the only real condition is <span class="m">h′ ∘ k = h</span>, which is the condition for <span class="m">k</span> to be an arrow of <span class="m"><span class="cat">𝒞</span>/X</span>. Objects match, arrows match, and composition is that of <span class="m"><span class="cat">𝒞</span></span> in both: the two categories are isomorphic.</p>
+<p><strong>(a)</strong> An arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> into <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up pl18">)</span></span> is an arrow <span class="m pr8">h <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> of <span class="m"><span class="cat">𝒞</span></span> from some object <span class="m"><span class="up">(</span>Y<span class="up">, </span>g<span class="up pl5">)</span></span>, satisfying <span class="m">f <span class="up pl18">∘ </span>h <span class="up">= </span>g</span>. So <span class="m pr5">g</span> is not extra data: it is forced to be <span class="m">f <span class="up pl18">∘ </span>h</span>. An object of the double slice is therefore just an arrow <span class="m pr8">h <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> — an object of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>X</span>.</p>
+<p><strong>(b)</strong> Let <span class="m pr8">h <span class="up">: </span>Y <span class="up pl10">→ </span>X</span> and <span class="m pr8">h<span class="up">′ : </span>Y<span class="up pl10">′ → </span>X</span> be two such objects. An arrow between them in the double slice is an arrow <span class="m">k</span> of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span>, from <span class="m"><span class="up">(</span>Y<span class="up">, </span>f <span class="up pl18">∘ </span>h<span class="up">)</span></span> to <span class="m"><span class="up">(</span>Y<span class="up pl10">′, </span>f <span class="up pl18">∘ </span>h<span class="up">′)</span></span>, with <span class="m">h<span class="up">′ ∘ </span>k <span class="up">= </span>h</span>. Being an arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> requires <span class="m"><span class="up pr14">(</span>f <span class="up pl18">∘ </span>h<span class="up">′) ∘ </span>k <span class="up">= </span>f <span class="up pl18">∘ </span>h</span> — but that follows from <span class="m">h<span class="up">′ ∘ </span>k <span class="up">= </span>h</span> by composing with <span class="m">f</span>. So the only real condition is <span class="m">h<span class="up">′ ∘ </span>k <span class="up">= </span>h</span>, which is the condition for <span class="m">k</span> to be an arrow of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>X</span>. Objects match, arrows match, and composition is that of <span class="m"><span class="cat">𝒞</span></span> in both: the two categories are isomorphic.</p>
 </div>
 </details>
 </div>
@@ -1122,8 +1137,8 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="prob-body">
 <p>A machine check of two pencil-and-paper exercises, using the functions of the lab in §8.</p>
 <ol>
-<li>Build the slice of <span class="m">ℤ/2</span> over its object, and check that it has the shape Exercise 8(d) found by hand: two objects, and exactly one arrow between each ordered pair of them — the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4.</li>
-<li>Check the law <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒟</span>)<sup>op</sup> = <span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒟</span><sup>op</sup></span> of Exercise 4 on <span class="m"><span class="cat">𝒞</span> = <span class="cat">𝟚</span></span> and <span class="m"><span class="cat">𝒟</span> = <span class="cat">𝟛</span></span>, by comparing the two results as sets of typed arrows.</li>
+<li>Build the slice of <span class="m"><span class="up">ℤ/2</span></span> over its object, and check that it has the shape Exercise 8(d) found by hand: two objects, and exactly one arrow between each ordered pair of them — the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4.</li>
+<li>Check the law <span class="m"><span class="up">(</span><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span><span class="up">)</span><sup>op</sup> <span class="up">= </span><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒟</span><sup>op</sup></span> of Exercise 4 on <span class="m"><span class="cat">𝒞</span> <span class="up">= </span><span class="cat">𝟚</span></span> and <span class="m"><span class="cat">𝒟</span> <span class="up">= </span><span class="cat">𝟛</span></span>, by comparing the two results as sets of typed arrows.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
@@ -1148,7 +1163,7 @@ print(&quot;same objects:&quot;, lhs.obj == rhs.obj,
 same objects: True  same typed arrows: True  same composition: True</div>
 </div>
 </div>
-<p>The slice has two objects and four arrows, exactly one between each ordered pair of objects — the shape of <span class="m"><span class="cat">ℐ</span></span>. And the two constructions of part (b) agree on the nose: not merely isomorphic categories, but equal data.</p>
+<p>The slice has two objects and four arrows, exactly one between each ordered pair of objects — the shape of <span class="m"><span class="cat">ℐ</span></span>. And the two constructions of part (b) agree on the nose: not merely isomorphic categories, but equal data.</p>
 </div>
 </details>
 </div>
@@ -1160,18 +1175,18 @@ same objects: True  same typed arrows: True  same composition: True</div>
 <div class="sec-no">Recap</div>
 <h2>What to carry forward</h2>
 <ol class="takeaways">
-<li>Categories can be <strong>built</strong>: the opposite <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, the product <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span>, sub-, functor and arrow categories, slices <span class="m"><span class="cat">𝒞</span>/A</span>, coslices <span class="m">A/<span class="cat">𝒞</span></span>, and comma categories <span class="m">(F ↓ G)</span>, which contain the last three as special cases.</li>
-<li>The <strong>duality principle</strong>: a statement true in all categories remains true with every arrow reversed. Mono and epi, section and retraction, slice and coslice are dual pairs; one proof serves both.</li>
-<li>A <strong>bifunctor</strong> is a functor on a product category. The hom-sets form one, <span class="m"><span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒞</span> → <span class="cat">Set</span></span>.</li>
-<li>Subcategories may be <strong>full</strong> (choose objects) or <strong>wide</strong> (choose arrows). The image of a functor need not be a subcategory.</li>
-<li>In a <strong>slice</strong>, the objects are arrows into <span class="m">A</span> and the arrows are commuting triangles: down-sets in an order, indexed families in <span class="m"><span class="cat">Set</span></span>. The identity <span class="m">id<sub>A</sub></span> receives exactly one arrow from every object of <span class="m"><span class="cat">𝒞</span>/A</span> — the first example of a <em>universal property</em>.</li>
+<li>Categories can be <strong>built</strong>: the opposite <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, the product <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span>, sub-, functor and arrow categories, slices <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span>, coslices <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span>, and comma categories <span class="m"><span class="up">(</span>F <span class="up pl7">↓ </span>G<span class="up">)</span></span>, which contain the last three as special cases.</li>
+<li>The <strong>duality principle</strong>: a statement true in all categories remains true with every arrow reversed. Mono and epi, section and retraction, slice and coslice are dual pairs; one proof serves both.</li>
+<li>A <strong>bifunctor</strong> is a functor on a product category. The hom-sets form one, <span class="m"><span class="cat">𝒞</span><sup>op</sup> <span class="up">× </span><span class="cat">𝒞</span> <span class="up">→ </span><span class="cat">Set</span></span>.</li>
+<li>Subcategories may be <strong>full</strong> (choose objects) or <strong>wide</strong> (choose arrows). The image of a functor need not be a subcategory.</li>
+<li>In a <strong>slice</strong>, the objects are arrows into <span class="m">A</span> and the arrows are commuting triangles: down-sets in an order, indexed families in <span class="m"><span class="cat">Set</span></span>. The identity <span class="m">id<sub>A</sub></span> receives exactly one arrow from every object of <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> — the first example of a <em>universal property</em>.</li>
 </ol>
 <div class="next">
       <span class="arrowmark" aria-hidden="true"><svg width="64" height="40" viewBox="0 0 64 40"><path d="M4 20 L52 20" fill="none" stroke="var(--arrow)" stroke-width="1.8" stroke-linecap="round"/><path d="M44 12 L52 20 L44 28" fill="none" stroke="var(--arrow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <div>
         <span class="ntag">Coming next · Lesson 06</span>
         <h3><a href="lesson-06-universal-properties.html">Universal properties — defining things by their arrows</a></h3>
-        <p>With the kit in hand we can say what it means for an object to be the <em>best</em> of its kind: there is exactly one arrow to it, or from it, for every competitor. Terminal and initial objects, products and coproducts — each pinned down, up to unique isomorphism, by a universal property.</p>
+        <p>With the kit in hand we can say what it means for an object to be the <em>best</em> of its kind: there is exactly one arrow to it, or from it, for every competitor. Terminal and initial objects, products and coproducts — each pinned down, up to unique isomorphism, by a universal property.</p>
       </div>
     </div>
     <nav class="pager" aria-label="Lesson navigation"><a href="lesson-04-equivalence-of-categories.html">← Lesson 04 — Equivalence</a><a href="index.html">All lessons</a><a href="lesson-06-universal-properties.html">Lesson 06 — Universal properties →</a></nav>
@@ -1194,19 +1209,49 @@ function el(tag, attrs, parent){
   return n;
 }
 /* label mini-syntax:  "α~X" = α with subscript X;  "g ∘~K~ f" = subscript K mid-label;
-   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end. */
+   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end.
+   In an italic label only the letters are italic: brackets, operators and digits are set upright,
+   and a letter that overhangs its box (f above all) is given room before an upright character or a
+   superscript — the same italic corrections as in the text. */
+const ITALIC_R = {"d": 0.05, "f": 0.18, "g": 0.05, "i": 0.04, "j": 0.05, "l": 0.04, "r": 0.03, "C": 0.04, "E": 0.04, "F": 0.07, "H": 0.07, "I": 0.07, "J": 0.08, "K": 0.08, "M": 0.05, "N": 0.08, "P": 0.04, "T": 0.08, "U": 0.08, "V": 0.11, "W": 0.1, "X": 0.08, "Y": 0.1, "Z": 0.07},
+      ITALIC_L = {"f": 0.14, "g": 0.04, "j": 0.17, "p": 0.07, "y": 0.06, "A": 0.05, "J": 0.03, "M": 0.03, "X": 0.05};
+const LETTER = /\p{L}/u, MARK = /\p{M}/u, UPRIGHT_LETTERS = "ℕℤℚℝℂℙ";
+function isLetter(c){ return LETTER.test(c) && !UPRIGHT_LETTERS.includes(c); }
 function setLabel(t, label){
   const parts = String(label).split(/([~^])/);
-  let mode = "", shift = 0;
+  let mode = "", shift = 0, last = null;           // last: [italic letter, font size]
   t.textContent = "";
+  const style = getComputedStyle(t);
+  const italic = style.fontStyle === "italic", base = parseFloat(style.fontSize) || 20;
   for(let i = 0; i < parts.length; i++){
     const p = parts[i];
     if(p === "~" || p === "^"){ mode = (mode === p) ? "" : p; continue; }
     if(!p) continue;
-    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0;
-    const s = el("tspan", {dy: want - shift}, t);
-    if(mode) s.setAttribute("font-size", "12");
-    s.textContent = p;
+    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0, size = mode ? 12 : base;
+    const runs = [];
+    for(const ch of p){
+      const prev = runs.length ? runs[runs.length - 1][0] : "it";
+      const kind = (italic && !/\s/.test(ch) && !MARK.test(ch) && !isLetter(ch)) ? "up" : isLetter(ch) ? "it" : prev;
+      if(runs.length && prev === kind) runs[runs.length - 1][1] += ch; else runs.push([kind, ch]);
+    }
+    runs.forEach((r, k) => {
+      const attrs = {};
+      if(k === 0) attrs.dy = want - shift;
+      let dx = 0;
+      if(italic && last && ITALIC_R[last[0]] && (r[0] === "up" || (k === 0 && mode === "^")) && !/^\s*[.,]/.test(r[1]))
+        dx += ITALIC_R[last[0]] * last[1];
+      if(italic && r[0] === "it" && k > 0 && !/\s$/.test(runs[k - 1][1]) && ITALIC_L[r[1][0]])
+        dx += ITALIC_L[r[1][0]] * size;
+      if(dx) attrs.dx = dx.toFixed(2);
+      const s = el("tspan", attrs, t);
+      if(mode) s.setAttribute("font-size", "12");
+      if(r[0] === "up") s.setAttribute("font-style", "normal");
+      s.textContent = r[1];
+      for(const ch of r[1]){
+        if(r[0] === "it" && isLetter(ch)) last = [ch, size];
+        else if(!/\s/.test(ch) && !MARK.test(ch)) last = null;
+      }
+    });
     shift = want;
   }
 }

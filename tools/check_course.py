@@ -21,6 +21,8 @@ What is checked
              alone, and print exactly the output shown on the page
   generated  code/*.py and notebooks/*.ipynb are what tools/sync_code.py
              would write, and each script prints the page's outputs
+  typography every page is as tools/typeset.py leaves it (upright symbols,
+             italic corrections, sentence spacing)
   index      index.html and README.md list every lesson
 
 Exit status 0 means everything passed.
@@ -30,6 +32,7 @@ from html.parser import HTMLParser
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sync_code import ROOT, CODE_BOX, Lesson, lesson_pages, text   # noqa: E402
+import typeset                                                    # noqa: E402
 
 VOID = {"meta", "link", "br", "hr", "img", "input", "path", "circle", "rect",
         "line", "polyline", "polygon", "ellipse", "use", "stop"}
@@ -201,6 +204,15 @@ def check_generated(lesson):
     return [f"{name}: {p}" for p in problems]
 
 
+def check_typography():
+    problems = []
+    for path in typeset.pages():
+        page = open(path, encoding="utf-8").read()
+        if typeset.typeset_page(page) != page:
+            problems.append(f"{os.path.basename(path)} is not typeset — run tools/typeset.py")
+    return problems
+
+
 def check_index(lessons):
     problems = []
     for filename in ("index.html", "README.md"):
@@ -235,6 +247,7 @@ def main():
               f"{len(lesson.blocks):2d} code boxes  {status}")
         problems += found
     problems += check_references(lessons)
+    problems += check_typography()
     problems += check_index(lessons)
     for p in problems:
         print("  !!", p)
