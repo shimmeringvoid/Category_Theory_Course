@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -460,7 +469,7 @@ body.py-off .pyonly{display:none}
 <div class="measure">
 <div class="sec-no">§2 — Opposites</div>
 <h2>Reverse every arrow, and get a second theorem free</h2>
-<p>Lesson 1, Exercise 7 built the <strong>opposite category</strong> <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>: the same objects, and for each arrow <span class="m">f : X → Y</span> of <span class="m"><span class="cat">𝒞</span></span> an arrow <span class="m">f : Y → X</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, composed in the reverse order.</p>
+<p>Lesson 1, Exercise 4 built the <strong>opposite category</strong> <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>: the same objects, and for each arrow <span class="m">f : X → Y</span> of <span class="m"><span class="cat">𝒞</span></span> an arrow <span class="m">f : Y → X</span> of <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>, composed in the reverse order.</p>
 <figure>
 <div class="board" data-diagram="opp" aria-label="Three objects A, B, C with arrows f and g in a category, and beside it the same three objects with both arrows reversed in the opposite category.">
 <svg></svg>
@@ -490,7 +499,7 @@ body.py-off .pyonly{display:none}
 <span class="tag">Theorem · The duality principle</span>
 <p>Suppose a statement about categories, phrased in terms of objects, arrows, identities and composition, is true in <em>every</em> category. Then its dual — the statement obtained by reversing every arrow and the order of every composite — is also true in every category.</p>
 </div>
-<p><strong>Proof.</strong> Let <span class="m">S</span> be the statement and <span class="m">S<sup>op</sup></span> its dual, and let <span class="m"><span class="cat">𝒞</span></span> be any category. Saying that <span class="m">S<sup>op</sup></span> holds in <span class="m"><span class="cat">𝒞</span></span> is, by construction, the same as saying that <span class="m">S</span> holds in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>. But <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> is a category (Lesson 1, Exercise 7), and <span class="m">S</span> holds in every category. ∎</p>
+<p><strong>Proof.</strong> Let <span class="m">S</span> be the statement and <span class="m">S<sup>op</sup></span> its dual, and let <span class="m"><span class="cat">𝒞</span></span> be any category. Saying that <span class="m">S<sup>op</sup></span> holds in <span class="m"><span class="cat">𝒞</span></span> is, by construction, the same as saying that <span class="m">S</span> holds in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span>. But <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> is a category (Lesson 1, Exercise 4), and <span class="m">S</span> holds in every category. ∎</p>
 <p>The principle halves the work of the subject. Lesson 1 proved that every section is monic, and then, separately, that every retraction is epic. The second proof was unnecessary: it is the dual of the first. From here on, proofs of dual statements will simply be omitted, with the words &ldquo;dually&rdquo; or &ldquo;by duality.&rdquo;</p>
 <p>One caution. Duality applies to statements true in <strong>all</strong> categories. A statement about one particular category — &ldquo;in <span class="m"><span class="cat">Set</span></span> every epimorphism has a section&rdquo; — dualizes to a statement about <span class="m"><span class="cat">Set</span><sup>op</sup></span>, not about <span class="m"><span class="cat">Set</span></span>.</p>
 </div>
@@ -499,12 +508,12 @@ body.py-off .pyonly{display:none}
 <div class="measure">
 <div class="sec-no">§3 — Products of categories</div>
 <h2>Two categories, side by side in each coordinate</h2>
-<p>Lesson 1, Exercise 12 defined the <strong>product category</strong> <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span>. Its objects are pairs <span class="m">(C, D)</span>, its arrows are pairs <span class="m">(f, g)</span>, and everything — sources, targets, identities, composition — is done separately in each slot:</p>
+<p>Lesson 1, Exercise 5 defined the <strong>product category</strong> <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span>. Its objects are pairs <span class="m">(C, D)</span>, its arrows are pairs <span class="m">(f, g)</span>, and everything — sources, targets, identities, composition — is done separately in each slot:</p>
 <p class="eq"><span class="m">(f′, g′) ∘ (f, g) = (f′ ∘ f, g′ ∘ g).</span></p>
 <ul>
 <li>The product of two preorders is their product set with the <strong>componentwise</strong> order: <span class="m">(x, y) ≤ (x′, y′)</span> when <span class="m">x ≤ x′</span> and <span class="m">y ≤ y′</span>.</li>
 <li>The product of two monoids, as one-object categories, is their <strong>direct product</strong>.</li>
-<li><span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> has four objects and <span class="m">3 × 3 = 9</span> arrows, and it is the commuting square of Lesson 1, Exercise 9. The diagonal of the square is the arrow <span class="m">(u, u)</span>.</li>
+<li><span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> has four objects and <span class="m">3 × 3 = 9</span> arrows, and it is the commuting square of Lesson 1, Exercise 12. The diagonal of the square is the arrow <span class="m">(u, u)</span>.</li>
 </ul>
 <figure>
 <div class="board" data-diagram="prod" aria-label="The product of the category 2 with itself: four objects 00, 10, 01 and 11 in a square, with an arrow along each side and one along the diagonal.">
@@ -548,8 +557,8 @@ body.py-off .pyonly{display:none}
 <tr><td>sets and functions</td><td><span class="m"><span class="cat">Rel</span></span></td><td>wide: functions are special relations</td></tr>
 <tr><td>the isomorphisms of <span class="m"><span class="cat">𝒞</span></span></td><td><span class="m"><span class="cat">𝒞</span></span></td><td>wide: all objects, only invertible arrows</td></tr>
 </table></div>
-<p>The last row deserves a name: the isomorphisms of any category, together with all its objects, form a wide subcategory called its <strong>core</strong>. The three conditions hold by Lesson 1, Exercise 8 — identities are isomorphisms, and isomorphisms compose — and the core is a groupoid.</p>
-<p>The inclusion of a subcategory is a functor, always faithful, and full exactly when the subcategory is full: the two uses of the word agree. The closure conditions are not automatic, as Lesson 1, Exercise 4 showed: the functions with a fixed point, or the functions that are not identities, do not form subcategories of <span class="m"><span class="cat">Set</span></span>.</p>
+<p>The last row deserves a name: the isomorphisms of any category, together with all its objects, form a wide subcategory called its <strong>core</strong>. The three conditions hold by Lesson 1, Exercise 10 — identities are isomorphisms, and isomorphisms compose — and the core is a groupoid.</p>
+<p>The inclusion of a subcategory is a functor, always faithful, and full exactly when the subcategory is full: the two uses of the word agree. The closure conditions are not automatic, as Lesson 1, Exercise 3 showed: the functions with a fixed point, or the functions that are not identities, do not form subcategories of <span class="m"><span class="cat">Set</span></span>.</p>
 <div class="box amber">
 <span class="tag">Careful · The image of a functor need not be a subcategory</span>
 <p>It is tempting to think that the objects and arrows hit by a functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> always form a subcategory of <span class="m"><span class="cat">𝒟</span></span>. They need not. Let <span class="m"><span class="cat">𝒞</span></span> have four objects <span class="m">A, B, B′, C</span> and just two non-identity arrows, <span class="m">f : A → B</span> and <span class="m">g : B′ → C</span> — which cannot be composed, since <span class="m">B ≠ B′</span>. Let <span class="m">F</span> map <span class="m"><span class="cat">𝒞</span></span> to the chain <span class="m"><span class="cat">𝟛</span></span> by sending <span class="m">A ↦ 0</span>, both <span class="m">B</span> and <span class="m">B′</span> to <span class="m">1</span>, and <span class="m">C ↦ 2</span>. The image contains the arrows <span class="m">0 → 1</span> and <span class="m">1 → 2</span> but not their composite <span class="m">0 → 2</span>. Gluing two objects together created a composable pair that the source never had. (When <span class="m">F</span> is injective on objects this cannot happen: Exercise 6.)</p>
@@ -840,7 +849,13 @@ Z3 / *       3 objects, 9 arrows</div>
 <div class="measure">
 <div class="sec-no">§9 — Exercises</div>
 <h2>Fourteen problems on building categories</h2>
-<p>Most of these ask you to carry out a construction on a small category and recognise the result. That is the right way to learn the kit: each construction has a personality, and it shows only when you watch it act. Exercise 14 is an optional machine check, in Python, of two of the others; everything else is pencil and paper.</p>
+<p>Most of these ask you to carry out a construction on a small category and recognise the result. That is the right way to learn the kit: each construction has a personality, and it shows only when you watch it act. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 14, the last, is an optional machine check, in Python, of two of the others; everything else is pencil and paper.</p>
+
+<div class="exgroup">
+  <h3>Opposites</h3>
+  <p class="exmeta"><a href="#s2">§2</a> · Exercises 1–2</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
 <div class="prob-body">
@@ -859,13 +874,14 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
 <p>Practise the duality principle.</p>
 <ol>
 <li>Show directly from the definitions that an arrow is a section in <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> exactly when it is a retraction in <span class="m"><span class="cat">𝒞</span></span>.</li>
-<li>Lesson 1, Exercise 17 proved: <em>if <span class="m">g ∘ f</span> is monic then <span class="m">f</span> is monic</em>. Write down the dual statement, being careful about which arrow it concerns, and explain why no new proof is needed.</li>
+<li>Lesson 1, Exercise 16 proved: <em>if <span class="m">g ∘ f</span> is monic then <span class="m">f</span> is monic</em>. Write down the dual statement, being careful about which arrow it concerns, and explain why no new proof is needed.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
@@ -875,13 +891,19 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Products</h3>
+  <p class="exmeta"><a href="#s3">§3</a> · Exercises 3–4</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">by hand</span></div>
 <div class="prob-body">
 <p>Work out the product category <span class="m"><span class="cat">𝟚</span> × <span class="cat">𝟚</span></span> explicitly.</p>
 <ol>
 <li>List its four objects and nine arrows, giving the source and target of each.</li>
-<li>Match them with the objects <span class="m">A, B, C, D</span> and arrows <span class="m">f, p, q, g, d</span> of the commuting square of Lesson 1, Exercise 9.</li>
+<li>Match them with the objects <span class="m">A, B, C, D</span> and arrows <span class="m">f, p, q, g, d</span> of the commuting square of Lesson 1, Exercise 12.</li>
 <li>Without listing: how many objects and arrows does <span class="m"><span class="cat">𝟛</span> × <span class="cat">𝟛</span></span> have?</li>
 </ol>
 </div>
@@ -893,6 +915,7 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">structure</span></div>
 <div class="prob-body">
@@ -909,6 +932,12 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Subcategories</h3>
+  <p class="exmeta"><a href="#s4">§4</a> · Exercises 5–6</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">examples</span></div>
 <div class="prob-body">
@@ -929,6 +958,7 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">think</span></div>
 <div class="prob-body">
@@ -946,6 +976,12 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Arrow categories and slices</h3>
+  <p class="exmeta"><a href="#s5">§5</a>–<a href="#s6">§6</a> · Exercises 7–11</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">by hand</span></div>
 <div class="prob-body">
@@ -962,24 +998,9 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>§6 showed that in any slice <span class="m"><span class="cat">𝒞</span>/A</span> there is exactly one arrow from each object to <span class="m">(A, id<sub>A</sub>)</span>.</p>
-<ol>
-<li>State and prove the dual fact about the coslice <span class="m">A/<span class="cat">𝒞</span></span>.</li>
-<li>In <span class="m">1/<span class="cat">Set</span></span>, the category of pointed sets, which pointed set is this distinguished object, and what is the unique arrow from it to a pointed set <span class="m">(X, x<sub>0</sub>)</span>?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> In <span class="m">A/<span class="cat">𝒞</span></span> there is exactly one arrow from <span class="m">(A, id<sub>A</sub>)</span> <strong>to</strong> each object <span class="m">(X, f)</span>. An arrow <span class="m">(A, id<sub>A</sub>) → (X, f)</span> is an <span class="m">h : A → X</span> with <span class="m">h ∘ id<sub>A</sub> = f</span>, which forces <span class="m">h = f</span>; and <span class="m">h = f</span> does satisfy the condition. (Or: apply §6 to <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and reverse.)</p>
-<p><strong>(b)</strong> The object is <span class="m">(1, id<sub>1</sub>)</span>: the one-element set with its only point chosen. The unique base-point-preserving function from it to <span class="m">(X, x<sub>0</sub>)</span> sends the point to <span class="m">x<sub>0</sub></span>. In Lesson 6&rsquo;s language, the one-point set is the <em>initial</em> pointed set.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">by hand</span></div>
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">by hand</span></div>
 <div class="prob-body">
 <p>Compute four slices.</p>
 <ol>
@@ -998,8 +1019,9 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">structure</span></div>
+<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">structure</span></div>
 <div class="prob-body">
 <p>Families of sets as a slice (§6, example ii). Let <span class="m">A = {0, 1}</span>. Let <span class="m">p : {a, b, c} → A</span> send <span class="m">a, b ↦ 0</span> and <span class="m">c ↦ 1</span>, and let <span class="m">q : {x, y, z, w} → A</span> send <span class="m">x ↦ 0</span> and <span class="m">y, z, w ↦ 1</span>.</p>
 <ol>
@@ -1017,6 +1039,24 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>§6 showed that in any slice <span class="m"><span class="cat">𝒞</span>/A</span> there is exactly one arrow from each object to <span class="m">(A, id<sub>A</sub>)</span>.</p>
+<ol>
+<li>State and prove the dual fact about the coslice <span class="m">A/<span class="cat">𝒞</span></span>.</li>
+<li>In <span class="m">1/<span class="cat">Set</span></span>, the category of pointed sets, which pointed set is this distinguished object, and what is the unique arrow from it to a pointed set <span class="m">(X, x<sub>0</sub>)</span>?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> In <span class="m">A/<span class="cat">𝒞</span></span> there is exactly one arrow from <span class="m">(A, id<sub>A</sub>)</span> <strong>to</strong> each object <span class="m">(X, f)</span>. An arrow <span class="m">(A, id<sub>A</sub>) → (X, f)</span> is an <span class="m">h : A → X</span> with <span class="m">h ∘ id<sub>A</sub> = f</span>, which forces <span class="m">h = f</span>; and <span class="m">h = f</span> does satisfy the condition. (Or: apply §6 to <span class="m"><span class="cat">𝒞</span><sup>op</sup></span> and reverse.)</p>
+<p><strong>(b)</strong> The object is <span class="m">(1, id<sub>1</sub>)</span>: the one-element set with its only point chosen. The unique base-point-preserving function from it to <span class="m">(X, x<sub>0</sub>)</span> sends the point to <span class="m">x<sub>0</sub></span>. In Lesson 6&rsquo;s language, the one-point set is the <em>initial</em> pointed set.</p>
+</div>
+</details>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
@@ -1030,6 +1070,12 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Comma categories, and slices of slices</h3>
+  <p class="exmeta"><a href="#s7">§7</a>, <a href="#deeper">Going deeper</a> · Exercises 12–13</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">think</span></div>
 <div class="prob-body">
@@ -1048,6 +1094,7 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">structure</span></div>
 <div class="prob-body">
@@ -1064,12 +1111,18 @@ Z3 / *       3 objects, 9 arrows</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>A machine check</h3>
+  <p class="exmeta"><a href="#byhand">§8</a> · optional · Exercise 14</p>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 14</span><span class="tier py">optional · python</span></div>
 <div class="prob-body">
 <p>A machine check of two pencil-and-paper exercises, using the functions of the lab in §8.</p>
 <ol>
-<li>Build the slice of <span class="m">ℤ/2</span> over its object, and check that it has the shape Exercise 9(d) found by hand: two objects, and exactly one arrow between each ordered pair of them — the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4.</li>
+<li>Build the slice of <span class="m">ℤ/2</span> over its object, and check that it has the shape Exercise 8(d) found by hand: two objects, and exactly one arrow between each ordered pair of them — the category <span class="m"><span class="cat">ℐ</span></span> of Lesson 4.</li>
 <li>Check the law <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒟</span>)<sup>op</sup> = <span class="cat">𝒞</span><sup>op</sup> × <span class="cat">𝒟</span><sup>op</sup></span> of Exercise 4 on <span class="m"><span class="cat">𝒞</span> = <span class="cat">𝟚</span></span> and <span class="m"><span class="cat">𝒟</span> = <span class="cat">𝟛</span></span>, by comparing the two results as sets of typed arrows.</li>
 </ol>
 </div>
@@ -1099,6 +1152,7 @@ same objects: True  same typed arrows: True  same composition: True</div>
 </div>
 </details>
 </div>
+
 </div>
 </section>
 <section class="section" id="recap">

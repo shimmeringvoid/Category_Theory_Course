@@ -31,8 +31,28 @@ Four pages have new file names, so links to the old ones need updating.
 | 06 Adjunctions (`lesson-06-adjunctions.html`) | 08 Adjunctions (`lesson-08-adjunctions.html`) |
 | 07 Yoneda & Monads (`lesson-07-yoneda-and-monads.html`) | 09 Representables & the Yoneda Lemma, and 10 Monads & Algebras |
 
-Within each lesson the original exercises keep their numbers (in Lesson 10
-the old Exercises 5–11 became 1–7); new exercises were added after them.
+### Exercises: regrouped and renumbered
+
+In every lesson the exercises are now sorted into topic groups that follow
+the lesson's sections, and inside each group they run from easier to harder.
+Each group has a heading and a caption — "§5 · Exercises 9–11" — whose
+section number links back to the part of the lesson the group draws on.
+
+The exercises were renumbered to match, and every reference to an exercise
+was updated with them: within a lesson, from one lesson to another, and in
+the comments of the code. All 78 exercises of the first edition are still
+present, and this is where each one went.
+
+| First edition | Its exercises, in their old order, are now |
+|---|---|
+| Lesson 1, Exercises 1–12 | Lesson 1: 1, 2, 8, 3, 7, 6, 4, 10, 12, 13, 15, 5 |
+| Lesson 2, Exercises 1–12 | Lesson 2: 1, 3, 7, 10, 2, 14, 6, 5, 15, 16, 19, 18 |
+| Lesson 3, Exercises 1–11 | Lesson 3: 1, 11, 12, 2, 6, 13, 5, 17, 3, 18, 4 |
+| Lesson 4, Exercises 1–10 | Lesson 6: 1, 4, 6, 2, 8, 11, 15, 16, 17, 10 |
+| Lesson 5, Exercises 1–11 | Lesson 7: 1, 2, 3, 4, 5, 6, 11, 9, 15, 17, 16 |
+| Lesson 6, Exercises 1–11 | Lesson 8: 7, 3, 4, 12, 1, 9, 15, 8, 5, 18, 11 |
+| Lesson 7, Exercises 1–4 | Lesson 9: 7, 2, 9, 4 |
+| Lesson 7, Exercises 5–11 | Lesson 10: 4, 1, 7, 2, 5, 10, 11 |
 
 ### Python is now optional
 
@@ -101,7 +121,9 @@ the old Exercises 5–11 became 1–7); new exercises were added after them.
 
 ### Corrected
 
-Mathematics and wording, by first-edition lesson number.
+Mathematics and wording, by first-edition lesson number. Exercise numbers
+in this list are the first edition's unless it says otherwise; the table
+above gives the new ones.
 
 - **1 · What Is a Category?**
   - The commuting-square caption read `g ∘ f = q ∘ p`; for the square as
@@ -133,11 +155,14 @@ Mathematics and wording, by first-edition lesson number.
   was attributed to binary products and equalizers; it needs products of
   arbitrary families, and the full statement is now proved. The pasting
   lemma's two directions were mislabelled (Exercise 10 proves the easier
-  one; the other is now Exercise 16).
+  one; the other is now Exercise 18 of the new Lesson 7). A reference to
+  "Exercise 5" that meant Lesson 4's Exercise 5 now says which lesson it
+  means.
 - **6 · Adjunctions.** The lede called adjunctions "the concept category
   theory was invented to state". §2 pointed to a "square formulation in
   Exercise 4" that did not exist; naturality is now spelled out in §2 and
-  completed in Exercise 12. The forgetful functor attributed to Lesson 2 was
+  completed in Exercise 13 of the new Lesson 8. The forgetful functor
+  attributed to Lesson 2 was
   not the one Lesson 2 used. The failing example was described as crushing
   "the bottom element" (it is a constant map); "a sandwich with Δ as the
   bread" (Δ is in the middle); a "six-element universe" with seven elements.
@@ -176,7 +201,10 @@ Code and claims.
 - `tools/check_course.py` runs every code box and compares its output with
   the page, verifies the generated files, checks links, anchors, diagram
   definitions and exercise numbering, and confirms that every code box sits
-  inside an optional lab or an optional exercise part.
+  inside an optional lab or an optional exercise part. It also checks that
+  the caption of each exercise group names exactly the exercises under it,
+  and that every reference to an exercise — "Exercise 12", "Lesson 6,
+  Exercise 8" — names one that exists.
 
 ## First edition
 

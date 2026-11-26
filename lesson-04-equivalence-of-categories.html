@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -519,7 +528,7 @@ body.py-off .pyonly{display:none}
 <p>That is the naturality square of <span class="m">ε</span> at the arrow <span class="m">F f</span>, rearranged. ∎</p>
 <div class="box amber">
 <span class="tag">Aside · Where the choices went</span>
-<p>The second half began with the word <em>choose</em>, once for every object of <span class="m"><span class="cat">𝒟</span></span>. The functor <span class="m">G</span> therefore depends on those choices — a different choice of objects <span class="m">G Y</span> and isomorphisms <span class="m">ε<sub>Y</sub></span> gives a different pseudo-inverse. But any two pseudo-inverses of <span class="m">F</span> are naturally isomorphic (Exercise 8), so nothing that category theory can express depends on the choice. In practice the theorem means one almost never writes <span class="m">G</span> down: exhibit <span class="m">F</span>, check three properties, and stop.</p>
+<p>The second half began with the word <em>choose</em>, once for every object of <span class="m"><span class="cat">𝒟</span></span>. The functor <span class="m">G</span> therefore depends on those choices — a different choice of objects <span class="m">G Y</span> and isomorphisms <span class="m">ε<sub>Y</sub></span> gives a different pseudo-inverse. But any two pseudo-inverses of <span class="m">F</span> are naturally isomorphic (Exercise 2), so nothing that category theory can express depends on the choice. In practice the theorem means one almost never writes <span class="m">G</span> down: exhibit <span class="m">F</span>, check three properties, and stop.</p>
 </div>
 </div>
 </section>
@@ -797,25 +806,15 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 <div class="measure">
 <div class="sec-no">§8 — Exercises</div>
 <h2>Fourteen problems on equivalence</h2>
-<p>The proofs in this lesson have a characteristic move — transfer a question along an isomorphism, solve it, transfer back — and the arrows-only exercises below are practice at making it. Exercise 14 has an optional Python part; everything else is pencil and paper.</p>
+<p>The proofs in this lesson have a characteristic move — transfer a question along an isomorphism, solve it, transfer back — and the arrows-only exercises are practice at making it. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 10 has an optional Python part; everything else is pencil and paper.</p>
+
+<div class="exgroup">
+  <h3>The definition</h3>
+  <p class="exmeta"><a href="#s2">§2</a>–<a href="#s3">§3</a> · Exercises 1–2</p>
+</div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
-<div class="prob-body">
-<p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> be an isomorphism of categories, with inverse <span class="m">G</span>.</p>
-<ol>
-<li>Exhibit <span class="m">F</span> as an equivalence: what are <span class="m">η</span> and <span class="m">ε</span>?</li>
-<li>Verify directly, without the recognition theorem, that <span class="m">F</span> is full, faithful and essentially surjective.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Since <span class="m">G ∘ F = Id</span> and <span class="m">F ∘ G = Id</span> exactly, take <span class="m">η</span> and <span class="m">ε</span> to be the identity natural transformations, whose components are identity arrows. They are natural isomorphisms (Lesson 3, Exercise 2).</p>
-<p><strong>(b)</strong> <em>Faithful:</em> if <span class="m">F f = F f′</span> then <span class="m">f = G F f = G F f′ = f′</span>. <em>Full:</em> an arrow <span class="m">k : F X → F X′</span> equals <span class="m">F(G k)</span>, and <span class="m">G k</span> runs from <span class="m">G F X = X</span> to <span class="m">X′</span>. <em>Essentially surjective:</em> every <span class="m">Y</span> is actually <strong>equal</strong> to <span class="m">F(G Y)</span> — more than was asked. The difference between an isomorphism and an equivalence of categories is exactly the difference between &ldquo;equal to&rdquo; and &ldquo;isomorphic to&rdquo; in this last clause.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">by hand</span></div>
+<div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">by hand</span></div>
 <div class="prob-body">
 <p>In §2 the functor <span class="m">F : <span class="cat">𝟙</span> → <span class="cat">ℐ</span></span> picked out the object <span class="m">a</span>. Repeat the construction with the functor <span class="m">F′</span> that picks out <span class="m">b</span> instead: write down the components of a natural isomorphism <span class="m">ε′ : F′ ∘ G ⇒ Id</span> and check the naturality square at the arrow <span class="m">u : a → b</span>.</p>
 </div>
@@ -826,8 +825,47 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">examples</span></div>
+<div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Pseudo-inverses are unique up to natural isomorphism. Let <span class="m">(F, G, η, ε)</span> and <span class="m">(F, G′, η′, ε′)</span> be two equivalences with the same functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span>. Show that <span class="m">G ≅ G′</span> by considering, for each object <span class="m">Y</span> of <span class="m"><span class="cat">𝒟</span></span>, the composite</p>
+<p class="eq"><span class="m">G Y → G′ F G Y → G′ Y,</span></p>
+<p>whose first arrow is <span class="m">η′<sub>G Y</sub></span> and whose second is <span class="m">G′(ε<sub>Y</sub>)</span>.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Both arrows are isomorphisms: <span class="m">η′<sub>G Y</sub></span> is a component of the natural isomorphism <span class="m">η′</span>, and <span class="m">G′(ε<sub>Y</sub>)</span> is the image under a functor of the isomorphism <span class="m">ε<sub>Y</sub></span>. So each composite <span class="m">θ<sub>Y</sub> = G′(ε<sub>Y</sub>) ∘ η′<sub>G Y</sub></span> is an isomorphism <span class="m">G Y → G′ Y</span>.</p>
+<p>For naturality, observe that the first arrows are the components of <span class="m">η′</span> whiskered by <span class="m">G</span> on the right — the transformation <span class="m">η′G : G ⇒ G′ F G</span> — and the second arrows are the components of <span class="m">ε</span> whiskered by <span class="m">G′</span> on the left, <span class="m">G′ε : G′ F G ⇒ G′</span>. Both whiskerings are natural (Lesson 3, Going deeper), and a composite of natural transformations is natural. So <span class="m">θ : G ⇒ G′</span> is a natural transformation whose components are isomorphisms: a natural isomorphism.</p>
+<p>This is why the choices made in the proof of the recognition theorem are harmless.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>The recognition theorem</h3>
+  <p class="exmeta"><a href="#s4">§4</a> · Exercises 3–6</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">warm-up</span></div>
+<div class="prob-body">
+<p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> be an isomorphism of categories, with inverse <span class="m">G</span>.</p>
+<ol>
+<li>Exhibit <span class="m">F</span> as an equivalence: what are <span class="m">η</span> and <span class="m">ε</span>?</li>
+<li>Verify directly, without the recognition theorem, that <span class="m">F</span> is full, faithful and essentially surjective.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Since <span class="m">G ∘ F = Id</span> and <span class="m">F ∘ G = Id</span> exactly, take <span class="m">η</span> and <span class="m">ε</span> to be the identity natural transformations, whose components are identity arrows. They are natural isomorphisms (Lesson 3, Exercise 11).</p>
+<p><strong>(b)</strong> <em>Faithful:</em> if <span class="m">F f = F f′</span> then <span class="m">f = G F f = G F f′ = f′</span>. <em>Full:</em> an arrow <span class="m">k : F X → F X′</span> equals <span class="m">F(G k)</span>, and <span class="m">G k</span> runs from <span class="m">G F X = X</span> to <span class="m">X′</span>. <em>Essentially surjective:</em> every <span class="m">Y</span> is actually <strong>equal</strong> to <span class="m">F(G Y)</span> — more than was asked. The difference between an isomorphism and an equivalence of categories is exactly the difference between &ldquo;equal to&rdquo; and &ldquo;isomorphic to&rdquo; in this last clause.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
 <div class="prob-body">
 <p>For each functor, decide whether it is an equivalence. Where it is not, say which of the three properties fails.</p>
 <ol>
@@ -846,8 +884,9 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">arrows-only</span></div>
+<div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
 <p>Let <span class="m">(F, G, η, ε)</span> be an equivalence between <span class="m"><span class="cat">𝒞</span></span> and <span class="m"><span class="cat">𝒟</span></span>. Show that for all objects <span class="m">X</span> of <span class="m"><span class="cat">𝒞</span></span> and <span class="m">Y</span> of <span class="m"><span class="cat">𝒟</span></span>, the function</p>
 <p class="eq"><span class="m"><span class="cat">𝒟</span>(F X, Y) → <span class="cat">𝒞</span>(X, G Y), &nbsp;&nbsp;&nbsp; k ↦ G k ∘ η<sub>X</sub></span></p>
@@ -860,70 +899,27 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
-<div class="prob-body">
-<p>Let <span class="m">P</span> be the set of all non-zero integers, ordered by divisibility.</p>
-<ol>
-<li>Which pairs of elements are isomorphic? Describe the isomorphism classes.</li>
-<li>Describe a skeleton of <span class="m">P</span>, and a functor from <span class="m">P</span> onto it that is an equivalence.</li>
-<li>In <span class="m">P</span>, how many arrows are there from the class of <span class="m">2</span> to the class of <span class="m">12</span>, counting all choices of representatives? How many in the skeleton?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> <span class="m">m ≅ n</span> means each divides the other, which happens exactly when <span class="m">m = ±n</span>. The classes are the pairs <span class="m">{n, −n}</span>.</p>
-<p><strong>(b)</strong> The positive integers under divisibility form a skeleton: one object from each class, with the same order. The functor <span class="m">n ↦ |n|</span> is an equivalence by Exercise 3(d).</p>
-<p><strong>(c)</strong> There is an arrow <span class="m">m → n</span> whenever <span class="m">m ∈ {2, −2}</span> and <span class="m">n ∈ {12, −12}</span>, since each of <span class="m">±2</span> divides each of <span class="m">±12</span>: four arrows. In the skeleton there is one, <span class="m">2 → 12</span>. An equivalence does not preserve the number of arrows in total, but it does preserve the size of each individual hom-set — here, one.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">counting</span></div>
-<div class="prob-body">
-<p>Let <span class="m"><span class="cat">𝒞</span></span> be the category whose objects are the four subsets of <span class="m">{a, b}</span> and whose arrows are all functions between them.</p>
-<ol>
-<li>Find a skeleton of <span class="m"><span class="cat">𝒞</span></span>.</li>
-<li>Count the arrows of <span class="m"><span class="cat">𝒞</span></span> and the arrows of the skeleton. (The number of functions from a set with <span class="m">m</span> elements to a set with <span class="m">n</span> elements is <span class="m">n<sup>m</sup></span>, with <span class="m">0<sup>0</sup> = 1</span>.)</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Two finite sets are isomorphic exactly when they have the same number of elements. The sizes of the four objects <span class="m">∅, {a}, {b}, {a, b}</span> are <span class="m">0, 1, 1, 2</span>, so there are three classes, and <span class="m">∅, {a}, {a, b}</span> is a skeleton.</p>
-<p><strong>(b)</strong> Add up <span class="m">n<sup>m</sup></span> over all ordered pairs. From <span class="m">∅</span> there is exactly one function to each object: <span class="m">4</span> arrows in <span class="m"><span class="cat">𝒞</span></span>. From a one-element set there are <span class="m">0 + 1 + 1 + 2 = 4</span>, and there are two such sets: <span class="m">8</span>. From <span class="m">{a, b}</span> there are <span class="m">0 + 1 + 1 + 4 = 6</span>. Total: <span class="m">18</span>. In the skeleton: from <span class="m">∅</span>, <span class="m">3</span>; from <span class="m">{a}</span>, <span class="m">0 + 1 + 2 = 3</span>; from <span class="m">{a, b}</span>, <span class="m">0 + 1 + 4 = 5</span>. Total: <span class="m">11</span>.</p>
-<p>Eighteen arrows against eleven, four objects against three — and the two categories are equivalent.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">think</span></div>
+<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">think</span></div>
 <div class="prob-body">
 <p>Let <span class="m">G</span> and <span class="m">H</span> be groups, viewed as one-object categories. Show that <span class="m">G</span> and <span class="m">H</span> are equivalent as categories if and only if they are isomorphic as groups.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>A group viewed as a category has a single object, so it is certainly skeletal. By the skeleton theorem of §6, an equivalence between skeletal categories is an isomorphism of categories. And an isomorphism between one-object categories is a bijection on arrows preserving composition and identity — a group isomorphism. The converse is Exercise 1.</p>
+<p>A group viewed as a category has a single object, so it is certainly skeletal. By the skeleton theorem of §6, an equivalence between skeletal categories is an isomorphism of categories. And an isomorphism between one-object categories is a bijection on arrows preserving composition and identity — a group isomorphism. The converse is Exercise 3.</p>
 <p>It is instructive to see the direct argument too. An equivalence <span class="m">F</span> is full and faithful, so on the single hom-set it is a bijection from the elements of <span class="m">G</span> to the elements of <span class="m">H</span>; being a functor, it preserves the operation. For one-object categories, &ldquo;equivalent&rdquo; has no extra room: all the slack in the notion of equivalence comes from having several isomorphic objects, and here there is only one object.</p>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>The gallery</h3>
+  <p class="exmeta"><a href="#s5">§5</a> · Exercises 7–8</p>
+</div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>Pseudo-inverses are unique up to natural isomorphism. Let <span class="m">(F, G, η, ε)</span> and <span class="m">(F, G′, η′, ε′)</span> be two equivalences with the same functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span>. Show that <span class="m">G ≅ G′</span> by considering, for each object <span class="m">Y</span> of <span class="m"><span class="cat">𝒟</span></span>, the composite</p>
-<p class="eq"><span class="m">G Y → G′ F G Y → G′ Y,</span></p>
-<p>whose first arrow is <span class="m">η′<sub>G Y</sub></span> and whose second is <span class="m">G′(ε<sub>Y</sub>)</span>.</p>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p>Both arrows are isomorphisms: <span class="m">η′<sub>G Y</sub></span> is a component of the natural isomorphism <span class="m">η′</span>, and <span class="m">G′(ε<sub>Y</sub>)</span> is the image under a functor of the isomorphism <span class="m">ε<sub>Y</sub></span>. So each composite <span class="m">θ<sub>Y</sub> = G′(ε<sub>Y</sub>) ∘ η′<sub>G Y</sub></span> is an isomorphism <span class="m">G Y → G′ Y</span>.</p>
-<p>For naturality, observe that the first arrows are the components of <span class="m">η′</span> whiskered by <span class="m">G</span> on the right — the transformation <span class="m">η′G : G ⇒ G′ F G</span> — and the second arrows are the components of <span class="m">ε</span> whiskered by <span class="m">G′</span> on the left, <span class="m">G′ε : G′ F G ⇒ G′</span>. Both whiskerings are natural (Lesson 3, Going deeper), and a composite of natural transformations is natural. So <span class="m">θ : G ⇒ G′</span> is a natural transformation whose components are isomorphisms: a natural isomorphism.</p>
-<p>This is why the choices made in the proof of the recognition theorem are harmless.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">examples</span></div>
+<div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">examples</span></div>
 <div class="prob-body">
 <p>Check the equivalence <span class="m"><span class="cat">Par</span> ≃ <span class="cat">Set<sub>∗</sub></span></span> of §5 on a small case. Let <span class="m">X = {1, 2}</span> and <span class="m">Y = {a}</span>.</p>
 <ol>
@@ -940,24 +936,9 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">think</span></div>
-<div class="prob-body">
-<p>Let <span class="m"><span class="cat">ℬ</span></span> be the category of all finite sets and all <strong>bijections</strong> between them.</p>
-<ol>
-<li>Describe a skeleton of <span class="m"><span class="cat">ℬ</span></span>.</li>
-<li>Explain the slogan: &ldquo;<span class="m"><span class="cat">ℬ</span></span> is equivalent to the symmetric groups <span class="m">S<sub>0</sub>, S<sub>1</sub>, S<sub>2</sub>, …</span> placed side by side.&rdquo;</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> As in <span class="m"><span class="cat">FinSet</span></span>, the standard sets <span class="m">[0], [1], [2], …</span> contain exactly one object from each isomorphism class. So the skeleton is the full subcategory on these objects.</p>
-<p><strong>(b)</strong> In the skeleton, the arrows from <span class="m">[n]</span> to itself are the bijections of an <span class="m">n</span>-element set, the permutation group <span class="m">S<sub>n</sub></span>. And there are no arrows at all from <span class="m">[m]</span> to <span class="m">[n]</span> when <span class="m">m ≠ n</span>, since no bijection exists. So the skeleton is a collection of one-object categories with no arrows between them: the groups <span class="m">S<sub>n</sub></span>, one for each <span class="m">n</span>, sitting side by side. A category in which every arrow is invertible is a <em>groupoid</em>, and this exercise is the general picture of one: up to equivalence, a groupoid is just a family of groups.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">by hand</span></div>
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">by hand</span></div>
 <div class="prob-body">
 <p>Revisit the equivalence <span class="m"><span class="cat">Mat</span> ≃ <span class="cat">FinVect</span></span> of §5.</p>
 <ol>
@@ -975,45 +956,36 @@ skeleton  faithful: True  full: True  ess. surjective: True  =&gt; equivalence: 
 <tr><td>0</td><td>1</td></tr>
 <tr><td>0</td><td>0</td></tr>
 </table></div>
-<p>A different basis would give a different matrix for the same linear map — two different pseudo-inverses, naturally isomorphic by Exercise 8.</p>
+<p>A different basis would give a different matrix for the same linear map — two different pseudo-inverses, naturally isomorphic by Exercise 2.</p>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Skeletons</h3>
+  <p class="exmeta"><a href="#s6">§6</a>–<a href="#byhand">§7</a> · Exercises 9–12</p>
+</div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">arrows-only</span></div>
+<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">counting</span></div>
 <div class="prob-body">
-<p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> be an equivalence. Prove that <span class="m">F</span> preserves epimorphisms, by adapting the proof in §6 that it preserves monomorphisms. Say exactly where each of the three properties of <span class="m">F</span> is used.</p>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p>Let <span class="m">e : X → X′</span> be epic, and suppose <span class="m">h ∘ F e = k ∘ F e</span> for arrows <span class="m">h, k : F X′ → Y</span>. By <strong>essential surjectivity</strong> there is an isomorphism <span class="m">i : Y → F W</span> for some object <span class="m">W</span> of <span class="m"><span class="cat">𝒞</span></span>. The arrows <span class="m">i ∘ h</span> and <span class="m">i ∘ k</span> run <span class="m">F X′ → F W</span>, so by <strong>fullness</strong> they are <span class="m">F h<sub>0</sub></span> and <span class="m">F k<sub>0</sub></span> for some <span class="m">h<sub>0</sub>, k<sub>0</sub> : X′ → W</span>. Then</p>
-<p class="eq"><span class="m">F(h<sub>0</sub> ∘ e) = i ∘ h ∘ F e = i ∘ k ∘ F e = F(k<sub>0</sub> ∘ e),</span></p>
-<p>so <span class="m">h<sub>0</sub> ∘ e = k<sub>0</sub> ∘ e</span> by <strong>faithfulness</strong>, and <span class="m">h<sub>0</sub> = k<sub>0</sub></span> because <span class="m">e</span> is epic. Hence <span class="m">i ∘ h = i ∘ k</span>, and cancelling the isomorphism <span class="m">i</span> gives <span class="m">h = k</span>.</p>
-<p>The only change from the monomorphism proof is the side on which the isomorphism is attached: the test object <span class="m">Y</span> now sits at the <em>target</em>, so we transport it into the image of <span class="m">F</span> by composing on the left.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">structure</span></div>
-<div class="prob-body">
-<p>The dual vector space functor gives an equivalence <span class="m"><span class="cat">FinVect</span><sup>op</sup> ≃ <span class="cat">FinVect</span></span> (Going deeper). Use it, together with §6, to explain each of the following without any computation.</p>
+<p>Let <span class="m"><span class="cat">𝒞</span></span> be the category whose objects are the four subsets of <span class="m">{a, b}</span> and whose arrows are all functions between them.</p>
 <ol>
-<li>A linear map <span class="m">T</span> between finite-dimensional spaces is injective if and only if its dual <span class="m">T<sup>∗</sup></span> is surjective.</li>
-<li><span class="m">T</span> is an isomorphism if and only if <span class="m">T<sup>∗</sup></span> is.</li>
+<li>Find a skeleton of <span class="m"><span class="cat">𝒞</span></span>.</li>
+<li>Count the arrows of <span class="m"><span class="cat">𝒞</span></span> and the arrows of the skeleton. (The number of functions from a set with <span class="m">m</span> elements to a set with <span class="m">n</span> elements is <span class="m">n<sup>m</sup></span>, with <span class="m">0<sup>0</sup> = 1</span>.)</li>
 </ol>
-<p>You may use that in <span class="m"><span class="cat">FinVect</span></span> the monomorphisms are the injective linear maps and the epimorphisms are the surjective ones.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>Write <span class="m">D</span> for the dual functor <span class="m"><span class="cat">FinVect</span><sup>op</sup> → <span class="cat">FinVect</span></span>. An arrow of <span class="m"><span class="cat">FinVect</span><sup>op</sup></span> is an arrow of <span class="m"><span class="cat">FinVect</span></span> with source and target exchanged, and reversing arrows exchanges the two cancellation properties: <span class="m">T</span> is monic in <span class="m"><span class="cat">FinVect</span></span> exactly when it is epic in <span class="m"><span class="cat">FinVect</span><sup>op</sup></span>.</p>
-<p><strong>(a)</strong> <span class="m">T</span> is injective <span class="m">⟺</span> <span class="m">T</span> is monic in <span class="m"><span class="cat">FinVect</span></span> <span class="m">⟺</span> <span class="m">T</span> is epic in <span class="m"><span class="cat">FinVect</span><sup>op</sup></span> <span class="m">⟺</span> <span class="m">D(T) = T<sup>∗</sup></span> is epic in <span class="m"><span class="cat">FinVect</span></span> (an equivalence preserves and reflects epimorphisms) <span class="m">⟺</span> <span class="m">T<sup>∗</sup></span> is surjective.</p>
-<p><strong>(b)</strong> Isomorphisms are the same in a category and its opposite, and an equivalence preserves and reflects them.</p>
-<p>Dualities turn every theorem into two. That is the practical value of knowing that a contravariant functor is an equivalence.</p>
+<p><strong>(a)</strong> Two finite sets are isomorphic exactly when they have the same number of elements. The sizes of the four objects <span class="m">∅, {a}, {b}, {a, b}</span> are <span class="m">0, 1, 1, 2</span>, so there are three classes, and <span class="m">∅, {a}, {a, b}</span> is a skeleton.</p>
+<p><strong>(b)</strong> Add up <span class="m">n<sup>m</sup></span> over all ordered pairs. From <span class="m">∅</span> there is exactly one function to each object: <span class="m">4</span> arrows in <span class="m"><span class="cat">𝒞</span></span>. From a one-element set there are <span class="m">0 + 1 + 1 + 2 = 4</span>, and there are two such sets: <span class="m">8</span>. From <span class="m">{a, b}</span> there are <span class="m">0 + 1 + 1 + 4 = 6</span>. Total: <span class="m">18</span>. In the skeleton: from <span class="m">∅</span>, <span class="m">3</span>; from <span class="m">{a}</span>, <span class="m">0 + 1 + 2 = 3</span>; from <span class="m">{a, b}</span>, <span class="m">0 + 1 + 4 = 5</span>. Total: <span class="m">11</span>.</p>
+<p>Eighteen arrows against eleven, four objects against three — and the two categories are equivalent.</p>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier py">by hand · optional python</span></div>
 <div class="prob-body">
 <p>The eight divisors <span class="m">±1, ±2, ±4, ±8</span> of <span class="m">8</span> form a preorder under divisibility, like the divisors of <span class="m">6</span> in §7.</p>
 <ol>
@@ -1052,6 +1024,83 @@ True True</div>
 </div>
 </details>
 </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>Let <span class="m">P</span> be the set of all non-zero integers, ordered by divisibility.</p>
+<ol>
+<li>Which pairs of elements are isomorphic? Describe the isomorphism classes.</li>
+<li>Describe a skeleton of <span class="m">P</span>, and a functor from <span class="m">P</span> onto it that is an equivalence.</li>
+<li>In <span class="m">P</span>, how many arrows are there from the class of <span class="m">2</span> to the class of <span class="m">12</span>, counting all choices of representatives? How many in the skeleton?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">m ≅ n</span> means each divides the other, which happens exactly when <span class="m">m = ±n</span>. The classes are the pairs <span class="m">{n, −n}</span>.</p>
+<p><strong>(b)</strong> The positive integers under divisibility form a skeleton: one object from each class, with the same order. The functor <span class="m">n ↦ |n|</span> is an equivalence by Exercise 4(d).</p>
+<p><strong>(c)</strong> There is an arrow <span class="m">m → n</span> whenever <span class="m">m ∈ {2, −2}</span> and <span class="m">n ∈ {12, −12}</span>, since each of <span class="m">±2</span> divides each of <span class="m">±12</span>: four arrows. In the skeleton there is one, <span class="m">2 → 12</span>. An equivalence does not preserve the number of arrows in total, but it does preserve the size of each individual hom-set — here, one.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">think</span></div>
+<div class="prob-body">
+<p>Let <span class="m"><span class="cat">ℬ</span></span> be the category of all finite sets and all <strong>bijections</strong> between them.</p>
+<ol>
+<li>Describe a skeleton of <span class="m"><span class="cat">ℬ</span></span>.</li>
+<li>Explain the slogan: &ldquo;<span class="m"><span class="cat">ℬ</span></span> is equivalent to the symmetric groups <span class="m">S<sub>0</sub>, S<sub>1</sub>, S<sub>2</sub>, …</span> placed side by side.&rdquo;</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> As in <span class="m"><span class="cat">FinSet</span></span>, the standard sets <span class="m">[0], [1], [2], …</span> contain exactly one object from each isomorphism class. So the skeleton is the full subcategory on these objects.</p>
+<p><strong>(b)</strong> In the skeleton, the arrows from <span class="m">[n]</span> to itself are the bijections of an <span class="m">n</span>-element set, the permutation group <span class="m">S<sub>n</sub></span>. And there are no arrows at all from <span class="m">[m]</span> to <span class="m">[n]</span> when <span class="m">m ≠ n</span>, since no bijection exists. So the skeleton is a collection of one-object categories with no arrows between them: the groups <span class="m">S<sub>n</sub></span>, one for each <span class="m">n</span>, sitting side by side. A category in which every arrow is invertible is a <em>groupoid</em>, and this exercise is the general picture of one: up to equivalence, a groupoid is just a family of groups.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>What equivalence preserves</h3>
+  <p class="exmeta"><a href="#s6">§6</a>, <a href="#deeper">Going deeper</a> · Exercises 13–14</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> be an equivalence. Prove that <span class="m">F</span> preserves epimorphisms, by adapting the proof in §6 that it preserves monomorphisms. Say exactly where each of the three properties of <span class="m">F</span> is used.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Let <span class="m">e : X → X′</span> be epic, and suppose <span class="m">h ∘ F e = k ∘ F e</span> for arrows <span class="m">h, k : F X′ → Y</span>. By <strong>essential surjectivity</strong> there is an isomorphism <span class="m">i : Y → F W</span> for some object <span class="m">W</span> of <span class="m"><span class="cat">𝒞</span></span>. The arrows <span class="m">i ∘ h</span> and <span class="m">i ∘ k</span> run <span class="m">F X′ → F W</span>, so by <strong>fullness</strong> they are <span class="m">F h<sub>0</sub></span> and <span class="m">F k<sub>0</sub></span> for some <span class="m">h<sub>0</sub>, k<sub>0</sub> : X′ → W</span>. Then</p>
+<p class="eq"><span class="m">F(h<sub>0</sub> ∘ e) = i ∘ h ∘ F e = i ∘ k ∘ F e = F(k<sub>0</sub> ∘ e),</span></p>
+<p>so <span class="m">h<sub>0</sub> ∘ e = k<sub>0</sub> ∘ e</span> by <strong>faithfulness</strong>, and <span class="m">h<sub>0</sub> = k<sub>0</sub></span> because <span class="m">e</span> is epic. Hence <span class="m">i ∘ h = i ∘ k</span>, and cancelling the isomorphism <span class="m">i</span> gives <span class="m">h = k</span>.</p>
+<p>The only change from the monomorphism proof is the side on which the isomorphism is attached: the test object <span class="m">Y</span> now sits at the <em>target</em>, so we transport it into the image of <span class="m">F</span> by composing on the left.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>The dual vector space functor gives an equivalence <span class="m"><span class="cat">FinVect</span><sup>op</sup> ≃ <span class="cat">FinVect</span></span> (Going deeper). Use it, together with §6, to explain each of the following without any computation.</p>
+<ol>
+<li>A linear map <span class="m">T</span> between finite-dimensional spaces is injective if and only if its dual <span class="m">T<sup>∗</sup></span> is surjective.</li>
+<li><span class="m">T</span> is an isomorphism if and only if <span class="m">T<sup>∗</sup></span> is.</li>
+</ol>
+<p>You may use that in <span class="m"><span class="cat">FinVect</span></span> the monomorphisms are the injective linear maps and the epimorphisms are the surjective ones.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Write <span class="m">D</span> for the dual functor <span class="m"><span class="cat">FinVect</span><sup>op</sup> → <span class="cat">FinVect</span></span>. An arrow of <span class="m"><span class="cat">FinVect</span><sup>op</sup></span> is an arrow of <span class="m"><span class="cat">FinVect</span></span> with source and target exchanged, and reversing arrows exchanges the two cancellation properties: <span class="m">T</span> is monic in <span class="m"><span class="cat">FinVect</span></span> exactly when it is epic in <span class="m"><span class="cat">FinVect</span><sup>op</sup></span>.</p>
+<p><strong>(a)</strong> <span class="m">T</span> is injective <span class="m">⟺</span> <span class="m">T</span> is monic in <span class="m"><span class="cat">FinVect</span></span> <span class="m">⟺</span> <span class="m">T</span> is epic in <span class="m"><span class="cat">FinVect</span><sup>op</sup></span> <span class="m">⟺</span> <span class="m">D(T) = T<sup>∗</sup></span> is epic in <span class="m"><span class="cat">FinVect</span></span> (an equivalence preserves and reflects epimorphisms) <span class="m">⟺</span> <span class="m">T<sup>∗</sup></span> is surjective.</p>
+<p><strong>(b)</strong> Isomorphisms are the same in a category and its opposite, and an equivalence preserves and reflects them.</p>
+<p>Dualities turn every theorem into two. That is the practical value of knowing that a contravariant functor is an equivalence.</p>
+</div>
+</details>
+</div>
+
 </div>
 </section>
 <section class="section" id="recap">

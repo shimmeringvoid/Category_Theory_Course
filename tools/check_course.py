@@ -10,6 +10,10 @@ What is checked
   pages      each lesson page is well-formed, its exercises are numbered
              1, 2, 3, ... and each has a solution, its diagrams are defined,
              and every link and in-page anchor resolves
+  exercises  the caption of each exercise group ("§5 · Exercises 9–11")
+             names exactly the exercises under it, and every reference to
+             an exercise ("Exercise 12", "Lesson 6, Exercise 8") names one
+             that exists
   optional   every code box sits inside an optional Python lab or the
              optional Python part of an exercise, so that each lesson can be
              read without any code
@@ -25,7 +29,7 @@ import contextlib, io, os, re, subprocess, sys
 from html.parser import HTMLParser
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from sync_code import ROOT, CODE_BOX, Lesson, lesson_pages   # noqa: E402
+from sync_code import ROOT, CODE_BOX, Lesson, lesson_pages, text   # noqa: E402
 
 VOID = {"meta", "link", "br", "hr", "img", "input", "path", "circle", "rect",
         "line", "polyline", "polygon", "ellipse", "use", "stop"}
@@ -87,6 +91,21 @@ def check_page(lesson, all_pages):
         if "<summary>Show solution</summary>" not in page[a:b]:
             problems.append(f"Exercise {k} has no solution")
 
+    # exercise groups: each caption names the exercises that follow it
+    heads = [(m.start(), int(m.group(1)))
+             for m in re.finditer(r'<span class="pn">Exercise (\d+)</span>', page)]
+    captions = [(m.start(), text(m.group(1)))
+                for m in re.finditer(r'<p class="exmeta">(.*?)</p>', page, re.S)]
+    if captions and heads and heads[0][0] < captions[0][0]:
+        problems.append("Exercise 1 comes before the first exercise group")
+    for i, (start, caption) in enumerate(captions):
+        end = captions[i + 1][0] if i + 1 < len(captions) else len(page)
+        under = [n for at, n in heads if start < at < end]
+        m = re.search(r"Exercises? (\d+)(?:–(\d+))?$", caption)
+        named = list(range(int(m.group(1)), int(m.group(2) or m.group(1)) + 1)) if m else []
+        if named != under:
+            problems.append(f"the group captioned {caption!r} contains exercises {under}")
+
     # diagrams
     used = set(re.findall(r'data-diagram="([^"]+)"', page))
     defined = set(re.findall(r"^  ([A-Za-z0-9_]+): \{", page, re.M))
@@ -121,6 +140,26 @@ def check_page(lesson, all_pages):
     if lesson.blocks and not spans(page, r'<details class="pylab"', "details"):
         problems.append("page has code but no optional Python lab")
     return [f"{name}: {p}" for p in problems]
+
+
+REFERENCE = re.compile(
+    r"(?:Lesson (\d+)(?:, |’s |&rsquo;s ))?Exercises? "
+    r"(\d+(?:\([a-z]\))?(?:(?:, | and )\d+(?:\([a-z]\))?)*)")
+
+
+def check_references(lessons):
+    "every 'Exercise 12' or 'Lesson 6, Exercise 8' must name an exercise that exists"
+    heading = r'<span class="pn">Exercise \d+</span>'
+    count = {l.number: len(re.findall(heading, l.html)) for l in lessons}
+    problems = []
+    for lesson in lessons:
+        for m in REFERENCE.finditer(re.sub(heading, "", lesson.html)):
+            where = int(m.group(1)) if m.group(1) else lesson.number
+            for n in re.findall(r"\d+", m.group(2)):
+                if where not in count or not 1 <= int(n) <= count[where]:
+                    problems.append(f"{os.path.basename(lesson.path)}: {m.group(0)!r} — "
+                                    f"Lesson {where} has no Exercise {n}")
+    return problems
 
 
 def check_code(lesson):
@@ -195,6 +234,7 @@ def main():
         print(f"lesson {lesson.number:02d}  {exercises:2d} exercises  "
               f"{len(lesson.blocks):2d} code boxes  {status}")
         problems += found
+    problems += check_references(lessons)
     problems += check_index(lessons)
     for p in problems:
         print("  !!", p)

@@ -87,7 +87,7 @@ print(len(fails), "of 8 non-identity triples fail")
 
 
 # ==========================================================================
-# Exercise 9
+# Exercise 12
 # ==========================================================================
 
 # ----- three.py ------------------------------------------------------------
@@ -107,12 +107,12 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True
 
 
 # ==========================================================================
-# Exercise 10
+# Exercise 13
 # ==========================================================================
 
 # ----- corrupt.py — the checker must object --------------------------------
 
-bad_comp = dict(comp)            # comp: the table of THREE (Exercise 9)
+bad_comp = dict(comp)            # comp: the table of THREE (Exercise 12)
 bad_comp[('b', 'a')] = 'i0'      # claim: 0 -> 1 -> 2 composes to id_0
 try:
     FiniteCategory(objs, ar, bad_comp, ident).check()

@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -441,7 +450,7 @@ body.py-off .pyonly{display:none}
     <div class="sec-no">§1 — One pattern, many disguises</div>
     <h2>Every construction so far was a cone in denial</h2>
     <p>Look back at Lesson 6 with suspicious eyes. A <em>terminal object</em>: an object such that everything maps to it, uniquely. A <em>product</em>: an object with arrows to <span class="m">A</span> and <span class="m">B</span>, such that anything else with arrows to <span class="m">A</span> and <span class="m">B</span> factors through it, uniquely. Both times the recipe was the same: fix some target configuration, consider objects equipped with arrows to that configuration, and crown the best one. The only thing that changed was the <em>shape</em> of the configuration — nothing at all, or two isolated dots.</p>
-    <p>We have had the vocabulary for &ldquo;shape&rdquo; since Lesson 2. A <strong>diagram</strong> in <span class="cat">𝒞</span> of shape <span class="cat">𝒥</span> is just a functor <span class="m">D : <span class="cat">𝒥</span> → <span class="cat">𝒞</span></span>, where <span class="cat">𝒥</span> is a small <em>index category</em>: its objects mark dots and its arrows mark which connecting arrows the diagram must supply. Lesson 2&rsquo;s Exercise 6 already proved the first instance — functors out of <span class="cat">𝟚</span> are exactly arrows — and Lesson 3 showed that a natural transformation between two such diagrams is a commuting square. This lesson is where that machinery stops being an aside and becomes the main act.</p>
+    <p>We have had the vocabulary for &ldquo;shape&rdquo; since Lesson 2. A <strong>diagram</strong> in <span class="cat">𝒞</span> of shape <span class="cat">𝒥</span> is just a functor <span class="m">D : <span class="cat">𝒥</span> → <span class="cat">𝒞</span></span>, where <span class="cat">𝒥</span> is a small <em>index category</em>: its objects mark dots and its arrows mark which connecting arrows the diagram must supply. Lesson 2&rsquo;s Exercise 14 already proved the first instance — functors out of <span class="cat">𝟚</span> are exactly arrows — and Lesson 3 showed that a natural transformation between two such diagrams is a commuting square. This lesson is where that machinery stops being an aside and becomes the main act.</p>
     <p>The plan: define a <em>cone</em> over a diagram (§2), define the <em>limit</em> as the best cone, and then get the uniqueness theorem for every limit at once by a one-line reduction to Lesson 6. Then we tour the shapes (§3): the two we know, plus two new ones — equalizers and pullbacks — that turn out to be solution sets and database joins. Duality flips everything into colimits (§4). §5 then computes the limit of an arbitrary diagram, §6 asks which functors respect limits, and §7 does everything by hand — with an optional lab in which a single Python function computes the whole zoo.</p>
   </div>
 </section>
@@ -457,7 +466,7 @@ body.py-off .pyonly{display:none}
       <p style="text-align:center" class="m">D(a) ∘ x<sub>i</sub> = x<sub>j</sub>.</p>
     </div>
 
-    <p>That is the hero picture: an apex, a leg to every object of the diagram, and no way to cheat — going directly to <span class="m">D(j)</span> must agree with going via any <span class="m">D(i)</span>. Lesson 2&rsquo;s Exercise 8 planted a flag we can now collect: a cone with apex <span class="m">X</span> is precisely a <strong>natural transformation <span class="m">Δ<sub>X</sub> ⇒ D</span></strong> from the constant functor at <span class="m">X</span>. The legs are the components, and the cone condition is naturality — check it against the square, remembering that <span class="m">Δ<sub>X</sub></span> sends every arrow to <span class="m">id<sub>X</sub></span>.</p>
+    <p>That is the hero picture: an apex, a leg to every object of the diagram, and no way to cheat — going directly to <span class="m">D(j)</span> must agree with going via any <span class="m">D(i)</span>. Lesson 2&rsquo;s Exercise 5 planted a flag we can now collect: a cone with apex <span class="m">X</span> is precisely a <strong>natural transformation <span class="m">Δ<sub>X</sub> ⇒ D</span></strong> from the constant functor at <span class="m">X</span>. The legs are the components, and the cone condition is naturality — check it against the square, remembering that <span class="m">Δ<sub>X</sub></span> sends every arrow to <span class="m">id<sub>X</sub></span>.</p>
     <p>Cones over a fixed <span class="m">D</span> form a category of their own, <span class="cat">Cone</span><span class="m">(D)</span>: an arrow from cone <span class="m">(X, x)</span> to cone <span class="m">(L, λ)</span> is an arrow <span class="m">m : X → L</span> of <span class="cat">𝒞</span> that is compatible with all the legs, <span class="m">λ<sub>j</sub> ∘ m = x<sub>j</sub></span> for every <span class="m">j</span>. (Identities and composites are inherited from <span class="cat">𝒞</span>; checking the axioms is Exercise 3.) With that category in hand, the central definition of the lesson costs four words:</p>
 
     <div class="box def">
@@ -472,7 +481,7 @@ body.py-off .pyonly{display:none}
       <p><strong>Proof.</strong> A limit is a terminal object in <span class="cat">Cone</span><span class="m">(D)</span>, and Lesson 6 §2 proved that terminal objects are unique up to unique isomorphism — in <em>any</em> category. Apply that theorem to <span class="cat">Cone</span><span class="m">(D)</span>. ∎</p>
     </div>
 
-    <p>This is the promised payoff. In Lesson 6 we proved uniqueness for terminal objects, then re-proved it by hand for products (Exercise 5) and noted it dualizes. Now every limit of every shape — including every construction in the rest of this lesson — inherits the theorem from one four-sentence proof, applied in a cleverly chosen category. Building the right category and citing an old theorem inside it is one of the field&rsquo;s signature moves; this is its first full appearance.</p>
+    <p>This is the promised payoff. In Lesson 6 we proved uniqueness for terminal objects, then re-proved it by hand for products (Lesson 6, Exercise 8) and noted it dualizes. Now every limit of every shape — including every construction in the rest of this lesson — inherits the theorem from one four-sentence proof, applied in a cleverly chosen category. Building the right category and citing an old theorem inside it is one of the field&rsquo;s signature moves; this is its first full appearance.</p>
   </div>
 </section>
 
@@ -523,7 +532,7 @@ body.py-off .pyonly{display:none}
 <p>— is a pullback square; that is, if and only if <span class="m">A</span>, with the two legs <span class="m">id<sub>A</sub></span> and <span class="m">id<sub>A</sub></span>, is a pullback of <span class="m">m</span> along itself.</p>
 </div>
 <p><strong>Proof.</strong> A cone over the cospan <span class="m">A → B ← A</span> (both arrows <span class="m">m</span>) is a pair <span class="m">h, k : X → A</span> with <span class="m">m ∘ h = m ∘ k</span>. The square is a pullback exactly when every such pair factors uniquely through <span class="m">(A, id<sub>A</sub>, id<sub>A</sub>)</span>: there is a unique <span class="m">u : X → A</span> with <span class="m">id<sub>A</sub> ∘ u = h</span> and <span class="m">id<sub>A</sub> ∘ u = k</span>. Such a <span class="m">u</span> exists exactly when <span class="m">h = k</span>, and is then unique. So the square is a pullback if and only if <span class="m">m ∘ h = m ∘ k</span> always forces <span class="m">h = k</span> — which is the definition of monic. ∎</p>
-<p>In <span class="m"><span class="cat">Set</span></span> the pullback of <span class="m">m</span> along itself is the set of pairs <span class="m">(a, a′)</span> with <span class="m">m(a) = m(a′)</span>, and the proposition says: <span class="m">m</span> is injective exactly when that set contains only the pairs <span class="m">(a, a)</span>. A second fact of the same kind — the pullback of a monomorphism along any arrow is again a monomorphism — is Exercise 13; in <span class="m"><span class="cat">Set</span></span> it says that the inverse image of a subset is a subset.</p>
+<p>In <span class="m"><span class="cat">Set</span></span> the pullback of <span class="m">m</span> along itself is the set of pairs <span class="m">(a, a′)</span> with <span class="m">m(a) = m(a′)</span>, and the proposition says: <span class="m">m</span> is injective exactly when that set contains only the pairs <span class="m">(a, a)</span>. A second fact of the same kind — the pullback of a monomorphism along any arrow is again a monomorphism — is Exercise 8; in <span class="m"><span class="cat">Set</span></span> it says that the inverse image of a subset is a subset.</p>
   </div>
 </section>
 
@@ -540,18 +549,18 @@ body.py-off .pyonly{display:none}
       <figcaption>The hero diagram, arrows reversed: legs flow <em>out of</em> the diagram into the apex. The colimit is the initial such cocone.</figcaption>
     </figure>
 
-    <p>The zoo dualizes row by row. The colimit of the empty diagram is the <strong>initial object</strong>; of two dots, the <strong>coproduct</strong>. The dual of the equalizer is the <strong>coequalizer</strong> of <span class="m">f, g : A → B</span>: in <span class="cat">Set</span>, the quotient of <span class="m">B</span> by the equivalence relation generated by <span class="m">f(a) ∼ g(a)</span> — where equalizers <em>solve</em> equations, coequalizers <em>impose</em> them, which is how quotient constructions throughout mathematics arise. The dual of the pullback is the <strong>pushout</strong>: the universal way to glue <span class="m">A</span> and <span class="m">B</span> along a shared part <span class="m">Z</span>, as when two line segments are joined at an endpoint, or two sets are united over their intersection (Exercise 7). Limits carve out; colimits glue together.</p>
+    <p>The zoo dualizes row by row. The colimit of the empty diagram is the <strong>initial object</strong>; of two dots, the <strong>coproduct</strong>. The dual of the equalizer is the <strong>coequalizer</strong> of <span class="m">f, g : A → B</span>: in <span class="cat">Set</span>, the quotient of <span class="m">B</span> by the equivalence relation generated by <span class="m">f(a) ∼ g(a)</span> — where equalizers <em>solve</em> equations, coequalizers <em>impose</em> them, which is how quotient constructions throughout mathematics arise. The dual of the pullback is the <strong>pushout</strong>: the universal way to glue <span class="m">A</span> and <span class="m">B</span> along a shared part <span class="m">Z</span>, as when two line segments are joined at an endpoint, or two sets are united over their intersection (Exercise 11). Limits carve out; colimits glue together.</p>
 
     <div class="box amber">
       <span class="tag">Aside · Two shapes suffice</span>
-      <p>A category with all binary products, a terminal object, and all equalizers automatically has <em>every</em> finite limit — pullbacks, and limits over any finite shape whatsoever, can be assembled from those parts. Exercise 8 walks through the first case: a pullback is an equalizer of two maps out of a product. §5 proves the general statement: with products of arbitrary families in place of binary ones, the same two constructions give <em>every</em> limit — which is how one shows that <span class="cat">Set</span> has all small limits.</p>
+      <p>A category with all binary products, a terminal object, and all equalizers automatically has <em>every</em> finite limit — pullbacks, and limits over any finite shape whatsoever, can be assembled from those parts. Exercise 9 walks through the first case: a pullback is an equalizer of two maps out of a product. §5 proves the general statement: with products of arbitrary families in place of binary ones, the same two constructions give <em>every</em> limit — which is how one shows that <span class="cat">Set</span> has all small limits.</p>
     </div>
 <h3 class="sub">A coequalizer and a pushout, computed</h3>
 <p>Colimits in <span class="m"><span class="cat">Set</span></span> are built by a two-step recipe — <em>put the pieces side by side, then glue</em> — and it is worth doing one of each by hand.</p>
 <p><strong>A coequalizer.</strong> Let <span class="m">A = {1, 2}</span> and <span class="m">B = {a, b, c, d}</span>, with <span class="m">f(1) = a</span>, <span class="m">f(2) = c</span> and <span class="m">g(1) = b</span>, <span class="m">g(2) = c</span>. The coequalizer is the quotient of <span class="m">B</span> in which <span class="m">f(x)</span> and <span class="m">g(x)</span> are identified for each <span class="m">x ∈ A</span>. From <span class="m">x = 1</span>: <span class="m">a ∼ b</span>. From <span class="m">x = 2</span>: <span class="m">c ∼ c</span>, which says nothing. So the coequalizer is the three-element set</p>
 <p class="eq"><span class="m">{ {a, b}, {c}, {d} },</span></p>
 <p>with the map <span class="m">q : B → Q</span> sending each element to its class. Its universal property: a function <span class="m">h</span> out of <span class="m">B</span> with <span class="m">h ∘ f = h ∘ g</span> — that is, with <span class="m">h(a) = h(b)</span> — factors through <span class="m">q</span> in exactly one way. Quotient sets, quotient groups and quotient spaces are all coequalizers; for instance <span class="m">ℤ/n</span> is the coequalizer, in the category of abelian groups, of multiplication by <span class="m">n</span> and the zero map <span class="m">ℤ → ℤ</span>.</p>
-<p><strong>A pushout.</strong> Take two copies of the interval <span class="m">[0, 1]</span> and a one-point set <span class="m">Z = {∗}</span>, mapped to the right end <span class="m">1</span> of the first interval and the left end <span class="m">0</span> of the second. The pushout is formed by putting the two intervals side by side and then identifying those two endpoints: the result is a single interval of length two. Gluing spaces along a common part — two segments at a point, two discs along their rims to make a sphere — is the meaning of a pushout in topology, and Exercise 7 shows that the union of two sets is their pushout over the intersection.</p>
+<p><strong>A pushout.</strong> Take two copies of the interval <span class="m">[0, 1]</span> and a one-point set <span class="m">Z = {∗}</span>, mapped to the right end <span class="m">1</span> of the first interval and the left end <span class="m">0</span> of the second. The pushout is formed by putting the two intervals side by side and then identifying those two endpoints: the result is a single interval of length two. Gluing spaces along a common part — two segments at a point, two discs along their rims to make a sphere — is the meaning of a pushout in topology, and Exercise 11 shows that the union of two sets is their pushout over the intersection.</p>
   </div>
 </section>
 
@@ -842,7 +851,7 @@ square commutes: True</div>
     <h2>The pasting lemma</h2>
 
     <p>Pullbacks compose in a way worth knowing by name. Draw two commuting squares side by side, sharing a vertical edge — a wide rectangle subdivided into a <em>left</em> square and a <em>right</em> square. The <strong>pasting lemma</strong> says: <em>if the right square is a pullback, then the outer rectangle is a pullback if and only if the left square is.</em></p>
-    <p>This is the working tool behind many &ldquo;obvious&rdquo; manipulations: computing an iterated inverse image <span class="m">f<sup>−1</sup>(g<sup>−1</sup>(S))</span> in one step, or chaining two joins on shared keys and knowing the result is itself a join. Categorically it says pullbacks paste like tiles — the same gluing behavior that naturality squares showed in Lesson 3, Exercise 3, now upgraded from &ldquo;commuting&rdquo; to &ldquo;universal.&rdquo; Exercise 10 proves one direction and Exercise 16 the other; each proof is a few universal properties taking turns, in the style this course has been rehearsing since Lesson 6.</p>
+    <p>This is the working tool behind many &ldquo;obvious&rdquo; manipulations: computing an iterated inverse image <span class="m">f<sup>−1</sup>(g<sup>−1</sup>(S))</span> in one step, or chaining two joins on shared keys and knowing the result is itself a join. Categorically it says pullbacks paste like tiles — the same gluing behavior that naturality squares showed in Lesson 3, Exercise 12, now upgraded from &ldquo;commuting&rdquo; to &ldquo;universal.&rdquo; Exercise 17 proves one direction and Exercise 18 the other; each proof is a few universal properties taking turns, in the style this course has been rehearsing since Lesson 6.</p>
   </div>
 </section>
 
@@ -850,9 +859,14 @@ square commutes: True</div>
   <div class="measure">
     <div class="sec-no">§8 — Exercises</div>
     <h2>Eighteen problems on limits and colimits</h2>
-    <p>The unwinding exercises (1, 2, 5) are where the lesson sinks in: take the general definition, specialize the shape, and watch a familiar object appear. The arrows-only proofs then use the universal property the way Lesson 6 taught — existence to manufacture arrows, uniqueness to collapse them. Exercises 9 and 11 carry optional Python; everything else is pencil and paper.</p>
+<p>The unwinding exercises (1, 2, 5) are where the lesson sinks in: take the general definition, specialize the shape, and watch a familiar object appear. The arrows-only proofs then use the universal property the way Lesson 6 taught — existence to manufacture arrows, uniqueness to collapse them. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercises 15 and 16 carry optional Python; everything else is pencil and paper.</p>
 
-    <div class="prob">
+<div class="exgroup">
+  <h3>Cones and limits</h3>
+  <p class="exmeta"><a href="#s2">§2</a>–<a href="#s3">§3</a> · Exercises 1–3</p>
+</div>
+
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
         <p>Carefully unwind the definition of a limit over the two smallest shapes:</p>
@@ -869,7 +883,7 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
         <p>What is the limit of a diagram over the <strong>one-object, one-arrow</strong> index category <span class="cat">𝟙</span> — i.e. of a diagram that just picks out a single object <span class="m">A</span> of <span class="cat">𝒞</span>?</p>
@@ -883,7 +897,7 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
       <div class="prob-body">
         <p>§2 asserted that cones over a fixed diagram <span class="m">D</span> form a category <span class="cat">Cone</span><span class="m">(D)</span>. Verify the claim: say what the identity on a cone <span class="m">(X, x)</span> is, show that the composite of two cone morphisms is a cone morphism, and explain where the category laws come from.</p>
@@ -891,12 +905,17 @@ square commutes: True</div>
       <details><summary>Show solution</summary>
         <div class="sol">
           <p>The identity on <span class="m">(X, x)</span> is <span class="m">id<sub>X</sub></span>, which is leg-compatible since <span class="m">x<sub>j</sub> ∘ id<sub>X</sub> = x<sub>j</sub></span>. For composites, suppose <span class="m">m : (X, x) → (Y, y)</span> and <span class="m">n : (Y, y) → (L, λ)</span> are cone morphisms, so <span class="m">y<sub>j</sub> ∘ m = x<sub>j</sub></span> and <span class="m">λ<sub>j</sub> ∘ n = y<sub>j</sub></span> for all <span class="m">j</span>. Then <span class="m">λ<sub>j</sub> ∘ (n ∘ m) = (λ<sub>j</sub> ∘ n) ∘ m = y<sub>j</sub> ∘ m = x<sub>j</sub></span> — compatible again, using associativity once per step.</p>
-          <p>Associativity and the identity laws hold because composition in <span class="cat">Cone</span><span class="m">(D)</span> <em>is</em> composition in <span class="cat">𝒞</span>, merely restricted to arrows that happen to respect legs. Categories whose arrows are &ldquo;arrows of <span class="cat">𝒞</span> satisfying extra conditions&rdquo; inherit the laws for free — the same phenomenon as the injective-functions category of Lesson 1, Exercise 4.</p>
+          <p>Associativity and the identity laws hold because composition in <span class="cat">Cone</span><span class="m">(D)</span> <em>is</em> composition in <span class="cat">𝒞</span>, merely restricted to arrows that happen to respect legs. Categories whose arrows are &ldquo;arrows of <span class="cat">𝒞</span> satisfying extra conditions&rdquo; inherit the laws for free — the same phenomenon as the injective-functions category of Lesson 1, Exercise 3.</p>
         </div>
       </details>
     </div>
 
-    <div class="prob">
+<div class="exgroup">
+  <h3>Equalizers and pullbacks</h3>
+  <p class="exmeta"><a href="#s3">§3</a> · Exercises 4–9</p>
+</div>
+
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
       <div class="prob-body">
         <p>Compute two equalizers in <span class="cat">Set</span>, concretely:</p>
@@ -913,7 +932,7 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
       <div class="prob-body">
         <p>Inverse images are pullbacks. Let <span class="m">f : A → B</span> be a function and <span class="m">S ⊆ B</span> a subset, with inclusion map <span class="m">i : S ↪ B</span>.</p>
@@ -927,7 +946,7 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
         <p>An arrow <span class="m">m : X → Y</span> is a <strong>monomorphism</strong> (is <em>monic</em>) if it is cancellable on the left: whenever <span class="m">m ∘ h = m ∘ k</span> for arrows <span class="m">h, k : W → X</span>, it follows that <span class="m">h = k</span>. (In <span class="cat">Set</span>, monic = injective.)</p>
@@ -941,8 +960,80 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">duality</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Two facts about equalizers, to go with Exercise 6. Let <span class="m">e : E → A</span> be an equalizer of <span class="m">f, g : A → B</span>.</p>
+<ol>
+<li>Show that <span class="m">f = g</span> if and only if <span class="m">e</span> is an isomorphism.</li>
+<li>Show that if <span class="m">e</span> is epic, then <span class="m">e</span> is an isomorphism.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> If <span class="m">f = g</span>, then <span class="m">id<sub>A</sub></span> is a cone (<span class="m">f ∘ id = g ∘ id</span>) and it is universal: any <span class="m">x : X → A</span> factors through <span class="m">id<sub>A</sub></span> as <span class="m">x</span> itself, uniquely. So <span class="m">(A, id<sub>A</sub>)</span> is an equalizer, and by uniqueness of limits <span class="m">e</span> differs from <span class="m">id<sub>A</sub></span> by an isomorphism — so <span class="m">e</span> is one. Conversely, if <span class="m">e</span> is an isomorphism, then from <span class="m">f ∘ e = g ∘ e</span> we get <span class="m">f = g</span> by composing with <span class="m">e<sup>−1</sup></span>.</p>
+<p><strong>(b)</strong> From <span class="m">f ∘ e = g ∘ e</span> and <span class="m">e</span> epic, cancel <span class="m">e</span> on the right: <span class="m">f = g</span>. Now apply (a).</p>
+<p>So an equalizer is always monic (Exercise 6), and it is epic only in the degenerate case. An arrow that is monic and epic need not be an isomorphism (Lesson 1) — but an <em>equalizer</em> that is epic must be. Monomorphisms that arise as equalizers are better behaved than monomorphisms in general; they are called <em>regular</em>.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Monomorphisms are stable under pullback. Let the square with <span class="m">p<sub>1</sub> : P → A</span>, <span class="m">p<sub>2</sub> : P → B</span>, <span class="m">f : A → Z</span> and <span class="m">m : B → Z</span> be a pullback, so <span class="m">f ∘ p<sub>1</sub> = m ∘ p<sub>2</sub></span>, and suppose <span class="m">m</span> is monic. Prove that <span class="m">p<sub>1</sub></span> is monic.</p>
+<p>Hint: given <span class="m">p<sub>1</sub> ∘ h = p<sub>1</sub> ∘ k</span>, show that <span class="m">h</span> and <span class="m">k</span> also agree after <span class="m">p<sub>2</sub></span>, and use the uniqueness clause of the pullback.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Let <span class="m">h, k : X → P</span> with <span class="m">p<sub>1</sub> ∘ h = p<sub>1</sub> ∘ k</span>. Then</p>
+<p class="eq"><span class="m">m ∘ p<sub>2</sub> ∘ h = f ∘ p<sub>1</sub> ∘ h = f ∘ p<sub>1</sub> ∘ k = m ∘ p<sub>2</sub> ∘ k,</span></p>
+<p>and <span class="m">m</span> is monic, so <span class="m">p<sub>2</sub> ∘ h = p<sub>2</sub> ∘ k</span>. Now <span class="m">h</span> and <span class="m">k</span> are two arrows <span class="m">X → P</span> with the same composite with <span class="m">p<sub>1</sub></span> and the same composite with <span class="m">p<sub>2</sub></span>. Both are therefore mediating arrows for the same cone, and the pullback admits exactly one: <span class="m">h = k</span>.</p>
+<p>In <span class="m"><span class="cat">Set</span></span>, with <span class="m">m</span> the inclusion of a subset <span class="m">S ⊆ Z</span>, this says that the inverse image <span class="m">f<sup>−1</sup>(S)</span> is a subset of <span class="m">A</span> (Exercise 5). In general it is the reason &ldquo;subobjects can be pulled back&rdquo; in any category with pullbacks.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">think</span></div>
+      <div class="prob-body">
+        <p>Prove the first case of §4&rsquo;s amber aside: <strong>a category with binary products and equalizers has all pullbacks</strong>.</p>
+        <p>Given <span class="m">f : A → Z</span> and <span class="m">g : B → Z</span>, form the product <span class="m">A × B</span> and the two composites <span class="m">f ∘ π<sub>1</sub>, g ∘ π<sub>2</sub> : A × B → Z</span>. Show that their equalizer <span class="m">e : E → A × B</span>, equipped with the legs <span class="m">π<sub>1</sub> ∘ e</span> and <span class="m">π<sub>2</sub> ∘ e</span>, satisfies the pullback&rsquo;s universal property. (Sanity-check the construction in <span class="cat">Set</span> first: what set does it build?)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>In <span class="cat">Set</span> the recipe builds <span class="m">{ (a,b) ∈ A × B : f(a) = g(b) }</span> — exactly the pullback of §3 — which is the right intuition to carry into the general proof.</p>
+          <p><strong>The square commutes:</strong> <span class="m">f ∘ (π<sub>1</sub> ∘ e) = (f ∘ π<sub>1</sub>) ∘ e = (g ∘ π<sub>2</sub>) ∘ e = g ∘ (π<sub>2</sub> ∘ e)</span>, the middle step being the equalizer&rsquo;s fork. <strong>Universality:</strong> take any <span class="m">X</span> with <span class="m">p : X → A</span>, <span class="m">q : X → B</span>, <span class="m">f ∘ p = g ∘ q</span>. The product gives <span class="m">⟨p, q⟩ : X → A × B</span>, and it equalizes the pair — <span class="m">(f ∘ π<sub>1</sub>) ∘ ⟨p,q⟩ = f ∘ p = g ∘ q = (g ∘ π<sub>2</sub>) ∘ ⟨p,q⟩</span> — so it factors through <span class="m">e</span> via a unique <span class="m">m : X → E</span>, and the legs check out: <span class="m">(π<sub>1</sub> ∘ e) ∘ m = π<sub>1</sub> ∘ ⟨p,q⟩ = p</span>, likewise for <span class="m">q</span>.</p>
+          <p><strong>Uniqueness of <span class="m">m</span>:</strong> any competitor <span class="m">m&prime;</span> with the same leg equations has <span class="m">e ∘ m&prime; = ⟨p, q⟩</span> — because <span class="m">e ∘ m&prime;</span> hits <span class="m">p</span> and <span class="m">q</span> under the projections, and the product&rsquo;s uniqueness clause pins such an arrow down — and then Exercise 6 (equalizer arrows are monic) forces <span class="m">m&prime; = m</span>. Three universal properties, each contributing its uniqueness exactly where needed: this is what &ldquo;assembling limits from parts&rdquo; looks like in practice.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="exgroup">
+  <h3>Colimits</h3>
+  <p class="exmeta"><a href="#s4">§4</a> · Exercises 10–11</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>Compute two coequalizers in <span class="m"><span class="cat">Set</span></span> by the method of §4.</p>
+<ol>
+<li>Let <span class="m">A = {1, 2, 3}</span> and <span class="m">B = {a, b, c, d, e}</span>, with <span class="m">f(1) = a</span>, <span class="m">f(2) = b</span>, <span class="m">f(3) = d</span> and <span class="m">g(1) = b</span>, <span class="m">g(2) = c</span>, <span class="m">g(3) = d</span>. List the classes of the coequalizer.</li>
+<li>Let <span class="m">f, g : ℤ → ℤ</span> be <span class="m">f(n) = n</span> and <span class="m">g(n) = n + 2</span>. What is the coequalizer?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> The identifications are <span class="m">a ∼ b</span> (from <span class="m">1</span>), <span class="m">b ∼ c</span> (from <span class="m">2</span>) and <span class="m">d ∼ d</span> (from <span class="m">3</span>, no information). The relation <em>generated</em> by these must be transitive, so <span class="m">a ∼ c</span> as well. The classes are <span class="m">{a, b, c}</span>, <span class="m">{d}</span> and <span class="m">{e}</span>: a three-element set.</p>
+<p><strong>(b)</strong> Each <span class="m">n</span> is identified with <span class="m">n + 2</span>, so two integers end up in the same class exactly when they differ by an even number. There are two classes, the even integers and the odd integers: the coequalizer is a two-element set, and the quotient map <span class="m">ℤ → {even, odd}</span> is &ldquo;parity.&rdquo;</p>
+<p>Part (a) shows why the definition says the equivalence relation <em>generated</em> by the pairs <span class="m">f(x) ∼ g(x)</span>: the pairs themselves need not be transitive. Equalizers solve equations; coequalizers impose them, and impose their consequences too.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">duality</span></div>
       <div class="prob-body">
         <p>Dualize §3&rsquo;s pullback discussion:</p>
         <ol>
@@ -958,23 +1049,79 @@ square commutes: True</div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">think</span></div>
-      <div class="prob-body">
-        <p>Prove the first case of §4&rsquo;s amber aside: <strong>a category with binary products and equalizers has all pullbacks</strong>.</p>
-        <p>Given <span class="m">f : A → Z</span> and <span class="m">g : B → Z</span>, form the product <span class="m">A × B</span> and the two composites <span class="m">f ∘ π<sub>1</sub>, g ∘ π<sub>2</sub> : A × B → Z</span>. Show that their equalizer <span class="m">e : E → A × B</span>, equipped with the legs <span class="m">π<sub>1</sub> ∘ e</span> and <span class="m">π<sub>2</sub> ∘ e</span>, satisfies the pullback&rsquo;s universal property. (Sanity-check the construction in <span class="cat">Set</span> first: what set does it build?)</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>In <span class="cat">Set</span> the recipe builds <span class="m">{ (a,b) ∈ A × B : f(a) = g(b) }</span> — exactly the pullback of §3 — which is the right intuition to carry into the general proof.</p>
-          <p><strong>The square commutes:</strong> <span class="m">f ∘ (π<sub>1</sub> ∘ e) = (f ∘ π<sub>1</sub>) ∘ e = (g ∘ π<sub>2</sub>) ∘ e = g ∘ (π<sub>2</sub> ∘ e)</span>, the middle step being the equalizer&rsquo;s fork. <strong>Universality:</strong> take any <span class="m">X</span> with <span class="m">p : X → A</span>, <span class="m">q : X → B</span>, <span class="m">f ∘ p = g ∘ q</span>. The product gives <span class="m">⟨p, q⟩ : X → A × B</span>, and it equalizes the pair — <span class="m">(f ∘ π<sub>1</sub>) ∘ ⟨p,q⟩ = f ∘ p = g ∘ q = (g ∘ π<sub>2</sub>) ∘ ⟨p,q⟩</span> — so it factors through <span class="m">e</span> via a unique <span class="m">m : X → E</span>, and the legs check out: <span class="m">(π<sub>1</sub> ∘ e) ∘ m = π<sub>1</sub> ∘ ⟨p,q⟩ = p</span>, likewise for <span class="m">q</span>.</p>
-          <p><strong>Uniqueness of <span class="m">m</span>:</strong> any competitor <span class="m">m&prime;</span> with the same leg equations has <span class="m">e ∘ m&prime; = ⟨p, q⟩</span> — because <span class="m">e ∘ m&prime;</span> hits <span class="m">p</span> and <span class="m">q</span> under the projections, and the product&rsquo;s uniqueness clause pins such an arrow down — and then Exercise 6 (equalizer arrows are monic) forces <span class="m">m&prime; = m</span>. Three universal properties, each contributing its uniqueness exactly where needed: this is what &ldquo;assembling limits from parts&rdquo; looks like in practice.</p>
-        </div>
-      </details>
-    </div>
+<div class="exgroup">
+  <h3>Limits in general, and preserving them</h3>
+  <p class="exmeta"><a href="#general">§5</a>–<a href="#preserve">§6</a> · Exercises 12–14</p>
+</div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>Use the formula of §5 to compute two limits in <span class="m"><span class="cat">Set</span></span>.</p>
+<ol>
+<li>The pullback of <span class="m">f : {1, 2, 3, 4} → {0, 1}</span>, <span class="m">f(a) = a</span> mod <span class="m">2</span>, and <span class="m">g : {x, y, z} → {0, 1}</span> with <span class="m">g(x) = 0</span>, <span class="m">g(y) = 1</span>, <span class="m">g(z) = 1</span>. List its elements.</li>
+<li>The limit of the tower <span class="m">⋯ → X<sub>2</sub> → X<sub>1</sub> → X<sub>0</sub></span> in which every <span class="m">X<sub>n</sub></span> is the set <span class="m">{0, 1}</span> and every map is the constant function with value <span class="m">0</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Pairs <span class="m">(a, b)</span> with <span class="m">f(a) = g(b)</span>. Over <span class="m">0</span>: <span class="m">a ∈ {2, 4}</span> and <span class="m">b = x</span>, giving <span class="m">(2, x), (4, x)</span>. Over <span class="m">1</span>: <span class="m">a ∈ {1, 3}</span> and <span class="m">b ∈ {y, z}</span>, giving <span class="m">(1, y), (1, z), (3, y), (3, z)</span>. Six elements in all — two fibres over <span class="m">0</span> multiplied (<span class="m">2 × 1</span>) plus two fibres over <span class="m">1</span> multiplied (<span class="m">2 × 2</span>). A pullback is a product computed fibre by fibre.</p>
+<p><strong>(b)</strong> A compatible sequence <span class="m">(x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>, …)</span> must have each <span class="m">x<sub>n</sub></span> equal to the image of <span class="m">x<sub>n+1</sub></span>, which is <span class="m">0</span>. So every entry is <span class="m">0</span>: the limit has exactly one element. Although each set in the tower has two elements, the maps destroy all the information before it can reach the limit.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>Limits in orders (§5).</p>
+<ol>
+<li>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, what are the limit and the colimit of the diagram consisting of <strong>all four</strong> objects and all the arrows between them?</li>
+<li>Let <span class="m"><span class="cat">𝒞</span></span> be any preorder, and regard the identity functor <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝒞</span></span> as a diagram: all the objects and all the arrows. Show that a limit of this diagram, if there is one, is a least element of <span class="m"><span class="cat">𝒞</span></span>. What is a colimit?</li>
+<li>In the power set of <span class="m">{1, 2, 3}</span> ordered by inclusion, compute the limit and colimit of the diagram consisting of the three subsets <span class="m">{1, 2}</span>, <span class="m">{2, 3}</span> and <span class="m">{2}</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> The limit is the greatest element dividing all of <span class="m">1, 2, 3, 6</span>, namely <span class="m">1</span>. The colimit is the least common multiple of all of them, <span class="m">6</span>.</p>
+<p><strong>(b)</strong> A cone over the identity diagram is an element below <em>every</em> element of <span class="m"><span class="cat">𝒞</span></span> — a least element. Any two least elements are below each other, so each is a greatest one among them: the limit, if it exists, is a least element, that is, an initial object. Dually a colimit is a greatest element, a terminal object. (The same is true in every category, not only in preorders: a limit of the identity functor is an initial object. In a preorder it is easy to see.)</p>
+<p><strong>(c)</strong> Limit: the intersection <span class="m">{1, 2} ∩ {2, 3} ∩ {2} = {2}</span>. Colimit: the union <span class="m">{1, 2, 3}</span>. The inclusions <span class="m">{2} ⊆ {1, 2}</span> and <span class="m">{2} ⊆ {2, 3}</span> that are part of the diagram change nothing.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>Hom functors preserve products (§6): for all <span class="m">X</span>, <span class="m"><span class="cat">𝒞</span>(X, A × B) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, B)</span>.</p>
+<ol>
+<li>Write down the bijection and its inverse explicitly, in terms of the projections and the pairing <span class="m">⟨f, g⟩</span> of Lesson 6.</li>
+<li>Check it in the divisibility order on <span class="m">{1, 2, 3, 6}</span> for <span class="m">A = 2</span>, <span class="m">B = 6</span> (so <span class="m">A × B = 2</span>) and each of the four choices of <span class="m">X</span>, by counting both sides.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Send <span class="m">m : X → A × B</span> to the pair <span class="m">(π<sub>1</sub> ∘ m, π<sub>2</sub> ∘ m)</span>. The inverse sends a pair <span class="m">(f, g)</span> to <span class="m">⟨f, g⟩</span>. These are mutually inverse because <span class="m">π<sub>1</sub> ∘ ⟨f, g⟩ = f</span>, <span class="m">π<sub>2</sub> ∘ ⟨f, g⟩ = g</span>, and <span class="m">⟨π<sub>1</sub> ∘ m, π<sub>2</sub> ∘ m⟩ = m</span> — the last being the uniqueness clause.</p>
+<p><strong>(b)</strong> A hom-set here has one element when the first number divides the second, and none otherwise.</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>X</th><th>arrows X → 2</th><th>arrows X → 6</th><th>product of the two</th><th>arrows X → 2 × 6 = 2</th></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>3</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>6</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+</table></div>
+<p>The last two columns agree in every row. In an order the theorem reduces to the definition of a meet: <span class="m">X ≤ A ∧ B</span> exactly when <span class="m">X ≤ A</span> and <span class="m">X ≤ B</span>.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Limits by hand</h3>
+  <p class="exmeta"><a href="#byhand">§7</a> · Exercises 15–16</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
 <p>§7 computed limits over three shapes. Here is a fourth: the <strong>span</strong> <span class="m">• ← • → •</span>. In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, consider the span <span class="m">2 ← 1 → 3</span>.</p>
 <ol>
@@ -1015,25 +1162,9 @@ print(find_colimits(Div, D_span))</code></pre>
         </div>
       </details>
     </div>
-  
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">think</span></div>
-      <div class="prob-body">
 
-        <p>Set up the pasting lemma&rsquo;s notation: objects <span class="m">X, Y, Z</span> across the top, <span class="m">A, B, C</span> across the bottom, vertical arrows <span class="m">x, y, z</span> downward, horizontal arrows completing a left square (<span class="m">X, Y, A, B</span>) and a right square (<span class="m">Y, Z, B, C</span>), both commuting. Assume the <strong>right square is a pullback</strong>.</p>
-        <p>Prove one direction: if the left square is a pullback, the outer rectangle is. (Take a cone over the outer cospan — <span class="m">T → A</span> and <span class="m">T → Z</span> agreeing in <span class="m">C</span> — and factor it in two stages, right square first.)</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-
-          <p>Let <span class="m">a : T → A</span> and <span class="m">t : T → Z</span> agree in <span class="m">C</span>. <strong>Stage one:</strong> composing <span class="m">a</span> across the bottom gives <span class="m">T → B</span>, which together with <span class="m">t</span> forms a cone over the <em>right</em> cospan (they agree in <span class="m">C</span> by assumption); the right pullback yields a unique <span class="m">u : T → Y</span> compatible with both. <strong>Stage two:</strong> now <span class="m">a</span> and <span class="m">u</span> form a cone over the <em>left</em> cospan (compatibility from stage one is exactly agreement in <span class="m">B</span>); the left pullback yields a unique <span class="m">v : T → X</span>, and chasing the two triangles shows <span class="m">v</span> is compatible with the outer rectangle&rsquo;s legs <span class="m">a</span> and <span class="m">t</span>.</p>
-          <p><strong>Uniqueness:</strong> a competitor <span class="m">v&prime;</span> for the outer rectangle composes to a <span class="m">T → Y</span> that satisfies stage one&rsquo;s conditions, so it equals <span class="m">u</span> by the right square&rsquo;s uniqueness; then <span class="m">v&prime;</span> satisfies stage two&rsquo;s conditions and equals <span class="m">v</span> by the left square&rsquo;s. Existence built in two stages, uniqueness collapsed in two stages — Lesson 6&rsquo;s division of labor, run twice in sequence. (The converse direction, outer-implies-left, is the same game with the roles of the cones rearranged.)</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 16</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
 <p>§7 found the equalizer in the fork category by listing cones. Now enlarge the fork: add a fourth object <span class="m">W</span> and an arrow <span class="m">h : W → E</span>, together with the two composites it forces, <span class="m">e ∘ h : W → A</span> and <span class="m">w ∘ h : W → B</span>.</p>
 <ol>
@@ -1080,82 +1211,31 @@ print(find_limits(Fork, D_fg))</code></pre>
       </details>
     </div>
 
+<div class="exgroup">
+  <h3>The pasting lemma</h3>
+  <p class="exmeta"><a href="#going-deeper">Going deeper</a> · Exercises 17–18</p>
+</div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">by hand</span></div>
-<div class="prob-body">
-<p>Compute two coequalizers in <span class="m"><span class="cat">Set</span></span> by the method of §4.</p>
-<ol>
-<li>Let <span class="m">A = {1, 2, 3}</span> and <span class="m">B = {a, b, c, d, e}</span>, with <span class="m">f(1) = a</span>, <span class="m">f(2) = b</span>, <span class="m">f(3) = d</span> and <span class="m">g(1) = b</span>, <span class="m">g(2) = c</span>, <span class="m">g(3) = d</span>. List the classes of the coequalizer.</li>
-<li>Let <span class="m">f, g : ℤ → ℤ</span> be <span class="m">f(n) = n</span> and <span class="m">g(n) = n + 2</span>. What is the coequalizer?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> The identifications are <span class="m">a ∼ b</span> (from <span class="m">1</span>), <span class="m">b ∼ c</span> (from <span class="m">2</span>) and <span class="m">d ∼ d</span> (from <span class="m">3</span>, no information). The relation <em>generated</em> by these must be transitive, so <span class="m">a ∼ c</span> as well. The classes are <span class="m">{a, b, c}</span>, <span class="m">{d}</span> and <span class="m">{e}</span>: a three-element set.</p>
-<p><strong>(b)</strong> Each <span class="m">n</span> is identified with <span class="m">n + 2</span>, so two integers end up in the same class exactly when they differ by an even number. There are two classes, the even integers and the odd integers: the coequalizer is a two-element set, and the quotient map <span class="m">ℤ → {even, odd}</span> is &ldquo;parity.&rdquo;</p>
-<p>Part (a) shows why the definition says the equivalence relation <em>generated</em> by the pairs <span class="m">f(x) ∼ g(x)</span>: the pairs themselves need not be transitive. Equalizers solve equations; coequalizers impose them, and impose their consequences too.</p>
-</div>
-</details>
-</div>
+      <div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">think</span></div>
+      <div class="prob-body">
+
+        <p>Set up the pasting lemma&rsquo;s notation: objects <span class="m">X, Y, Z</span> across the top, <span class="m">A, B, C</span> across the bottom, vertical arrows <span class="m">x, y, z</span> downward, horizontal arrows completing a left square (<span class="m">X, Y, A, B</span>) and a right square (<span class="m">Y, Z, B, C</span>), both commuting. Assume the <strong>right square is a pullback</strong>.</p>
+        <p>Prove one direction: if the left square is a pullback, the outer rectangle is. (Take a cone over the outer cospan — <span class="m">T → A</span> and <span class="m">T → Z</span> agreeing in <span class="m">C</span> — and factor it in two stages, right square first.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Let <span class="m">a : T → A</span> and <span class="m">t : T → Z</span> agree in <span class="m">C</span>. <strong>Stage one:</strong> composing <span class="m">a</span> across the bottom gives <span class="m">T → B</span>, which together with <span class="m">t</span> forms a cone over the <em>right</em> cospan (they agree in <span class="m">C</span> by assumption); the right pullback yields a unique <span class="m">u : T → Y</span> compatible with both. <strong>Stage two:</strong> now <span class="m">a</span> and <span class="m">u</span> form a cone over the <em>left</em> cospan (compatibility from stage one is exactly agreement in <span class="m">B</span>); the left pullback yields a unique <span class="m">v : T → X</span>, and chasing the two triangles shows <span class="m">v</span> is compatible with the outer rectangle&rsquo;s legs <span class="m">a</span> and <span class="m">t</span>.</p>
+          <p><strong>Uniqueness:</strong> a competitor <span class="m">v&prime;</span> for the outer rectangle composes to a <span class="m">T → Y</span> that satisfies stage one&rsquo;s conditions, so it equals <span class="m">u</span> by the right square&rsquo;s uniqueness; then <span class="m">v&prime;</span> satisfies stage two&rsquo;s conditions and equals <span class="m">v</span> by the left square&rsquo;s. Existence built in two stages, uniqueness collapsed in two stages — Lesson 6&rsquo;s division of labor, run twice in sequence. (The converse direction, outer-implies-left, is the same game with the roles of the cones rearranged.)</p>
+        </div>
+      </details>
+    </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">arrows-only</span></div>
+<div class="prob-head"><span class="pn">Exercise 18</span><span class="tier">think</span></div>
 <div class="prob-body">
-<p>Monomorphisms are stable under pullback. Let the square with <span class="m">p<sub>1</sub> : P → A</span>, <span class="m">p<sub>2</sub> : P → B</span>, <span class="m">f : A → Z</span> and <span class="m">m : B → Z</span> be a pullback, so <span class="m">f ∘ p<sub>1</sub> = m ∘ p<sub>2</sub></span>, and suppose <span class="m">m</span> is monic. Prove that <span class="m">p<sub>1</sub></span> is monic.</p>
-<p>Hint: given <span class="m">p<sub>1</sub> ∘ h = p<sub>1</sub> ∘ k</span>, show that <span class="m">h</span> and <span class="m">k</span> also agree after <span class="m">p<sub>2</sub></span>, and use the uniqueness clause of the pullback.</p>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p>Let <span class="m">h, k : X → P</span> with <span class="m">p<sub>1</sub> ∘ h = p<sub>1</sub> ∘ k</span>. Then</p>
-<p class="eq"><span class="m">m ∘ p<sub>2</sub> ∘ h = f ∘ p<sub>1</sub> ∘ h = f ∘ p<sub>1</sub> ∘ k = m ∘ p<sub>2</sub> ∘ k,</span></p>
-<p>and <span class="m">m</span> is monic, so <span class="m">p<sub>2</sub> ∘ h = p<sub>2</sub> ∘ k</span>. Now <span class="m">h</span> and <span class="m">k</span> are two arrows <span class="m">X → P</span> with the same composite with <span class="m">p<sub>1</sub></span> and the same composite with <span class="m">p<sub>2</sub></span>. Both are therefore mediating arrows for the same cone, and the pullback admits exactly one: <span class="m">h = k</span>.</p>
-<p>In <span class="m"><span class="cat">Set</span></span>, with <span class="m">m</span> the inclusion of a subset <span class="m">S ⊆ Z</span>, this says that the inverse image <span class="m">f<sup>−1</sup>(S)</span> is a subset of <span class="m">A</span> (Exercise 5). In general it is the reason &ldquo;subobjects can be pulled back&rdquo; in any category with pullbacks.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">by hand</span></div>
-<div class="prob-body">
-<p>Use the formula of §5 to compute two limits in <span class="m"><span class="cat">Set</span></span>.</p>
-<ol>
-<li>The pullback of <span class="m">f : {1, 2, 3, 4} → {0, 1}</span>, <span class="m">f(a) = a</span> mod <span class="m">2</span>, and <span class="m">g : {x, y, z} → {0, 1}</span> with <span class="m">g(x) = 0</span>, <span class="m">g(y) = 1</span>, <span class="m">g(z) = 1</span>. List its elements.</li>
-<li>The limit of the tower <span class="m">⋯ → X<sub>2</sub> → X<sub>1</sub> → X<sub>0</sub></span> in which every <span class="m">X<sub>n</sub></span> is the set <span class="m">{0, 1}</span> and every map is the constant function with value <span class="m">0</span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Pairs <span class="m">(a, b)</span> with <span class="m">f(a) = g(b)</span>. Over <span class="m">0</span>: <span class="m">a ∈ {2, 4}</span> and <span class="m">b = x</span>, giving <span class="m">(2, x), (4, x)</span>. Over <span class="m">1</span>: <span class="m">a ∈ {1, 3}</span> and <span class="m">b ∈ {y, z}</span>, giving <span class="m">(1, y), (1, z), (3, y), (3, z)</span>. Six elements in all — two fibres over <span class="m">0</span> multiplied (<span class="m">2 × 1</span>) plus two fibres over <span class="m">1</span> multiplied (<span class="m">2 × 2</span>). A pullback is a product computed fibre by fibre.</p>
-<p><strong>(b)</strong> A compatible sequence <span class="m">(x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>, …)</span> must have each <span class="m">x<sub>n</sub></span> equal to the image of <span class="m">x<sub>n+1</sub></span>, which is <span class="m">0</span>. So every entry is <span class="m">0</span>: the limit has exactly one element. Although each set in the tower has two elements, the maps destroy all the information before it can reach the limit.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">structure</span></div>
-<div class="prob-body">
-<p>Hom functors preserve products (§6): for all <span class="m">X</span>, <span class="m"><span class="cat">𝒞</span>(X, A × B) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, B)</span>.</p>
-<ol>
-<li>Write down the bijection and its inverse explicitly, in terms of the projections and the pairing <span class="m">⟨f, g⟩</span> of Lesson 6.</li>
-<li>Check it in the divisibility order on <span class="m">{1, 2, 3, 6}</span> for <span class="m">A = 2</span>, <span class="m">B = 6</span> (so <span class="m">A × B = 2</span>) and each of the four choices of <span class="m">X</span>, by counting both sides.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Send <span class="m">m : X → A × B</span> to the pair <span class="m">(π<sub>1</sub> ∘ m, π<sub>2</sub> ∘ m)</span>. The inverse sends a pair <span class="m">(f, g)</span> to <span class="m">⟨f, g⟩</span>. These are mutually inverse because <span class="m">π<sub>1</sub> ∘ ⟨f, g⟩ = f</span>, <span class="m">π<sub>2</sub> ∘ ⟨f, g⟩ = g</span>, and <span class="m">⟨π<sub>1</sub> ∘ m, π<sub>2</sub> ∘ m⟩ = m</span> — the last being the uniqueness clause.</p>
-<p><strong>(b)</strong> A hom-set here has one element when the first number divides the second, and none otherwise.</p>
-<div class="tablewrap"><table class="tbl">
-<tr><th>X</th><th>arrows X → 2</th><th>arrows X → 6</th><th>product of the two</th><th>arrows X → 2 × 6 = 2</th></tr>
-<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
-<tr><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
-<tr><td>3</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-<tr><td>6</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-</table></div>
-<p>The last two columns agree in every row. In an order the theorem reduces to the definition of a meet: <span class="m">X ≤ A ∧ B</span> exactly when <span class="m">X ≤ A</span> and <span class="m">X ≤ B</span>.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">think</span></div>
-<div class="prob-body">
-<p>Prove the converse half of the pasting lemma (Going deeper). In the notation of Exercise 10 — top row <span class="m">X → Y → Z</span>, bottom row <span class="m">A → B → C</span>, vertical arrows <span class="m">x, y, z</span> — assume the right square is a pullback and the <strong>outer rectangle</strong> is a pullback. Show that the left square is a pullback.</p>
+<p>Prove the converse half of the pasting lemma (Going deeper). In the notation of Exercise 17 — top row <span class="m">X → Y → Z</span>, bottom row <span class="m">A → B → C</span>, vertical arrows <span class="m">x, y, z</span> — assume the right square is a pullback and the <strong>outer rectangle</strong> is a pullback. Show that the left square is a pullback.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
@@ -1166,41 +1246,7 @@ print(find_limits(Fork, D_fg))</code></pre>
 </div>
 </details>
 </div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">examples</span></div>
-<div class="prob-body">
-<p>Limits in orders (§5).</p>
-<ol>
-<li>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, what are the limit and the colimit of the diagram consisting of <strong>all four</strong> objects and all the arrows between them?</li>
-<li>Let <span class="m"><span class="cat">𝒞</span></span> be any preorder, and regard the identity functor <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝒞</span></span> as a diagram: all the objects and all the arrows. Show that a limit of this diagram, if there is one, is a least element of <span class="m"><span class="cat">𝒞</span></span>. What is a colimit?</li>
-<li>In the power set of <span class="m">{1, 2, 3}</span> ordered by inclusion, compute the limit and colimit of the diagram consisting of the three subsets <span class="m">{1, 2}</span>, <span class="m">{2, 3}</span> and <span class="m">{2}</span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> The limit is the greatest element dividing all of <span class="m">1, 2, 3, 6</span>, namely <span class="m">1</span>. The colimit is the least common multiple of all of them, <span class="m">6</span>.</p>
-<p><strong>(b)</strong> A cone over the identity diagram is an element below <em>every</em> element of <span class="m"><span class="cat">𝒞</span></span> — a least element. Any two least elements are below each other, so each is a greatest one among them: the limit, if it exists, is a least element, that is, an initial object. Dually a colimit is a greatest element, a terminal object. (The same is true in every category, not only in preorders: a limit of the identity functor is an initial object. In a preorder it is easy to see.)</p>
-<p><strong>(c)</strong> Limit: the intersection <span class="m">{1, 2} ∩ {2, 3} ∩ {2} = {2}</span>. Colimit: the union <span class="m">{1, 2, 3}</span>. The inclusions <span class="m">{2} ⊆ {1, 2}</span> and <span class="m">{2} ⊆ {2, 3}</span> that are part of the diagram change nothing.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 18</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>Two facts about equalizers, to go with Exercise 6. Let <span class="m">e : E → A</span> be an equalizer of <span class="m">f, g : A → B</span>.</p>
-<ol>
-<li>Show that <span class="m">f = g</span> if and only if <span class="m">e</span> is an isomorphism.</li>
-<li>Show that if <span class="m">e</span> is epic, then <span class="m">e</span> is an isomorphism.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> If <span class="m">f = g</span>, then <span class="m">id<sub>A</sub></span> is a cone (<span class="m">f ∘ id = g ∘ id</span>) and it is universal: any <span class="m">x : X → A</span> factors through <span class="m">id<sub>A</sub></span> as <span class="m">x</span> itself, uniquely. So <span class="m">(A, id<sub>A</sub>)</span> is an equalizer, and by uniqueness of limits <span class="m">e</span> differs from <span class="m">id<sub>A</sub></span> by an isomorphism — so <span class="m">e</span> is one. Conversely, if <span class="m">e</span> is an isomorphism, then from <span class="m">f ∘ e = g ∘ e</span> we get <span class="m">f = g</span> by composing with <span class="m">e<sup>−1</sup></span>.</p>
-<p><strong>(b)</strong> From <span class="m">f ∘ e = g ∘ e</span> and <span class="m">e</span> epic, cancel <span class="m">e</span> on the right: <span class="m">f = g</span>. Now apply (a).</p>
-<p>So an equalizer is always monic (Exercise 6), and it is epic only in the degenerate case. An arrow that is monic and epic need not be an isomorphism (Lesson 1) — but an <em>equalizer</em> that is epic must be. Monomorphisms that arise as equalizers are better behaved than monomorphisms in general; they are called <em>regular</em>.</p>
-</div>
-</details>
-</div>
+
 </div>
 </section>
 

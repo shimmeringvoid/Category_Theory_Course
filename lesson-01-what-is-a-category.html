@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -603,7 +612,7 @@ body.py-off .pyonly{display:none}
 <span class="tag">Definition · Isomorphism</span>
 <p>An arrow <span class="m">f : X → Y</span> is an <strong>isomorphism</strong> if there is an arrow <span class="m">g : Y → X</span> with</p>
 <p class="eq"><span class="m">g ∘ f = id<sub>X</sub> &nbsp;&nbsp;and&nbsp;&nbsp; f ∘ g = id<sub>Y</sub>.</span></p>
-<p>Such a <span class="m">g</span> is an <strong>inverse</strong> of <span class="m">f</span>. When an inverse exists it is unique (Exercise 8), and is written <span class="m">f<sup>−1</sup></span>. Two objects are <strong>isomorphic</strong>, written <span class="m">X ≅ Y</span>, when some isomorphism runs between them.</p>
+<p>Such a <span class="m">g</span> is an <strong>inverse</strong> of <span class="m">f</span>. When an inverse exists it is unique (Exercise 10), and is written <span class="m">f<sup>−1</sup></span>. Two objects are <strong>isomorphic</strong>, written <span class="m">X ≅ Y</span>, when some isomorphism runs between them.</p>
 </div>
 <figure>
 <div class="board" data-diagram="iso" aria-label="Two objects X and Y joined by an arrow f from X to Y and its inverse from Y to X.">
@@ -623,19 +632,19 @@ body.py-off .pyonly{display:none}
 <span class="tag">Careful · Isomorphism is not &ldquo;bijective arrow&rdquo;</span>
 <p>In <span class="m"><span class="cat">Grp</span></span> and <span class="m"><span class="cat">Vect</span></span>, a homomorphism that happens to be a bijection always has a homomorphism for its inverse. In <span class="m"><span class="cat">Pos</span></span> and <span class="m"><span class="cat">Top</span></span> that fails. Take the two-element set <span class="m">{a, b}</span> twice: once with no order relation between <span class="m">a</span> and <span class="m">b</span>, once with <span class="m">a ≤ b</span>. The identity function from the first to the second is monotone and bijective, but its inverse is not monotone — so it is <em>not</em> an isomorphism in <span class="m"><span class="cat">Pos</span></span>. The arrow-theoretic definition gets every case right for one reason: it demands an inverse <strong>in the category</strong>.</p>
 </div>
-<p>Three facts, each a short exercise in arrow-pushing (Exercise 8), make <span class="m">≅</span> behave like equality: every identity is an isomorphism; the inverse of an isomorphism is an isomorphism; a composite of isomorphisms is an isomorphism. Together they say:</p>
+<p>Three facts, each a short exercise in arrow-pushing (Exercise 10), make <span class="m">≅</span> behave like equality: every identity is an isomorphism; the inverse of an isomorphism is an isomorphism; a composite of isomorphisms is an isomorphism. Together they say:</p>
 <div class="box thm">
 <span class="tag">Proposition · Isomorphism is an equivalence relation</span>
 <p>In any category: <span class="m">X ≅ X</span>; if <span class="m">X ≅ Y</span> then <span class="m">Y ≅ X</span>; and if <span class="m">X ≅ Y</span> and <span class="m">Y ≅ Z</span> then <span class="m">X ≅ Z</span>.</p>
 </div>
-<p><strong>Proof.</strong> The identity <span class="m">id<sub>X</sub></span> is its own inverse, giving <span class="m">X ≅ X</span>. If <span class="m">f : X → Y</span> has inverse <span class="m">g</span>, then the two defining equations, read with the roles of <span class="m">f</span> and <span class="m">g</span> exchanged, say that <span class="m">g : Y → X</span> has inverse <span class="m">f</span>. And if <span class="m">f : X → Y</span> and <span class="m">f′ : Y → Z</span> are isomorphisms, then <span class="m">f′ ∘ f</span> has inverse <span class="m">f<sup>−1</sup> ∘ f′<sup>−1</sup></span> by Exercise 8(c). ∎</p>
+<p><strong>Proof.</strong> The identity <span class="m">id<sub>X</sub></span> is its own inverse, giving <span class="m">X ≅ X</span>. If <span class="m">f : X → Y</span> has inverse <span class="m">g</span>, then the two defining equations, read with the roles of <span class="m">f</span> and <span class="m">g</span> exchanged, say that <span class="m">g : Y → X</span> has inverse <span class="m">f</span>. And if <span class="m">f : X → Y</span> and <span class="m">f′ : Y → Z</span> are isomorphisms, then <span class="m">f′ ∘ f</span> has inverse <span class="m">f<sup>−1</sup> ∘ f′<sup>−1</sup></span> by Exercise 10(c). ∎</p>
 <h3 class="sub">Isomorphic objects have the same arrows</h3>
 <p>Here is the reason category theory treats isomorphic objects as interchangeable. Suppose <span class="m">f : X → Y</span> is an isomorphism, and let <span class="m">W</span> be any object at all. Then composing with <span class="m">f</span> converts arrows into <span class="m">X</span> to arrows into <span class="m">Y</span>,</p>
 <p class="eq"><span class="m">(h : W → X) &nbsp;↦&nbsp; (f ∘ h : W → Y),</span></p>
 <p>and this conversion is a bijection: its inverse is <span class="m">k ↦ f<sup>−1</sup> ∘ k</span>, since <span class="m">f<sup>−1</sup> ∘ (f ∘ h) = (f<sup>−1</sup> ∘ f) ∘ h = h</span> and <span class="m">f ∘ (f<sup>−1</sup> ∘ k) = k</span>. The same works for arrows <em>out of</em> <span class="m">X</span> and <span class="m">Y</span>, composing on the other side. So <span class="m">X</span> and <span class="m">Y</span> have, in a precise sense, the same arrows to and from every other object, and anything you can say about <span class="m">X</span> in the language of arrows can be translated along <span class="m">f</span> into a statement about <span class="m">Y</span>. A property is called <strong>categorical</strong> when isomorphic objects always share it. &ldquo;Has exactly three elements&rdquo; is a categorical property of a set; &ldquo;contains the number 7&rdquo; is not, and category theory will never ask.</p>
 <p>Lesson 9 turns this observation around into a theorem, the Yoneda lemma: an object is <em>determined</em> up to isomorphism by its arrows.</p>
 <h3 class="sub">Symmetries</h3>
-<p>An arrow <span class="m">X → X</span> is an <strong>endomorphism</strong> of <span class="m">X</span>, and an isomorphism <span class="m">X → X</span> is an <strong>automorphism</strong>. The automorphisms of an object can always be composed with one another, composition is associative, <span class="m">id<sub>X</sub></span> is a unit, and each has an inverse: they form a group, written <span class="m">Aut(X)</span>. In <span class="m"><span class="cat">Set</span></span>, the automorphisms of <span class="m">{1, 2, 3}</span> are its <span class="m">3! = 6</span> permutations. Groups are what the symmetries of an object look like, in any category whatever — which is one reason the one-object categories of example (iii) deserve their place in the gallery. A category in which <em>every</em> arrow is an isomorphism is called a <strong>groupoid</strong>; a group is exactly a groupoid with one object (Exercise 3).</p>
+<p>An arrow <span class="m">X → X</span> is an <strong>endomorphism</strong> of <span class="m">X</span>, and an isomorphism <span class="m">X → X</span> is an <strong>automorphism</strong>. The automorphisms of an object can always be composed with one another, composition is associative, <span class="m">id<sub>X</sub></span> is a unit, and each has an inverse: they form a group, written <span class="m">Aut(X)</span>. In <span class="m"><span class="cat">Set</span></span>, the automorphisms of <span class="m">{1, 2, 3}</span> are its <span class="m">3! = 6</span> permutations. Groups are what the symmetries of an object look like, in any category whatever — which is one reason the one-object categories of example (iii) deserve their place in the gallery. A category in which <em>every</em> arrow is an isomorphism is called a <strong>groupoid</strong>; a group is exactly a groupoid with one object (Exercise 8).</p>
 </div>
 </section>
 
@@ -753,7 +762,7 @@ print(Z3.check())</code></pre>
       <div class="out"><span class="lbl">output</span>True</div>
     </div>
 
-    <p>The same <code>check()</code> validates the preorder of example&nbsp;(ii) and the category <span class="cat">𝟚</span> of example&nbsp;(iv) without a single change — you only feed it different data. Running it on the chain <span class="cat">𝟛</span> of the first table is the optional part of Exercise 9.</p>
+    <p>The same <code>check()</code> validates the preorder of example&nbsp;(ii) and the category <span class="cat">𝟚</span> of example&nbsp;(iv) without a single change — you only feed it different data. Running it on the chain <span class="cat">𝟛</span> of the first table is the optional part of Exercise 12.</p>
   
 <p>Finally, the failing table from above. The checker accepts its typing and its identity law and then stops at associativity; a short loop counts how many of the eight non-identity triples break.</p>
 <div class="code">
@@ -813,9 +822,9 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
 <p class="eq"><span class="m">isomorphism &nbsp;⟹&nbsp; split epi &nbsp;⟹&nbsp; epi.</span></p>
 <p>None of the implications reverses in general. In <span class="m"><span class="cat">Set</span></span> an injective function with non-empty domain always has a retraction (send the points outside its image anywhere you like), but the empty function <span class="m">∅ → Y</span> into a non-empty set is monic and has none. And the statement &ldquo;every surjective function has a section&rdquo; is precisely the axiom of choice.</p>
 <h3 class="sub">Mono and epi together are not iso</h3>
-<p>In <span class="m"><span class="cat">Set</span></span>, injective plus surjective equals bijective. It is tempting to guess that &ldquo;monic and epic&rdquo; always means &ldquo;isomorphism.&rdquo; It does not, and the failure happens in the humblest categories we have. In the chain <span class="m"><span class="cat">𝟚</span></span>, the arrow <span class="m">0 → 1</span> is monic and epic — in a thin category every arrow is, since any two parallel arrows are already equal — yet it is not an isomorphism, because there is no arrow <span class="m">1 → 0</span> at all (Exercise 11).</p>
-<p>The same thing happens among honest structure-preserving functions. In <span class="m"><span class="cat">Mon</span></span>, consider the inclusion <span class="m">i : (ℕ, +) → (ℤ, +)</span>. It is injective, hence monic. It is certainly not surjective. But it <em>is</em> epic. Suppose <span class="m">h, k : ℤ → M</span> are monoid homomorphisms that agree on <span class="m">ℕ</span>, and take <span class="m">n ≥ 0</span>. Then <span class="m">h(−n)</span> is a two-sided inverse of <span class="m">h(n)</span> in <span class="m">M</span>, because <span class="m">h(−n) · h(n) = h(0) = e = h(n) · h(−n)</span>; likewise <span class="m">k(−n)</span> is a two-sided inverse of <span class="m">k(n)</span>, which equals <span class="m">h(n)</span>. Inverses in a monoid are unique — the argument of Exercise 8(b) — so <span class="m">h(−n) = k(−n)</span>. Hence <span class="m">h = k</span>. A homomorphism out of <span class="m">ℤ</span> is determined by what it does on <span class="m">ℕ</span>, even though <span class="m">ℕ</span> is not all of <span class="m">ℤ</span>.</p>
-<p>So <span class="m">i</span> is monic and epic but not an isomorphism, and &ldquo;epic&rdquo; does not mean &ldquo;onto&rdquo; outside <span class="m"><span class="cat">Set</span></span>. Cancellation and invertibility are different ideas that happen to coincide for sets. What <em>is</em> true in every category is a slightly weaker statement, which Exercise 17 asks you to prove: an arrow that is monic <strong>and</strong> has a section is an isomorphism.</p>
+<p>In <span class="m"><span class="cat">Set</span></span>, injective plus surjective equals bijective. It is tempting to guess that &ldquo;monic and epic&rdquo; always means &ldquo;isomorphism.&rdquo; It does not, and the failure happens in the humblest categories we have. In the chain <span class="m"><span class="cat">𝟚</span></span>, the arrow <span class="m">0 → 1</span> is monic and epic — in a thin category every arrow is, since any two parallel arrows are already equal — yet it is not an isomorphism, because there is no arrow <span class="m">1 → 0</span> at all (Exercise 15).</p>
+<p>The same thing happens among honest structure-preserving functions. In <span class="m"><span class="cat">Mon</span></span>, consider the inclusion <span class="m">i : (ℕ, +) → (ℤ, +)</span>. It is injective, hence monic. It is certainly not surjective. But it <em>is</em> epic. Suppose <span class="m">h, k : ℤ → M</span> are monoid homomorphisms that agree on <span class="m">ℕ</span>, and take <span class="m">n ≥ 0</span>. Then <span class="m">h(−n)</span> is a two-sided inverse of <span class="m">h(n)</span> in <span class="m">M</span>, because <span class="m">h(−n) · h(n) = h(0) = e = h(n) · h(−n)</span>; likewise <span class="m">k(−n)</span> is a two-sided inverse of <span class="m">k(n)</span>, which equals <span class="m">h(n)</span>. Inverses in a monoid are unique — the argument of Exercise 10(b) — so <span class="m">h(−n) = k(−n)</span>. Hence <span class="m">h = k</span>. A homomorphism out of <span class="m">ℤ</span> is determined by what it does on <span class="m">ℕ</span>, even though <span class="m">ℕ</span> is not all of <span class="m">ℤ</span>.</p>
+<p>So <span class="m">i</span> is monic and epic but not an isomorphism, and &ldquo;epic&rdquo; does not mean &ldquo;onto&rdquo; outside <span class="m"><span class="cat">Set</span></span>. Cancellation and invertibility are different ideas that happen to coincide for sets. What <em>is</em> true in every category is a slightly weaker statement, which Exercise 16 asks you to prove: an arrow that is monic <strong>and</strong> has a section is an isomorphism.</p>
 </div>
 </section>
 
@@ -823,9 +832,14 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
   <div class="measure">
     <div class="sec-no">§7 — Exercises</div>
     <h2>Nineteen problems, from finger exercises to small proofs</h2>
-    <p>Work each one before opening its solution — the arrows-only proofs especially, since the discipline of never mentioning an element is the skill this course is training. Every exercise can be done with pencil and paper. Exercises 9 and 10 also carry an optional Python version, which reuses the <code>FiniteCategory</code> checker from the lab in §6.</p>
+<p>Work each one before opening its solution — the arrows-only proofs especially, since the discipline of never mentioning an element is the skill this course is training. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder; the last group follows one example, the category of relations, from composition to isomorphisms to duality. Every exercise can be done with pencil and paper. Exercises 12 and 13 also carry an optional Python version, which reuses the <code>FiniteCategory</code> checker from the lab in §6.</p>
 
-    <div class="prob">
+<div class="exgroup">
+  <h3>The definition</h3>
+  <p class="exmeta"><a href="#s2">§2</a> · Exercises 1–5</p>
+</div>
+
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
         <p>Let <span class="m">A = {1, 2}</span>, <span class="m">B = {a, b}</span> and <span class="m">C = {10, 20}</span>. Let <span class="m">f : A → B</span> be the function with <span class="m">f(1) = a</span> and <span class="m">f(2) = b</span>, and let <span class="m">g : B → C</span> be the function with <span class="m">g(a) = 10</span> and <span class="m">g(b) = 20</span>.</p>
@@ -839,7 +853,7 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
       </details>
     </div>
 
-    <div class="prob">
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
         <p>The definition of a category asks for <em>an</em> identity arrow on each object. This exercise shows the wording could have said <em>the</em> identity arrow.</p>
@@ -853,22 +867,8 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
-      <div class="prob-body">
-        <p>§4 claimed that a monoid is the same thing as a one-object category. A <em>group</em> is a monoid in which every element has an inverse.</p>
-        <p>State the full dictionary that translates &ldquo;one-object category in which every arrow is invertible&rdquo; into &ldquo;group,&rdquo; and back: say what the arrows, the composition, the identity arrow, and the invertibility condition each become on the group side, and check that the axioms match up.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>The single object carries no information — it is just a peg to hang arrows on. The <strong>arrows</strong> become the group&rsquo;s elements; <strong>composition</strong> of arrows becomes the group operation; the <strong>identity arrow</strong> becomes the identity element <span class="m">e</span>; and &ldquo;<strong>every arrow is invertible</strong>&rdquo; — for each <span class="m">f</span> there is a <span class="m">g</span> with <span class="m">g ∘ f = f ∘ g = id</span> — becomes the existence of inverses.</p>
-          <p>The category axioms translate line for line: associativity of composition is associativity of the operation, and the identity law is the unit law. So: <strong>groups are exactly the one-object categories in which every arrow is invertible.</strong> Drop the invertibility requirement and the same dictionary yields monoids, as in example (iii) of §4.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">examples</span></div>
       <div class="prob-body">
         <p>Each of the following proposes a category whose objects are all sets. For each, decide whether it really is a category, and if not, identify exactly which requirement fails.</p>
         <ol>
@@ -887,36 +887,8 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">arrows-only</span></div>
-      <div class="prob-body">
-        <p>In §4, example (ii), we turned any preorder into a category by drawing exactly one arrow <span class="m">x → y</span> whenever <span class="m">x ≤ y</span>.</p>
-        <p>Explain why, in such a category, <em>every</em> diagram commutes — no matter how many objects and arrows it has, and without checking a single composite.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>A diagram commutes when any two directed paths with the same start and end compose to the same arrow. In a preorder-as-category there is <em>at most one</em> arrow between any ordered pair of objects. Two paths from <span class="m">x</span> to <span class="m">y</span> compose to two arrows <span class="m">x → y</span> — and since at most one such arrow exists, they are forced to be equal. Commutativity is automatic.</p>
-          <p>Categories with this at-most-one-arrow property are called <em>thin</em>. They carry order information but no information about <em>how</em> one object maps to another — which is exactly why they make such clean test cases for definitions later in the course.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">counting</span></div>
-      <div class="prob-body">
-        <p>Build the category <span class="cat">𝟛</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span>, the same way <span class="cat">𝟚</span> was built from <span class="m">0 ≤ 1</span>.</p>
-        <p>How many arrows does <span class="cat">𝟛</span> have in total? List them. Then generalize: how many arrows does the chain <span class="m">0 ≤ 1 ≤ ⋯ ≤ n</span> have as a category?</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><span class="cat">𝟛</span> has <strong>6 arrows</strong>: the three identities on <span class="m">0, 1, 2</span>, the two generating arrows <span class="m">0 → 1</span> and <span class="m">1 → 2</span>, and the composite <span class="m">0 → 2</span>. The last one is the arrow people forget — but transitivity of <span class="m">≤</span> means it is there, and closure under composition <em>obliges</em> you to include it.</p>
-          <p>In general there is exactly one arrow <span class="m">i → j</span> for each ordered pair with <span class="m">i ≤ j</span>. Counting pairs: <strong>(n+1)(n+2)/2</strong> arrows — the triangular numbers. For <span class="m">n = 2</span> this gives 6, as counted by hand.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">structure</span></div>
       <div class="prob-body">
         <p>Every category has an evil twin. Given a category <span class="cat">𝒞</span>, define its <strong>opposite category</strong> <span class="cat">𝒞</span><sup>op</sup> as follows: the objects are the same, but each arrow <span class="m">f : X → Y</span> of <span class="cat">𝒞</span> is reinterpreted as an arrow <span class="m">f : Y → X</span> of <span class="cat">𝒞</span><sup>op</sup>, and composition is defined by <span class="m">g ∘<sup>op</sup> f = f ∘ g</span>, using the composition of <span class="cat">𝒞</span> on the right.</p>
         <p>Verify that <span class="cat">𝒞</span><sup>op</sup> satisfies the two category laws, taking care with the order of composition. What is <span class="m">(<span class="cat">𝒞</span><sup>op</sup>)<sup>op</sup></span>?</p>
@@ -931,8 +903,97 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+
+        <p>Given categories <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, define the <strong>product category</strong> <span class="cat">𝒞</span> × <span class="cat">𝒟</span>: objects are pairs <span class="m">(C, D)</span>, arrows are pairs <span class="m">(f, g)</span> of arrows, composed slotwise: <span class="m">(f&prime;, g&prime;) ∘ (f, g) = (f&prime; ∘ f, g&prime; ∘ g)</span>.</p>
+        <p>Say what the identity on <span class="m">(C, D)</span> must be, and verify both category laws. (File this construction away — Lesson 5 studies it alongside other ways of building new categories from old, and it is the stage on which Lesson 8 exhibits products and coproducts as adjoints.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>The identity is <span class="m">(id<sub>C</sub>, id<sub>D</sub>)</span>, since composing slotwise with it applies each ordinary identity law in its own slot: <span class="m">(f, g) ∘ (id, id) = (f ∘ id, g ∘ id) = (f, g)</span>, and likewise on the left.</p>
+          <p>Associativity is the same story: <span class="m">((f&Prime;, g&Prime;) ∘ (f&prime;, g&prime;)) ∘ (f, g)</span> and <span class="m">(f&Prime;, g&Prime;) ∘ ((f&prime;, g&prime;) ∘ (f, g))</span> both compute, slot by slot, to <span class="m">(f&Prime; ∘ f&prime; ∘ f,&nbsp; g&Prime; ∘ g&prime; ∘ g)</span> — each slot protected by the associativity of its own category. Nothing interacts across slots, which is the whole design. Constructions like this, where the laws hold &ldquo;componentwise for free,&rdquo; recur constantly: the functor category of Lesson 3 will inherit its laws pointwise in exactly the same way.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="exgroup">
+  <h3>Diagrams and examples</h3>
+  <p class="exmeta"><a href="#s3">§3</a>–<a href="#s4">§4</a> · Exercises 6–8</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">counting</span></div>
+      <div class="prob-body">
+        <p>Build the category <span class="cat">𝟛</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span>, the same way <span class="cat">𝟚</span> was built from <span class="m">0 ≤ 1</span>.</p>
+        <p>How many arrows does <span class="cat">𝟛</span> have in total? List them. Then generalize: how many arrows does the chain <span class="m">0 ≤ 1 ≤ ⋯ ≤ n</span> have as a category?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><span class="cat">𝟛</span> has <strong>6 arrows</strong>: the three identities on <span class="m">0, 1, 2</span>, the two generating arrows <span class="m">0 → 1</span> and <span class="m">1 → 2</span>, and the composite <span class="m">0 → 2</span>. The last one is the arrow people forget — but transitivity of <span class="m">≤</span> means it is there, and closure under composition <em>obliges</em> you to include it.</p>
+          <p>In general there is exactly one arrow <span class="m">i → j</span> for each ordered pair with <span class="m">i ≤ j</span>. Counting pairs: <strong>(n+1)(n+2)/2</strong> arrows — the triangular numbers. For <span class="m">n = 2</span> this gives 6, as counted by hand.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>In §4, example (ii), we turned any preorder into a category by drawing exactly one arrow <span class="m">x → y</span> whenever <span class="m">x ≤ y</span>.</p>
+        <p>Explain why, in such a category, <em>every</em> diagram commutes — no matter how many objects and arrows it has, and without checking a single composite.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>A diagram commutes when any two directed paths with the same start and end compose to the same arrow. In a preorder-as-category there is <em>at most one</em> arrow between any ordered pair of objects. Two paths from <span class="m">x</span> to <span class="m">y</span> compose to two arrows <span class="m">x → y</span> — and since at most one such arrow exists, they are forced to be equal. Commutativity is automatic.</p>
+          <p>Categories with this at-most-one-arrow property are called <em>thin</em>. They carry order information but no information about <em>how</em> one object maps to another — which is exactly why they make such clean test cases for definitions later in the course.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>§4 claimed that a monoid is the same thing as a one-object category. A <em>group</em> is a monoid in which every element has an inverse.</p>
+        <p>State the full dictionary that translates &ldquo;one-object category in which every arrow is invertible&rdquo; into &ldquo;group,&rdquo; and back: say what the arrows, the composition, the identity arrow, and the invertibility condition each become on the group side, and check that the axioms match up.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The single object carries no information — it is just a peg to hang arrows on. The <strong>arrows</strong> become the group&rsquo;s elements; <strong>composition</strong> of arrows becomes the group operation; the <strong>identity arrow</strong> becomes the identity element <span class="m">e</span>; and &ldquo;<strong>every arrow is invertible</strong>&rdquo; — for each <span class="m">f</span> there is a <span class="m">g</span> with <span class="m">g ∘ f = f ∘ g = id</span> — becomes the existence of inverses.</p>
+          <p>The category axioms translate line for line: associativity of composition is associativity of the operation, and the identity law is the unit law. So: <strong>groups are exactly the one-object categories in which every arrow is invertible.</strong> Drop the invertibility requirement and the same dictionary yields monoids, as in example (iii) of §4.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="exgroup">
+  <h3>Isomorphisms</h3>
+  <p class="exmeta"><a href="#iso">§5</a> · Exercises 9–11</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">warm-up</span></div>
+<div class="prob-body">
+<p>Isomorphic or not? Decide each case, and where the answer is yes, exhibit an isomorphism.</p>
+<ol>
+<li>In <span class="m"><span class="cat">Set</span></span>: the sets <span class="m">{1, 2, 3}</span> and <span class="m">{x, y, z}</span>. How many different isomorphisms are there between them?</li>
+<li>In the integers ordered by divisibility (a preorder, as in §5): <span class="m">4</span> and <span class="m">6</span>; then <span class="m">5</span> and <span class="m">−5</span>.</li>
+<li>In <span class="m"><span class="cat">Mat</span></span>: the objects <span class="m">2</span> and <span class="m">3</span>.</li>
+<li>In the one-object category of the monoid <span class="m">(ℤ/4, ·)</span> — the numbers <span class="m">0, 1, 2, 3</span> under multiplication modulo 4 — which arrows are isomorphisms?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Yes.</strong> Any bijection is an isomorphism, for instance <span class="m">1 ↦ x, 2 ↦ y, 3 ↦ z</span>. There are <span class="m">3! = 6</span> of them: three choices for the image of <span class="m">1</span>, two remaining for <span class="m">2</span>, one for <span class="m">3</span>.</p>
+<p><strong>(b)</strong> <span class="m">4</span> and <span class="m">6</span>: <strong>no</strong> — isomorphic would mean each divides the other, and neither does. <span class="m">5</span> and <span class="m">−5</span>: <strong>yes</strong> — <span class="m">5</span> divides <span class="m">−5</span> and <span class="m">−5</span> divides <span class="m">5</span>. The two arrows compose to identities automatically, because a preorder has at most one arrow <span class="m">5 → 5</span>.</p>
+<p><strong>(c) No.</strong> An isomorphism <span class="m">2 → 3</span> would be an invertible <span class="m">3 × 2</span> matrix, and invertible matrices are square.</p>
+<p><strong>(d)</strong> The isomorphisms are the elements with a multiplicative inverse modulo 4: <span class="m">1</span> (its own inverse) and <span class="m">3</span> (since <span class="m">3 · 3 = 9 ≡ 1</span>). The elements <span class="m">0</span> and <span class="m">2</span> are not invertible: every multiple of <span class="m">0</span> is <span class="m">0</span>, and every multiple of <span class="m">2</span> is even, so neither can reach <span class="m">1</span>.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
         <p>An arrow <span class="m">f : X → Y</span> is an <strong>isomorphism</strong> if there exists <span class="m">g : Y → X</span> with <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. Prove three basic facts, each by pure arrow-pushing:</p>
         <ol>
@@ -950,8 +1011,29 @@ print(len(fails), &quot;of 8 non-identity triples fail&quot;)</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Let <span class="m">f : X → Y</span> be an isomorphism in any category. Show that the automorphism groups of <span class="m">X</span> and <span class="m">Y</span> are isomorphic as groups, by checking that</p>
+<p class="eq"><span class="m">φ &nbsp;↦&nbsp; f ∘ φ ∘ f<sup>−1</sup></span></p>
+<p>sends automorphisms of <span class="m">X</span> to automorphisms of <span class="m">Y</span>, respects composition and identities, and has an inverse of the same form.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p>Write <span class="m">c(φ) = f ∘ φ ∘ f<sup>−1</sup></span>. If <span class="m">φ : X → X</span> is an isomorphism then <span class="m">c(φ) : Y → Y</span> is a composite of three isomorphisms, hence an isomorphism (Exercise 10(c)): an automorphism of <span class="m">Y</span>.</p>
+<p><strong>Composition.</strong> <span class="m">c(φ) ∘ c(ψ) = f ∘ φ ∘ f<sup>−1</sup> ∘ f ∘ ψ ∘ f<sup>−1</sup> = f ∘ φ ∘ ψ ∘ f<sup>−1</sup> = c(φ ∘ ψ)</span>, the middle pair <span class="m">f<sup>−1</sup> ∘ f</span> cancelling. <strong>Identity.</strong> <span class="m">c(id<sub>X</sub>) = f ∘ f<sup>−1</sup> = id<sub>Y</sub></span>.</p>
+<p><strong>Inverse.</strong> The map <span class="m">d(θ) = f<sup>−1</sup> ∘ θ ∘ f</span> goes back from <span class="m">Aut(Y)</span> to <span class="m">Aut(X)</span>, and <span class="m">d(c(φ)) = f<sup>−1</sup> ∘ f ∘ φ ∘ f<sup>−1</sup> ∘ f = φ</span>; likewise <span class="m">c(d(θ)) = θ</span>. So <span class="m">c</span> is a bijective homomorphism of groups whose inverse <span class="m">d</span> is also a homomorphism: <span class="m">Aut(X) ≅ Aut(Y)</span>. This is the slogan of §5 at work — isomorphic objects cannot be told apart, not even by their symmetries.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Finite categories by hand</h3>
+  <p class="exmeta"><a href="#byhand">§6</a> · Exercises 12–14</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
         <p>The <em>commuting square</em> is the category with four objects <span class="m">A, B, C, D</span>, their four identities, and five more arrows: <span class="m">f : A → B</span>, <span class="m">p : A → C</span>, <span class="m">q : B → D</span>, <span class="m">g : C → D</span>, and a diagonal <span class="m">d : A → D</span> with <span class="m">q ∘ f = d = g ∘ p</span> — the square of §3, with its diagonal given a name.</p>
         <p>Write out its composition table in the style of §6. How many composable pairs are there? Then explain why associativity needs no checking.</p>
@@ -988,8 +1070,8 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 13</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
         <p>A checker — human or machine — is only trustworthy once you have seen it catch a mistake. Corrupt two of §6&rsquo;s tables on purpose.</p>
         <ol>
@@ -997,7 +1079,7 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
           <li>In the table of <span class="m">(ℤ/3, +)</span>, change the single entry <span class="m">1 ∘ 1</span> from <span class="m">2</span> to <span class="m">0</span>. Typing is untouched and the identity law still holds. Find a triple at which associativity fails.</li>
         </ol>
         <div class="pytask"><span class="tag">Optional · Python</span>
-        <p>Make corruption (a) in your encoding of <span class="m"><span class="cat">𝟛</span></span> from Exercise 9: set <code>comp[('b','a')] = 'i0'</code>. Predict which of the four checks in <code>check()</code> fires, then run it.</p>
+        <p>Make corruption (a) in your encoding of <span class="m"><span class="cat">𝟛</span></span> from Exercise 12: set <code>comp[('b','a')] = 'i0'</code>. Predict which of the four checks in <code>check()</code> fires, then run it.</p>
         </div>
       </div>
       <details><summary>Show solution</summary>
@@ -1009,7 +1091,7 @@ print(FiniteCategory(objs, ar, comp, ident).check())   # True</code></pre>
           <p>The typing check on composites fails first: the assertion <code>ar[gf] == (dom(f), cod(g))</code> raises <code>AssertionError</code>.</p>
 <div class="code">
   <div class="code-bar"><span class="fname"><b>corrupt.py</b> — the checker must object</span><button class="copy" type="button">Copy</button></div>
-<pre><code>bad_comp = dict(comp)            # comp: the table of THREE (Exercise 9)
+<pre><code>bad_comp = dict(comp)            # comp: the table of THREE (Exercise 12)
 bad_comp[(&#x27;b&#x27;, &#x27;a&#x27;)] = &#x27;i0&#x27;      # claim: 0 -&gt; 1 -&gt; 2 composes to id_0
 try:
     FiniteCategory(objs, ar, bad_comp, ident).check()
@@ -1022,8 +1104,31 @@ except AssertionError:
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">counting</span></div>
+<div class="prob-body">
+<p>Classify small categories by hand. Two categories count as &ldquo;the same&rdquo; here if one becomes the other by renaming objects and arrows.</p>
+<ol>
+<li>How many categories have exactly one object and two arrows?</li>
+<li>How many categories have exactly two objects and three arrows?</li>
+</ol>
+<p>Hint: decide where the non-identity arrows can go, then ask which composition tables the laws allow.</p>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Two.</strong> One arrow must be the identity <span class="m">e</span>; call the other <span class="m">a</span>. The only free entry in the composition table is <span class="m">a ∘ a</span>, which is either <span class="m">e</span> or <span class="m">a</span>. Both choices are associative (with a single non-identity arrow, every bracketing of <span class="m">a ∘ a ∘ a</span> gives the same result — check both cases), so both are categories: the group <span class="m">ℤ/2</span>, where <span class="m">a ∘ a = e</span>, and the monoid with an <em>idempotent</em>, where <span class="m">a ∘ a = a</span> (for instance <span class="m">{1, 0}</span> under multiplication). They are genuinely different: in the first <span class="m">a</span> is an isomorphism, in the second it is not.</p>
+<p><strong>(b) Three.</strong> Two of the three arrows are the identities, leaving one more arrow <span class="m">u</span>. Either <span class="m">u</span> runs between the two objects — say <span class="m">u : X → Y</span>, the other direction being the same up to renaming — and then no composite is free: this is <span class="m"><span class="cat">𝟚</span></span>. Or <span class="m">u</span> is a loop at one object, and as in part (a) either <span class="m">u ∘ u = id</span> or <span class="m">u ∘ u = u</span>. So there are three: <span class="m"><span class="cat">𝟚</span></span>, and the two monoids of part (a) each sitting beside a lone extra object.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Monomorphisms and epimorphisms</h3>
+  <p class="exmeta"><a href="#deeper">Going deeper</a> · Exercises 15–16</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
 
         <p>Using only the cancellation definitions from the Going-deeper section:</p>
@@ -1041,94 +1146,8 @@ except AssertionError:
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure</span></div>
-      <div class="prob-body">
-
-        <p>Given categories <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, define the <strong>product category</strong> <span class="cat">𝒞</span> × <span class="cat">𝒟</span>: objects are pairs <span class="m">(C, D)</span>, arrows are pairs <span class="m">(f, g)</span> of arrows, composed slotwise: <span class="m">(f&prime;, g&prime;) ∘ (f, g) = (f&prime; ∘ f, g&prime; ∘ g)</span>.</p>
-        <p>Say what the identity on <span class="m">(C, D)</span> must be, and verify both category laws. (File this construction away — Lesson 5 studies it alongside other ways of building new categories from old, and it is the stage on which Lesson 8 exhibits products and coproducts as adjoints.)</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-
-          <p>The identity is <span class="m">(id<sub>C</sub>, id<sub>D</sub>)</span>, since composing slotwise with it applies each ordinary identity law in its own slot: <span class="m">(f, g) ∘ (id, id) = (f ∘ id, g ∘ id) = (f, g)</span>, and likewise on the left.</p>
-          <p>Associativity is the same story: <span class="m">((f&Prime;, g&Prime;) ∘ (f&prime;, g&prime;)) ∘ (f, g)</span> and <span class="m">(f&Prime;, g&Prime;) ∘ ((f&prime;, g&prime;) ∘ (f, g))</span> both compute, slot by slot, to <span class="m">(f&Prime; ∘ f&prime; ∘ f,&nbsp; g&Prime; ∘ g&prime; ∘ g)</span> — each slot protected by the associativity of its own category. Nothing interacts across slots, which is the whole design. Constructions like this, where the laws hold &ldquo;componentwise for free,&rdquo; recur constantly: the functor category of Lesson 3 will inherit its laws pointwise in exactly the same way.</p>
-        </div>
-      </details>
-    </div>
-
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">warm-up</span></div>
-<div class="prob-body">
-<p>Isomorphic or not? Decide each case, and where the answer is yes, exhibit an isomorphism.</p>
-<ol>
-<li>In <span class="m"><span class="cat">Set</span></span>: the sets <span class="m">{1, 2, 3}</span> and <span class="m">{x, y, z}</span>. How many different isomorphisms are there between them?</li>
-<li>In the integers ordered by divisibility (a preorder, as in §5): <span class="m">4</span> and <span class="m">6</span>; then <span class="m">5</span> and <span class="m">−5</span>.</li>
-<li>In <span class="m"><span class="cat">Mat</span></span>: the objects <span class="m">2</span> and <span class="m">3</span>.</li>
-<li>In the one-object category of the monoid <span class="m">(ℤ/4, ·)</span> — the numbers <span class="m">0, 1, 2, 3</span> under multiplication modulo 4 — which arrows are isomorphisms?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a) Yes.</strong> Any bijection is an isomorphism, for instance <span class="m">1 ↦ x, 2 ↦ y, 3 ↦ z</span>. There are <span class="m">3! = 6</span> of them: three choices for the image of <span class="m">1</span>, two remaining for <span class="m">2</span>, one for <span class="m">3</span>.</p>
-<p><strong>(b)</strong> <span class="m">4</span> and <span class="m">6</span>: <strong>no</strong> — isomorphic would mean each divides the other, and neither does. <span class="m">5</span> and <span class="m">−5</span>: <strong>yes</strong> — <span class="m">5</span> divides <span class="m">−5</span> and <span class="m">−5</span> divides <span class="m">5</span>. The two arrows compose to identities automatically, because a preorder has at most one arrow <span class="m">5 → 5</span>.</p>
-<p><strong>(c) No.</strong> An isomorphism <span class="m">2 → 3</span> would be an invertible <span class="m">3 × 2</span> matrix, and invertible matrices are square.</p>
-<p><strong>(d)</strong> The isomorphisms are the elements with a multiplicative inverse modulo 4: <span class="m">1</span> (its own inverse) and <span class="m">3</span> (since <span class="m">3 · 3 = 9 ≡ 1</span>). The elements <span class="m">0</span> and <span class="m">2</span> are not invertible: every multiple of <span class="m">0</span> is <span class="m">0</span>, and every multiple of <span class="m">2</span> is even, so neither can reach <span class="m">1</span>.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">examples</span></div>
-<div class="prob-body">
-<p>Work in <span class="m"><span class="cat">Rel</span></span> (§4, example vi). Let <span class="m">R</span> be the relation from <span class="m">{1, 2}</span> to <span class="m">{a, b, c}</span> consisting of the pairs <span class="m">(1, a), (1, b), (2, c)</span>, and let <span class="m">S</span> be the relation from <span class="m">{a, b, c}</span> to <span class="m">{x, y}</span> consisting of <span class="m">(a, x), (b, y), (c, y)</span>.</p>
-<ol>
-<li>Compute the composite <span class="m">S ∘ R</span>.</li>
-<li>Every relation <span class="m">R</span> from <span class="m">X</span> to <span class="m">Y</span> has a <strong>converse</strong> <span class="m">R°</span> from <span class="m">Y</span> to <span class="m">X</span>, obtained by reversing every pair. Show that <span class="m">(S ∘ R)° = R° ∘ S°</span> for all composable relations.</li>
-<li>Which arrows of <span class="m"><span class="cat">Rel</span></span> are graphs of functions? State the two conditions on <span class="m">R</span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Chain each pair of <span class="m">R</span> through a matching pair of <span class="m">S</span>: <span class="m">1 R a</span> and <span class="m">a S x</span> give <span class="m">(1, x)</span>; <span class="m">1 R b</span> and <span class="m">b S y</span> give <span class="m">(1, y)</span>; <span class="m">2 R c</span> and <span class="m">c S y</span> give <span class="m">(2, y)</span>. So <span class="m">S ∘ R = { (1, x), (1, y), (2, y) }</span> — note that <span class="m">1</span> is related to two different elements.</p>
-<p><strong>(b)</strong> The pair <span class="m">(z, x)</span> lies in <span class="m">(S ∘ R)°</span> exactly when <span class="m">(x, z) ∈ S ∘ R</span>, that is, when there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S z</span>. Reversing both pairs, that says: there is a <span class="m">y</span> with <span class="m">z S° y</span> and <span class="m">y R° x</span> — which is the definition of <span class="m">(z, x) ∈ R° ∘ S°</span>. The order of composition flips, exactly as for inverses in Exercise 8(c).</p>
-<p><strong>(c)</strong> <span class="m">R</span> is the graph of a function <span class="m">X → Y</span> when every <span class="m">x</span> is related to <strong>at least one</strong> <span class="m">y</span> (the function is defined everywhere) and to <strong>at most one</strong> <span class="m">y</span> (it is single-valued). The relation <span class="m">S ∘ R</span> of part (a) fails the second condition at <span class="m">x = 1</span>.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>Let <span class="m">f : X → Y</span> be an isomorphism in any category. Show that the automorphism groups of <span class="m">X</span> and <span class="m">Y</span> are isomorphic as groups, by checking that</p>
-<p class="eq"><span class="m">φ &nbsp;↦&nbsp; f ∘ φ ∘ f<sup>−1</sup></span></p>
-<p>sends automorphisms of <span class="m">X</span> to automorphisms of <span class="m">Y</span>, respects composition and identities, and has an inverse of the same form.</p>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p>Write <span class="m">c(φ) = f ∘ φ ∘ f<sup>−1</sup></span>. If <span class="m">φ : X → X</span> is an isomorphism then <span class="m">c(φ) : Y → Y</span> is a composite of three isomorphisms, hence an isomorphism (Exercise 8(c)): an automorphism of <span class="m">Y</span>.</p>
-<p><strong>Composition.</strong> <span class="m">c(φ) ∘ c(ψ) = f ∘ φ ∘ f<sup>−1</sup> ∘ f ∘ ψ ∘ f<sup>−1</sup> = f ∘ φ ∘ ψ ∘ f<sup>−1</sup> = c(φ ∘ ψ)</span>, the middle pair <span class="m">f<sup>−1</sup> ∘ f</span> cancelling. <strong>Identity.</strong> <span class="m">c(id<sub>X</sub>) = f ∘ f<sup>−1</sup> = id<sub>Y</sub></span>.</p>
-<p><strong>Inverse.</strong> The map <span class="m">d(θ) = f<sup>−1</sup> ∘ θ ∘ f</span> goes back from <span class="m">Aut(Y)</span> to <span class="m">Aut(X)</span>, and <span class="m">d(c(φ)) = f<sup>−1</sup> ∘ f ∘ φ ∘ f<sup>−1</sup> ∘ f = φ</span>; likewise <span class="m">c(d(θ)) = θ</span>. So <span class="m">c</span> is a bijective homomorphism of groups whose inverse <span class="m">d</span> is also a homomorphism: <span class="m">Aut(X) ≅ Aut(Y)</span>. This is the slogan of §5 at work — isomorphic objects cannot be told apart, not even by their symmetries.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">counting</span></div>
-<div class="prob-body">
-<p>Classify small categories by hand. Two categories count as &ldquo;the same&rdquo; here if one becomes the other by renaming objects and arrows.</p>
-<ol>
-<li>How many categories have exactly one object and two arrows?</li>
-<li>How many categories have exactly two objects and three arrows?</li>
-</ol>
-<p>Hint: decide where the non-identity arrows can go, then ask which composition tables the laws allow.</p>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a) Two.</strong> One arrow must be the identity <span class="m">e</span>; call the other <span class="m">a</span>. The only free entry in the composition table is <span class="m">a ∘ a</span>, which is either <span class="m">e</span> or <span class="m">a</span>. Both choices are associative (with a single non-identity arrow, every bracketing of <span class="m">a ∘ a ∘ a</span> gives the same result — check both cases), so both are categories: the group <span class="m">ℤ/2</span>, where <span class="m">a ∘ a = e</span>, and the monoid with an <em>idempotent</em>, where <span class="m">a ∘ a = a</span> (for instance <span class="m">{1, 0}</span> under multiplication). They are genuinely different: in the first <span class="m">a</span> is an isomorphism, in the second it is not.</p>
-<p><strong>(b) Three.</strong> Two of the three arrows are the identities, leaving one more arrow <span class="m">u</span>. Either <span class="m">u</span> runs between the two objects — say <span class="m">u : X → Y</span>, the other direction being the same up to renaming — and then no composite is free: this is <span class="m"><span class="cat">𝟚</span></span>. Or <span class="m">u</span> is a loop at one object, and as in part (a) either <span class="m">u ∘ u = id</span> or <span class="m">u ∘ u = u</span>. So there are three: <span class="m"><span class="cat">𝟚</span></span>, and the two monoids of part (a) each sitting beside a lone extra object.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">arrows-only</span></div>
+<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
 <p>Cancellation, practised. In any category, prove:</p>
 <ol>
@@ -1148,6 +1167,31 @@ except AssertionError:
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>The category of relations</h3>
+  <p class="exmeta"><a href="#s4">§4</a>–<a href="#iso">§5</a> · Exercises 17–19</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>Work in <span class="m"><span class="cat">Rel</span></span> (§4, example vi). Let <span class="m">R</span> be the relation from <span class="m">{1, 2}</span> to <span class="m">{a, b, c}</span> consisting of the pairs <span class="m">(1, a), (1, b), (2, c)</span>, and let <span class="m">S</span> be the relation from <span class="m">{a, b, c}</span> to <span class="m">{x, y}</span> consisting of <span class="m">(a, x), (b, y), (c, y)</span>.</p>
+<ol>
+<li>Compute the composite <span class="m">S ∘ R</span>.</li>
+<li>Every relation <span class="m">R</span> from <span class="m">X</span> to <span class="m">Y</span> has a <strong>converse</strong> <span class="m">R°</span> from <span class="m">Y</span> to <span class="m">X</span>, obtained by reversing every pair. Show that <span class="m">(S ∘ R)° = R° ∘ S°</span> for all composable relations.</li>
+<li>Which arrows of <span class="m"><span class="cat">Rel</span></span> are graphs of functions? State the two conditions on <span class="m">R</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Chain each pair of <span class="m">R</span> through a matching pair of <span class="m">S</span>: <span class="m">1 R a</span> and <span class="m">a S x</span> give <span class="m">(1, x)</span>; <span class="m">1 R b</span> and <span class="m">b S y</span> give <span class="m">(1, y)</span>; <span class="m">2 R c</span> and <span class="m">c S y</span> give <span class="m">(2, y)</span>. So <span class="m">S ∘ R = { (1, x), (1, y), (2, y) }</span> — note that <span class="m">1</span> is related to two different elements.</p>
+<p><strong>(b)</strong> The pair <span class="m">(z, x)</span> lies in <span class="m">(S ∘ R)°</span> exactly when <span class="m">(x, z) ∈ S ∘ R</span>, that is, when there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S z</span>. Reversing both pairs, that says: there is a <span class="m">y</span> with <span class="m">z S° y</span> and <span class="m">y R° x</span> — which is the definition of <span class="m">(z, x) ∈ R° ∘ S°</span>. The order of composition flips, exactly as for inverses in Exercise 10(c).</p>
+<p><strong>(c)</strong> <span class="m">R</span> is the graph of a function <span class="m">X → Y</span> when every <span class="m">x</span> is related to <strong>at least one</strong> <span class="m">y</span> (the function is defined everywhere) and to <strong>at most one</strong> <span class="m">y</span> (it is single-valued). The relation <span class="m">S ∘ R</span> of part (a) fails the second condition at <span class="m">x = 1</span>.</p>
+</div>
+</details>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 18</span><span class="tier">think</span></div>
 <div class="prob-body">
@@ -1157,24 +1201,26 @@ except AssertionError:
 <details><summary>Show solution</summary>
 <div class="sol">
 <p>If <span class="m">R</span> is the graph of a bijection <span class="m">f</span>, its converse <span class="m">R°</span> is the graph of <span class="m">f<sup>−1</sup></span>, and the two composites are the equality relations. So graphs of bijections are isomorphisms.</p>
-<p>Conversely, suppose <span class="m">S ∘ R</span> is equality on <span class="m">X</span> and <span class="m">R ∘ S</span> is equality on <span class="m">Y</span>. Fix <span class="m">x</span>. Since <span class="m">(x, x) ∈ S ∘ R</span>, there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S x</span>: so <span class="m">x</span> is related to <strong>at least one</strong> element. Suppose also <span class="m">x R y′</span>. Then <span class="m">y S x</span> and <span class="m">x R y′</span> give <span class="m">(y, y′) ∈ R ∘ S</span>, and <span class="m">R ∘ S</span> is equality, so <span class="m">y = y′</span>: <span class="m">x</span> is related to <strong>at most one</strong> element. By Exercise 14(c), <span class="m">R</span> is the graph of a function <span class="m">f</span>. The same argument with the roles of <span class="m">R</span> and <span class="m">S</span> exchanged shows <span class="m">S</span> is the graph of a function <span class="m">g</span>, and the two equations say <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. So <span class="m">f</span> is a bijection.</p>
+<p>Conversely, suppose <span class="m">S ∘ R</span> is equality on <span class="m">X</span> and <span class="m">R ∘ S</span> is equality on <span class="m">Y</span>. Fix <span class="m">x</span>. Since <span class="m">(x, x) ∈ S ∘ R</span>, there is a <span class="m">y</span> with <span class="m">x R y</span> and <span class="m">y S x</span>: so <span class="m">x</span> is related to <strong>at least one</strong> element. Suppose also <span class="m">x R y′</span>. Then <span class="m">y S x</span> and <span class="m">x R y′</span> give <span class="m">(y, y′) ∈ R ∘ S</span>, and <span class="m">R ∘ S</span> is equality, so <span class="m">y = y′</span>: <span class="m">x</span> is related to <strong>at most one</strong> element. By Exercise 17(c), <span class="m">R</span> is the graph of a function <span class="m">f</span>. The same argument with the roles of <span class="m">R</span> and <span class="m">S</span> exchanged shows <span class="m">S</span> is the graph of a function <span class="m">g</span>, and the two equations say <span class="m">g ∘ f = id<sub>X</sub></span> and <span class="m">f ∘ g = id<sub>Y</sub></span>. So <span class="m">f</span> is a bijection.</p>
 <p>The isomorphisms of <span class="m"><span class="cat">Rel</span></span> are therefore the same as the isomorphisms of <span class="m"><span class="cat">Set</span></span>, even though <span class="m"><span class="cat">Rel</span></span> has vastly more arrows. Adding arrows to a category can create new isomorphisms; here it happens not to.</p>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 19</span><span class="tier">structure</span></div>
 <div class="prob-body">
-<p>The <strong>converse</strong> operation of Exercise 14 can be read as a comparison between <span class="m"><span class="cat">Rel</span></span> and its opposite category (Exercise 7).</p>
+<p>The <strong>converse</strong> operation of Exercise 17 can be read as a comparison between <span class="m"><span class="cat">Rel</span></span> and its opposite category (Exercise 4).</p>
 <p>Describe a way of turning each arrow <span class="m">R : X → Y</span> of <span class="m"><span class="cat">Rel</span></span> into an arrow <span class="m">X → Y</span> of <span class="m"><span class="cat">Rel</span><sup>op</sup></span> that respects identities and composition and can be undone. What does this say about the relationship between a relation and its converse?</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>An arrow <span class="m">X → Y</span> of <span class="m"><span class="cat">Rel</span><sup>op</sup></span> is, by definition, an arrow <span class="m">Y → X</span> of <span class="m"><span class="cat">Rel</span></span> — a relation from <span class="m">Y</span> to <span class="m">X</span>. Send <span class="m">R</span> to its converse <span class="m">R°</span>, which is exactly such a relation. Identities are respected, since the converse of an equality relation is itself. Composition is respected: the composite of <span class="m">R°</span> and <span class="m">S°</span> <em>in the opposite category</em> is, by definition, the composite in the other order in <span class="m"><span class="cat">Rel</span></span>, namely <span class="m">R° ∘ S°</span>, and Exercise 14(b) says this is <span class="m">(S ∘ R)°</span>. And the assignment undoes itself, because <span class="m">R°° = R</span>.</p>
+<p>An arrow <span class="m">X → Y</span> of <span class="m"><span class="cat">Rel</span><sup>op</sup></span> is, by definition, an arrow <span class="m">Y → X</span> of <span class="m"><span class="cat">Rel</span></span> — a relation from <span class="m">Y</span> to <span class="m">X</span>. Send <span class="m">R</span> to its converse <span class="m">R°</span>, which is exactly such a relation. Identities are respected, since the converse of an equality relation is itself. Composition is respected: the composite of <span class="m">R°</span> and <span class="m">S°</span> <em>in the opposite category</em> is, by definition, the composite in the other order in <span class="m"><span class="cat">Rel</span></span>, namely <span class="m">R° ∘ S°</span>, and Exercise 17(b) says this is <span class="m">(S ∘ R)°</span>. And the assignment undoes itself, because <span class="m">R°° = R</span>.</p>
 <p>So <span class="m"><span class="cat">Rel</span></span> is the same as its own opposite: every statement about relations has a mirror image obtained by reversing them. In Lesson 2 an assignment like this — objects to objects, arrows to arrows, identities and composites preserved — gets a name, <em>functor</em>, and Lesson 5 returns to categories that are their own duals.</p>
 </div>
 </details>
 </div>
+
 </div>
 </section>
 

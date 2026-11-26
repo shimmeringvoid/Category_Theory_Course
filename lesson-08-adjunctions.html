@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -512,7 +521,7 @@ body.py-off .pyonly{display:none}
     <p>Order theorists call this a <strong>Galois connection</strong>. The everyday example: include the integers into the reals, <span class="m">i : ℤ ↪ ℝ</span>. Then <span class="m">⌈r⌉ ≤ n ⟺ r ≤ n</span> makes <strong>ceiling a left adjoint</strong> of the inclusion, and <span class="m">n ≤ ⌊r⌋ ⟺ n ≤ r</span> makes <strong>floor a right adjoint</strong>: <span class="m">⌈−⌉ ⊣ i ⊣ ⌊−⌋</span>. Rounding up is the <em>best over-approximation</em>, rounding down the <em>best under-approximation</em> — left adjoints approach from one side, right adjoints from the other, and the inclusion sits between its own two corrections. §7 computes adjoints of this kind by hand, and its optional lab verifies both equivalences on 1,586 instances and builds a finder for the adjoints of arbitrary monotone maps between finite posets.</p>
 
     <h3>The diagonal, flanked</h3>
-    <p>Lesson 6&rsquo;s constructions join the gallery too. The diagonal functor <span class="m">Δ : <span class="cat">𝒞</span> → <span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> sends <span class="m">X</span> to the pair <span class="m">(X, X)</span>; a right adjoint to it must convert arrows <span class="m">(X, X) → (A, B)</span> — i.e. <em>pairs</em> of arrows — into single arrows <span class="m">X → ?</span>, and Lesson 6&rsquo;s product definition says the product does exactly that. Dually the coproduct is Δ&rsquo;s left adjoint: <span class="m">+ ⊣ Δ ⊣ ×</span>, another sandwich (Exercise 6). This generalizes: replacing Δ by the constant-diagram functor of Lesson 7, <em>limits are right adjoints and colimits are left adjoints</em> — the previous two lessons were secretly case studies of this one.</p>
+    <p>Lesson 6&rsquo;s constructions join the gallery too. The diagonal functor <span class="m">Δ : <span class="cat">𝒞</span> → <span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> sends <span class="m">X</span> to the pair <span class="m">(X, X)</span>; a right adjoint to it must convert arrows <span class="m">(X, X) → (A, B)</span> — i.e. <em>pairs</em> of arrows — into single arrows <span class="m">X → ?</span>, and Lesson 6&rsquo;s product definition says the product does exactly that. Dually the coproduct is Δ&rsquo;s left adjoint: <span class="m">+ ⊣ Δ ⊣ ×</span>, another sandwich (Exercise 9). This generalizes: replacing Δ by the constant-diagram functor of Lesson 7, <em>limits are right adjoints and colimits are left adjoints</em> — the previous two lessons were secretly case studies of this one.</p>
 <h3 class="sub">More entries for the gallery</h3>
 <p>Once the pattern is familiar it is found everywhere. A few more adjunctions, each with its bijection stated in a line:</p>
 <div class="tablewrap"><table class="zoo">
@@ -523,7 +532,7 @@ body.py-off .pyonly{display:none}
 <tr><td>discrete order on a set</td><td>underlying set of a preorder</td><td>every function out of a discrete order is monotone</td></tr>
 <tr><td>underlying set of a preorder</td><td>the order in which everything is <span class="m">≤</span> everything</td><td>every function into such an order is monotone</td></tr>
 </table></div>
-<p>The last two rows form another sandwich: the underlying-set functor from preorders to sets has a left adjoint <em>and</em> a right adjoint (Exercise 14). And the equivalences of Lesson 4 belong here too — if <span class="m">F</span> is an equivalence with pseudo-inverse <span class="m">G</span>, Lesson 4&rsquo;s Exercise 4 found a bijection between arrows <span class="m">F X → Y</span> and arrows <span class="m">X → G Y</span>. An adjunction is what is left of an equivalence when the unit and counit are no longer required to be invertible.</p>
+<p>The last two rows form another sandwich: the underlying-set functor from preorders to sets has a left adjoint <em>and</em> a right adjoint (Exercise 17). And the equivalences of Lesson 4 belong here too — if <span class="m">F</span> is an equivalence with pseudo-inverse <span class="m">G</span>, Lesson 4&rsquo;s Exercise 5 found a bijection between arrows <span class="m">F X → Y</span> and arrows <span class="m">X → G Y</span>. An adjunction is what is left of an equivalence when the unit and counit are no longer required to be invertible.</p>
   </div>
 </section>
 
@@ -546,18 +555,18 @@ body.py-off .pyonly{display:none}
       <figcaption>The first triangle identity: inflate with the unit, deflate with the counit, arrive where you started. The second is its mirror image on the <span class="m">U</span> side.</figcaption>
     </figure>
 
-    <p>Each direction of the equivalence is a construction. <em>From a bijection:</em> naturality in <span class="m">Y</span>, applied to the identity of <span class="m">F X</span>, shows that the transpose of any <span class="m">f̂ : F X → Y</span> is <span class="m">U f̂ ∘ η<sub>X</sub></span> — so the unit alone determines the whole bijection — and dually the transpose of <span class="m">f : X → U Y</span> is <span class="m">ε<sub>Y</sub> ∘ F f</span>. The triangle identities then say that <span class="m">η<sub>X</sub></span> and <span class="m">ε<sub>Y</sub></span>, transposed back, are the identities they came from. <em>From <span class="m">η</span> and <span class="m">ε</span>:</em> define transposition by those same two formulas, and the triangle identities are exactly what force the two to be mutually inverse. Exercise 4 proves that — it is the best composition workout the course has to offer — and Exercise 12 supplies the remaining details in both directions. In the free-monoid case the triangles say something you can whisper in plain language: &ldquo;wrap each generator as a word, then evaluate: you get the word back&rdquo; and &ldquo;wrap a monoid element, then evaluate: you get the element back.&rdquo;</p>
+    <p>Each direction of the equivalence is a construction. <em>From a bijection:</em> naturality in <span class="m">Y</span>, applied to the identity of <span class="m">F X</span>, shows that the transpose of any <span class="m">f̂ : F X → Y</span> is <span class="m">U f̂ ∘ η<sub>X</sub></span> — so the unit alone determines the whole bijection — and dually the transpose of <span class="m">f : X → U Y</span> is <span class="m">ε<sub>Y</sub> ∘ F f</span>. The triangle identities then say that <span class="m">η<sub>X</sub></span> and <span class="m">ε<sub>Y</sub></span>, transposed back, are the identities they came from. <em>From <span class="m">η</span> and <span class="m">ε</span>:</em> define transposition by those same two formulas, and the triangle identities are exactly what force the two to be mutually inverse. Exercise 12 proves that — it is the best composition workout the course has to offer — and Exercise 13 supplies the remaining details in both directions. In the free-monoid case the triangles say something you can whisper in plain language: &ldquo;wrap each generator as a word, then evaluate: you get the word back&rdquo; and &ldquo;wrap a monoid element, then evaluate: you get the element back.&rdquo;</p>
 
     <div class="box thm">
       <span class="tag">Theorem · RAPL</span>
       <p><strong>Right adjoints preserve limits; left adjoints preserve colimits.</strong> If <span class="m">U</span> has a left adjoint, then <span class="m">U(lim D) ≅ lim (U∘D)</span> for every diagram <span class="m">D</span> with a limit — and dually for <span class="m">F</span> and colimits.</p>
     </div>
 
-    <p>§6 proves the theorem, twice. You have known an instance of it for years: the underlying set of a product of groups is the product of the underlying sets. Now you know <em>why</em> — <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has a left adjoint (free groups), so it must preserve products, terminal objects, equalizers, pullbacks, all of Lesson 7&rsquo;s zoo at once. The contrapositive is a weapon: a functor that fails to preserve even one colimit <em>cannot</em> have a right adjoint, full stop. Exercise 7 uses it to prove a non-existence theorem in two lines, and §7 shows the same phenomenon in miniature: a constant map out of the divisibility order fails to preserve the initial object, and the search for its right adjoint comes back empty.</p>
+    <p>§6 proves the theorem, twice. You have known an instance of it for years: the underlying set of a product of groups is the product of the underlying sets. Now you know <em>why</em> — <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has a left adjoint (free groups), so it must preserve products, terminal objects, equalizers, pullbacks, all of Lesson 7&rsquo;s zoo at once. The contrapositive is a weapon: a functor that fails to preserve even one colimit <em>cannot</em> have a right adjoint, full stop. Exercise 15 uses it to prove a non-existence theorem in two lines, and §7 shows the same phenomenon in miniature: a constant map out of the divisibility order fails to preserve the initial object, and the search for its right adjoint comes back empty.</p>
 
     <div class="box amber">
       <span class="tag">Aside · Adjoints are unique</span>
-      <p>If <span class="m">U</span> has a left adjoint, it has exactly one up to natural isomorphism — the adjunction pins its partner down, just as universal properties pinned objects down in Lesson 6 (and for the same reason: §5 gives the proof, and Exercise 5 makes the connection concrete for free monoids). This is why one says <em>the</em> free monoid, <em>the</em> exponential, <em>the</em> product. The finder in §7&rsquo;s lab returns a list of all right adjoints of a given map; in every successful run, that list has length exactly one.</p>
+      <p>If <span class="m">U</span> has a left adjoint, it has exactly one up to natural isomorphism — the adjunction pins its partner down, just as universal properties pinned objects down in Lesson 6 (and for the same reason: §5 gives the proof, and Exercise 1 makes the connection concrete for free monoids). This is why one says <em>the</em> free monoid, <em>the</em> exponential, <em>the</em> product. The finder in §7&rsquo;s lab returns a list of all right adjoints of a given map; in every successful run, that list has length exactly one.</p>
     </div>
   </div>
 </section>
@@ -645,11 +654,11 @@ body.py-off .pyonly{display:none}
 <p>In the free-monoid adjunction the unit is <span class="m">η<sub>X</sub>(x) = [x]</span>, and the counit <span class="m">ε<sub>M</sub> : List(U M) → M</span> multiplies out a list of elements of <span class="m">M</span>. Take <span class="m">X = {a, b}</span>.</p>
 <p><em>First triangle,</em> at the word <span class="m">[a, b, a]</span>. Applying <span class="m">List(η<sub>X</sub>)</span> wraps every letter: the result is <span class="m">[[a], [b], [a]]</span>, a list of three one-letter words. The counit of the monoid <span class="m">List X</span> multiplies these out, and multiplication in <span class="m">List X</span> is concatenation: <span class="m">[a] ⧺ [b] ⧺ [a] = [a, b, a]</span>. We are back where we started.</p>
 <p><em>Second triangle,</em> at an element <span class="m">m</span> of a monoid <span class="m">M</span>. The unit of the set <span class="m">U M</span> wraps it as the one-element list <span class="m">[m]</span>, and the counit multiplies out a product with a single factor: <span class="m">m</span>.</p>
-<p>So for lists the triangle identities say that a word is the concatenation of its letters, and that a product with one factor is that factor. Units, counits and triangle identities usually decode to something this modest (Exercise 15) — the content of an adjunction is in the bijection they generate.</p>
+<p>So for lists the triangle identities say that a word is the concatenation of its letters, and that a product with one factor is that factor. Units, counits and triangle identities usually decode to something this modest (Exercise 10) — the content of an adjunction is in the bijection they generate.</p>
 <h3 class="sub">Finding an adjoint in an order</h3>
 <p>Between orders the universal arrows of §5 turn into a recipe. If a monotone map <span class="m">f</span> has a right adjoint <span class="m">g</span>, then <span class="m">f(x) ≤ y</span> exactly when <span class="m">x ≤ g(y)</span>, so <span class="m">g(y)</span> is forced:</p>
 <p class="eq"><span class="m">g(y) = the greatest x with f(x) ≤ y.</span></p>
-<p>Conversely, if <span class="m">f</span> is monotone and such a greatest <span class="m">x</span> exists for every <span class="m">y</span>, these values define a right adjoint: the biconditional holds, and by Exercise 3 the map <span class="m">g</span> is then automatically monotone. Dually, a left adjoint must send <span class="m">y</span> to the <em>least</em> <span class="m">x</span> with <span class="m">y ≤ f(x)</span>.</p>
+<p>Conversely, if <span class="m">f</span> is monotone and such a greatest <span class="m">x</span> exists for every <span class="m">y</span>, these values define a right adjoint: the biconditional holds, and by Exercise 4 the map <span class="m">g</span> is then automatically monotone. Dually, a left adjoint must send <span class="m">y</span> to the <em>least</em> <span class="m">x</span> with <span class="m">y ≤ f(x)</span>.</p>
 <p>Try it on the map <span class="m">f</span> from the chain <span class="m">0 ≤ 1 ≤ 2</span> to the divisibility order on <span class="m">{1, 2, 3, 6}</span> with <span class="m">f(0) = 1</span>, <span class="m">f(1) = 2</span>, <span class="m">f(2) = 6</span>.</p>
 <div class="tablewrap"><table class="tbl">
 <tr><th>y</th><th>the x with f(x) dividing y</th><th>greatest: g(y)</th></tr>
@@ -820,7 +829,7 @@ right adjoints of f_bad: []</div>
 
     <p>The most startling entry in the adjunction gallery was left for last. Fix a function <span class="m">f : A → B</span> and consider the two powersets <span class="m">P(A)</span> and <span class="m">P(B)</span>, each a poset under inclusion. Preimage <span class="m">f<sup>*</sup> : P(B) → P(A)</span> is monotone — and it is flanked by two adjoints, both of which every mathematician already uses daily:</p>
     <p style="text-align:center" class="m">∃<sub>f</sub> ⊣ f<sup>*</sup> ⊣ ∀<sub>f</sub></p>
-    <p>where <span class="m">∃<sub>f</sub>(S) = { f(x) : x ∈ S }</span> is the direct image (&ldquo;some preimage lies in <span class="m">S</span>&rdquo;) and <span class="m">∀<sub>f</sub>(S) = { b : f<sup>−1</sup>(b) ⊆ S }</span> (&ldquo;every preimage lies in <span class="m">S</span>&rdquo;). The two Galois biconditionals — <span class="m">∃<sub>f</sub>(S) ⊆ T ⟺ S ⊆ f<sup>*</sup>(T)</span> and <span class="m">f<sup>*</sup>(T) ⊆ S ⟺ T ⊆ ∀<sub>f</sub>(S)</span> — are, read logically, the introduction and elimination rules for the quantifiers. This observation (Lawvere&rsquo;s, from the 1960s) is a doorway into categorical logic: <em>the logical quantifiers are not primitive; they are the adjoints of substitution.</em> Exercise 10 verifies both adjunctions exhaustively; the sandwich shape — a right adjoint that is itself a left adjoint — is the ceiling/inclusion/floor pattern again, one floor up.</p>
+    <p>where <span class="m">∃<sub>f</sub>(S) = { f(x) : x ∈ S }</span> is the direct image (&ldquo;some preimage lies in <span class="m">S</span>&rdquo;) and <span class="m">∀<sub>f</sub>(S) = { b : f<sup>−1</sup>(b) ⊆ S }</span> (&ldquo;every preimage lies in <span class="m">S</span>&rdquo;). The two Galois biconditionals — <span class="m">∃<sub>f</sub>(S) ⊆ T ⟺ S ⊆ f<sup>*</sup>(T)</span> and <span class="m">f<sup>*</sup>(T) ⊆ S ⟺ T ⊆ ∀<sub>f</sub>(S)</span> — are, read logically, the introduction and elimination rules for the quantifiers. This observation (Lawvere&rsquo;s, from the 1960s) is a doorway into categorical logic: <em>the logical quantifiers are not primitive; they are the adjoints of substitution.</em> Exercise 18 verifies both adjunctions exhaustively; the sandwich shape — a right adjoint that is itself a left adjoint — is the ceiling/inclusion/floor pattern again, one floor up.</p>
 <h3 class="sub">When does an adjoint exist?</h3>
 <p>RAPL gives a necessary condition: a functor with a left adjoint must preserve limits. How far is that from being sufficient? Between orders that have all meets and joins — <em>complete lattices</em>, such as a power set — it is the whole story.</p>
 <div class="box thm">
@@ -837,88 +846,15 @@ right adjoints of f_bad: []</div>
   <div class="measure">
     <div class="sec-no">§8 — Exercises</div>
     <h2>Nineteen problems on adjunctions</h2>
-    <p>Exercise 4 is the summit of the set — the full derivation that unit, counit, and triangles reconstruct the bijection. Everything before it is preparation; everything after it is reward. Exercises 1, 8, 9 and 10 have optional Python parts; everything else is pencil and paper.</p>
+<p>Exercise 12 is the summit of the set — the full derivation that unit, counit, and triangles reconstruct the bijection. Everything before it is preparation; everything after it is reward. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercises 5, 7, 8 and 18 have optional Python parts; everything else is pencil and paper.</p>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier py">by hand · optional python</span></div>
-      <div class="prob-body">
-<p>Let <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, and let <span class="m">g : X × A → Y</span> be <span class="m">g(x, a) = x + a</span>, as in §7.</p>
-<ol>
-<li>Write down <span class="m">curry(g)</span>: to which function <span class="m">A → Y</span> is each element of <span class="m">X</span> sent?</li>
-<li>Let <span class="m">k : X → Y<sup>A</sup></span> send <span class="m">0</span> to the constant function with value <span class="m">2</span>, and <span class="m">1</span> to the function <span class="m">a ↦ a</span>. Write out the table of <span class="m">uncurry(k)</span>.</li>
-<li>State — carefully, with the sets in the right places — which bijection of hom-sets <span class="m">curry</span> and <span class="m">uncurry</span> provide.</li>
-</ol>
-<div class="pytask"><span class="tag">Optional · Python</span>
-        <p>Write out <code>curry</code> and <code>uncurry</code> in Python for functions given as dictionaries: <code>curry</code> should turn a dict keyed on pairs <span class="m">(x, a)</span> into a dict of dicts, and <code>uncurry</code> should invert it.</p>
-        <p>Apply them to <span class="m">g(x, a) = x + a</span> on <span class="m">X = A = {0, 1}</span>, confirm the round trip returns the original, and state — carefully, with the sets in the right places — which hom-set bijection your round trip witnesses.</p>
+<div class="exgroup">
+  <h3>Free constructions</h3>
+  <p class="exmeta"><a href="#s1">§1</a>–<a href="#s2">§2</a>, <a href="#universal">§5</a> · Exercises 1–2</p>
 </div>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-<p><strong>By hand. (a)</strong> <span class="m">curry(g)(0)</span> is the function <span class="m">0 ↦ 0</span>, <span class="m">1 ↦ 1</span>, and <span class="m">curry(g)(1)</span> is the function <span class="m">0 ↦ 1</span>, <span class="m">1 ↦ 2</span>: the two rows of the table of <span class="m">g</span>.</p>
-<p><strong>(b)</strong> <span class="m">uncurry(k)(x, a) = k(x)(a)</span>, so <span class="m">(0, 0) ↦ 2</span>, <span class="m">(0, 1) ↦ 2</span>, <span class="m">(1, 0) ↦ 0</span>, <span class="m">(1, 1) ↦ 1</span>.</p>
-<p><strong>(c)</strong> <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> — with <span class="m">X</span> in the variable slot, <span class="m">A</span> fixed as the parameter of the adjunction, and <span class="m">Y<sup>A</sup></span> the set of functions <span class="m">A → Y</span>. One round trip on one example is of course not a proof that the two operations are inverse; Exercise 8 counts entire hom-sets.</p>
-<div class="pytask"><span class="tag">Optional · Python</span>
-          <p><code>curry = lambda h: {x: {a: h[(x, a)] for a in A} for x in X}</code> and <code>uncurry = lambda k: {(x, a): k[x][a] for x in X for a in A}</code>. On <span class="m">g</span>: <code>curry(g) = {0: {0: 0, 1: 1}, 1: {0: 1, 1: 2}}</code>, and <code>uncurry(curry(g)) == g</code> holds.</p>
-          <p>The round trip witnesses <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> — with <span class="m">X</span> in the variable slot, <span class="m">A</span> fixed as the adjunction&rsquo;s parameter, and <span class="m">Y<sup>A</sup></span> the set of dictionaries keyed on <span class="m">A</span>. It is one small piece of evidence for <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>; Exercise 8 upgrades it from &ldquo;these two functions invert each other on one example&rdquo; to a counted bijection of entire hom-sets.</p>
-</div>
-        </div>
-      </details>
-    </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">warm-up</span></div>
-      <div class="prob-body">
-        <p>Prove both halves of the floor/ceiling sandwich from the definitions &ldquo;<span class="m">⌈r⌉</span> is the least integer <span class="m">≥ r</span>&rdquo; and &ldquo;<span class="m">⌊r⌋</span> is the greatest integer <span class="m">≤ r</span>&rdquo;:</p>
-        <ol>
-          <li><span class="m">⌈r⌉ ≤ n ⟺ r ≤ n</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
-          <li><span class="m">n ≤ ⌊r⌋ ⟺ n ≤ r</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
-        </ol>
-        <p>Then answer in one sentence: why is ceiling the <em>left</em> adjoint and floor the <em>right</em>?</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>(a)</strong> (⇒) <span class="m">r ≤ ⌈r⌉</span> always, so <span class="m">⌈r⌉ ≤ n</span> gives <span class="m">r ≤ n</span> by transitivity. (⇐) If <span class="m">r ≤ n</span> then <span class="m">n</span> is an integer <span class="m">≥ r</span>, and <span class="m">⌈r⌉</span> is the <em>least</em> such, so <span class="m">⌈r⌉ ≤ n</span>. <strong>(b)</strong> is the mirror argument through &ldquo;greatest integer <span class="m">≤ r</span>.&rdquo;</p>
-          <p>Position in the biconditional decides handedness: in <span class="m">⌈r⌉ ≤ n ⟺ r ≤ i(n)</span> the ceiling occupies the left slot of <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span>, so <span class="m">⌈−⌉ ⊣ i</span>; in <span class="m">i(n) ≤ r ⟺ n ≤ ⌊r⌋</span> the inclusion occupies it, so <span class="m">i ⊣ ⌊−⌋</span>. Note the pattern of the proofs: each &ldquo;⇒&rdquo; used a unit-style inequality (<span class="m">r ≤ ⌈r⌉</span>), each &ldquo;⇐&rdquo; used an extremality clause — the same division of labor as existence and uniqueness in Lesson 6.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
-      <div class="prob-body">
-        <p>Let <span class="m">f : P → Q</span> and <span class="m">g : Q → P</span> be functions between posets (not assumed monotone) satisfying the Galois biconditional <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span> for all <span class="m">x, y</span>.</p>
-        <ol>
-          <li>Derive the unit and counit inequalities: <span class="m">x ≤ g(f(x))</span> and <span class="m">f(g(y)) ≤ y</span>.</li>
-          <li>Show that <span class="m">f</span> and <span class="m">g</span> are automatically monotone — the biconditional alone forces it.</li>
-        </ol>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>(a)</strong> Instantiate the biconditional at <span class="m">y = f(x)</span>: the left side <span class="m">f(x) ≤ f(x)</span> holds, so <span class="m">x ≤ g(f(x))</span>. Dually, at <span class="m">x = g(y)</span>: the right side holds, so <span class="m">f(g(y)) ≤ y</span>. These are <span class="m">η</span> and <span class="m">ε</span> in a world where a natural transformation is just a family of inequalities (Lesson 3, Exercise 5).</p>
-          <p><strong>(b)</strong> Suppose <span class="m">x ≤ x&prime;</span>. By (a), <span class="m">x&prime; ≤ g(f(x&prime;))</span>, so <span class="m">x ≤ g(f(x&prime;))</span> by transitivity — and the biconditional, read right-to-left with <span class="m">y = f(x&prime;)</span>, converts this to <span class="m">f(x) ≤ f(x&prime;)</span>. Monotonicity of <span class="m">g</span> is the mirror argument. The moral generalizes: an adjunction is such a tightly-coupled structure that properties of one side leak to the other — here, even <em>functoriality</em> came for free.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">arrows-only</span></div>
-      <div class="prob-body">
-        <p>The summit. Let <span class="m">η : Id ⇒ U∘F</span> and <span class="m">ε : F∘U ⇒ Id</span> satisfy the triangle identities. Define the two candidate transpositions:</p>
-        <p style="text-align:center" class="m">φ(f̂) = U f̂ ∘ η<sub>X</sub> &nbsp;&nbsp;for f̂ : F X → Y, &nbsp;&nbsp;&nbsp; ψ(f) = ε<sub>Y</sub> ∘ F f &nbsp;&nbsp;for f : X → U Y.</p>
-        <p>Prove <span class="m">φ(ψ(f)) = f</span> and <span class="m">ψ(φ(f̂)) = f̂</span>. Each proof is three steps: expand the definition, slide one arrow across a naturality square (of <span class="m">η</span> in the first proof, of <span class="m">ε</span> in the second), and finish with a triangle identity. Write out which square and which triangle, at which object.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>First round trip.</strong> <span class="m">φ(ψ(f)) = U(ε<sub>Y</sub> ∘ F f) ∘ η<sub>X</sub> = U ε<sub>Y</sub> ∘ U F f ∘ η<sub>X</sub></span> (functoriality of <span class="m">U</span>). Now the naturality square of <span class="m">η</span> at the arrow <span class="m">f : X → U Y</span> says <span class="m">U F f ∘ η<sub>X</sub> = η<sub>U Y</sub> ∘ f</span> — slide it in: <span class="m">= U ε<sub>Y</sub> ∘ η<sub>U Y</sub> ∘ f</span>. The second triangle identity, at the object <span class="m">Y</span>, says <span class="m">U ε<sub>Y</sub> ∘ η<sub>U Y</sub> = id<sub>U Y</sub></span>. Hence <span class="m">φ(ψ(f)) = f</span>.</p>
-          <p><strong>Second round trip.</strong> <span class="m">ψ(φ(f̂)) = ε<sub>Y</sub> ∘ F(U f̂ ∘ η<sub>X</sub>) = ε<sub>Y</sub> ∘ F U f̂ ∘ F η<sub>X</sub></span>. Naturality of <span class="m">ε</span> at the arrow <span class="m">f̂ : F X → Y</span> gives <span class="m">ε<sub>Y</sub> ∘ F U f̂ = f̂ ∘ ε<sub>F X</sub></span>: <span class="m">= f̂ ∘ ε<sub>F X</sub> ∘ F η<sub>X</sub></span>, and the first triangle identity at <span class="m">X</span> collapses the tail to <span class="m">id<sub>F X</sub></span>. Hence <span class="m">ψ(φ(f̂)) = f̂</span>.</p>
-          <p>Every tool in the proof was built in an earlier lesson: functor laws (Lesson 2), naturality squares (Lesson 3), and a pair of equations playing exactly the role the &ldquo;exactly one&rdquo; clause played in Lessons 6–7. This exercise is the course&rsquo;s machinery operating as a single machine.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">examples</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">examples</span></div>
       <div class="prob-body">
         <p>Freeness in action. Let <span class="m">X = {a, b}</span> and let <span class="m">M = (ℕ, +, 0)</span>, with <span class="m">f(a) = 2</span>, <span class="m">f(b) = 3</span>.</p>
         <ol>
@@ -935,81 +871,67 @@ right adjoints of f_bad: []</div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">structure</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>The free monoid on one generator.</p>
+<ol>
+<li>Show that the free monoid on a one-element set <span class="m">{∗}</span> is isomorphic to <span class="m">(ℕ, +, 0)</span>.</li>
+<li>Use the adjunction to find all monoid homomorphisms from <span class="m">(ℕ, +, 0)</span> to the two-element monoid <span class="m">{true, false}</span> under &ldquo;and,&rdquo; whose unit is <span class="m">true</span>.</li>
+<li>Deduce that <span class="m"><span class="cat">Mon</span>(ℕ, M) ≅ U M</span> for every monoid <span class="m">M</span>, as Lesson 2 claimed. Which group plays the same role for the forgetful functor <span class="m"><span class="cat">Grp</span> → <span class="cat">Set</span></span>?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> A list over <span class="m">{∗}</span> is determined by its length. Concatenating lists adds their lengths, and the empty list has length <span class="m">0</span>. So &ldquo;length&rdquo; is a bijective homomorphism from <span class="m">List {∗}</span> to <span class="m">(ℕ, +, 0)</span> — an isomorphism of monoids.</p>
+<p><strong>(b)</strong> Homomorphisms <span class="m">List {∗} → M</span> correspond to functions <span class="m">{∗} → U M</span>, that is, to elements <span class="m">c</span> of <span class="m">M</span>; the homomorphism belonging to <span class="m">c</span> sends <span class="m">n</span> to the <span class="m">n</span>-fold product <span class="m">c · c · ⋯ · c</span>, and <span class="m">0</span> to the unit. Here <span class="m">M</span> has two elements, so there are exactly two homomorphisms. For <span class="m">c = true</span>: every <span class="m">n</span> goes to <span class="m">true</span>. For <span class="m">c = false</span>: <span class="m">0</span> goes to <span class="m">true</span> and every <span class="m">n ≥ 1</span> goes to <span class="m">false</span> — the homomorphism &ldquo;is <span class="m">n</span> zero?&rdquo;</p>
+<p><strong>(c)</strong> <span class="m"><span class="cat">Mon</span>(ℕ, M) ≅ <span class="cat">Mon</span>(List {∗}, M) ≅ <span class="cat">Set</span>({∗}, U M) ≅ U M</span>, and each step is natural in <span class="m">M</span>. So the forgetful functor is the hom functor <span class="m"><span class="cat">Mon</span>(ℕ, −)</span>, up to natural isomorphism. For groups, the free group on one generator <span class="m">x</span> consists of the powers <span class="m">x<sup>n</sup></span> with <span class="m">n</span> any integer: it is <span class="m">ℤ</span>, and <span class="m"><span class="cat">Grp</span>(ℤ, G) ≅ U G</span>. The pattern is general: whenever a forgetful functor <span class="m">U</span> to <span class="m"><span class="cat">Set</span></span> has a left adjoint <span class="m">F</span>, it is the hom functor out of the free object on one generator. Lesson 9 calls such functors <em>representable</em>.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Adjunctions between orders</h3>
+  <p class="exmeta"><a href="#s3">§3</a>, <a href="#byhand">§7</a> · Exercises 3–6</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
-        <p>The product category <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> has pairs of objects as objects and pairs of arrows as arrows, composed slotwise; the diagonal functor <span class="m">Δ</span> sends <span class="m">X</span> to <span class="m">(X, X)</span> and <span class="m">f</span> to <span class="m">(f, f)</span>.</p>
+        <p>Prove both halves of the floor/ceiling sandwich from the definitions &ldquo;<span class="m">⌈r⌉</span> is the least integer <span class="m">≥ r</span>&rdquo; and &ldquo;<span class="m">⌊r⌋</span> is the greatest integer <span class="m">≤ r</span>&rdquo;:</p>
         <ol>
-          <li>Describe the hom-set <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B))</span> and show that Lesson 6&rsquo;s product universal property is exactly the statement <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B)) ≅ <span class="cat">𝒞</span>(X, A × B)</span> — i.e. <span class="m">Δ ⊣ ×</span>.</li>
-          <li>Dualize to show <span class="m">+ ⊣ Δ</span>, and name the counit of <span class="m">Δ ⊣ ×</span> and the unit of <span class="m">+ ⊣ Δ</span> — both are old friends.</li>
+          <li><span class="m">⌈r⌉ ≤ n ⟺ r ≤ n</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
+          <li><span class="m">n ≤ ⌊r⌋ ⟺ n ≤ r</span> for all <span class="m">r ∈ ℝ, n ∈ ℤ</span>.</li>
+        </ol>
+        <p>Then answer in one sentence: why is ceiling the <em>left</em> adjoint and floor the <em>right</em>?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> (⇒) <span class="m">r ≤ ⌈r⌉</span> always, so <span class="m">⌈r⌉ ≤ n</span> gives <span class="m">r ≤ n</span> by transitivity. (⇐) If <span class="m">r ≤ n</span> then <span class="m">n</span> is an integer <span class="m">≥ r</span>, and <span class="m">⌈r⌉</span> is the <em>least</em> such, so <span class="m">⌈r⌉ ≤ n</span>. <strong>(b)</strong> is the mirror argument through &ldquo;greatest integer <span class="m">≤ r</span>.&rdquo;</p>
+          <p>Position in the biconditional decides handedness: in <span class="m">⌈r⌉ ≤ n ⟺ r ≤ i(n)</span> the ceiling occupies the left slot of <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span>, so <span class="m">⌈−⌉ ⊣ i</span>; in <span class="m">i(n) ≤ r ⟺ n ≤ ⌊r⌋</span> the inclusion occupies it, so <span class="m">i ⊣ ⌊−⌋</span>. Note the pattern of the proofs: each &ldquo;⇒&rdquo; used a unit-style inequality (<span class="m">r ≤ ⌈r⌉</span>), each &ldquo;⇐&rdquo; used an extremality clause — the same division of labor as existence and uniqueness in Lesson 6.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Let <span class="m">f : P → Q</span> and <span class="m">g : Q → P</span> be functions between posets (not assumed monotone) satisfying the Galois biconditional <span class="m">f(x) ≤ y ⟺ x ≤ g(y)</span> for all <span class="m">x, y</span>.</p>
+        <ol>
+          <li>Derive the unit and counit inequalities: <span class="m">x ≤ g(f(x))</span> and <span class="m">f(g(y)) ≤ y</span>.</li>
+          <li>Show that <span class="m">f</span> and <span class="m">g</span> are automatically monotone — the biconditional alone forces it.</li>
         </ol>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>(a)</strong> An arrow <span class="m">Δ X → (A, B)</span> is a pair <span class="m">(f, g)</span> with <span class="m">f : X → A</span> and <span class="m">g : X → B</span> — nothing more. Lesson 6&rsquo;s product says exactly that such pairs correspond bijectively (and naturally — the pairing construction respects composition) to single arrows <span class="m">X → A × B</span>, via <span class="m">(f, g) ↔ ⟨f, g⟩</span>. That bijection <em>is</em> the adjunction <span class="m">Δ ⊣ ×</span>.</p>
-          <p><strong>(b)</strong> Reversing arrows: <span class="m"><span class="cat">𝒞</span>(A + B, X) ≅ (<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)((A, B), Δ X)</span> — a map out of the coproduct is a pair of maps — putting <span class="m">+</span> in the left slot: <span class="m">+ ⊣ Δ ⊣ ×</span>, a sandwich with Δ in the middle, just like the inclusion between ceiling and floor. The counit of <span class="m">Δ ⊣ ×</span> at <span class="m">(A, B)</span> is the pair of <strong>projections</strong> <span class="m">(π₁, π₂) : (A×B, A×B) → (A, B)</span>; the unit of <span class="m">+ ⊣ Δ</span> is the pair of <strong>injections</strong>. Lesson 6&rsquo;s cast of characters were unit and counit all along — and replacing Δ by Lesson 7&rsquo;s constant-diagram functor makes every limit a right adjoint and every colimit a left one.</p>
+          <p><strong>(a)</strong> Instantiate the biconditional at <span class="m">y = f(x)</span>: the left side <span class="m">f(x) ≤ f(x)</span> holds, so <span class="m">x ≤ g(f(x))</span>. Dually, at <span class="m">x = g(y)</span>: the right side holds, so <span class="m">f(g(y)) ≤ y</span>. These are <span class="m">η</span> and <span class="m">ε</span> in a world where a natural transformation is just a family of inequalities (Lesson 3, Exercise 6).</p>
+          <p><strong>(b)</strong> Suppose <span class="m">x ≤ x&prime;</span>. By (a), <span class="m">x&prime; ≤ g(f(x&prime;))</span>, so <span class="m">x ≤ g(f(x&prime;))</span> by transitivity — and the biconditional, read right-to-left with <span class="m">y = f(x&prime;)</span>, converts this to <span class="m">f(x) ≤ f(x&prime;)</span>. Monotonicity of <span class="m">g</span> is the mirror argument. The moral generalizes: an adjunction is such a tightly-coupled structure that properties of one side leak to the other — here, even <em>functoriality</em> came for free.</p>
         </div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">think</span></div>
-      <div class="prob-body">
-        <p>A two-line non-existence theorem. Using RAPL&rsquo;s dual — <em>left adjoints preserve colimits</em>, in particular initial objects — prove that the forgetful functor <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has <strong>no right adjoint</strong>.</p>
-        <p>(You will need Lesson 6&rsquo;s inventory: the initial object of <span class="cat">Grp</span> is the trivial group; the initial object of <span class="cat">Set</span> is the empty set.)</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>If <span class="m">U</span> had a right adjoint, <span class="m">U</span> would be a left adjoint, and would therefore preserve initial objects. But <span class="m">U</span> sends the initial object of <span class="cat">Grp</span> — the trivial group — to a <em>one-element</em> set, and the initial object of <span class="cat">Set</span> is the <em>empty</em> set. One-element sets are not initial (they receive many maps, and Lesson 6, Exercise 1 counted them), so <span class="m">U</span> does not preserve the initial object, and no right adjoint exists. ∎</p>
-          <p>Notice the asymmetry with the other flank: <span class="m">U</span> <em>does</em> have a left adjoint (free groups), which is why it preserves all limits — products, kernels-as-equalizers, pullbacks. The two adjoint questions about a single functor are genuinely independent, and RAPL turns each into a checklist of concrete preservation tests. The constant map of §7 is this exact argument in a seven-element universe.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier py">by hand · optional python</span></div>
-      <div class="prob-body">
-<p>Upgrade Exercise 1 to a census.</p>
-<ol>
-<li>For <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, count the functions <span class="m">X × A → Y</span> and the functions <span class="m">X → Y<sup>A</sup></span>.</li>
-<li>Do the same for sets with <span class="m">|X| = 3</span>, <span class="m">|A| = 2</span> and <span class="m">|Y| = 2</span>.</li>
-<li>Why must the two counts always be equal, and which law of arithmetic is the adjunction proving again?</li>
-</ol>
-<div class="pytask"><span class="tag">Optional · Python</span>
-        <p>Upgrade Exercise 1 to a census. For <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, enumerate <em>all</em> functions <span class="m">X × A → Y</span>, curry each one, and verify that currying is a bijection onto the functions <span class="m">X → Y<sup>A</sup></span> — by checking injectivity and comparing counts against <span class="m">|Y|<sup>|X|·|A|</sup></span> and <span class="m">(|Y|<sup>|A|</sup>)<sup>|X|</sup></span>.</p>
-        <p>Before running: why must those two counts be equal, and what law of arithmetic is the adjunction reproving?</p>
-</div>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-<p><strong>By hand. (a)</strong> <span class="m">X × A</span> has <span class="m">4</span> elements, so there are <span class="m">3<sup>4</sup> = 81</span> functions into <span class="m">Y</span>. The set <span class="m">Y<sup>A</sup></span> has <span class="m">3<sup>2</sup> = 9</span> elements, so there are <span class="m">9<sup>2</sup> = 81</span> functions from <span class="m">X</span> into it.</p>
-<p><strong>(b)</strong> <span class="m">2<sup>6</sup> = 64</span> on one side and <span class="m">(2<sup>2</sup>)<sup>3</sup> = 4<sup>3</sup> = 64</span> on the other.</p>
-<p><strong>(c)</strong> Currying is a bijection between the two sets of functions, so they have the same number of elements. Counted, the adjunction is the law of exponents <span class="m">y<sup>x · a</sup> = (y<sup>a</sup>)<sup>x</sup></span>.</p>
-<div class="pytask"><span class="tag">Optional · Python</span>
-          <p>The counts are <span class="m">3⁴ = 81</span> on both sides, and they must agree because currying is a bijection — the adjunction, restricted to finite sets and counted, is the exponent law <span class="m">y<sup>x·a</sup> = (y<sup>a</sup>)<sup>x</sup></span>. High-school algebra is the decategorified shadow of <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>.</p>
-          <div class="code" style="margin-top:14px">
-            <div class="code-bar"><span class="fname"><b>census.py</b></span><button class="copy" type="button">Copy</button></div>
-<pre><code>from itertools import product as cartesian
-
-X, A, Y = range(2), range(2), range(3)
-pairs = [(x, a) for x in X for a in A]
-hs = [dict(zip(pairs, vs)) for vs in cartesian(Y, repeat=len(pairs))]
-
-curry  = lambda h: tuple(tuple(h[(x, a)] for a in A) for x in X)
-images = {curry(h) for h in hs}
-
-print(&quot;|Hom(XxA,Y)| =&quot;, len(hs), &quot; distinct curried =&quot;, len(images),
-      &quot; (|Y|^|A|)^|X| =&quot;, (len(Y) ** len(A)) ** len(X))</code></pre>
-            <div class="out"><span class="lbl">output</span>|Hom(XxA,Y)| = 81  distinct curried = 81  (|Y|^|A|)^|X| = 81</div>
-          </div>
-          <p style="margin-top:14px">81 inputs, 81 distinct curried outputs (injectivity), 81 possible targets: injective + equal finite cardinalities = bijection. The same three-number certificate would verify the bijection for any finite <span class="m">X, A, Y</span>.</p>
-</div>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier py">by hand · optional python</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
 <p>§7 computed the right adjoint <span class="m">g</span> of the map <span class="m">f</span> from the chain to the divisibility order by the &ldquo;greatest <span class="m">x</span>&rdquo; recipe.</p>
 <ol>
@@ -1047,9 +969,285 @@ print(find_left_adjoints(g, Div, Chain))</code></pre>
         </div>
       </details>
     </div>
-  
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier py">by hand · optional python</span></div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>Implication is a right adjoint. Let <span class="m">S</span> be a set and <span class="m">A</span> a fixed subset of it. On the power set <span class="m">P(S)</span>, ordered by inclusion, consider the monotone map <span class="m">f(X) = X ∩ A</span>.</p>
+<ol>
+<li>Use the recipe of §7 to find the right adjoint <span class="m">g</span> of <span class="m">f</span>: for a subset <span class="m">Y</span>, what is the greatest <span class="m">X</span> with <span class="m">X ∩ A ⊆ Y</span>?</li>
+<li>Verify the biconditional <span class="m">X ∩ A ⊆ Y ⟺ X ⊆ g(Y)</span> directly.</li>
+<li>Read subsets of <span class="m">S</span> as propositions (a proposition being the set of cases in which it is true), intersection as &ldquo;and,&rdquo; and inclusion as &ldquo;implies.&rdquo; Which connective is <span class="m">g</span>? What do the biconditional and the counit inequality <span class="m">g(Y) ∩ A ⊆ Y</span> say?</li>
+<li>Which adjunction of §3 is this the order-theoretic version of?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">X ∩ A ⊆ Y</span> says that every element of <span class="m">X</span> lying in <span class="m">A</span> lies in <span class="m">Y</span> — that every element of <span class="m">X</span> is either outside <span class="m">A</span> or inside <span class="m">Y</span>. The greatest such <span class="m">X</span> consists of <em>all</em> elements that are outside <span class="m">A</span> or inside <span class="m">Y</span>: <span class="m">g(Y) = (S ∖ A) ∪ Y</span>.</p>
+<p><strong>(b)</strong> <span class="m">X ⊆ (S ∖ A) ∪ Y</span> holds exactly when each <span class="m">x</span> in <span class="m">X</span> is outside <span class="m">A</span> or in <span class="m">Y</span>, which is exactly <span class="m">X ∩ A ⊆ Y</span>.</p>
+<p><strong>(c)</strong> <span class="m">g(Y)</span> is &ldquo;not <span class="m">A</span>, or <span class="m">Y</span>&rdquo;: the implication <span class="m">A ⇒ Y</span>. The biconditional says that &ldquo;<span class="m">X</span> and <span class="m">A</span> together imply <span class="m">Y</span>&rdquo; is the same statement as &ldquo;<span class="m">X</span> implies (<span class="m">A</span> implies <span class="m">Y</span>)&rdquo; — the rule by which one proves an implication by assuming its hypothesis. The counit says that from <span class="m">A ⇒ Y</span> and <span class="m">A</span> one may conclude <span class="m">Y</span>: <em>modus ponens</em>.</p>
+<p><strong>(d)</strong> Currying, <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>. In a power set the product is the intersection, the exponential <span class="m">Y<sup>A</sup></span> is the implication <span class="m">A ⇒ Y</span>, and the counit <span class="m">eval</span> is modus ponens. Conjunction is left adjoint to implication for the same reason that functions of two arguments can be curried.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Currying</h3>
+  <p class="exmeta"><a href="#s3">§3</a>, <a href="#byhand">§7</a> · Exercises 7–8</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>Let <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, and let <span class="m">g : X × A → Y</span> be <span class="m">g(x, a) = x + a</span>, as in §7.</p>
+<ol>
+<li>Write down <span class="m">curry(g)</span>: to which function <span class="m">A → Y</span> is each element of <span class="m">X</span> sent?</li>
+<li>Let <span class="m">k : X → Y<sup>A</sup></span> send <span class="m">0</span> to the constant function with value <span class="m">2</span>, and <span class="m">1</span> to the function <span class="m">a ↦ a</span>. Write out the table of <span class="m">uncurry(k)</span>.</li>
+<li>State — carefully, with the sets in the right places — which bijection of hom-sets <span class="m">curry</span> and <span class="m">uncurry</span> provide.</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Write out <code>curry</code> and <code>uncurry</code> in Python for functions given as dictionaries: <code>curry</code> should turn a dict keyed on pairs <span class="m">(x, a)</span> into a dict of dicts, and <code>uncurry</code> should invert it.</p>
+        <p>Apply them to <span class="m">g(x, a) = x + a</span> on <span class="m">X = A = {0, 1}</span>, confirm the round trip returns the original, and state — carefully, with the sets in the right places — which hom-set bijection your round trip witnesses.</p>
+</div>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+<p><strong>By hand. (a)</strong> <span class="m">curry(g)(0)</span> is the function <span class="m">0 ↦ 0</span>, <span class="m">1 ↦ 1</span>, and <span class="m">curry(g)(1)</span> is the function <span class="m">0 ↦ 1</span>, <span class="m">1 ↦ 2</span>: the two rows of the table of <span class="m">g</span>.</p>
+<p><strong>(b)</strong> <span class="m">uncurry(k)(x, a) = k(x)(a)</span>, so <span class="m">(0, 0) ↦ 2</span>, <span class="m">(0, 1) ↦ 2</span>, <span class="m">(1, 0) ↦ 0</span>, <span class="m">(1, 1) ↦ 1</span>.</p>
+<p><strong>(c)</strong> <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> — with <span class="m">X</span> in the variable slot, <span class="m">A</span> fixed as the parameter of the adjunction, and <span class="m">Y<sup>A</sup></span> the set of functions <span class="m">A → Y</span>. One round trip on one example is of course not a proof that the two operations are inverse; Exercise 8 counts entire hom-sets.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+          <p><code>curry = lambda h: {x: {a: h[(x, a)] for a in A} for x in X}</code> and <code>uncurry = lambda k: {(x, a): k[x][a] for x in X for a in A}</code>. On <span class="m">g</span>: <code>curry(g) = {0: {0: 0, 1: 1}, 1: {0: 1, 1: 2}}</code>, and <code>uncurry(curry(g)) == g</code> holds.</p>
+          <p>The round trip witnesses <span class="m"><span class="cat">Set</span>(X × A, Y) ≅ <span class="cat">Set</span>(X, Y<sup>A</sup>)</span> — with <span class="m">X</span> in the variable slot, <span class="m">A</span> fixed as the adjunction&rsquo;s parameter, and <span class="m">Y<sup>A</sup></span> the set of dictionaries keyed on <span class="m">A</span>. It is one small piece of evidence for <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>; Exercise 8 upgrades it from &ldquo;these two functions invert each other on one example&rdquo; to a counted bijection of entire hom-sets.</p>
+</div>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>Upgrade Exercise 7 to a census.</p>
+<ol>
+<li>For <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, count the functions <span class="m">X × A → Y</span> and the functions <span class="m">X → Y<sup>A</sup></span>.</li>
+<li>Do the same for sets with <span class="m">|X| = 3</span>, <span class="m">|A| = 2</span> and <span class="m">|Y| = 2</span>.</li>
+<li>Why must the two counts always be equal, and which law of arithmetic is the adjunction proving again?</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Upgrade Exercise 7 to a census. For <span class="m">X = A = {0, 1}</span> and <span class="m">Y = {0, 1, 2}</span>, enumerate <em>all</em> functions <span class="m">X × A → Y</span>, curry each one, and verify that currying is a bijection onto the functions <span class="m">X → Y<sup>A</sup></span> — by checking injectivity and comparing counts against <span class="m">|Y|<sup>|X|·|A|</sup></span> and <span class="m">(|Y|<sup>|A|</sup>)<sup>|X|</sup></span>.</p>
+        <p>Before running: why must those two counts be equal, and what law of arithmetic is the adjunction reproving?</p>
+</div>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+<p><strong>By hand. (a)</strong> <span class="m">X × A</span> has <span class="m">4</span> elements, so there are <span class="m">3<sup>4</sup> = 81</span> functions into <span class="m">Y</span>. The set <span class="m">Y<sup>A</sup></span> has <span class="m">3<sup>2</sup> = 9</span> elements, so there are <span class="m">9<sup>2</sup> = 81</span> functions from <span class="m">X</span> into it.</p>
+<p><strong>(b)</strong> <span class="m">2<sup>6</sup> = 64</span> on one side and <span class="m">(2<sup>2</sup>)<sup>3</sup> = 4<sup>3</sup> = 64</span> on the other.</p>
+<p><strong>(c)</strong> Currying is a bijection between the two sets of functions, so they have the same number of elements. Counted, the adjunction is the law of exponents <span class="m">y<sup>x · a</sup> = (y<sup>a</sup>)<sup>x</sup></span>.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+          <p>The counts are <span class="m">3⁴ = 81</span> on both sides, and they must agree because currying is a bijection — the adjunction, restricted to finite sets and counted, is the exponent law <span class="m">y<sup>x·a</sup> = (y<sup>a</sup>)<sup>x</sup></span>. High-school algebra is the decategorified shadow of <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>.</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>census.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product as cartesian
+
+X, A, Y = range(2), range(2), range(3)
+pairs = [(x, a) for x in X for a in A]
+hs = [dict(zip(pairs, vs)) for vs in cartesian(Y, repeat=len(pairs))]
+
+curry  = lambda h: tuple(tuple(h[(x, a)] for a in A) for x in X)
+images = {curry(h) for h in hs}
+
+print(&quot;|Hom(XxA,Y)| =&quot;, len(hs), &quot; distinct curried =&quot;, len(images),
+      &quot; (|Y|^|A|)^|X| =&quot;, (len(Y) ** len(A)) ** len(X))</code></pre>
+            <div class="out"><span class="lbl">output</span>|Hom(XxA,Y)| = 81  distinct curried = 81  (|Y|^|A|)^|X| = 81</div>
+          </div>
+          <p style="margin-top:14px">81 inputs, 81 distinct curried outputs (injectivity), 81 possible targets: injective + equal finite cardinalities = bijection. The same three-number certificate would verify the bijection for any finite <span class="m">X, A, Y</span>.</p>
+</div>
+        </div>
+      </details>
+    </div>
+
+<div class="exgroup">
+  <h3>Unit and counit</h3>
+  <p class="exmeta"><a href="#s2">§2</a>, <a href="#s4">§4</a> · Exercises 9–14</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>The product category <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> has pairs of objects as objects and pairs of arrows as arrows, composed slotwise; the diagonal functor <span class="m">Δ</span> sends <span class="m">X</span> to <span class="m">(X, X)</span> and <span class="m">f</span> to <span class="m">(f, f)</span>.</p>
+        <ol>
+          <li>Describe the hom-set <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B))</span> and show that Lesson 6&rsquo;s product universal property is exactly the statement <span class="m">(<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)(Δ X, (A, B)) ≅ <span class="cat">𝒞</span>(X, A × B)</span> — i.e. <span class="m">Δ ⊣ ×</span>.</li>
+          <li>Dualize to show <span class="m">+ ⊣ Δ</span>, and name the counit of <span class="m">Δ ⊣ ×</span> and the unit of <span class="m">+ ⊣ Δ</span> — both are old friends.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> An arrow <span class="m">Δ X → (A, B)</span> is a pair <span class="m">(f, g)</span> with <span class="m">f : X → A</span> and <span class="m">g : X → B</span> — nothing more. Lesson 6&rsquo;s product says exactly that such pairs correspond bijectively (and naturally — the pairing construction respects composition) to single arrows <span class="m">X → A × B</span>, via <span class="m">(f, g) ↔ ⟨f, g⟩</span>. That bijection <em>is</em> the adjunction <span class="m">Δ ⊣ ×</span>.</p>
+          <p><strong>(b)</strong> Reversing arrows: <span class="m"><span class="cat">𝒞</span>(A + B, X) ≅ (<span class="cat">𝒞</span> × <span class="cat">𝒞</span>)((A, B), Δ X)</span> — a map out of the coproduct is a pair of maps — putting <span class="m">+</span> in the left slot: <span class="m">+ ⊣ Δ ⊣ ×</span>, a sandwich with Δ in the middle, just like the inclusion between ceiling and floor. The counit of <span class="m">Δ ⊣ ×</span> at <span class="m">(A, B)</span> is the pair of <strong>projections</strong> <span class="m">(π₁, π₂) : (A×B, A×B) → (A, B)</span>; the unit of <span class="m">+ ⊣ Δ</span> is the pair of <strong>injections</strong>. Lesson 6&rsquo;s cast of characters were unit and counit all along — and replacing Δ by Lesson 7&rsquo;s constant-diagram functor makes every limit a right adjoint and every colimit a left one.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>Units and counits, decoded.</p>
+<ol>
+<li>Exercise 9 identified the counit of <span class="m">Δ ⊣ ×</span> and the unit of <span class="m">+ ⊣ Δ</span>. What are the other two — the unit of <span class="m">Δ ⊣ ×</span> and the counit of <span class="m">+ ⊣ Δ</span> — as functions in <span class="m"><span class="cat">Set</span></span>?</li>
+<li>For <span class="m">⌈−⌉ ⊣ i</span> and <span class="m">i ⊣ ⌊−⌋</span>, write the unit and the counit of each as an inequality.</li>
+<li>For currying, the unit is <span class="m">η<sub>X</sub>(x) = (a ↦ (x, a))</span> and the counit is <span class="m">eval</span>. Verify the first triangle identity, <span class="m">ε<sub>X × A</sub> ∘ (η<sub>X</sub> × id<sub>A</sub>) = id<sub>X × A</sub></span>, by following an element <span class="m">(x, a)</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> The unit of <span class="m">Δ ⊣ ×</span> at <span class="m">X</span> is the transpose of the identity of <span class="m">Δ X</span>, the pair <span class="m">(id<sub>X</sub>, id<sub>X</sub>)</span>: it is the pairing <span class="m">⟨id<sub>X</sub>, id<sub>X</sub>⟩ : X → X × X</span>, the <strong>diagonal</strong> <span class="m">x ↦ (x, x)</span>. Dually the counit of <span class="m">+ ⊣ Δ</span> is the copairing <span class="m">[id<sub>X</sub>, id<sub>X</sub>] : X + X → X</span>, the <strong>fold</strong> map that forgets which copy an element came from.</p>
+<p><strong>(b)</strong> For <span class="m">⌈−⌉ ⊣ i</span>: the unit is <span class="m">r ≤ ⌈r⌉</span> and the counit is <span class="m">⌈n⌉ ≤ n</span> for an integer <span class="m">n</span>. For <span class="m">i ⊣ ⌊−⌋</span>: the unit is <span class="m">n ≤ ⌊n⌋</span> and the counit is <span class="m">⌊r⌋ ≤ r</span>. All four are facts everyone knows; two of them are equalities.</p>
+<p><strong>(c)</strong> The arrow <span class="m">η<sub>X</sub> × id<sub>A</sub></span> sends <span class="m">(x, a)</span> to the pair <span class="m">(η<sub>X</sub>(x), a)</span>, whose first entry is the function <span class="m">a′ ↦ (x, a′)</span>. Then <span class="m">eval</span> applies that function to <span class="m">a</span>, giving <span class="m">(x, a)</span>. So the composite is the identity.</p>
+<p>In every case the unit and counit are the least surprising arrows of the right type. That is typical — and it is the reason an adjunction is usually easiest to <em>recognise</em> by guessing its unit and counit and checking the triangles.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+
+        <p>Adjunctions compose. Given <span class="m">F ⊣ U</span> between <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, and <span class="m">F&prime; ⊣ U&prime;</span> between <span class="cat">𝒟</span> and <span class="cat">ℰ</span>, show that <span class="m">F&prime; ∘ F ⊣ U ∘ U&prime;</span> — and note carefully which functor ends up on which side.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>Chain the two bijections: <span class="m"><span class="cat">ℰ</span>(F&prime;F X, Z) ≅ <span class="cat">𝒟</span>(F X, U&prime;Z) ≅ <span class="cat">𝒞</span>(X, U U&prime; Z)</span> — the first by <span class="m">F&prime; ⊣ U&prime;</span> at the pair <span class="m">(F X, Z)</span>, the second by <span class="m">F ⊣ U</span> at <span class="m">(X, U&prime;Z)</span>. A composite of bijections is a bijection, and each stage is natural in both slots, so the composite is too. Note the order: the left adjoints compose as <span class="m">F&prime; ∘ F</span> (apply <span class="m">F</span> first) while the right adjoints compose as <span class="m">U ∘ U&prime;</span> (apply <span class="m">U&prime;</span> first) — reversed, socks-and-shoes yet again.</p>
+          <p>Instances are everywhere once you look: free monoid on a set factors as &ldquo;free semigroup, then adjoin a unit&rdquo;; and in the quantifier sandwich, <span class="m">∃</span> along a composite function is the composite of the <span class="m">∃</span>&rsquo;s — image-of-image, the covariant powerset functor law of Lesson 2, Exercise 19, now recognized as composed left adjoints.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>The summit. Let <span class="m">η : Id ⇒ U∘F</span> and <span class="m">ε : F∘U ⇒ Id</span> satisfy the triangle identities. Define the two candidate transpositions:</p>
+        <p style="text-align:center" class="m">φ(f̂) = U f̂ ∘ η<sub>X</sub> &nbsp;&nbsp;for f̂ : F X → Y, &nbsp;&nbsp;&nbsp; ψ(f) = ε<sub>Y</sub> ∘ F f &nbsp;&nbsp;for f : X → U Y.</p>
+        <p>Prove <span class="m">φ(ψ(f)) = f</span> and <span class="m">ψ(φ(f̂)) = f̂</span>. Each proof is three steps: expand the definition, slide one arrow across a naturality square (of <span class="m">η</span> in the first proof, of <span class="m">ε</span> in the second), and finish with a triangle identity. Write out which square and which triangle, at which object.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>First round trip.</strong> <span class="m">φ(ψ(f)) = U(ε<sub>Y</sub> ∘ F f) ∘ η<sub>X</sub> = U ε<sub>Y</sub> ∘ U F f ∘ η<sub>X</sub></span> (functoriality of <span class="m">U</span>). Now the naturality square of <span class="m">η</span> at the arrow <span class="m">f : X → U Y</span> says <span class="m">U F f ∘ η<sub>X</sub> = η<sub>U Y</sub> ∘ f</span> — slide it in: <span class="m">= U ε<sub>Y</sub> ∘ η<sub>U Y</sub> ∘ f</span>. The second triangle identity, at the object <span class="m">Y</span>, says <span class="m">U ε<sub>Y</sub> ∘ η<sub>U Y</sub> = id<sub>U Y</sub></span>. Hence <span class="m">φ(ψ(f)) = f</span>.</p>
+          <p><strong>Second round trip.</strong> <span class="m">ψ(φ(f̂)) = ε<sub>Y</sub> ∘ F(U f̂ ∘ η<sub>X</sub>) = ε<sub>Y</sub> ∘ F U f̂ ∘ F η<sub>X</sub></span>. Naturality of <span class="m">ε</span> at the arrow <span class="m">f̂ : F X → Y</span> gives <span class="m">ε<sub>Y</sub> ∘ F U f̂ = f̂ ∘ ε<sub>F X</sub></span>: <span class="m">= f̂ ∘ ε<sub>F X</sub> ∘ F η<sub>X</sub></span>, and the first triangle identity at <span class="m">X</span> collapses the tail to <span class="m">id<sub>F X</sub></span>. Hence <span class="m">ψ(φ(f̂)) = f̂</span>.</p>
+          <p>Every tool in the proof was built in an earlier lesson: functor laws (Lesson 2), naturality squares (Lesson 3), and a pair of equations playing exactly the role the &ldquo;exactly one&rdquo; clause played in Lessons 6–7. This exercise is the course&rsquo;s machinery operating as a single machine.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>The two definitions agree. Exercise 12 showed that the transpositions built from a unit and a counit are mutually inverse. Complete the equivalence between the definition of §2 and the definition of §4.</p>
+<ol>
+<li>Start from a bijection <span class="m">φ</span> from <span class="m"><span class="cat">𝒟</span>(F X, Y)</span> to <span class="m"><span class="cat">𝒞</span>(X, U Y)</span>, natural in both variables as spelled out in §2, and put <span class="m">η<sub>X</sub> = φ(id<sub>F X</sub>)</span>. Show that <span class="m">φ(k) = U k ∘ η<sub>X</sub></span> for every <span class="m">k : F X → Y</span>, and that <span class="m">η</span> is a natural transformation.</li>
+<li>Let <span class="m">ψ</span> be the inverse of <span class="m">φ</span> and <span class="m">ε<sub>Y</sub> = ψ(id<sub>U Y</sub>)</span>. Granting the dual formula <span class="m">ψ(f) = ε<sub>Y</sub> ∘ F f</span>, derive both triangle identities.</li>
+<li>Conversely, start from natural transformations <span class="m">η : Id ⇒ U ∘ F</span> and <span class="m">ε : F ∘ U ⇒ Id</span> and define <span class="m">φ(k) = U k ∘ η<sub>X</sub></span>. Show that <span class="m">φ</span> is natural in both variables.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Naturality in <span class="m">Y</span>, applied to <span class="m">id<sub>F X</sub></span> and the arrow <span class="m">k : F X → Y</span>, reads <span class="m">φ(k ∘ id<sub>F X</sub>) = U k ∘ φ(id<sub>F X</sub>)</span>; that is, <span class="m">φ(k) = U k ∘ η<sub>X</sub></span>. For the naturality of <span class="m">η</span>, take <span class="m">h : X′ → X</span> and compute <span class="m">φ(F h)</span> in two ways. By the formula just proved, used at <span class="m">X′</span>, it is <span class="m">U F h ∘ η<sub>X′</sub></span>. By naturality in <span class="m">X</span>, applied to <span class="m">id<sub>F X</sub></span>, it is <span class="m">φ(id<sub>F X</sub> ∘ F h) = η<sub>X</sub> ∘ h</span>. So <span class="m">U F h ∘ η<sub>X′</sub> = η<sub>X</sub> ∘ h</span>, which is the naturality square of <span class="m">η</span> at <span class="m">h</span>.</p>
+<p><strong>(b)</strong> <span class="m">ε<sub>F X</sub> ∘ F η<sub>X</sub> = ψ(η<sub>X</sub>) = ψ(φ(id<sub>F X</sub>)) = id<sub>F X</sub></span>, and <span class="m">U ε<sub>Y</sub> ∘ η<sub>U Y</sub> = φ(ε<sub>Y</sub>) = φ(ψ(id<sub>U Y</sub>)) = id<sub>U Y</sub></span>. Each triangle identity says that a unit or counit, transposed back, is the identity it came from.</p>
+<p><strong>(c)</strong> <em>Natural in <span class="m">Y</span>:</em> for <span class="m">k′ : Y → Y′</span>, <span class="m">φ(k′ ∘ k) = U(k′ ∘ k) ∘ η<sub>X</sub> = U k′ ∘ U k ∘ η<sub>X</sub> = U k′ ∘ φ(k)</span>, because <span class="m">U</span> preserves composition. <em>Natural in <span class="m">X</span>:</em> for <span class="m">h : X′ → X</span>, <span class="m">φ(k ∘ F h) = U k ∘ U F h ∘ η<sub>X′</sub> = U k ∘ η<sub>X</sub> ∘ h = φ(k) ∘ h</span>, by the naturality square of <span class="m">η</span> at <span class="m">h</span>.</p>
+<p>Notice the division of labour. Naturality of the transposition needs only the naturality of <span class="m">η</span>; the triangle identities are needed for exactly one thing, that the two transpositions are mutually inverse (Exercise 12). Nothing is lost in either translation, so the two definitions describe the same structure.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>When is a right adjoint faithful? Let <span class="m">F ⊣ U</span> with counit <span class="m">ε</span>.</p>
+<ol>
+<li>Show that for every arrow <span class="m">k : Y → Y′</span> of <span class="m"><span class="cat">𝒟</span></span>, the arrow <span class="m">F U Y → Y′</span> corresponding to <span class="m">U k : U Y → U Y′</span> under the adjunction is <span class="m">k ∘ ε<sub>Y</sub></span>.</li>
+<li>Deduce that <span class="m">U</span> is faithful if and only if every component <span class="m">ε<sub>Y</sub></span> is an epimorphism.</li>
+<li>What does (b) say about monoids?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> By §4, the arrow corresponding to <span class="m">f : X → U Y′</span> is <span class="m">ε<sub>Y′</sub> ∘ F f</span>. Take <span class="m">X = U Y</span> and <span class="m">f = U k</span>: the result is <span class="m">ε<sub>Y′</sub> ∘ F U k</span>, which equals <span class="m">k ∘ ε<sub>Y</sub></span> by the naturality square of <span class="m">ε</span> at <span class="m">k</span>.</p>
+<p><strong>(b)</strong> <span class="m">U</span> is faithful when, for all <span class="m">Y</span> and <span class="m">Y′</span>, the function <span class="m">k ↦ U k</span> from <span class="m"><span class="cat">𝒟</span>(Y, Y′)</span> to <span class="m"><span class="cat">𝒞</span>(U Y, U Y′)</span> is injective. Following it by the bijection <span class="m"><span class="cat">𝒞</span>(U Y, U Y′) ≅ <span class="cat">𝒟</span>(F U Y, Y′)</span> does not affect injectivity, and by (a) the composite is <span class="m">k ↦ k ∘ ε<sub>Y</sub></span>. So <span class="m">U</span> is faithful exactly when <span class="m">k ∘ ε<sub>Y</sub> = k′ ∘ ε<sub>Y</sub></span> implies <span class="m">k = k′</span>, for all parallel <span class="m">k, k′</span> out of <span class="m">Y</span> — which is the definition of <span class="m">ε<sub>Y</sub></span> being epic.</p>
+<p><strong>(c)</strong> The forgetful functor <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span> is faithful, so every counit <span class="m">ε<sub>M</sub> : List(U M) → M</span> is an epimorphism. Here one can see more: <span class="m">ε<sub>M</sub></span> is surjective, since each element <span class="m">m</span> is the image of the one-letter word <span class="m">[m]</span>. So <strong>every monoid is a quotient of a free monoid</strong>, and the same argument works for groups, rings and vector spaces. This is the starting point for describing an algebraic structure by generators and relations.</p>
+<p>Dually, <span class="m">F</span> is faithful if and only if every unit component <span class="m">η<sub>X</sub></span> is monic. For lists, <span class="m">η<sub>X</sub>(x) = [x]</span> is injective.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Adjoints and limits</h3>
+  <p class="exmeta"><a href="#s4">§4</a>, <a href="#proofs">§6</a> · Exercises 15–17</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">think</span></div>
+      <div class="prob-body">
+        <p>A two-line non-existence theorem. Using RAPL&rsquo;s dual — <em>left adjoints preserve colimits</em>, in particular initial objects — prove that the forgetful functor <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> has <strong>no right adjoint</strong>.</p>
+        <p>(You will need Lesson 6&rsquo;s inventory: the initial object of <span class="cat">Grp</span> is the trivial group; the initial object of <span class="cat">Set</span> is the empty set.)</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>If <span class="m">U</span> had a right adjoint, <span class="m">U</span> would be a left adjoint, and would therefore preserve initial objects. But <span class="m">U</span> sends the initial object of <span class="cat">Grp</span> — the trivial group — to a <em>one-element</em> set, and the initial object of <span class="cat">Set</span> is the <em>empty</em> set. One-element sets are not initial (they receive many maps, and Lesson 6, Exercise 1 counted them), so <span class="m">U</span> does not preserve the initial object, and no right adjoint exists. ∎</p>
+          <p>Notice the asymmetry with the other flank: <span class="m">U</span> <em>does</em> have a left adjoint (free groups), which is why it preserves all limits — products, kernels-as-equalizers, pullbacks. The two adjoint questions about a single functor are genuinely independent, and RAPL turns each into a checklist of concrete preservation tests. The constant map of §7 is this exact argument in a seven-element universe.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">think</span></div>
+<div class="prob-body">
+<p>Arithmetic from RAPL. All functors here go from <span class="m"><span class="cat">Set</span></span> to <span class="m"><span class="cat">Set</span></span>, and <span class="m">A</span> is a fixed set.</p>
+<ol>
+<li><span class="m">(−) × A</span> is a left adjoint, so it preserves coproducts and the initial object. Which two laws of arithmetic result, when the sets are finite and you count?</li>
+<li><span class="m">(−)<sup>A</sup></span> is a right adjoint, so it preserves products and the terminal object. Which two laws result?</li>
+<li>Let <span class="m">A</span> be non-empty. Show that the functor <span class="m">(−) + A</span> has neither a left adjoint nor a right adjoint.</li>
+<li>For which sets <span class="m">A</span> does <span class="m">(−) × A</span> have a <em>left</em> adjoint?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">(B + C) × A ≅ B × A + C × A</span> and <span class="m">∅ × A ≅ ∅</span>: the distributive law <span class="m">(b + c) · a = b · a + c · a</span>, and <span class="m">0 · a = 0</span>.</p>
+<p><strong>(b)</strong> <span class="m">(Y × Z)<sup>A</sup> ≅ Y<sup>A</sup> × Z<sup>A</sup></span> and <span class="m">1<sup>A</sup> ≅ 1</span>: the laws <span class="m">(y · z)<sup>a</sup> = y<sup>a</sup> · z<sup>a</sup></span> and <span class="m">1<sup>a</sup> = 1</span>.</p>
+<p><strong>(c)</strong> If <span class="m">(−) + A</span> had a right adjoint, it would be a left adjoint and would preserve the initial object; but <span class="m">∅ + A = A</span> is not empty. If it had a left adjoint, it would be a right adjoint and would preserve the terminal object; but <span class="m">1 + A</span> has at least two elements. So it has neither.</p>
+<p><strong>(d)</strong> A functor with a left adjoint is a right adjoint, and must preserve the terminal object. <span class="m">1 × A ≅ A</span> is terminal only when <span class="m">A</span> has exactly one element. In that case <span class="m">(−) × A</span> is naturally isomorphic to the identity functor, which is its own adjoint on both sides. So: only for one-element sets.</p>
+<p>Every familiar identity relating sums, products and powers of natural numbers is the shadow of a preservation statement of this kind. One of them, <span class="m">(y · z)<sup>a</sup> = y<sup>a</sup> · z<sup>a</sup></span>, was already met in Lesson 6, where it came directly from the universal property of the product.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>Four adjoints in a row. Let <span class="m"><span class="cat">Pre</span></span> be the category of preorders and monotone maps, and <span class="m">U : <span class="cat">Pre</span> → <span class="cat">Set</span></span> the underlying-set functor. For a set <span class="m">S</span>, let <span class="m">D S</span> be <span class="m">S</span> with the <em>discrete</em> order, in which <span class="m">x ≤ y</span> only when <span class="m">x = y</span>, and let <span class="m">I S</span> be <span class="m">S</span> with the <em>indiscrete</em> order, in which <span class="m">x ≤ y</span> always.</p>
+<ol>
+<li>Show that <span class="m">D ⊣ U ⊣ I</span> by describing the bijections <span class="m"><span class="cat">Pre</span>(D S, P) ≅ <span class="cat">Set</span>(S, U P)</span> and <span class="m"><span class="cat">Set</span>(U P, S) ≅ <span class="cat">Pre</span>(P, I S)</span>.</li>
+<li>What does RAPL say about <span class="m">U</span>? Check it against the product and the coproduct of two preorders.</li>
+<li>Call two elements of a preorder <em>connected</em> if they are joined by a zigzag <span class="m">x ≤ y ≥ z ≤ ⋯</span>, and let <span class="m">π<sub>0</sub>(P)</span> be the set of connected components of <span class="m">P</span>. Show that <span class="m">π<sub>0</sub> ⊣ D</span>.</li>
+<li>Show that <span class="m">I</span> has no right adjoint.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> A function out of a discrete order is automatically monotone: the condition &ldquo;<span class="m">x ≤ y</span> implies <span class="m">f(x) ≤ f(y)</span>&rdquo; only has to be checked when <span class="m">x = y</span>. So monotone maps <span class="m">D S → P</span> are the same thing as functions <span class="m">S → U P</span>. A function <em>into</em> an indiscrete order is automatically monotone, since <span class="m">f(x) ≤ f(y)</span> always holds; so monotone maps <span class="m">P → I S</span> are the same thing as functions <span class="m">U P → S</span>. Both bijections are the identity on underlying functions, so naturality is immediate.</p>
+<p><strong>(b)</strong> <span class="m">U</span> is a right adjoint (of <span class="m">D</span>) and also a left adjoint (of <span class="m">I</span>), so it preserves all limits and all colimits. And indeed the product of <span class="m">P</span> and <span class="m">Q</span> is the product of the underlying sets, ordered componentwise; their coproduct is the disjoint union of the underlying sets, with no relations between the two parts.</p>
+<p><strong>(c)</strong> A monotone map <span class="m">f : P → D S</span> must satisfy <span class="m">f(x) = f(y)</span> whenever <span class="m">x ≤ y</span>. So it is constant along zigzags — constant on each connected component — and conversely every function that is constant on components is monotone into <span class="m">D S</span>. Such functions are the same thing as functions <span class="m">π<sub>0</sub>(P) → S</span>. That is a bijection <span class="m"><span class="cat">Set</span>(π<sub>0</sub> P, S) ≅ <span class="cat">Pre</span>(P, D S)</span>, natural in both variables.</p>
+<p><strong>(d)</strong> If <span class="m">I</span> had a right adjoint it would be a left adjoint, and would preserve coproducts. But for non-empty sets <span class="m">S</span> and <span class="m">T</span>, in <span class="m">I(S + T)</span> every element of <span class="m">S</span> is below every element of <span class="m">T</span>, while in the coproduct <span class="m">I S + I T</span> no element of one part is related to any element of the other. So <span class="m">I</span> does not preserve coproducts.</p>
+<p>The result is a chain <span class="m">π<sub>0</sub> ⊣ D ⊣ U ⊣ I</span>: one humble functor, &ldquo;underlying set,&rdquo; with an adjoint on each side, and one of those with a further adjoint of its own. The same chain appears with categories in place of preorders: connected components, discrete category, set of objects, and the category with exactly one arrow between any two objects. For topological spaces three of the four survive in general — discrete space, underlying set of points, indiscrete space.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Quantifiers and closure</h3>
+  <p class="exmeta"><a href="#going-deeper">Going deeper</a> · Exercises 18–19</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 18</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
 <p>Check the quantifier sandwich of the Going-deeper section on an example. Take <span class="m">A = {1, 2, 3}</span>, <span class="m">B = {a, b}</span> and <span class="m">f(1) = f(2) = a</span>, <span class="m">f(3) = b</span>.</p>
 <ol>
@@ -1110,158 +1308,6 @@ print(f&quot;quantifier sandwich verified on {n} biconditionals&quot;)</code></p
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">arrows-only</span></div>
-      <div class="prob-body">
-
-        <p>Adjunctions compose. Given <span class="m">F ⊣ U</span> between <span class="cat">𝒞</span> and <span class="cat">𝒟</span>, and <span class="m">F&prime; ⊣ U&prime;</span> between <span class="cat">𝒟</span> and <span class="cat">ℰ</span>, show that <span class="m">F&prime; ∘ F ⊣ U ∘ U&prime;</span> — and note carefully which functor ends up on which side.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-
-          <p>Chain the two bijections: <span class="m"><span class="cat">ℰ</span>(F&prime;F X, Z) ≅ <span class="cat">𝒟</span>(F X, U&prime;Z) ≅ <span class="cat">𝒞</span>(X, U U&prime; Z)</span> — the first by <span class="m">F&prime; ⊣ U&prime;</span> at the pair <span class="m">(F X, Z)</span>, the second by <span class="m">F ⊣ U</span> at <span class="m">(X, U&prime;Z)</span>. A composite of bijections is a bijection, and each stage is natural in both slots, so the composite is too. Note the order: the left adjoints compose as <span class="m">F&prime; ∘ F</span> (apply <span class="m">F</span> first) while the right adjoints compose as <span class="m">U ∘ U&prime;</span> (apply <span class="m">U&prime;</span> first) — reversed, socks-and-shoes yet again.</p>
-          <p>Instances are everywhere once you look: free monoid on a set factors as &ldquo;free semigroup, then adjoin a unit&rdquo;; and in the quantifier sandwich, <span class="m">∃</span> along a composite function is the composite of the <span class="m">∃</span>&rsquo;s — image-of-image, the covariant powerset functor law of Lesson 2, Exercise 11, now recognized as composed left adjoints.</p>
-        </div>
-      </details>
-    </div>
-
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>The two definitions agree. Exercise 4 showed that the transpositions built from a unit and a counit are mutually inverse. Complete the equivalence between the definition of §2 and the definition of §4.</p>
-<ol>
-<li>Start from a bijection <span class="m">φ</span> from <span class="m"><span class="cat">𝒟</span>(F X, Y)</span> to <span class="m"><span class="cat">𝒞</span>(X, U Y)</span>, natural in both variables as spelled out in §2, and put <span class="m">η<sub>X</sub> = φ(id<sub>F X</sub>)</span>. Show that <span class="m">φ(k) = U k ∘ η<sub>X</sub></span> for every <span class="m">k : F X → Y</span>, and that <span class="m">η</span> is a natural transformation.</li>
-<li>Let <span class="m">ψ</span> be the inverse of <span class="m">φ</span> and <span class="m">ε<sub>Y</sub> = ψ(id<sub>U Y</sub>)</span>. Granting the dual formula <span class="m">ψ(f) = ε<sub>Y</sub> ∘ F f</span>, derive both triangle identities.</li>
-<li>Conversely, start from natural transformations <span class="m">η : Id ⇒ U ∘ F</span> and <span class="m">ε : F ∘ U ⇒ Id</span> and define <span class="m">φ(k) = U k ∘ η<sub>X</sub></span>. Show that <span class="m">φ</span> is natural in both variables.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> Naturality in <span class="m">Y</span>, applied to <span class="m">id<sub>F X</sub></span> and the arrow <span class="m">k : F X → Y</span>, reads <span class="m">φ(k ∘ id<sub>F X</sub>) = U k ∘ φ(id<sub>F X</sub>)</span>; that is, <span class="m">φ(k) = U k ∘ η<sub>X</sub></span>. For the naturality of <span class="m">η</span>, take <span class="m">h : X′ → X</span> and compute <span class="m">φ(F h)</span> in two ways. By the formula just proved, used at <span class="m">X′</span>, it is <span class="m">U F h ∘ η<sub>X′</sub></span>. By naturality in <span class="m">X</span>, applied to <span class="m">id<sub>F X</sub></span>, it is <span class="m">φ(id<sub>F X</sub> ∘ F h) = η<sub>X</sub> ∘ h</span>. So <span class="m">U F h ∘ η<sub>X′</sub> = η<sub>X</sub> ∘ h</span>, which is the naturality square of <span class="m">η</span> at <span class="m">h</span>.</p>
-<p><strong>(b)</strong> <span class="m">ε<sub>F X</sub> ∘ F η<sub>X</sub> = ψ(η<sub>X</sub>) = ψ(φ(id<sub>F X</sub>)) = id<sub>F X</sub></span>, and <span class="m">U ε<sub>Y</sub> ∘ η<sub>U Y</sub> = φ(ε<sub>Y</sub>) = φ(ψ(id<sub>U Y</sub>)) = id<sub>U Y</sub></span>. Each triangle identity says that a unit or counit, transposed back, is the identity it came from.</p>
-<p><strong>(c)</strong> <em>Natural in <span class="m">Y</span>:</em> for <span class="m">k′ : Y → Y′</span>, <span class="m">φ(k′ ∘ k) = U(k′ ∘ k) ∘ η<sub>X</sub> = U k′ ∘ U k ∘ η<sub>X</sub> = U k′ ∘ φ(k)</span>, because <span class="m">U</span> preserves composition. <em>Natural in <span class="m">X</span>:</em> for <span class="m">h : X′ → X</span>, <span class="m">φ(k ∘ F h) = U k ∘ U F h ∘ η<sub>X′</sub> = U k ∘ η<sub>X</sub> ∘ h = φ(k) ∘ h</span>, by the naturality square of <span class="m">η</span> at <span class="m">h</span>.</p>
-<p>Notice the division of labour. Naturality of the transposition needs only the naturality of <span class="m">η</span>; the triangle identities are needed for exactly one thing, that the two transpositions are mutually inverse (Exercise 4). Nothing is lost in either translation, so the two definitions describe the same structure.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">by hand</span></div>
-<div class="prob-body">
-<p>The free monoid on one generator.</p>
-<ol>
-<li>Show that the free monoid on a one-element set <span class="m">{∗}</span> is isomorphic to <span class="m">(ℕ, +, 0)</span>.</li>
-<li>Use the adjunction to find all monoid homomorphisms from <span class="m">(ℕ, +, 0)</span> to the two-element monoid <span class="m">{true, false}</span> under &ldquo;and,&rdquo; whose unit is <span class="m">true</span>.</li>
-<li>Deduce that <span class="m"><span class="cat">Mon</span>(ℕ, M) ≅ U M</span> for every monoid <span class="m">M</span>, as Lesson 2 claimed. Which group plays the same role for the forgetful functor <span class="m"><span class="cat">Grp</span> → <span class="cat">Set</span></span>?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> A list over <span class="m">{∗}</span> is determined by its length. Concatenating lists adds their lengths, and the empty list has length <span class="m">0</span>. So &ldquo;length&rdquo; is a bijective homomorphism from <span class="m">List {∗}</span> to <span class="m">(ℕ, +, 0)</span> — an isomorphism of monoids.</p>
-<p><strong>(b)</strong> Homomorphisms <span class="m">List {∗} → M</span> correspond to functions <span class="m">{∗} → U M</span>, that is, to elements <span class="m">c</span> of <span class="m">M</span>; the homomorphism belonging to <span class="m">c</span> sends <span class="m">n</span> to the <span class="m">n</span>-fold product <span class="m">c · c · ⋯ · c</span>, and <span class="m">0</span> to the unit. Here <span class="m">M</span> has two elements, so there are exactly two homomorphisms. For <span class="m">c = true</span>: every <span class="m">n</span> goes to <span class="m">true</span>. For <span class="m">c = false</span>: <span class="m">0</span> goes to <span class="m">true</span> and every <span class="m">n ≥ 1</span> goes to <span class="m">false</span> — the homomorphism &ldquo;is <span class="m">n</span> zero?&rdquo;</p>
-<p><strong>(c)</strong> <span class="m"><span class="cat">Mon</span>(ℕ, M) ≅ <span class="cat">Mon</span>(List {∗}, M) ≅ <span class="cat">Set</span>({∗}, U M) ≅ U M</span>, and each step is natural in <span class="m">M</span>. So the forgetful functor is the hom functor <span class="m"><span class="cat">Mon</span>(ℕ, −)</span>, up to natural isomorphism. For groups, the free group on one generator <span class="m">x</span> consists of the powers <span class="m">x<sup>n</sup></span> with <span class="m">n</span> any integer: it is <span class="m">ℤ</span>, and <span class="m"><span class="cat">Grp</span>(ℤ, G) ≅ U G</span>. The pattern is general: whenever a forgetful functor <span class="m">U</span> to <span class="m"><span class="cat">Set</span></span> has a left adjoint <span class="m">F</span>, it is the hom functor out of the free object on one generator. Lesson 9 calls such functors <em>representable</em>.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">by hand</span></div>
-<div class="prob-body">
-<p>Implication is a right adjoint. Let <span class="m">S</span> be a set and <span class="m">A</span> a fixed subset of it. On the power set <span class="m">P(S)</span>, ordered by inclusion, consider the monotone map <span class="m">f(X) = X ∩ A</span>.</p>
-<ol>
-<li>Use the recipe of §7 to find the right adjoint <span class="m">g</span> of <span class="m">f</span>: for a subset <span class="m">Y</span>, what is the greatest <span class="m">X</span> with <span class="m">X ∩ A ⊆ Y</span>?</li>
-<li>Verify the biconditional <span class="m">X ∩ A ⊆ Y ⟺ X ⊆ g(Y)</span> directly.</li>
-<li>Read subsets of <span class="m">S</span> as propositions (a proposition being the set of cases in which it is true), intersection as &ldquo;and,&rdquo; and inclusion as &ldquo;implies.&rdquo; Which connective is <span class="m">g</span>? What do the biconditional and the counit inequality <span class="m">g(Y) ∩ A ⊆ Y</span> say?</li>
-<li>Which adjunction of §3 is this the order-theoretic version of?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> <span class="m">X ∩ A ⊆ Y</span> says that every element of <span class="m">X</span> lying in <span class="m">A</span> lies in <span class="m">Y</span> — that every element of <span class="m">X</span> is either outside <span class="m">A</span> or inside <span class="m">Y</span>. The greatest such <span class="m">X</span> consists of <em>all</em> elements that are outside <span class="m">A</span> or inside <span class="m">Y</span>: <span class="m">g(Y) = (S ∖ A) ∪ Y</span>.</p>
-<p><strong>(b)</strong> <span class="m">X ⊆ (S ∖ A) ∪ Y</span> holds exactly when each <span class="m">x</span> in <span class="m">X</span> is outside <span class="m">A</span> or in <span class="m">Y</span>, which is exactly <span class="m">X ∩ A ⊆ Y</span>.</p>
-<p><strong>(c)</strong> <span class="m">g(Y)</span> is &ldquo;not <span class="m">A</span>, or <span class="m">Y</span>&rdquo;: the implication <span class="m">A ⇒ Y</span>. The biconditional says that &ldquo;<span class="m">X</span> and <span class="m">A</span> together imply <span class="m">Y</span>&rdquo; is the same statement as &ldquo;<span class="m">X</span> implies (<span class="m">A</span> implies <span class="m">Y</span>)&rdquo; — the rule by which one proves an implication by assuming its hypothesis. The counit says that from <span class="m">A ⇒ Y</span> and <span class="m">A</span> one may conclude <span class="m">Y</span>: <em>modus ponens</em>.</p>
-<p><strong>(d)</strong> Currying, <span class="m">(−) × A ⊣ (−)<sup>A</sup></span>. In a power set the product is the intersection, the exponential <span class="m">Y<sup>A</sup></span> is the implication <span class="m">A ⇒ Y</span>, and the counit <span class="m">eval</span> is modus ponens. Conjunction is left adjoint to implication for the same reason that functions of two arguments can be curried.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">examples</span></div>
-<div class="prob-body">
-<p>Units and counits, decoded.</p>
-<ol>
-<li>Exercise 6 identified the counit of <span class="m">Δ ⊣ ×</span> and the unit of <span class="m">+ ⊣ Δ</span>. What are the other two — the unit of <span class="m">Δ ⊣ ×</span> and the counit of <span class="m">+ ⊣ Δ</span> — as functions in <span class="m"><span class="cat">Set</span></span>?</li>
-<li>For <span class="m">⌈−⌉ ⊣ i</span> and <span class="m">i ⊣ ⌊−⌋</span>, write the unit and the counit of each as an inequality.</li>
-<li>For currying, the unit is <span class="m">η<sub>X</sub>(x) = (a ↦ (x, a))</span> and the counit is <span class="m">eval</span>. Verify the first triangle identity, <span class="m">ε<sub>X × A</sub> ∘ (η<sub>X</sub> × id<sub>A</sub>) = id<sub>X × A</sub></span>, by following an element <span class="m">(x, a)</span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> The unit of <span class="m">Δ ⊣ ×</span> at <span class="m">X</span> is the transpose of the identity of <span class="m">Δ X</span>, the pair <span class="m">(id<sub>X</sub>, id<sub>X</sub>)</span>: it is the pairing <span class="m">⟨id<sub>X</sub>, id<sub>X</sub>⟩ : X → X × X</span>, the <strong>diagonal</strong> <span class="m">x ↦ (x, x)</span>. Dually the counit of <span class="m">+ ⊣ Δ</span> is the copairing <span class="m">[id<sub>X</sub>, id<sub>X</sub>] : X + X → X</span>, the <strong>fold</strong> map that forgets which copy an element came from.</p>
-<p><strong>(b)</strong> For <span class="m">⌈−⌉ ⊣ i</span>: the unit is <span class="m">r ≤ ⌈r⌉</span> and the counit is <span class="m">⌈n⌉ ≤ n</span> for an integer <span class="m">n</span>. For <span class="m">i ⊣ ⌊−⌋</span>: the unit is <span class="m">n ≤ ⌊n⌋</span> and the counit is <span class="m">⌊r⌋ ≤ r</span>. All four are facts everyone knows; two of them are equalities.</p>
-<p><strong>(c)</strong> The arrow <span class="m">η<sub>X</sub> × id<sub>A</sub></span> sends <span class="m">(x, a)</span> to the pair <span class="m">(η<sub>X</sub>(x), a)</span>, whose first entry is the function <span class="m">a′ ↦ (x, a′)</span>. Then <span class="m">eval</span> applies that function to <span class="m">a</span>, giving <span class="m">(x, a)</span>. So the composite is the identity.</p>
-<p>In every case the unit and counit are the least surprising arrows of the right type. That is typical — and it is the reason an adjunction is usually easiest to <em>recognise</em> by guessing its unit and counit and checking the triangles.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 16</span><span class="tier">structure</span></div>
-<div class="prob-body">
-<p>Four adjoints in a row. Let <span class="m"><span class="cat">Pre</span></span> be the category of preorders and monotone maps, and <span class="m">U : <span class="cat">Pre</span> → <span class="cat">Set</span></span> the underlying-set functor. For a set <span class="m">S</span>, let <span class="m">D S</span> be <span class="m">S</span> with the <em>discrete</em> order, in which <span class="m">x ≤ y</span> only when <span class="m">x = y</span>, and let <span class="m">I S</span> be <span class="m">S</span> with the <em>indiscrete</em> order, in which <span class="m">x ≤ y</span> always.</p>
-<ol>
-<li>Show that <span class="m">D ⊣ U ⊣ I</span> by describing the bijections <span class="m"><span class="cat">Pre</span>(D S, P) ≅ <span class="cat">Set</span>(S, U P)</span> and <span class="m"><span class="cat">Set</span>(U P, S) ≅ <span class="cat">Pre</span>(P, I S)</span>.</li>
-<li>What does RAPL say about <span class="m">U</span>? Check it against the product and the coproduct of two preorders.</li>
-<li>Call two elements of a preorder <em>connected</em> if they are joined by a zigzag <span class="m">x ≤ y ≥ z ≤ ⋯</span>, and let <span class="m">π<sub>0</sub>(P)</span> be the set of connected components of <span class="m">P</span>. Show that <span class="m">π<sub>0</sub> ⊣ D</span>.</li>
-<li>Show that <span class="m">I</span> has no right adjoint.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> A function out of a discrete order is automatically monotone: the condition &ldquo;<span class="m">x ≤ y</span> implies <span class="m">f(x) ≤ f(y)</span>&rdquo; only has to be checked when <span class="m">x = y</span>. So monotone maps <span class="m">D S → P</span> are the same thing as functions <span class="m">S → U P</span>. A function <em>into</em> an indiscrete order is automatically monotone, since <span class="m">f(x) ≤ f(y)</span> always holds; so monotone maps <span class="m">P → I S</span> are the same thing as functions <span class="m">U P → S</span>. Both bijections are the identity on underlying functions, so naturality is immediate.</p>
-<p><strong>(b)</strong> <span class="m">U</span> is a right adjoint (of <span class="m">D</span>) and also a left adjoint (of <span class="m">I</span>), so it preserves all limits and all colimits. And indeed the product of <span class="m">P</span> and <span class="m">Q</span> is the product of the underlying sets, ordered componentwise; their coproduct is the disjoint union of the underlying sets, with no relations between the two parts.</p>
-<p><strong>(c)</strong> A monotone map <span class="m">f : P → D S</span> must satisfy <span class="m">f(x) = f(y)</span> whenever <span class="m">x ≤ y</span>. So it is constant along zigzags — constant on each connected component — and conversely every function that is constant on components is monotone into <span class="m">D S</span>. Such functions are the same thing as functions <span class="m">π<sub>0</sub>(P) → S</span>. That is a bijection <span class="m"><span class="cat">Set</span>(π<sub>0</sub> P, S) ≅ <span class="cat">Pre</span>(P, D S)</span>, natural in both variables.</p>
-<p><strong>(d)</strong> If <span class="m">I</span> had a right adjoint it would be a left adjoint, and would preserve coproducts. But for non-empty sets <span class="m">S</span> and <span class="m">T</span>, in <span class="m">I(S + T)</span> every element of <span class="m">S</span> is below every element of <span class="m">T</span>, while in the coproduct <span class="m">I S + I T</span> no element of one part is related to any element of the other. So <span class="m">I</span> does not preserve coproducts.</p>
-<p>The result is a chain <span class="m">π<sub>0</sub> ⊣ D ⊣ U ⊣ I</span>: one humble functor, &ldquo;underlying set,&rdquo; with an adjoint on each side, and one of those with a further adjoint of its own. The same chain appears with categories in place of preorders: connected components, discrete category, set of objects, and the category with exactly one arrow between any two objects. For topological spaces three of the four survive in general — discrete space, underlying set of points, indiscrete space.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">think</span></div>
-<div class="prob-body">
-<p>Arithmetic from RAPL. All functors here go from <span class="m"><span class="cat">Set</span></span> to <span class="m"><span class="cat">Set</span></span>, and <span class="m">A</span> is a fixed set.</p>
-<ol>
-<li><span class="m">(−) × A</span> is a left adjoint, so it preserves coproducts and the initial object. Which two laws of arithmetic result, when the sets are finite and you count?</li>
-<li><span class="m">(−)<sup>A</sup></span> is a right adjoint, so it preserves products and the terminal object. Which two laws result?</li>
-<li>Let <span class="m">A</span> be non-empty. Show that the functor <span class="m">(−) + A</span> has neither a left adjoint nor a right adjoint.</li>
-<li>For which sets <span class="m">A</span> does <span class="m">(−) × A</span> have a <em>left</em> adjoint?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> <span class="m">(B + C) × A ≅ B × A + C × A</span> and <span class="m">∅ × A ≅ ∅</span>: the distributive law <span class="m">(b + c) · a = b · a + c · a</span>, and <span class="m">0 · a = 0</span>.</p>
-<p><strong>(b)</strong> <span class="m">(Y × Z)<sup>A</sup> ≅ Y<sup>A</sup> × Z<sup>A</sup></span> and <span class="m">1<sup>A</sup> ≅ 1</span>: the laws <span class="m">(y · z)<sup>a</sup> = y<sup>a</sup> · z<sup>a</sup></span> and <span class="m">1<sup>a</sup> = 1</span>.</p>
-<p><strong>(c)</strong> If <span class="m">(−) + A</span> had a right adjoint, it would be a left adjoint and would preserve the initial object; but <span class="m">∅ + A = A</span> is not empty. If it had a left adjoint, it would be a right adjoint and would preserve the terminal object; but <span class="m">1 + A</span> has at least two elements. So it has neither.</p>
-<p><strong>(d)</strong> A functor with a left adjoint is a right adjoint, and must preserve the terminal object. <span class="m">1 × A ≅ A</span> is terminal only when <span class="m">A</span> has exactly one element. In that case <span class="m">(−) × A</span> is naturally isomorphic to the identity functor, which is its own adjoint on both sides. So: only for one-element sets.</p>
-<p>Every familiar identity relating sums, products and powers of natural numbers is the shadow of a preservation statement of this kind. One of them, <span class="m">(y · z)<sup>a</sup> = y<sup>a</sup> · z<sup>a</sup></span>, was already met in Lesson 6, where it came directly from the universal property of the product.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 18</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>When is a right adjoint faithful? Let <span class="m">F ⊣ U</span> with counit <span class="m">ε</span>.</p>
-<ol>
-<li>Show that for every arrow <span class="m">k : Y → Y′</span> of <span class="m"><span class="cat">𝒟</span></span>, the arrow <span class="m">F U Y → Y′</span> corresponding to <span class="m">U k : U Y → U Y′</span> under the adjunction is <span class="m">k ∘ ε<sub>Y</sub></span>.</li>
-<li>Deduce that <span class="m">U</span> is faithful if and only if every component <span class="m">ε<sub>Y</sub></span> is an epimorphism.</li>
-<li>What does (b) say about monoids?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> By §4, the arrow corresponding to <span class="m">f : X → U Y′</span> is <span class="m">ε<sub>Y′</sub> ∘ F f</span>. Take <span class="m">X = U Y</span> and <span class="m">f = U k</span>: the result is <span class="m">ε<sub>Y′</sub> ∘ F U k</span>, which equals <span class="m">k ∘ ε<sub>Y</sub></span> by the naturality square of <span class="m">ε</span> at <span class="m">k</span>.</p>
-<p><strong>(b)</strong> <span class="m">U</span> is faithful when, for all <span class="m">Y</span> and <span class="m">Y′</span>, the function <span class="m">k ↦ U k</span> from <span class="m"><span class="cat">𝒟</span>(Y, Y′)</span> to <span class="m"><span class="cat">𝒞</span>(U Y, U Y′)</span> is injective. Following it by the bijection <span class="m"><span class="cat">𝒞</span>(U Y, U Y′) ≅ <span class="cat">𝒟</span>(F U Y, Y′)</span> does not affect injectivity, and by (a) the composite is <span class="m">k ↦ k ∘ ε<sub>Y</sub></span>. So <span class="m">U</span> is faithful exactly when <span class="m">k ∘ ε<sub>Y</sub> = k′ ∘ ε<sub>Y</sub></span> implies <span class="m">k = k′</span>, for all parallel <span class="m">k, k′</span> out of <span class="m">Y</span> — which is the definition of <span class="m">ε<sub>Y</sub></span> being epic.</p>
-<p><strong>(c)</strong> The forgetful functor <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span> is faithful, so every counit <span class="m">ε<sub>M</sub> : List(U M) → M</span> is an epimorphism. Here one can see more: <span class="m">ε<sub>M</sub></span> is surjective, since each element <span class="m">m</span> is the image of the one-letter word <span class="m">[m]</span>. So <strong>every monoid is a quotient of a free monoid</strong>, and the same argument works for groups, rings and vector spaces. This is the starting point for describing an algebraic structure by generators and relations.</p>
-<p>Dually, <span class="m">F</span> is faithful if and only if every unit component <span class="m">η<sub>X</sub></span> is monic. For lists, <span class="m">η<sub>X</sub>(x) = [x]</span> is injective.</p>
-</div>
-</details>
-</div>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 19</span><span class="tier">think</span></div>
 <div class="prob-body">
@@ -1269,20 +1315,21 @@ print(f&quot;quantifier sandwich verified on {n} biconditionals&quot;)</code></p
 <ol>
 <li>Show that <span class="m">f(g(f(x))) = f(x)</span> for all <span class="m">x</span>. Which identity of §4 is this?</li>
 <li>Deduce that <span class="m">c</span> is monotone, that <span class="m">x ≤ c(x)</span>, and that <span class="m">c(c(x)) = c(x)</span>.</li>
-<li>For the adjunction <span class="m">∃<sub>f</sub> ⊣ f<sup>*</sup></span> of the Going-deeper section, describe <span class="m">c(S) = f<sup>*</sup>(∃<sub>f</sub>(S))</span> in words, and compute it for the function of Exercise 10 and <span class="m">S = {1}</span>.</li>
+<li>For the adjunction <span class="m">∃<sub>f</sub> ⊣ f<sup>*</sup></span> of the Going-deeper section, describe <span class="m">c(S) = f<sup>*</sup>(∃<sub>f</sub>(S))</span> in words, and compute it for the function of Exercise 18 and <span class="m">S = {1}</span>.</li>
 <li>An operation with the three properties of (b) is called a <em>closure operator</em>. Name two that you have met elsewhere in mathematics.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> Apply <span class="m">f</span> to the unit inequality <span class="m">x ≤ g(f(x))</span> of Exercise 3: <span class="m">f(x) ≤ f(g(f(x)))</span>. The counit inequality at <span class="m">y = f(x)</span> gives <span class="m">f(g(f(x))) ≤ f(x)</span>. In a poset, two elements each below the other are equal. This is the first triangle identity, <span class="m">ε<sub>F X</sub> ∘ F η<sub>X</sub> = id<sub>F X</sub></span>, in a setting where an equation between arrows is just an equation between their endpoints.</p>
-<p><strong>(b)</strong> <span class="m">c</span> is a composite of monotone maps (Exercise 3). <span class="m">x ≤ c(x)</span> is the unit. And applying <span class="m">g</span> to (a) gives <span class="m">g(f(g(f(x)))) = g(f(x))</span>, that is, <span class="m">c(c(x)) = c(x)</span>.</p>
+<p><strong>(a)</strong> Apply <span class="m">f</span> to the unit inequality <span class="m">x ≤ g(f(x))</span> of Exercise 4: <span class="m">f(x) ≤ f(g(f(x)))</span>. The counit inequality at <span class="m">y = f(x)</span> gives <span class="m">f(g(f(x))) ≤ f(x)</span>. In a poset, two elements each below the other are equal. This is the first triangle identity, <span class="m">ε<sub>F X</sub> ∘ F η<sub>X</sub> = id<sub>F X</sub></span>, in a setting where an equation between arrows is just an equation between their endpoints.</p>
+<p><strong>(b)</strong> <span class="m">c</span> is a composite of monotone maps (Exercise 4). <span class="m">x ≤ c(x)</span> is the unit. And applying <span class="m">g</span> to (a) gives <span class="m">g(f(g(f(x)))) = g(f(x))</span>, that is, <span class="m">c(c(x)) = c(x)</span>.</p>
 <p><strong>(c)</strong> <span class="m">c(S)</span> is the set of all elements of <span class="m">A</span> that have the same image as some element of <span class="m">S</span>: the union of the fibres of <span class="m">f</span> that meet <span class="m">S</span>. For <span class="m">f(1) = f(2) = a</span>, <span class="m">f(3) = b</span> and <span class="m">S = {1}</span>: <span class="m">∃<sub>f</sub>(S) = {a}</span> and <span class="m">f<sup>*</sup>({a}) = {1, 2}</span>.</p>
 <p><strong>(d)</strong> The subgroup generated by a subset of a group; the span of a set of vectors; the closure of a set in a topological space; the convex hull of a set of points; the transitive closure of a relation. Each comes from an adjunction of this kind — for instance, &ldquo;subgroup generated by&rdquo; is left adjoint to the inclusion of the subgroups of <span class="m">G</span> into the subsets of <span class="m">G</span>.</p>
 <p>A closure operator is what a <em>monad</em> looks like in a poset: <span class="m">x ≤ c(x)</span> is its unit and <span class="m">c(c(x)) ≤ c(x)</span> its multiplication. Every adjunction produces one, in any category, and Lesson 10 is about what they are and what they are for.</p>
 </div>
 </details>
 </div>
+
 </div>
 </section>
 

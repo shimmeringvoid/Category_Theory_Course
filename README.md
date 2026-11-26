@@ -7,7 +7,8 @@ A complete, self-contained ten-lesson course. Each lesson is a single HTML
 page: motivation, boxed definitions and theorems with their proofs, worked
 examples with commutative diagrams that draw themselves, a section of
 computations carried out by hand, a "Going deeper" section, and a large
-exercise set with hidden solutions.
+exercise set with hidden solutions, grouped by topic and running from easier
+to harder within each group.
 
 **No programming is required.** Python is an optional track. Every lesson
 reads from start to finish without code; the Python lives in clearly marked,
@@ -79,7 +80,8 @@ are generated from the pages, never edited by hand.
 ```bash
 python3 tools/check_course.py    # run every code box and compare its output with
                                  # the page; check links, anchors, exercise
-                                 # numbering and the generated files
+                                 # numbering, references to exercises and the
+                                 # generated files
 python3 tools/sync_code.py       # after editing code on a page: regenerate
                                  # code/ and notebooks/
 ```

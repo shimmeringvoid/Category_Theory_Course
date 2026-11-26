@@ -129,6 +129,23 @@ print("right adjoints of f_bad:", find_right_adjoints(f_bad, Div, Chain))
 
 
 # ==========================================================================
+# Exercise 5
+# ==========================================================================
+
+# ----- reverse.py ----------------------------------------------------------
+
+def find_left_adjoints(g, D, C):
+    "all monotone f : C -> D  with   f(x) <= y   iff   x <= g(y)"
+    return [f for f in monotone_maps(C, D)
+            if all(bool(arrows_between(D, f[x], y)) ==
+                   bool(arrows_between(C, x, g[y]))
+                   for x in C.obj for y in D.obj)]
+
+g = {1: 0, 2: 1, 3: 0, 6: 2}
+print(find_left_adjoints(g, Div, Chain))
+
+
+# ==========================================================================
 # Exercise 8
 # ==========================================================================
 
@@ -148,24 +165,7 @@ print("|Hom(XxA,Y)| =", len(hs), " distinct curried =", len(images),
 
 
 # ==========================================================================
-# Exercise 9
-# ==========================================================================
-
-# ----- reverse.py ----------------------------------------------------------
-
-def find_left_adjoints(g, D, C):
-    "all monotone f : C -> D  with   f(x) <= y   iff   x <= g(y)"
-    return [f for f in monotone_maps(C, D)
-            if all(bool(arrows_between(D, f[x], y)) ==
-                   bool(arrows_between(C, x, g[y]))
-                   for x in C.obj for y in D.obj)]
-
-g = {1: 0, 2: 1, 3: 0, 6: 2}
-print(find_left_adjoints(g, Div, Chain))
-
-
-# ==========================================================================
-# Exercise 10
+# Exercise 18
 # ==========================================================================
 
 # ----- quantifiers.py ------------------------------------------------------

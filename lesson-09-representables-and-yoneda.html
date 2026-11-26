@@ -395,6 +395,15 @@ body.py-off .pyonly{display:none}
   .topnav,.pager,.copy,.pytoggle{display:none}
   .board{break-inside:avoid}
 }
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
 </head>
 <body>
@@ -486,12 +495,12 @@ body.py-off .pyonly{display:none}
 <div class="tablewrap"><table class="zoo">
 <tr><th>Functor</th><th>Represented by</th><th>Because</th></tr>
 <tr><td>forgetful <span class="m"><span class="cat">Grp</span> → <span class="cat">Set</span></span></td><td><span class="m">ℤ</span></td><td>a homomorphism out of <span class="m">ℤ</span> is determined by the image of <span class="m">1</span>, which may be any element</td></tr>
-<tr><td>forgetful <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span></td><td><span class="m">ℕ</span></td><td>the same, for monoids (Lesson 8, Exercise 13)</td></tr>
+<tr><td>forgetful <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span></td><td><span class="m">ℕ</span></td><td>the same, for monoids (Lesson 8, Exercise 2)</td></tr>
 <tr><td>identity <span class="m"><span class="cat">Set</span> → <span class="cat">Set</span></span></td><td>a one-element set <span class="m">1</span></td><td>a function <span class="m">1 → X</span> is an element of <span class="m">X</span></td></tr>
 <tr><td>squaring <span class="m">X ↦ X × X</span> on <span class="m"><span class="cat">Set</span></span></td><td>a two-element set <span class="m">2</span></td><td>a function <span class="m">2 → X</span> is a pair of elements of <span class="m">X</span></td></tr>
 <tr><td>objects of a category, <span class="m"><span class="cat">Cat</span> → <span class="cat">Set</span></span></td><td><span class="m"><span class="cat">𝟙</span></span></td><td>a functor <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> picks out an object</td></tr>
 <tr><td>arrows of a category, <span class="m"><span class="cat">Cat</span> → <span class="cat">Set</span></span></td><td><span class="m"><span class="cat">𝟚</span></span></td><td>a functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> picks out an arrow</td></tr>
-<tr><td>contravariant power set, <span class="m"><span class="cat">Set</span><sup>op</sup> → <span class="cat">Set</span></span></td><td><span class="m">2</span></td><td>a subset of <span class="m">X</span> is a function <span class="m">X → 2</span> (Lesson 3, Exercise 18)</td></tr>
+<tr><td>contravariant power set, <span class="m"><span class="cat">Set</span><sup>op</sup> → <span class="cat">Set</span></span></td><td><span class="m">2</span></td><td>a subset of <span class="m">X</span> is a function <span class="m">X → 2</span> (Lesson 3, Exercise 15)</td></tr>
 <tr><td>pairs of arrows, <span class="m">X ↦ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, B)</span></td><td><span class="m">A × B</span>, if it exists</td><td>the universal property of the product</td></tr>
 <tr><td>cones, <span class="m">X ↦ Cone(X, D)</span></td><td>a limit of <span class="m">D</span>, if it exists</td><td>an arrow into a limit is a cone (Lesson 7)</td></tr>
 </table></div>
@@ -502,7 +511,7 @@ body.py-off .pyonly{display:none}
 <li>the list functor <span class="m">List : <span class="cat">Set</span> → <span class="cat">Set</span></span> is not representable: there are infinitely many lists over a one-element set;</li>
 <li>the functor <span class="m">X ↦ X + 1</span> is not representable, for the same reason.</li>
 </ul>
-<p>Exercise 5 has more cases of both kinds.</p>
+<p>Exercise 1 has more cases of both kinds.</p>
 </div>
 </section>
 <section class="section" id="s3">
@@ -526,7 +535,7 @@ body.py-off .pyonly{display:none}
 <p><strong>Proof.</strong> Given <span class="m">α : yA ⇒ F</span>, set <span class="m">a = α<sub>A</sub>(id<sub>A</sub>) ∈ F(A)</span>. For any <span class="m">f : X → A</span>, the naturality square at <span class="m">f</span> (drawn above) forces <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> — because <span class="m">f = id<sub>A</sub> ∘ f</span>, the left edge sends <span class="m">id<sub>A</sub></span> to <span class="m">f</span>, and the two paths around the square must agree. So <span class="m">α</span> is completely determined by <span class="m">a</span>: the correspondence is injective. Conversely, any <span class="m">a ∈ F(A)</span> <em>defines</em> a transformation by that same formula <span class="m">α<sub>X</sub>(f) = F(f)(a)</span>, and its naturality squares commute by the functoriality of <span class="m">F</span> (Exercise 2 checks this half in detail). Surjective and injective: a bijection. ∎</p>
 <p>&ldquo;Track the identity&rdquo; is the entire idea — the identity arrow is the generic probe, and every other probe is the generic one, translated. The proof is short enough to memorise, and it produces a formula worth memorising with it:</p>
 <p class="eq"><span class="m">the transformation belonging to a ∈ F(A) is &nbsp; α<sub>X</sub>(f) = F(f)(a).</span></p>
-<p>Two remarks before the examples. First, the lemma has a covariant twin, for functors <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">Set</span></span> and the hom functor <span class="m"><span class="cat">𝒞</span>(A, −)</span> of arrows <em>out of</em> <span class="m">A</span>: <span class="m">Nat(<span class="cat">𝒞</span>(A, −), F) ≅ F(A)</span>, by the same proof (Exercise 4). Second, the bijection is not an accident of sizes: it is itself natural, both in <span class="m">A</span> and in <span class="m">F</span> (Exercise 14 checks the first).</p>
+<p>Two remarks before the examples. First, the lemma has a covariant twin, for functors <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">Set</span></span> and the hom functor <span class="m"><span class="cat">𝒞</span>(A, −)</span> of arrows <em>out of</em> <span class="m">A</span>: <span class="m">Nat(<span class="cat">𝒞</span>(A, −), F) ≅ F(A)</span>, by the same proof (Exercise 4). Second, the bijection is not an accident of sizes: it is itself natural, both in <span class="m">A</span> and in <span class="m">F</span> (Exercise 3 checks the first).</p>
 <h3 class="sub">Reading the lemma in an order</h3>
 <p>Let <span class="m">P</span> be a poset, and consider presheaves on it whose values are either empty or a one-element set. Such a presheaf <span class="m">F</span> is the same thing as a <strong>down-closed</strong> subset <span class="m">S</span> of <span class="m">P</span> — the set of <span class="m">x</span> where <span class="m">F(x)</span> is inhabited; contravariance says that if <span class="m">y</span> is in <span class="m">S</span> and <span class="m">x ≤ y</span>, then <span class="m">x</span> is in <span class="m">S</span>. The representable <span class="m">ya</span> is the <strong>down-set</strong> <span class="m">↓a</span> of all <span class="m">x ≤ a</span>. Between two presheaves of this kind there is at most one natural transformation, and there is one exactly when the first subset is contained in the second. So the Yoneda lemma reads:</p>
 <p class="eq"><span class="m">↓a ⊆ S &nbsp;&nbsp;if and only if&nbsp;&nbsp; a ∈ S.</span></p>
@@ -556,11 +565,11 @@ body.py-off .pyonly{display:none}
 <p>The covariant form of the lemma, applied to functors <span class="m"><span class="cat">Set</span> → <span class="cat">Set</span></span>, classifies natural transformations that would be tedious to find by inspection. The identity functor is represented by a one-element set, so for any <span class="m">F : <span class="cat">Set</span> → <span class="cat">Set</span></span>,</p>
 <p class="eq"><span class="m">Nat(Id, F) ≅ Nat(<span class="cat">Set</span>(1, −), F) ≅ F(1).</span></p>
 <ul>
-<li><span class="m">F = Id</span>: one natural transformation, the identity. Lesson 3&rsquo;s Exercise 13 proved this by tracking an element <span class="m">1 → X</span>, which is the Yoneda argument.</li>
+<li><span class="m">F = Id</span>: one natural transformation, the identity. Lesson 3&rsquo;s Exercise 9 proved this by tracking an element <span class="m">1 → X</span>, which is the Yoneda argument.</li>
 <li><span class="m">F = P</span>, the covariant power set: <span class="m">P(1)</span> has two elements, so there are exactly two natural transformations <span class="m">Id ⇒ P</span>. They are <span class="m">x ↦ ∅</span> and the singleton map <span class="m">x ↦ {x}</span> of Lesson 3.</li>
 <li><span class="m">F = List</span>: the lists over a one-element set are determined by their length, so natural transformations <span class="m">Id ⇒ List</span> correspond to natural numbers. The <span class="m">n</span>-th one sends <span class="m">x</span> to the list <span class="m">[x, x, …, x]</span> of length <span class="m">n</span>.</li>
 </ul>
-<p>Likewise the squaring functor is represented by <span class="m">2</span>, so natural transformations from <span class="m">X × X</span> to <span class="m">F X</span> correspond to elements of <span class="m">F(2)</span>. With <span class="m">F = Id</span> there are two, and they are the two projections: <em>the only natural ways to choose one of two elements are &ldquo;the first&rdquo; and &ldquo;the second.&rdquo;</em> Exercise 7 does several more of these counts.</p>
+<p>Likewise the squaring functor is represented by <span class="m">2</span>, so natural transformations from <span class="m">X × X</span> to <span class="m">F X</span> correspond to elements of <span class="m">F(2)</span>. With <span class="m">F = Id</span> there are two, and they are the two projections: <em>the only natural ways to choose one of two elements are &ldquo;the first&rdquo; and &ldquo;the second.&rdquo;</em> Exercise 5 does several more of these counts.</p>
 </div>
 </section>
 <section class="section" id="s4">
@@ -801,73 +810,22 @@ Nat(yE, yE): 1    arrows E -&gt; E: ['iE']</div>
 <p>Every presheaf <span class="m">F</span> on a small category is a colimit of representable presheaves: one copy of <span class="m">yA</span> for each element of each set <span class="m">F(A)</span>, glued along the arrows of <span class="m"><span class="cat">𝒞</span></span>.</p>
 </div>
 <p>The Yoneda lemma is what makes the statement plausible. An element <span class="m">a ∈ F(A)</span> <em>is</em> a map <span class="m">yA ⇒ F</span>, so the elements of <span class="m">F</span> are exactly the ways of mapping the representables into it, and <span class="m">F</span> is covered by the images of those maps. The theorem adds that nothing more than the evident gluing is needed. The diagram being glued is indexed by a category you have met: its objects are the pairs <span class="m">(A, a)</span> with <span class="m">a ∈ F(A)</span>, a comma category in the sense of Lesson 5, usually called the <em>category of elements</em> of <span class="m">F</span>.</p>
-<p>So the representables play the role in a presheaf category that the one-element set plays in <span class="m"><span class="cat">Set</span></span>, where every set is a coproduct of copies of <span class="m">1</span>: they are the building blocks, and the Yoneda lemma says how to map out of a building block. Two facts complete the picture. A presheaf category has all limits and colimits, computed one object at a time in <span class="m"><span class="cat">Set</span></span>. And the Yoneda embedding preserves whatever limits <span class="m"><span class="cat">𝒞</span></span> has — that is Lesson 7&rsquo;s theorem that hom functors preserve limits — but not, in general, its colimits (Exercise 13). The embedding therefore places <span class="m"><span class="cat">𝒞</span></span> inside a category in which every colimit exists and none of the new ones has been identified with anything that was there before. In that sense the presheaf category is the <em>free cocompletion</em> of <span class="m"><span class="cat">𝒞</span></span>; it is the starting point of topos theory, and of much of the modern use of categories in geometry and logic.</p>
+<p>So the representables play the role in a presheaf category that the one-element set plays in <span class="m"><span class="cat">Set</span></span>, where every set is a coproduct of copies of <span class="m">1</span>: they are the building blocks, and the Yoneda lemma says how to map out of a building block. Two facts complete the picture. A presheaf category has all limits and colimits, computed one object at a time in <span class="m"><span class="cat">Set</span></span>. And the Yoneda embedding preserves whatever limits <span class="m"><span class="cat">𝒞</span></span> has — that is Lesson 7&rsquo;s theorem that hom functors preserve limits — but not, in general, its colimits (Exercise 8). The embedding therefore places <span class="m"><span class="cat">𝒞</span></span> inside a category in which every colimit exists and none of the new ones has been identified with anything that was there before. In that sense the presheaf category is the <em>free cocompletion</em> of <span class="m"><span class="cat">𝒞</span></span>; it is the starting point of topos theory, and of much of the modern use of categories in geometry and logic.</p>
 </div>
 </section>
 <section class="section" id="exercises">
 <div class="measure">
 <div class="sec-no">§7 — Exercises</div>
 <h2>Fifteen problems on representables and the Yoneda lemma</h2>
-<p>Exercises 2 and 3 complete the proofs of §3 and §4, and are the ones to do first. Exercise 15 has an optional Python part; everything else is pencil and paper.</p>
-<div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
-      <div class="prob-body">
-        <p>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, write out the four down-sets by hand and verify, for the three pairs <span class="m">(2, 6)</span>, <span class="m">(2, 3)</span>, and <span class="m">(6, 6)</span>, the Yoneda biconditional: <span class="m">a | b</span> exactly when <span class="m">downset(a) ⊆ downset(b)</span>.</p>
-        <p>Then say in one sentence why no two distinct elements of a poset can ever have the same down-set.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>The down-sets: <span class="m">{1}, {1,2}, {1,3}, {1,2,3,6}</span> — the ones the lab in §6 prints. Pairs: <span class="m">2 | 6</span> and <span class="m">{1,2} ⊆ {1,2,3,6}</span> ✓; <span class="m">2 ∤ 3</span> and <span class="m">{1,2} ⊄ {1,3}</span> ✓; <span class="m">6 | 6</span> and equality of sets ✓.</p>
-          <p>If <span class="m">downset(a) = downset(b)</span>, then since <span class="m">a ∈ downset(a)</span> we get <span class="m">a ∈ downset(b)</span>, i.e. <span class="m">a ≤ b</span>, and symmetrically <span class="m">b ≤ a</span> — so <span class="m">a = b</span> by antisymmetry (or <span class="m">a ≅ b</span> in a preorder). Note the proof&rsquo;s engine: <em>the element belongs to its own down-set because of the identity arrow <span class="m">a ≤ a</span></em>. Even in this baby case, the identity is the tracked probe — the thin-category shadow of the Yoneda proof.</p>
-        </div>
-      </details>
-    </div>
+<p>Exercises 2 and 9 complete the proofs of §3 and §4, and are the ones to do first. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 15 has an optional Python part; everything else is pencil and paper.</p>
+
+<div class="exgroup">
+  <h3>Representables and the Yoneda lemma</h3>
+  <p class="exmeta"><a href="#s2">§2</a>–<a href="#s3">§3</a> · Exercises 1–6</p>
+</div>
 
 <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">structure</span></div>
-      <div class="prob-body">
-        <p>Complete the surjectivity half of the Yoneda proof. Given a presheaf <span class="m">F</span> and an element <span class="m">a ∈ F(A)</span>, define the family <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> for <span class="m">f : X → A</span>.</p>
-        <p>Verify the two things §3 left to you: that each naturality square of <span class="m">α</span> commutes (use the functoriality of <span class="m">F</span> — mind the contravariance), and that tracking the identity recovers <span class="m">a</span>: <span class="m">α<sub>A</sub>(id<sub>A</sub>) = a</span>.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>Naturality.</strong> Fix <span class="m">g : X → Y</span>. The square requires <span class="m">α<sub>X</sub>(f ∘ g) = F(g)(α<sub>Y</sub>(f))</span> for every <span class="m">f : Y → A</span> — precompose first or apply <span class="m">F(g)</span> after. Left side: <span class="m">F(f ∘ g)(a)</span>. Right side: <span class="m">F(g)(F(f)(a))</span>. These agree because <span class="m">F</span>, being contravariant, sends <span class="m">f ∘ g</span> to <span class="m">F(g) ∘ F(f)</span> — the flip of Lesson 2&rsquo;s composition law is exactly what the square needs. (Had <span class="m">F</span> been covariant, the square would demand the <em>un</em>-flipped law; the variance and the direction of translation are made for each other.)</p>
-          <p><strong>Recovery.</strong> <span class="m">α<sub>A</sub>(id<sub>A</sub>) = F(id<sub>A</sub>)(a) = id<sub>F(A)</sub>(a) = a</span>, by the identity law of <span class="m">F</span>. So &ldquo;element to transformation to element&rdquo; is the identity — one of the two round trips of the bijection; §3&rsquo;s determination argument was the other. Both functor laws of Lesson 2 were consumed, one per round trip, with nothing left over.</p>
-        </div>
-      </details>
-    </div>
-
-<div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">arrows-only</span></div>
-      <div class="prob-body">
-        <p>Write out in full the two corollaries that §4 drew from the lemma:</p>
-        <ol>
-          <li>Setting <span class="m">F = yB</span>, show <span class="m">Nat(yA, yB) ≅ <span class="cat">𝒞</span>(A, B)</span>, and describe explicitly which transformation an arrow <span class="m">h : A → B</span> becomes.</li>
-          <li>Conclude that <span class="m">y</span> is fully faithful, and that <span class="m">yA ≅ yB</span> (in the presheaf category) implies <span class="m">A ≅ B</span> (in <span class="cat">𝒞</span>).</li>
-        </ol>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>(a)</strong> The lemma with <span class="m">F = yB</span> reads <span class="m">Nat(yA, yB) ≅ yB(A) = <span class="cat">𝒞</span>(A, B)</span>. Chasing the bijection: the element <span class="m">h ∈ <span class="cat">𝒞</span>(A, B)</span> becomes the transformation with components <span class="m">α<sub>X</sub>(f) = yB(f)(h) = h ∘ f</span> — <strong>postcomposition by <span class="m">h</span></strong>. That is exactly what the census of §6 found: all three survivors were postcompositions, one per arrow.</p>
-          <p><strong>(b)</strong> The bijection is precisely the statement that <span class="m">y</span> is full (surjective on hom-sets) and faithful (injective) — one checks it also respects composition, which is associativity of <span class="m">∘</span>. A fully faithful functor reflects isomorphisms: if <span class="m">α : yA ≅ yB</span>, write <span class="m">α = y(h)</span> and <span class="m">α<sup>−1</sup> = y(k)</span>; then <span class="m">y(k ∘ h) = y(k) ∘ y(h) = id = y(id<sub>A</sub>)</span>, and faithfulness cancels the <span class="m">y</span>, giving <span class="m">k ∘ h = id<sub>A</sub></span>, likewise <span class="m">h ∘ k = id<sub>B</sub></span>. So <span class="m">A ≅ B</span> — the slogan, fully proved, using only machinery this course built.</p>
-        </div>
-      </details>
-    </div>
-
-<div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">duality</span></div>
-      <div class="prob-body">
-        <p>State the <em>covariant</em> Yoneda lemma — for functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">Set</span></span> and the co-representable <span class="m"><span class="cat">𝒞</span>(A, −)</span>, arrows <em>out of</em> <span class="m">A</span> — by dualizing everything in §3. What does the corollary become, as a slogan?</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p>For any covariant <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">Set</span></span>: <span class="m">Nat(<span class="cat">𝒞</span>(A, −), F) ≅ F(A)</span>, again via <span class="m">α ↦ α<sub>A</sub>(id<sub>A</sub>)</span>, with translation now by <em>post</em>composition and the determining formula <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> using <span class="m">F</span>&rsquo;s covariance. Formally it is §3&rsquo;s lemma applied to <span class="cat">𝒞</span><sup>op</sup> — the duality principle of Lesson 5, at work once more.</p>
-          <p>Slogan: <strong>an object is also the arrows out of it.</strong> Both dossiers are complete; you may know an object by how everything probes it, or by how it probes everything. (In the poset shadow: an element is determined by its down-set, and equally by its up-set.)</p>
-        </div>
-      </details>
-    </div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">by hand</span></div>
+<div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">by hand</span></div>
 <div class="prob-body">
 <p>Representable or not? For each functor <span class="m"><span class="cat">Set</span> → <span class="cat">Set</span></span>, either name a set that represents it or explain why none can.</p>
 <ol>
@@ -887,26 +845,49 @@ Nat(yE, yE): 1    arrows E -&gt; E: ['iE']</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">by hand</span></div>
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Complete the surjectivity half of the Yoneda proof. Given a presheaf <span class="m">F</span> and an element <span class="m">a ∈ F(A)</span>, define the family <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> for <span class="m">f : X → A</span>.</p>
+        <p>Verify the two things §3 left to you: that each naturality square of <span class="m">α</span> commutes (use the functoriality of <span class="m">F</span> — mind the contravariance), and that tracking the identity recovers <span class="m">a</span>: <span class="m">α<sub>A</sub>(id<sub>A</sub>) = a</span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Naturality.</strong> Fix <span class="m">g : X → Y</span>. The square requires <span class="m">α<sub>X</sub>(f ∘ g) = F(g)(α<sub>Y</sub>(f))</span> for every <span class="m">f : Y → A</span> — precompose first or apply <span class="m">F(g)</span> after. Left side: <span class="m">F(f ∘ g)(a)</span>. Right side: <span class="m">F(g)(F(f)(a))</span>. These agree because <span class="m">F</span>, being contravariant, sends <span class="m">f ∘ g</span> to <span class="m">F(g) ∘ F(f)</span> — the flip of Lesson 2&rsquo;s composition law is exactly what the square needs. (Had <span class="m">F</span> been covariant, the square would demand the <em>un</em>-flipped law; the variance and the direction of translation are made for each other.)</p>
+          <p><strong>Recovery.</strong> <span class="m">α<sub>A</sub>(id<sub>A</sub>) = F(id<sub>A</sub>)(a) = id<sub>F(A)</sub>(a) = a</span>, by the identity law of <span class="m">F</span>. So &ldquo;element to transformation to element&rdquo; is the identity — one of the two round trips of the bijection; §3&rsquo;s determination argument was the other. Both functor laws of Lesson 2 were consumed, one per round trip, with nothing left over.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
-<p>A universal element, examined. The contravariant power set functor sends a set <span class="m">X</span> to the set <span class="m">P(X)</span> of its subsets and a function to its inverse-image map. §2 said that it is represented by a two-element set, <span class="m">2 = {0, 1}</span>.</p>
-<ol>
-<li>Let <span class="m">X = {a, b, c}</span> and <span class="m">S = {a, c}</span>. Find all functions <span class="m">χ : X → 2</span> with <span class="m">χ<sup>−1</sup>({1}) = S</span>.</li>
-<li>Explain why (a), done for every <span class="m">X</span> and <span class="m">S</span>, says that <span class="m">(2, {1})</span> is a universal element of <span class="m">P</span>.</li>
-<li>Is <span class="m">(2, {0})</span> also a universal element? Is <span class="m">(3, {1})</span>, where <span class="m">3 = {0, 1, 2}</span>?</li>
-</ol>
+<p>The Yoneda bijection is natural in <span class="m">A</span>. Let <span class="m">F</span> be a presheaf, <span class="m">h : A → B</span> an arrow, and <span class="m">β : yB ⇒ F</span> a natural transformation belonging to the element <span class="m">b ∈ F(B)</span>. Show that the composite <span class="m">β ∘ y(h) : yA ⇒ F</span> belongs to the element <span class="m">F(h)(b)</span> of <span class="m">F(A)</span>.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> There is exactly one: <span class="m">χ(a) = 1</span>, <span class="m">χ(b) = 0</span>, <span class="m">χ(c) = 1</span>. The condition says that <span class="m">χ(x) = 1</span> exactly when <span class="m">x ∈ S</span>, which fixes every value.</p>
-<p><strong>(b)</strong> The element in question is <span class="m">u = {1}</span>, a member of <span class="m">P(2)</span>. For a function <span class="m">χ : X → 2</span>, the map <span class="m">P(χ)</span> is inverse image, so <span class="m">P(χ)(u) = χ<sup>−1</sup>({1})</span>. Universality asks that every element <span class="m">S</span> of <span class="m">P(X)</span> be <span class="m">P(χ)(u)</span> for exactly one <span class="m">χ</span>, and that is what (a) shows.</p>
-<p><strong>(c)</strong> <span class="m">(2, {0})</span> is universal too: the unique <span class="m">χ</span> is now the one that sends the elements of <span class="m">S</span> to <span class="m">0</span>. The two universal elements are related by a unique isomorphism, as the corollary of §5 says they must be — the function <span class="m">2 → 2</span> that swaps <span class="m">0</span> and <span class="m">1</span>. But <span class="m">(3, {1})</span> is not universal. Existence is fine; uniqueness fails, since an element outside <span class="m">S</span> may be sent to <span class="m">0</span> or to <span class="m">2</span>. For <span class="m">S = {a, c}</span> and <span class="m">X = {a, b, c}</span> there are two functions with the right inverse image.</p>
+<p>The element belonging to a transformation out of <span class="m">yA</span> is its value at <span class="m">id<sub>A</sub></span>. The component of <span class="m">y(h)</span> at <span class="m">A</span> sends <span class="m">id<sub>A</sub></span> to <span class="m">h ∘ id<sub>A</sub> = h</span>, an element of <span class="m">yB(A)</span>. Then <span class="m">β<sub>A</sub>(h) = F(h)(b)</span>, by the formula <span class="m">β<sub>X</sub>(f) = F(f)(b)</span> of §3 with <span class="m">X = A</span> and <span class="m">f = h</span>. So <span class="m">(β ∘ y(h))<sub>A</sub>(id<sub>A</sub>) = F(h)(b)</span>.</p>
+<p>In a square: going from <span class="m">Nat(yB, F)</span> to <span class="m">F(B)</span> and then applying <span class="m">F(h)</span> is the same as first composing with <span class="m">y(h)</span> and then going from <span class="m">Nat(yA, F)</span> to <span class="m">F(A)</span>. The two sides of the Yoneda lemma are not merely sets of the same size for each <span class="m">A</span>; they are naturally isomorphic presheaves.</p>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">counting</span></div>
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">duality</span></div>
+      <div class="prob-body">
+        <p>State the <em>covariant</em> Yoneda lemma — for functors <span class="m"><span class="cat">𝒞</span> → <span class="cat">Set</span></span> and the co-representable <span class="m"><span class="cat">𝒞</span>(A, −)</span>, arrows <em>out of</em> <span class="m">A</span> — by dualizing everything in §3. What does the corollary become, as a slogan?</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>For any covariant <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">Set</span></span>: <span class="m">Nat(<span class="cat">𝒞</span>(A, −), F) ≅ F(A)</span>, again via <span class="m">α ↦ α<sub>A</sub>(id<sub>A</sub>)</span>, with translation now by <em>post</em>composition and the determining formula <span class="m">α<sub>X</sub>(f) = F(f)(a)</span> using <span class="m">F</span>&rsquo;s covariance. Formally it is §3&rsquo;s lemma applied to <span class="cat">𝒞</span><sup>op</sup> — the duality principle of Lesson 5, at work once more.</p>
+          <p>Slogan: <strong>an object is also the arrows out of it.</strong> Both dossiers are complete; you may know an object by how everything probes it, or by how it probes everything. (In the poset shadow: an element is determined by its down-set, and equally by its up-set.)</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">counting</span></div>
 <div class="prob-body">
 <p>Count natural transformations with the covariant Yoneda lemma (Exercise 4). Write <span class="m">S</span> for the squaring functor <span class="m">X ↦ X × X</span> on <span class="m"><span class="cat">Set</span></span>, represented by a two-element set. Find all natural transformations, and describe each one:</p>
 <ol>
@@ -927,66 +908,9 @@ Nat(yE, yE): 1    arrows E -&gt; E: ['iE']</div>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">structure</span></div>
-<div class="prob-body">
-<p>Graphs as presheaves (§2, §3). Let <span class="m">G</span> be the graph of §6, with vertices <span class="m">p, q, r</span> and edges <span class="m">a : p → q</span>, <span class="m">b : q → r</span>, <span class="m">c : q → q</span>, <span class="m">d : p → r</span>.</p>
-<ol>
-<li>The lone edge <span class="m">yE</span> has vertices <span class="m">s, t</span> and one edge. List the homomorphisms from <span class="m">yE</span> to itself, from <span class="m">yV</span> to <span class="m">yE</span>, and from <span class="m">yE</span> to <span class="m">yV</span>. Compare with the arrows of <span class="m"><span class="cat">𝒢</span></span>.</li>
-<li>Let <span class="m">L</span> be the graph with one vertex and one edge, a loop. What does a homomorphism <span class="m">L → G</span> amount to? How many are there?</li>
-<li>Is <span class="m">L</span> a representable presheaf?</li>
-<li>Describe a homomorphism <span class="m">yE → L</span>, and say in words how <span class="m">L</span> is obtained from <span class="m">yE</span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> From <span class="m">yE</span> to itself: the edge must go to the edge, and then <span class="m">s ↦ s</span>, <span class="m">t ↦ t</span> — only the identity. From <span class="m">yV</span> to <span class="m">yE</span>: choose a vertex, <span class="m">s</span> or <span class="m">t</span> — two homomorphisms. From <span class="m">yE</span> to <span class="m">yV</span>: none, since <span class="m">yV</span> has no edge to receive the edge of <span class="m">yE</span>. These are the sizes of <span class="m"><span class="cat">𝒢</span>(E, E) = {id<sub>E</sub>}</span>, <span class="m"><span class="cat">𝒢</span>(V, E) = {s, t}</span> and <span class="m"><span class="cat">𝒢</span>(E, V) = ∅</span>: the Yoneda embedding is full and faithful.</p>
-<p><strong>(b)</strong> It chooses an edge of <span class="m">G</span> whose source and target are the same vertex: a loop of <span class="m">G</span>. There is one, <span class="m">c</span>.</p>
-<p><strong>(c)</strong> No. There are only two representable presheaves, <span class="m">yV</span> and <span class="m">yE</span>, one for each object of <span class="m"><span class="cat">𝒢</span></span>, and <span class="m">L</span> is isomorphic to neither: <span class="m">yV</span> has no edge and <span class="m">yE</span> has two vertices.</p>
-<p><strong>(d)</strong> Send the edge to the loop and both <span class="m">s</span> and <span class="m">t</span> to the one vertex. <span class="m">L</span> is <span class="m">yE</span> with its two vertices glued together — a quotient of a representable, which is the simplest instance of the density theorem of the Going-deeper section. Correspondingly, &ldquo;the loops of <span class="m">G</span>&rdquo; are the edges whose two ends agree: a subset of <span class="m">G(E)</span>, not the whole of <span class="m">G(E)</span> or of <span class="m">G(V)</span>.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">arrows-only</span></div>
-<div class="prob-body">
-<p>Isomorphisms by Yoneda (§4). In a category with binary products and a terminal object <span class="m">1</span>, prove each of the following by computing the arrows into both sides from an arbitrary object <span class="m">X</span>.</p>
-<ol>
-<li><span class="m">A × B ≅ B × A</span>.</li>
-<li><span class="m">A × 1 ≅ A</span>.</li>
-<li>In <span class="m"><span class="cat">Set</span></span>: <span class="m">(Y<sup>A</sup>)<sup>B</sup> ≅ Y<sup>A × B</sup></span>.</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> <span class="m"><span class="cat">𝒞</span>(X, A × B) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, B) ≅ <span class="cat">𝒞</span>(X, B) × <span class="cat">𝒞</span>(X, A) ≅ <span class="cat">𝒞</span>(X, B × A)</span>. The outer steps are the universal property of the product, and the middle step swaps the two entries of a pair of arrows. All three are natural in <span class="m">X</span>.</p>
-<p><strong>(b)</strong> <span class="m"><span class="cat">𝒞</span>(X, A × 1) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, 1) ≅ <span class="cat">𝒞</span>(X, A)</span>, because <span class="m"><span class="cat">𝒞</span>(X, 1)</span> has exactly one element, and pairing with a fixed element is a bijection.</p>
-<p><strong>(c)</strong> <span class="m"><span class="cat">Set</span>(X, (Y<sup>A</sup>)<sup>B</sup>) ≅ <span class="cat">Set</span>(X × B, Y<sup>A</sup>) ≅ <span class="cat">Set</span>((X × B) × A, Y) ≅ <span class="cat">Set</span>(X × (A × B), Y) ≅ <span class="cat">Set</span>(X, Y<sup>A × B</sup>)</span>: currying twice, then the associativity and symmetry of the product, then currying backwards. Counted, this is <span class="m">(y<sup>a</sup>)<sup>b</sup> = y<sup>a b</sup></span>.</p>
-<p>Lesson 6 proved (b) directly in Exercise 12, and the associativity of products in Exercise 10, by constructing mediating arrows and checking that they are inverse. Here no arrow between the two objects is ever written down: the Yoneda embedding manufactures the isomorphism from the bijections.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">by hand</span></div>
-<div class="prob-body">
-<p>Cayley, for a monoid and for a group.</p>
-<ol>
-<li>Let <span class="m">M</span> be the monoid <span class="m">{0, 1}</span> under multiplication. List the four functions <span class="m">α : M → M</span> and decide which satisfy <span class="m">α(m n) = α(m) n</span> for all <span class="m">m, n</span>. How many does the Yoneda lemma predict?</li>
-<li>Identify each survivor as &ldquo;multiply on the left by <span class="m">a</span>.&rdquo;</li>
-<li>For the group <span class="m">ℤ/4</span> under addition, write down the four permutations of <span class="m">{0, 1, 2, 3}</span> that Cayley&rsquo;s theorem assigns to its elements. What fraction of all permutations of a four-element set are they?</li>
-</ol>
-</div>
-<details><summary>Show solution</summary>
-<div class="sol">
-<p><strong>(a)</strong> The identity: <span class="m">α(m n) = m n = α(m) n</span> — natural. The constant <span class="m">0</span>: <span class="m">α(m n) = 0 = 0 · n</span> — natural. The constant <span class="m">1</span>: <span class="m">α(1 · 0) = 1</span> but <span class="m">α(1) · 0 = 0</span> — not natural. The swap: <span class="m">α(1 · 0) = α(0) = 1</span> but <span class="m">α(1) · 0 = 0</span> — not natural. Two survivors out of four, and the lemma predicts <span class="m">|M| = 2</span>.</p>
-<p><strong>(b)</strong> The identity is multiplication by <span class="m">1</span>, and the constant <span class="m">0</span> is multiplication by <span class="m">0</span>. In each case the multiplier is <span class="m">α(1)</span>, the image of the unit.</p>
-<p><strong>(c)</strong> The element <span class="m">c</span> goes to the permutation <span class="m">x ↦ c + x</span>: for <span class="m">0</span> the identity; for <span class="m">1</span> the cycle <span class="m">0 → 1 → 2 → 3 → 0</span>; for <span class="m">2</span> the exchange of <span class="m">0</span> with <span class="m">2</span> and of <span class="m">1</span> with <span class="m">3</span>; for <span class="m">3</span> the cycle in the reverse direction. Four permutations out of <span class="m">4! = 24</span>: one sixth.</p>
-<p>The monoid in (a) is not a group, and the map &ldquo;multiply by <span class="m">0</span>&rdquo; is not a permutation. The Yoneda embedding of a monoid lands in functions; only for a group does it land in bijections.</p>
-</div>
-</details>
-</div>
-<div class="prob">
-<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">think</span></div>
+<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">think</span></div>
 <div class="prob-body">
 <p>Natural operations on groups. Let <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span> be the forgetful functor, represented by <span class="m">ℤ</span>.</p>
 <ol>
@@ -1006,6 +930,107 @@ Nat(yE, yE): 1    arrows E -&gt; E: ['iE']</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>The Yoneda embedding</h3>
+  <p class="exmeta"><a href="#s4">§4</a> · Exercises 7–10</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">warm-up</span></div>
+      <div class="prob-body">
+        <p>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, write out the four down-sets by hand and verify, for the three pairs <span class="m">(2, 6)</span>, <span class="m">(2, 3)</span>, and <span class="m">(6, 6)</span>, the Yoneda biconditional: <span class="m">a | b</span> exactly when <span class="m">downset(a) ⊆ downset(b)</span>.</p>
+        <p>Then say in one sentence why no two distinct elements of a poset can ever have the same down-set.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p>The down-sets: <span class="m">{1}, {1,2}, {1,3}, {1,2,3,6}</span> — the ones the lab in §6 prints. Pairs: <span class="m">2 | 6</span> and <span class="m">{1,2} ⊆ {1,2,3,6}</span> ✓; <span class="m">2 ∤ 3</span> and <span class="m">{1,2} ⊄ {1,3}</span> ✓; <span class="m">6 | 6</span> and equality of sets ✓.</p>
+          <p>If <span class="m">downset(a) = downset(b)</span>, then since <span class="m">a ∈ downset(a)</span> we get <span class="m">a ∈ downset(b)</span>, i.e. <span class="m">a ≤ b</span>, and symmetrically <span class="m">b ≤ a</span> — so <span class="m">a = b</span> by antisymmetry (or <span class="m">a ≅ b</span> in a preorder). Note the proof&rsquo;s engine: <em>the element belongs to its own down-set because of the identity arrow <span class="m">a ≤ a</span></em>. Even in this baby case, the identity is the tracked probe — the thin-category shadow of the Yoneda proof.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>The embedding preserves limits, not colimits. Work in the divisibility order on <span class="m">{1, 2, 3, 6}</span>, with presheaves regarded as down-closed subsets, as in §3.</p>
+<ol>
+<li>The product of <span class="m">2</span> and <span class="m">3</span> is their meet. Check that <span class="m">↓(2 ∧ 3) = ↓2 ∩ ↓3</span>.</li>
+<li>The coproduct of <span class="m">2</span> and <span class="m">3</span> is their join. Show that <span class="m">↓(2 ∨ 3)</span> is <em>not</em> <span class="m">↓2 ∪ ↓3</span>.</li>
+<li>List all the down-closed subsets. Which are not representable?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">2 ∧ 3 = 1</span> and <span class="m">↓1 = {1}</span>; and <span class="m">{1, 2} ∩ {1, 3} = {1}</span>.</p>
+<p><strong>(b)</strong> <span class="m">2 ∨ 3 = 6</span> and <span class="m">↓6 = {1, 2, 3, 6}</span>, but <span class="m">{1, 2} ∪ {1, 3} = {1, 2, 3}</span>.</p>
+<p><strong>(c)</strong> There are six: <span class="m">∅</span>, <span class="m">{1}</span>, <span class="m">{1, 2}</span>, <span class="m">{1, 3}</span>, <span class="m">{1, 2, 3}</span> and <span class="m">{1, 2, 3, 6}</span>. Four are down-sets of elements. The other two, <span class="m">∅</span> and <span class="m">{1, 2, 3}</span>, are not representable.</p>
+<p>Among the down-closed subsets, ordered by inclusion, the join of <span class="m">↓2</span> and <span class="m">↓3</span> is their union <span class="m">{1, 2, 3}</span> — a <em>new</em> element, strictly below <span class="m">↓6</span>. So the embedding keeps the meets of the original order but does not keep its joins: it supplies fresh ones, and a fresh bottom element <span class="m">∅</span> as well. This is the free cocompletion of the Going-deeper section, small enough to draw.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>Write out in full the two corollaries that §4 drew from the lemma:</p>
+        <ol>
+          <li>Setting <span class="m">F = yB</span>, show <span class="m">Nat(yA, yB) ≅ <span class="cat">𝒞</span>(A, B)</span>, and describe explicitly which transformation an arrow <span class="m">h : A → B</span> becomes.</li>
+          <li>Conclude that <span class="m">y</span> is fully faithful, and that <span class="m">yA ≅ yB</span> (in the presheaf category) implies <span class="m">A ≅ B</span> (in <span class="cat">𝒞</span>).</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> The lemma with <span class="m">F = yB</span> reads <span class="m">Nat(yA, yB) ≅ yB(A) = <span class="cat">𝒞</span>(A, B)</span>. Chasing the bijection: the element <span class="m">h ∈ <span class="cat">𝒞</span>(A, B)</span> becomes the transformation with components <span class="m">α<sub>X</sub>(f) = yB(f)(h) = h ∘ f</span> — <strong>postcomposition by <span class="m">h</span></strong>. That is exactly what the census of §6 found: all three survivors were postcompositions, one per arrow.</p>
+          <p><strong>(b)</strong> The bijection is precisely the statement that <span class="m">y</span> is full (surjective on hom-sets) and faithful (injective) — one checks it also respects composition, which is associativity of <span class="m">∘</span>. A fully faithful functor reflects isomorphisms: if <span class="m">α : yA ≅ yB</span>, write <span class="m">α = y(h)</span> and <span class="m">α<sup>−1</sup> = y(k)</span>; then <span class="m">y(k ∘ h) = y(k) ∘ y(h) = id = y(id<sub>A</sub>)</span>, and faithfulness cancels the <span class="m">y</span>, giving <span class="m">k ∘ h = id<sub>A</sub></span>, likewise <span class="m">h ∘ k = id<sub>B</sub></span>. So <span class="m">A ≅ B</span> — the slogan, fully proved, using only machinery this course built.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Isomorphisms by Yoneda (§4). In a category with binary products and a terminal object <span class="m">1</span>, prove each of the following by computing the arrows into both sides from an arbitrary object <span class="m">X</span>.</p>
+<ol>
+<li><span class="m">A × B ≅ B × A</span>.</li>
+<li><span class="m">A × 1 ≅ A</span>.</li>
+<li>In <span class="m"><span class="cat">Set</span></span>: <span class="m">(Y<sup>A</sup>)<sup>B</sup> ≅ Y<sup>A × B</sup></span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m"><span class="cat">𝒞</span>(X, A × B) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, B) ≅ <span class="cat">𝒞</span>(X, B) × <span class="cat">𝒞</span>(X, A) ≅ <span class="cat">𝒞</span>(X, B × A)</span>. The outer steps are the universal property of the product, and the middle step swaps the two entries of a pair of arrows. All three are natural in <span class="m">X</span>.</p>
+<p><strong>(b)</strong> <span class="m"><span class="cat">𝒞</span>(X, A × 1) ≅ <span class="cat">𝒞</span>(X, A) × <span class="cat">𝒞</span>(X, 1) ≅ <span class="cat">𝒞</span>(X, A)</span>, because <span class="m"><span class="cat">𝒞</span>(X, 1)</span> has exactly one element, and pairing with a fixed element is a bijection.</p>
+<p><strong>(c)</strong> <span class="m"><span class="cat">Set</span>(X, (Y<sup>A</sup>)<sup>B</sup>) ≅ <span class="cat">Set</span>(X × B, Y<sup>A</sup>) ≅ <span class="cat">Set</span>((X × B) × A, Y) ≅ <span class="cat">Set</span>(X × (A × B), Y) ≅ <span class="cat">Set</span>(X, Y<sup>A × B</sup>)</span>: currying twice, then the associativity and symmetry of the product, then currying backwards. Counted, this is <span class="m">(y<sup>a</sup>)<sup>b</sup> = y<sup>a b</sup></span>.</p>
+<p>Lesson 6 proved (b) directly (Lesson 6, Exercise 9), and the associativity of products too (Lesson 6, Exercise 10), by constructing mediating arrows and checking that they are inverse. Here no arrow between the two objects is ever written down: the Yoneda embedding manufactures the isomorphism from the bijections.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Universal elements</h3>
+  <p class="exmeta"><a href="#s5">§5</a> · Exercises 11–12</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>A universal element, examined. The contravariant power set functor sends a set <span class="m">X</span> to the set <span class="m">P(X)</span> of its subsets and a function to its inverse-image map. §2 said that it is represented by a two-element set, <span class="m">2 = {0, 1}</span>.</p>
+<ol>
+<li>Let <span class="m">X = {a, b, c}</span> and <span class="m">S = {a, c}</span>. Find all functions <span class="m">χ : X → 2</span> with <span class="m">χ<sup>−1</sup>({1}) = S</span>.</li>
+<li>Explain why (a), done for every <span class="m">X</span> and <span class="m">S</span>, says that <span class="m">(2, {1})</span> is a universal element of <span class="m">P</span>.</li>
+<li>Is <span class="m">(2, {0})</span> also a universal element? Is <span class="m">(3, {1})</span>, where <span class="m">3 = {0, 1, 2}</span>?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> There is exactly one: <span class="m">χ(a) = 1</span>, <span class="m">χ(b) = 0</span>, <span class="m">χ(c) = 1</span>. The condition says that <span class="m">χ(x) = 1</span> exactly when <span class="m">x ∈ S</span>, which fixes every value.</p>
+<p><strong>(b)</strong> The element in question is <span class="m">u = {1}</span>, a member of <span class="m">P(2)</span>. For a function <span class="m">χ : X → 2</span>, the map <span class="m">P(χ)</span> is inverse image, so <span class="m">P(χ)(u) = χ<sup>−1</sup>({1})</span>. Universality asks that every element <span class="m">S</span> of <span class="m">P(X)</span> be <span class="m">P(χ)(u)</span> for exactly one <span class="m">χ</span>, and that is what (a) shows.</p>
+<p><strong>(c)</strong> <span class="m">(2, {0})</span> is universal too: the unique <span class="m">χ</span> is now the one that sends the elements of <span class="m">S</span> to <span class="m">0</span>. The two universal elements are related by a unique isomorphism, as the corollary of §5 says they must be — the function <span class="m">2 → 2</span> that swaps <span class="m">0</span> and <span class="m">1</span>. But <span class="m">(3, {1})</span> is not universal. Existence is fine; uniqueness fails, since an element outside <span class="m">S</span> may be sent to <span class="m">0</span> or to <span class="m">2</span>. For <span class="m">S = {a, c}</span> and <span class="m">X = {a, b, c}</span> there are two functions with the right inverse image.</p>
+</div>
+</details>
+</div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure</span></div>
 <div class="prob-body">
@@ -1026,37 +1051,53 @@ Nat(yE, yE): 1    arrows E -&gt; E: ['iE']</div>
 </div>
 </details>
 </div>
+
+<div class="exgroup">
+  <h3>Yoneda by hand</h3>
+  <p class="exmeta"><a href="#byhand">§6</a> · Exercises 13–15</p>
+</div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">examples</span></div>
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">by hand</span></div>
 <div class="prob-body">
-<p>The embedding preserves limits, not colimits. Work in the divisibility order on <span class="m">{1, 2, 3, 6}</span>, with presheaves regarded as down-closed subsets, as in §3.</p>
+<p>Cayley, for a monoid and for a group.</p>
 <ol>
-<li>The product of <span class="m">2</span> and <span class="m">3</span> is their meet. Check that <span class="m">↓(2 ∧ 3) = ↓2 ∩ ↓3</span>.</li>
-<li>The coproduct of <span class="m">2</span> and <span class="m">3</span> is their join. Show that <span class="m">↓(2 ∨ 3)</span> is <em>not</em> <span class="m">↓2 ∪ ↓3</span>.</li>
-<li>List all the down-closed subsets. Which are not representable?</li>
+<li>Let <span class="m">M</span> be the monoid <span class="m">{0, 1}</span> under multiplication. List the four functions <span class="m">α : M → M</span> and decide which satisfy <span class="m">α(m n) = α(m) n</span> for all <span class="m">m, n</span>. How many does the Yoneda lemma predict?</li>
+<li>Identify each survivor as &ldquo;multiply on the left by <span class="m">a</span>.&rdquo;</li>
+<li>For the group <span class="m">ℤ/4</span> under addition, write down the four permutations of <span class="m">{0, 1, 2, 3}</span> that Cayley&rsquo;s theorem assigns to its elements. What fraction of all permutations of a four-element set are they?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> <span class="m">2 ∧ 3 = 1</span> and <span class="m">↓1 = {1}</span>; and <span class="m">{1, 2} ∩ {1, 3} = {1}</span>.</p>
-<p><strong>(b)</strong> <span class="m">2 ∨ 3 = 6</span> and <span class="m">↓6 = {1, 2, 3, 6}</span>, but <span class="m">{1, 2} ∪ {1, 3} = {1, 2, 3}</span>.</p>
-<p><strong>(c)</strong> There are six: <span class="m">∅</span>, <span class="m">{1}</span>, <span class="m">{1, 2}</span>, <span class="m">{1, 3}</span>, <span class="m">{1, 2, 3}</span> and <span class="m">{1, 2, 3, 6}</span>. Four are down-sets of elements. The other two, <span class="m">∅</span> and <span class="m">{1, 2, 3}</span>, are not representable.</p>
-<p>Among the down-closed subsets, ordered by inclusion, the join of <span class="m">↓2</span> and <span class="m">↓3</span> is their union <span class="m">{1, 2, 3}</span> — a <em>new</em> element, strictly below <span class="m">↓6</span>. So the embedding keeps the meets of the original order but does not keep its joins: it supplies fresh ones, and a fresh bottom element <span class="m">∅</span> as well. This is the free cocompletion of the Going-deeper section, small enough to draw.</p>
+<p><strong>(a)</strong> The identity: <span class="m">α(m n) = m n = α(m) n</span> — natural. The constant <span class="m">0</span>: <span class="m">α(m n) = 0 = 0 · n</span> — natural. The constant <span class="m">1</span>: <span class="m">α(1 · 0) = 1</span> but <span class="m">α(1) · 0 = 0</span> — not natural. The swap: <span class="m">α(1 · 0) = α(0) = 1</span> but <span class="m">α(1) · 0 = 0</span> — not natural. Two survivors out of four, and the lemma predicts <span class="m">|M| = 2</span>.</p>
+<p><strong>(b)</strong> The identity is multiplication by <span class="m">1</span>, and the constant <span class="m">0</span> is multiplication by <span class="m">0</span>. In each case the multiplier is <span class="m">α(1)</span>, the image of the unit.</p>
+<p><strong>(c)</strong> The element <span class="m">c</span> goes to the permutation <span class="m">x ↦ c + x</span>: for <span class="m">0</span> the identity; for <span class="m">1</span> the cycle <span class="m">0 → 1 → 2 → 3 → 0</span>; for <span class="m">2</span> the exchange of <span class="m">0</span> with <span class="m">2</span> and of <span class="m">1</span> with <span class="m">3</span>; for <span class="m">3</span> the cycle in the reverse direction. Four permutations out of <span class="m">4! = 24</span>: one sixth.</p>
+<p>The monoid in (a) is not a group, and the map &ldquo;multiply by <span class="m">0</span>&rdquo; is not a permutation. The Yoneda embedding of a monoid lands in functions; only for a group does it land in bijections.</p>
 </div>
 </details>
 </div>
+
 <div class="prob">
-<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">arrows-only</span></div>
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">structure</span></div>
 <div class="prob-body">
-<p>The Yoneda bijection is natural in <span class="m">A</span>. Let <span class="m">F</span> be a presheaf, <span class="m">h : A → B</span> an arrow, and <span class="m">β : yB ⇒ F</span> a natural transformation belonging to the element <span class="m">b ∈ F(B)</span>. Show that the composite <span class="m">β ∘ y(h) : yA ⇒ F</span> belongs to the element <span class="m">F(h)(b)</span> of <span class="m">F(A)</span>.</p>
+<p>Graphs as presheaves (§2, §3). Let <span class="m">G</span> be the graph of §6, with vertices <span class="m">p, q, r</span> and edges <span class="m">a : p → q</span>, <span class="m">b : q → r</span>, <span class="m">c : q → q</span>, <span class="m">d : p → r</span>.</p>
+<ol>
+<li>The lone edge <span class="m">yE</span> has vertices <span class="m">s, t</span> and one edge. List the homomorphisms from <span class="m">yE</span> to itself, from <span class="m">yV</span> to <span class="m">yE</span>, and from <span class="m">yE</span> to <span class="m">yV</span>. Compare with the arrows of <span class="m"><span class="cat">𝒢</span></span>.</li>
+<li>Let <span class="m">L</span> be the graph with one vertex and one edge, a loop. What does a homomorphism <span class="m">L → G</span> amount to? How many are there?</li>
+<li>Is <span class="m">L</span> a representable presheaf?</li>
+<li>Describe a homomorphism <span class="m">yE → L</span>, and say in words how <span class="m">L</span> is obtained from <span class="m">yE</span>.</li>
+</ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>The element belonging to a transformation out of <span class="m">yA</span> is its value at <span class="m">id<sub>A</sub></span>. The component of <span class="m">y(h)</span> at <span class="m">A</span> sends <span class="m">id<sub>A</sub></span> to <span class="m">h ∘ id<sub>A</sub> = h</span>, an element of <span class="m">yB(A)</span>. Then <span class="m">β<sub>A</sub>(h) = F(h)(b)</span>, by the formula <span class="m">β<sub>X</sub>(f) = F(f)(b)</span> of §3 with <span class="m">X = A</span> and <span class="m">f = h</span>. So <span class="m">(β ∘ y(h))<sub>A</sub>(id<sub>A</sub>) = F(h)(b)</span>.</p>
-<p>In a square: going from <span class="m">Nat(yB, F)</span> to <span class="m">F(B)</span> and then applying <span class="m">F(h)</span> is the same as first composing with <span class="m">y(h)</span> and then going from <span class="m">Nat(yA, F)</span> to <span class="m">F(A)</span>. The two sides of the Yoneda lemma are not merely sets of the same size for each <span class="m">A</span>; they are naturally isomorphic presheaves.</p>
+<p><strong>(a)</strong> From <span class="m">yE</span> to itself: the edge must go to the edge, and then <span class="m">s ↦ s</span>, <span class="m">t ↦ t</span> — only the identity. From <span class="m">yV</span> to <span class="m">yE</span>: choose a vertex, <span class="m">s</span> or <span class="m">t</span> — two homomorphisms. From <span class="m">yE</span> to <span class="m">yV</span>: none, since <span class="m">yV</span> has no edge to receive the edge of <span class="m">yE</span>. These are the sizes of <span class="m"><span class="cat">𝒢</span>(E, E) = {id<sub>E</sub>}</span>, <span class="m"><span class="cat">𝒢</span>(V, E) = {s, t}</span> and <span class="m"><span class="cat">𝒢</span>(E, V) = ∅</span>: the Yoneda embedding is full and faithful.</p>
+<p><strong>(b)</strong> It chooses an edge of <span class="m">G</span> whose source and target are the same vertex: a loop of <span class="m">G</span>. There is one, <span class="m">c</span>.</p>
+<p><strong>(c)</strong> No. There are only two representable presheaves, <span class="m">yV</span> and <span class="m">yE</span>, one for each object of <span class="m"><span class="cat">𝒢</span></span>, and <span class="m">L</span> is isomorphic to neither: <span class="m">yV</span> has no edge and <span class="m">yE</span> has two vertices.</p>
+<p><strong>(d)</strong> Send the edge to the loop and both <span class="m">s</span> and <span class="m">t</span> to the one vertex. <span class="m">L</span> is <span class="m">yE</span> with its two vertices glued together — a quotient of a representable, which is the simplest instance of the density theorem of the Going-deeper section. Correspondingly, &ldquo;the loops of <span class="m">G</span>&rdquo; are the edges whose two ends agree: a subset of <span class="m">G(E)</span>, not the whole of <span class="m">G(E)</span> or of <span class="m">G(V)</span>.</p>
 </div>
 </details>
 </div>
+
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier py">by hand · optional python</span></div>
 <div class="prob-body">
@@ -1101,6 +1142,7 @@ S =&gt; y* : 9 of 729</div>
 </div>
 </details>
 </div>
+
 </div>
 </section>
 <section class="section" id="recap">
