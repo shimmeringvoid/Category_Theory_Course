@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <!-- Intro to Category Theory — Lesson 2: Functors -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lesson 2 · Functors</title>
+<title>Functors — Intro to Category Theory, Lesson 2</title>
+<meta name="description" content="We just built categories. The reflex of the whole subject is to immediately ask for the right maps between them — and answering snaps categories themselves into a category.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,9 +19,9 @@
   --ink-soft:#5C5F69;
   --ink-faint:#8B8C90;
   --rule:#E2DDCF;
-  --arrow:#2A3FA6;
-  --arrow-soft:#8E97CE;
-  --amber:#A8641A;
+  --arrow:#2A3FA6;        /* morphisms — drafting ink blue */
+  --arrow-soft:#8E97CE;   /* composites / derived arrows */
+  --amber:#A8641A;        /* identities & special notes, used sparingly */
   --amber-wash:#F6ECDC;
   --blue-wash:#EBEDF8;
   --code-bg:#15171E;
@@ -30,50 +34,88 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
-  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;
+  font-size:20px;
+  line-height:1.62;
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
 }
+
+/* faint drafting grid behind everything */
 body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
     linear-gradient(var(--grid) 1px,transparent 1px),
     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:34px 34px;opacity:.32;
+  background-size:34px 34px;
+  opacity:.32;
   -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
           mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
 }
 .wrap{position:relative;z-index:1}
 
+/* ---------- type ---------- */
 .measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
 p{margin:0 0 1.15em}
-em,i{font-style:italic}
+em,i,.var{font-style:italic}
+.var{font-family:"Newsreader",serif;font-style:italic}
+.op{font-style:normal}
 strong{font-weight:600}
 a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
 
 h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
 
+/* ---------- hero ---------- */
 .hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--ink-faint);margin-bottom:22px}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:22px;
+}
 .eyebrow .dot{color:var(--arrow)}
-.hero h1{font-size:clamp(40px,7.5vw,74px);margin:0 0 .35em;font-weight:500}
+.hero h1{
+  font-size:clamp(38px,7vw,70px);
+  margin:0 0 .35em;
+  font-weight:500;
+}
 .hero h1 .q{color:var(--arrow)}
-.lede{font-size:clamp(19px,2.4vw,23px);color:var(--ink-soft);max-width:36ch;margin:0}
-.hero-diagram{margin:42px auto 8px;max-width:600px}
+.lede{
+  font-size:clamp(19px,2.4vw,23px);
+  color:var(--ink-soft);
+  max-width:38ch;
+  margin:0;
+}
+.hero-diagram{
+  margin:42px auto 8px;
+  max-width:480px;
+}
+.hero-diagram:has(.board.wide){max-width:600px}
 
+/* ---------- section scaffolding ---------- */
 .section{padding:54px 0}
 .section + .section{border-top:1px solid var(--rule)}
-.sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--arrow);margin-bottom:12px}
-.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:22ch}
+.sec-no{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--arrow);margin-bottom:12px;
+}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
 .section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
 
+/* ---------- diagram figure ---------- */
 figure{margin:34px 0;text-align:center}
 .board{
-  background:radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
-  border:1px solid var(--rule);border-radius:3px;padding:26px 18px 18px;
-  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:26px 18px 18px;
+  position:relative;
+  overflow:hidden;
 }
 .board::before{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -82,24 +124,25 @@ figure{margin:34px 0;text-align:center}
     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:22px 22px;opacity:.5;
 }
-.board svg{position:relative;display:block;width:100%;height:auto;max-width:480px;margin-inline:auto}
-.board.wide svg{max-width:600px}
-figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;
-  max-width:54ch;margin-inline:auto;font-style:italic}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:470px;margin-inline:auto}
+.board.wide svg{max-width:580px}
+figcaption{
+  font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;
+  max-width:54ch;margin-inline:auto;font-style:italic;
+}
 
+/* svg primitives */
 .node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
-.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
-.node.small{font-size:19px}
 .elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;
   fill:var(--arrow);paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
 .elabel.soft{fill:#5b62a0}
 .elabel.amber{fill:var(--amber)}
-.elabel.big{font-size:25px;fill:var(--ink);stroke-width:5px}
 .arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .arrow.soft{stroke:var(--arrow-soft)}
+.arrow.dashed{stroke:var(--arrow-soft)}
 .arrow.amber{stroke:var(--amber)}
-.arrow.big{stroke-width:2.5}
 
+/* draw-in animation */
 .arrow{stroke-dashoffset:var(--len,0)}
 .draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
 .elabel{opacity:0}
@@ -109,10 +152,19 @@ figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.
   .elabel{opacity:1 !important;transition:none !important}
 }
 
-.box{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);
-  border-radius:3px;padding:22px 24px;margin:30px 0}
-.box .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
+/* ---------- callout boxes ---------- */
+.box{
+  border:1px solid var(--rule);
+  border-left:3px solid var(--arrow);
+  background:var(--blue-wash);
+  border-radius:3px;
+  padding:22px 24px;
+  margin:30px 0;
+}
+.box .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px;
+}
 .box.amber{border-left-color:var(--amber);background:var(--amber-wash)}
 .box.amber .tag{color:var(--amber)}
 .box p:last-child{margin-bottom:0}
@@ -121,66 +173,70 @@ figcaption{font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.
 .deflist li{margin:.32em 0}
 .law{display:flex;gap:14px;align-items:baseline;margin:.5em 0;flex-wrap:wrap}
 .law .name{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink-faint);min-width:108px}
+  text-transform:uppercase;color:var(--ink-faint);min-width:96px}
 .law .eq{font-size:20px}
-.thm{border-left-color:var(--amber);background:var(--amber-wash)}
-.thm .tag{color:var(--amber)}
 
+/* inline math chips */
 .m{font-style:italic;white-space:nowrap}
 .hom{font-style:italic}
 .cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
 
-.code{background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;border:1px solid #000}
-.code-bar{display:flex;align-items:center;justify-content:space-between;
-  padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36}
+/* ---------- code ---------- */
+.code{
+  background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;
+  border:1px solid #000;
+}
+.code-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36;
+}
 .code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
 .code-bar .fname b{color:#cfd2dc;font-weight:500}
-.copy{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
-  color:var(--code-dim);background:transparent;border:1px solid #2f323c;border-radius:4px;
-  padding:4px 10px;cursor:pointer;transition:.15s}
+.copy{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  color:var(--code-dim);background:transparent;border:1px solid #2f323c;
+  border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s;
+}
 .copy:hover{color:#fff;border-color:#525a6b}
 pre{margin:0;padding:18px 16px;overflow-x:auto}
 code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
 pre code{color:var(--code-fg);font-size:13.5px;background:none}
-.out{background:var(--out-bg);border-top:1px solid #2a3340;padding:12px 16px;
-  font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;white-space:pre-wrap}
+.out{
+  background:var(--out-bg);border-top:1px solid #2a3340;
+  padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;
+  white-space:pre-wrap;
+}
 .out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-:not(pre) > code{font-family:"IBM Plex Mono",monospace;font-size:.82em;
+:not(pre) > code{
+  font-family:"IBM Plex Mono",monospace;font-size:.82em;
   background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
-  padding:.05em .35em;color:#3a3d46}
+  padding:.05em .35em;color:#3a3d46;
+}
 
+/* ---------- example gallery ---------- */
 .ex{margin:26px 0;padding-top:22px;border-top:1px dashed var(--rule)}
 .ex:first-of-type{border-top:none;padding-top:0}
 .ex h3{margin-top:0;display:flex;align-items:baseline;gap:.5em}
 .ex h3 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);font-weight:500}
 
-details{border:1px solid var(--rule);border-radius:4px;background:#fff;margin:14px 0;padding:0 20px}
-details[open]{background:var(--paper-2)}
-summary{cursor:pointer;padding:16px 0;font-weight:500;list-style:none;display:flex;gap:.7em;align-items:baseline}
-summary::-webkit-details-marker{display:none}
-summary .qn{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);flex:none}
-summary .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-faint);margin-left:auto;flex:none;
-  border:1px solid var(--rule);border-radius:20px;padding:2px 9px;align-self:center}
-.sol{padding:2px 0 20px;border-top:1px solid var(--rule);margin-top:2px;color:var(--ink-soft);font-size:18px}
-.sol strong{color:var(--ink)}
-
+/* ---------- takeaways / next ---------- */
 .takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
 .takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
-.takeaways li::before{content:counter(t);position:absolute;left:0;top:13px;
+.takeaways li::before{
+  content:counter(t);position:absolute;left:0;top:13px;
   font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);
-  border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
-.next{margin-top:38px;border:1px solid var(--rule);border-radius:4px;padding:26px;
-  display:flex;gap:22px;align-items:center;background:#fff}
+  border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;
+  display:grid;place-items:center;
+}
+.next{
+  margin-top:38px;border:1px solid var(--rule);border-radius:4px;
+  padding:26px;display:flex;gap:22px;align-items:center;background:#fff;
+}
 .next .arrowmark{flex:none}
 .next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
 .next h3{margin:0 0 .25em;font-size:23px}
 .next p{margin:0;font-size:17px;color:var(--ink-soft)}
-
-.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;
-  color:var(--ink-faint);margin-bottom:30px}
-.crumbs b{color:var(--arrow);font-weight:500}
 
 footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
@@ -196,7 +252,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   .law .name{min-width:0}
 }
 
-/* ---------- expanded exercise format ---------- */
+/* ---------- exercises ---------- */
 .prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
 .prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
 .prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
@@ -206,22 +262,161 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 .prob-body p:last-child{margin-bottom:0}
 .prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
 .prob-body ol li{margin:.35em 0}
-.prob details{border:none;background:transparent;padding:0;margin:18px 0 0}
-.prob details[open]{background:transparent}
-.prob summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s}
-.prob summary:hover{background:var(--blue-wash)}
-.prob summary::before{content:"+ ";font-weight:500}
-.prob details[open] summary::before{content:"\2212  "}
-.prob .sol{border:none;border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob > details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob > details[open]{background:transparent}
+.prob > details > summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob > details > summary::-webkit-details-marker{display:none}
+.prob > details > summary:hover{background:var(--blue-wash)}
+.prob > details > summary::before{content:"+ ";font-weight:500}
+.prob > details[open] > summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol strong{color:var(--ink)}
 .prob .sol p{margin:0 0 .9em}
 .prob .sol p:last-child{margin-bottom:0}
+
+/* ---------- diagram extras ---------- */
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.small{font-size:19px}
+.node.tiny{font-size:16px}
+.node.amber{fill:var(--amber)}
+.node.plain{font-style:normal}
+.node.dbl{font-family:"Fraunces",serif;font-style:normal;font-size:34px;fill:var(--arrow);opacity:0}
+.draw .node.dbl{opacity:1;transition:opacity .5s ease .35s}
+.elabel.big{font-size:25px;fill:var(--ink);stroke-width:5px}
+.elabel.mono{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:14px}
+.elabel.small{font-size:15px}
+.arrow.big{stroke-width:2.5}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+@media (prefers-reduced-motion:reduce){
+  .arrow.unique,.node.dbl{opacity:1 !important;transition:none !important}
+}
+
+/* ---------- theorem boxes, tables, breadcrumbs ---------- */
+.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.thm .tag{color:var(--amber)}
+.box ol,.box ul{margin:.4em 0 .6em;padding-left:1.3em}
+.box li{margin:.3em 0}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+.crumbs a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--ink-faint)}
+.crumbs a:hover{color:var(--arrow);border-bottom-color:var(--arrow)}
+.zoo{width:100%;border-collapse:collapse;margin:28px 0;font-size:17.5px}
+.zoo th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);text-align:left;padding:10px 12px;border-bottom:2px solid var(--rule)}
+.zoo td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+.zoo td:first-child{color:var(--ink)}
+.zoo td .m{color:var(--ink)}
+.zoo.shapes td:first-child{font-family:"IBM Plex Mono",monospace;font-size:14px;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+
+/* ---------- second edition: reading aids ---------- */
+h3.sub{font-size:23px;margin:1.7em 0 .6em}
+.eq{text-align:center;margin:1.1em 0 1.25em;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-bottom:2px}
+.eq .m{font-size:1.04em}
+.m sub,.m sup{font-size:.72em;line-height:0}
+.topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:20px;
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-faint)}
+.topnav a{color:var(--ink-faint);text-decoration:none}
+.topnav a:hover{color:var(--arrow)}
+.topnav + .hero{padding-top:44px}
+.pytoggle{font:inherit;letter-spacing:.06em;color:var(--amber);background:transparent;border:1px solid var(--amber);
+  border-radius:20px;padding:4px 13px;cursor:pointer;transition:.15s}
+.pytoggle:hover{background:var(--amber-wash)}
+.pytoggle[aria-pressed="true"]{background:var(--amber);color:#fff}
+.toc{border:1px solid var(--rule);border-radius:4px;background:#fff;padding:20px 24px;margin-top:34px}
+.toc .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:10px}
+.toc ul{list-style:none;margin:0;padding:0;columns:2;column-gap:34px;font-size:17px}
+.toc .n{display:inline-block;min-width:2.3em;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--arrow)}
+.toc li{margin:.22em 0;break-inside:avoid}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--arrow);text-decoration:underline}
+.toc .opt{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em}
+.tbl{border-collapse:collapse;margin:20px auto;font-size:17.5px}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:6px 13px;text-align:center}
+.tbl th{font-weight:500;font-style:italic;color:var(--arrow);background:var(--paper-2)}
+.tbl td{background:#fff;font-style:italic}
+.tbl caption{caption-side:bottom;font-size:15px;color:var(--ink-soft);font-style:italic;padding-top:10px}
+.box.hand .tag::before{content:"\270E\00a0";font-size:1.15em}
+.proof{color:var(--ink)}
+.qed{float:right}
+
+/* ---------- second edition: the optional Python track ---------- */
+details.pylab{margin:32px 0;border:1px solid #2f323c;border-radius:6px;overflow:hidden;background:#fff}
+details.pylab > summary{list-style:none;cursor:pointer;background:var(--code-bg);color:var(--code-fg);
+  padding:13px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.03em}
+details.pylab > summary::-webkit-details-marker{display:none}
+details.pylab > summary::after{content:"+ open";margin-left:auto;color:var(--code-dim);font-size:11.5px;letter-spacing:.08em}
+details.pylab[open] > summary::after{content:"\2212  close"}
+details.pylab > summary .badge{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#15171E;
+  background:#E3B36A;border-radius:20px;padding:2px 10px;font-weight:600;flex:none}
+details.pylab > summary:hover{background:#1d2029}
+details.pylab > .pybody{padding:22px 22px 8px;font-size:18.5px}
+details.pylab > .pybody > p:first-child{margin-top:0}
+details.pylab .code{margin:20px 0}
+.pynote{font-size:16.5px;color:var(--ink-soft);border-left:3px solid #E3B36A;padding:2px 0 2px 14px;margin:18px 0}
+.pytask{border:1px dashed var(--amber);border-radius:4px;background:rgba(246,236,220,.5);padding:14px 18px;margin:16px 0 4px;font-size:17.5px}
+.pytask .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:6px}
+.pytask p:last-child{margin-bottom:0}
+.sol .pytask{background:rgba(255,255,255,.55)}
+.prob-head .tier.py{color:var(--amber);border-color:var(--amber)}
+body.py-off .pyonly{display:none}
+
+/* ---------- second edition: pager ---------- */
+.next a{color:inherit;text-decoration:none}
+.next a:hover h3{color:var(--arrow)}
+.pager{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:26px;
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.05em}
+.pager a{color:var(--arrow);text-decoration:none;border:1px solid var(--rule);border-radius:22px;padding:7px 16px;background:#fff}
+.pager a:hover{border-color:var(--arrow)}
+.dl{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft);margin:14px 0 0}
+.dl a{color:var(--arrow)}
+
+@media (max-width:800px){
+  /* keep the title block off the edges of a narrow screen */
+  .hero.measure{padding-inline:26px}
+}
+@media (max-width:760px){
+  /* on narrow screens an inline formula may break at its spaces;
+     displayed formulas, tables and code scroll sideways instead */
+  .m{white-space:normal}
+  .eq .m,.tbl .m{white-space:nowrap}
+  .tablewrap{-webkit-overflow-scrolling:touch}
+}
+@media (max-width:560px){
+  .zoo{font-size:15.5px}
+  .toc ul{columns:1}
+  .tbl{font-size:15.5px}
+  .tbl th,.tbl td{padding:5px 8px}
+  details.pylab > .pybody{padding:16px 14px 4px}
+}
+@media print{
+  body::before{display:none}
+  .topnav,.pager,.copy,.pytoggle{display:none}
+  .board{break-inside:avoid}
+}
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
 </style>
+</head>
+<body>
 
 <div class="wrap">
 
-<!-- ============ HERO ============ -->
+<nav class="topnav measure" aria-label="Course">
+  <a href="index.html">← Intro to Category Theory · all lessons</a>
+  <button class="pytoggle" type="button" aria-pressed="false" title="Open or close every optional Python lab on this page">Python labs: closed</button>
+</nav>
+
 <header class="hero measure">
-  <div class="crumbs">Lesson 01 — Categories &nbsp;›&nbsp; <b>Lesson 02 — Functors</b> &nbsp;›&nbsp; Lesson 03 — Natural transformations</div>
+  <div class="crumbs"><a href="lesson-01-what-is-a-category.html">Lesson 01 — Categories</a> &nbsp;›&nbsp; <b>Lesson 02 — Functors</b> &nbsp;›&nbsp; <a href="lesson-03-natural-transformations.html">Lesson 03 — Natural transformations</a></div>
   <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 02</div>
   <h1><span class="q">Functors</span><br>Maps between categories</h1>
   <p class="lede">We just built categories. The reflex of the whole subject is to immediately ask for the right maps between them — and answering snaps categories themselves into a category.</p>
@@ -230,12 +425,27 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
       <svg></svg>
     </div>
   </figure>
+  <nav class="toc" aria-label="In this lesson">
+    <span class="tag">In this lesson</span>
+    <ul>
+      <li><a href="#s1"><span class="n">§1</span>The reflex</a></li>
+      <li><a href="#s2"><span class="n">§2</span>The definition</a></li>
+      <li><a href="#s3"><span class="n">§3</span>What a functor guarantees</a></li>
+      <li><a href="#s4"><span class="n">§4</span>A gallery of functors</a></li>
+      <li><a href="#hom"><span class="n">§5</span>Hom functors</a></li>
+      <li><a href="#full"><span class="n">§6</span>Full, faithful, and essentially surjective</a></li>
+      <li><a href="#byhand"><span class="n">§7</span>Functors by hand</a></li>
+      <li><a href="#going-deeper"><span class="n"></span>Going deeper</a></li>
+      <li><a href="#s8"><span class="n">§8</span>Exercises</a></li>
+      <li><a href="#recap"><span class="n"></span>Recap</a></li>
+    </ul>
+    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-02-functors.py">a script</a> and <a href="notebooks/lesson-02-functors.ipynb">a notebook</a>.</p>
+  </nav>
 </header>
 
 <main>
 
-<!-- ============ §1 ============ -->
-<section class="section">
+<section class="section" id="s1">
   <div class="measure">
     <div class="sec-no">§1 — The reflex</div>
     <h2>New objects? Ask for the maps</h2>
@@ -245,8 +455,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   </div>
 </section>
 
-<!-- ============ §2 DEFINITION ============ -->
-<section class="section">
+<section class="section" id="s2">
   <div class="measure">
     <div class="sec-no">§2 — The definition</div>
     <h2>Two assignments, two laws</h2>
@@ -269,7 +478,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 
     <div class="box amber">
       <span class="tag">Aside · Contravariance</span>
-      <p>Some natural constructions <em>reverse</em> arrows rather than preserving them. A <strong>contravariant</strong> functor sends <span class="m">f : X → Y</span> to an arrow <span class="m">F f : F Y → F X</span> and obeys <span class="m">F(g ∘ f) = F f ∘ F g</span>. The everyday example: fix a set <span class="m">S</span> and send each set <span class="m">X</span> to the set of functions <span class="m">X → S</span>; a map <span class="m">f : X → Y</span> then induces &ldquo;precompose with <span class="m">f</span>&rdquo; running the other way, <span class="m">(Y → S) → (X → S)</span>. The default kind is <em>covariant</em>; contravariant just flips every arrow. We&rsquo;ll meet the systematic source of this — the opposite category — later.</p>
+      <p>Some natural constructions <em>reverse</em> arrows rather than preserving them. A <strong>contravariant</strong> functor sends <span class="m">f : X → Y</span> to an arrow <span class="m">F f : F Y → F X</span> and obeys <span class="m">F(g ∘ f) = F f ∘ F g</span>. The everyday example: fix a set <span class="m">S</span> and send each set <span class="m">X</span> to the set of functions <span class="m">X → S</span>; a map <span class="m">f : X → Y</span> then induces &ldquo;precompose with <span class="m">f</span>&rdquo; running the other way, <span class="m">(Y → S) → (X → S)</span>. The default kind is <em>covariant</em>; contravariant just flips every arrow. The systematic source of this is the opposite category of Lesson 1, Exercise 4; the Going-deeper section below makes the connection.</p>
       <figure style="margin:14px 0 2px">
         <div class="board" data-diagram="contra" aria-label="A contravariant functor sends an arrow f from A to B to an arrow F f from F B to F A, pointing the opposite way.">
           <svg></svg>
@@ -279,8 +488,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   </div>
 </section>
 
-<!-- ============ §3 GUARANTEES ============ -->
-<section class="section">
+<section class="section" id="s3">
   <div class="measure">
     <div class="sec-no">§3 — What a functor guarantees</div>
     <h2>It can forget distinctions, but never invent them</h2>
@@ -305,15 +513,14 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
   </div>
 </section>
 
-<!-- ============ §4 GALLERY ============ -->
-<section class="section">
+<section class="section" id="s4">
   <div class="measure">
     <div class="sec-no">§4 — A gallery of functors</div>
-    <h2>Six functors, and one of them is the subject eating its own tail</h2>
+    <h2>Eight functors, and one of them is the subject eating its own tail</h2>
 
     <div class="ex">
       <h3><span class="n">i.</span> The identity functor, composition, and <span class="cat">Cat</span></h3>
-      <p>Every category <span class="cat">𝒞</span> has an identity functor <span class="m">id<sub>𝒞</sub></span> fixing every object and arrow. And functors compose: given <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">G : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span>, the assignment <span class="m">X ↦ G(F X)</span>, <span class="m">f ↦ G(F f)</span> is again a functor — it preserves identities and composition because <span class="m">F</span> and <span class="m">G</span> each do. Functor composition is associative; identity functors are units. Read that back: it is the Lesson 1 definition of a category, with <em>categories as objects</em> and <em>functors as arrows</em>. That category is called <span class="cat">Cat</span>. We have climbed a floor — the thing we defined last lesson is itself an example of the thing we defined last lesson.</p>
+      <p>Every category <span class="cat">𝒞</span> has an identity functor <span class="m">id<sub>𝒞</sub></span> fixing every object and arrow. And functors compose: given <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">G : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span>, the assignment <span class="m">X ↦ G(F X)</span>, <span class="m">f ↦ G(F f)</span> is again a functor — it preserves identities and composition because <span class="m">F</span> and <span class="m">G</span> each do. Functor composition is associative; identity functors are units. Read that back: it is the Lesson 1 definition of a category, with <em>categories as objects</em> and <em>functors as arrows</em>. That category is called <span class="cat">Cat</span>. (To stay clear of the size paradoxes in Lesson 1&rsquo;s footnote, its objects are taken to be the <em>small</em> categories.) We have climbed a floor — the thing we defined last lesson is itself an example of the thing we defined last lesson.</p>
       <figure>
         <div class="board" data-diagram="cat" aria-label="Three categories C, D, E as points, with functors F, G between them and their composite G after F, forming a triangle in the category Cat.">
           <svg></svg>
@@ -339,7 +546,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 
     <div class="ex">
       <h3><span class="n">v.</span> Small categories as shapes</h3>
-      <p>A functor <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> is a <strong>choice of an object</strong> of <span class="cat">𝒞</span> — the single object has to land somewhere. A functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> is a <strong>choice of an arrow</strong>: the non-identity arrow <span class="m">0 → 1</span> must go to some arrow, and everything else is forced. This is the precise form of the teaser from Lesson 1. Tiny categories act as <em>templates</em>, and functors out of them pick that shape out inside any target — bigger shapes will pick out commuting squares, parallel pairs, and cones, which become the raw material of limits two lessons from now.</p>
+      <p>A functor <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> is a <strong>choice of an object</strong> of <span class="cat">𝒞</span> — the single object has to land somewhere. A functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> is a <strong>choice of an arrow</strong>: the non-identity arrow <span class="m">0 → 1</span> must go to some arrow, and everything else is forced. This is the precise form of the teaser from Lesson 1. Tiny categories act as <em>templates</em>, and functors out of them pick that shape out inside any target — bigger shapes will pick out commuting squares, parallel pairs, and cones, which become the raw material of limits in Lesson 7.</p>
       <figure>
         <div class="board wide" data-diagram="select" aria-label="A functor from the category 2 into a category C selects one arrow of C as the image of the arrow 0 to 1.">
           <svg></svg>
@@ -350,16 +557,134 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 
     <div class="ex">
       <h3><span class="n">vi.</span> The List functor, concretely</h3>
-      <p>On the category of types, <span class="m">List</span> sends a type <span class="m">A</span> to <span class="m">List[A]</span> and a function <span class="m">f : A → B</span> to the function that applies <span class="m">f</span> to every element. Its two functor laws — <code>map(id) == id</code> and <code>map(g ∘ f) == map(g) ∘ map(f)</code> — are exactly the laws every well-behaved <code>map</code> must obey, and they are why a compiler is permitted to fuse <code>map(g) ∘ map(f)</code> into a single pass. The next section makes all of this run.</p>
+      <p>On the category of types, <span class="m">List</span> sends a type <span class="m">A</span> to <span class="m">List[A]</span> and a function <span class="m">f : A → B</span> to the function that applies <span class="m">f</span> to every element. Its two functor laws — <code>map(id) == id</code> and <code>map(g ∘ f) == map(g) ∘ map(f)</code> — are exactly the laws every well-behaved <code>map</code> must obey, and they are why a compiler is permitted to fuse <code>map(g) ∘ map(f)</code> into a single pass. The optional Python lab in §7 makes all of this run.</p>
     </div>
+<div class="ex">
+<h3><span class="n">vii.</span> Actions: functors from a monoid to <span class="m"><span class="cat">Set</span></span></h3>
+<p>Let <span class="m">M</span> be a monoid, viewed as a one-object category. What is a functor <span class="m">F : M → <span class="cat">Set</span></span>? The single object must go to some set <span class="m">S</span>. Each arrow — each element <span class="m">m</span> of <span class="m">M</span> — must go to a function <span class="m">F(m) : S → S</span>. The functor laws say <span class="m">F(e) = id<sub>S</sub></span> and <span class="m">F(m · n) = F(m) ∘ F(n)</span>. That is precisely the classical notion of <span class="m">M</span> <strong>acting</strong> on the set <span class="m">S</span>: every element of the monoid moves the points of <span class="m">S</span> around, compatibly with multiplication.</p>
+<p>Two instances are worth carrying with you. A functor from <span class="m">(ℕ, +)</span> to <span class="m"><span class="cat">Set</span></span> is determined by the single function <span class="m">t = F(1)</span>, because <span class="m">F(n) = t ∘ ⋯ ∘ t</span> (<span class="m">n</span> times): so it is nothing more than <strong>a set with a function from the set to itself</strong> — a system with a clock, where <span class="m">t</span> is &ldquo;advance one tick.&rdquo; And a functor from a group <span class="m">G</span> to <span class="m"><span class="cat">Vect</span></span> is a group acting by linear maps: a <em>linear representation</em> of <span class="m">G</span>. An entire field, representation theory, is the study of functors out of a group.</p>
+</div>
+<div class="ex">
+<h3><span class="n">viii.</span> Functors built from products</h3>
+<p>Fix a set <span class="m">A</span>. Sending each set <span class="m">X</span> to the product <span class="m">X × A</span> is the object map of a functor <span class="m">(−) × A : <span class="cat">Set</span> → <span class="cat">Set</span></span>; on arrows it sends <span class="m">f : X → Y</span> to the function <span class="m">f × id<sub>A</sub></span> that takes <span class="m">(x, a)</span> to <span class="m">(f(x), a)</span>. The laws can be checked at a glance — <span class="m">id<sub>X</sub> × id<sub>A</sub></span> fixes every pair, and applying <span class="m">f</span> and then <span class="m">g</span> in the first coordinate is applying <span class="m">g ∘ f</span> there. This functor returns in Lesson 8 as one half of the most familiar adjunction in programming. A cousin lives on any category with enough structure to form pairs, and one variant needs no structure at all: the <strong>diagonal</strong> functor <span class="m">Δ : <span class="cat">𝒞</span> → <span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> into the product category of Lesson 1, Exercise 5, with <span class="m">Δ X = (X, X)</span> and <span class="m">Δ f = (f, f)</span>.</p>
+</div>
   </div>
 </section>
 
-<!-- ============ §5 PYTHON ============ -->
-<section class="section">
-  <div class="measure">
-    <div class="sec-no">§5 — Functors in Python</div>
-    <h2>Two views: lists as a functor, and a checker for finite ones</h2>
+
+
+<section class="section" id="hom">
+<div class="measure">
+<div class="sec-no">§5 — Hom functors</div>
+<h2>The two functors every object carries for free</h2>
+<p>So far each functor needed a construction. But every category comes with a supply of functors built from nothing but its own arrows, and they turn out to be the most important of all. Assume from here on that <span class="m"><span class="cat">𝒞</span></span> is locally small, so that the arrows between two objects form a set <span class="m"><span class="cat">𝒞</span>(X, Y)</span>.</p>
+<div class="box def">
+<span class="tag">Definition · The covariant hom functor</span>
+<p>Fix an object <span class="m">A</span> of <span class="m"><span class="cat">𝒞</span></span>. The functor <span class="m"><span class="cat">𝒞</span>(A, −) : <span class="cat">𝒞</span> → <span class="cat">Set</span></span> sends</p>
+<ul class="deflist">
+<li>each object <span class="m">X</span> to the set <span class="m"><span class="cat">𝒞</span>(A, X)</span> of arrows from <span class="m">A</span> to <span class="m">X</span>;</li>
+<li>each arrow <span class="m">f : X → Y</span> to the function <span class="m"><span class="cat">𝒞</span>(A, X) → <span class="cat">𝒞</span>(A, Y)</span> given by <strong>composing with <span class="m">f</span></strong>: <span class="m">h ↦ f ∘ h</span>.</li>
+</ul>
+</div>
+<figure>
+<div class="board" data-diagram="homcov" aria-label="An arrow h from A to X and an arrow f from X to Y; composing gives f after h from A to Y.">
+<svg></svg>
+</div>
+<figcaption>Post-composition with <span class="m">f</span> carries each arrow <span class="m">A → X</span> to an arrow <span class="m">A → Y</span>.</figcaption>
+</figure>
+<p>Why is this a functor? The identity law requires that composing with <span class="m">id<sub>X</sub></span> do nothing: <span class="m">id<sub>X</sub> ∘ h = h</span>. The composition law requires that composing with <span class="m">g ∘ f</span> equal composing with <span class="m">f</span> and then with <span class="m">g</span>: <span class="m">(g ∘ f) ∘ h = g ∘ (f ∘ h)</span>. These are exactly the identity law and the associativity law of <span class="m"><span class="cat">𝒞</span></span>. <em>The two functor laws for <span class="m"><span class="cat">𝒞</span>(A, −)</span> are the two category laws of <span class="m"><span class="cat">𝒞</span></span></em> — the definition of a category could hardly be better fitted to making this work.</p>
+<p>Arrows <em>into</em> a fixed object behave the same way, with one twist. An arrow <span class="m">f : X → Y</span> converts arrows <span class="m">Y → A</span> into arrows <span class="m">X → A</span> by composing on the other side, <span class="m">h ↦ h ∘ f</span> — and now the conversion runs from <span class="m"><span class="cat">𝒞</span>(Y, A)</span> to <span class="m"><span class="cat">𝒞</span>(X, A)</span>, <strong>against</strong> the direction of <span class="m">f</span>. So arrows into <span class="m">A</span> form a <em>contravariant</em> functor in the sense of §2&rsquo;s aside, written <span class="m"><span class="cat">𝒞</span>(−, A)</span>.</p>
+<h3 class="sub">Six hom functors by hand</h3>
+<ol>
+<li><strong>Elements.</strong> In <span class="m"><span class="cat">Set</span></span>, let <span class="m">1</span> be a one-element set. A function <span class="m">1 → X</span> is a choice of one element of <span class="m">X</span>, so <span class="m"><span class="cat">Set</span>(1, X)</span> is a copy of <span class="m">X</span> itself, and composing with <span class="m">f</span> becomes applying <span class="m">f</span>. The functor <span class="m"><span class="cat">Set</span>(1, −)</span> is the identity functor in disguise.</li>
+<li><strong>Pairs.</strong> Let <span class="m">2 = {0, 1}</span>. A function <span class="m">2 → X</span> is an ordered pair <span class="m">(x<sub>0</sub>, x<sub>1</sub>)</span> of elements of <span class="m">X</span>, so <span class="m"><span class="cat">Set</span>(2, X)</span> is a copy of <span class="m">X × X</span>, and composing with <span class="m">f</span> sends <span class="m">(x<sub>0</sub>, x<sub>1</sub>)</span> to <span class="m">(f(x<sub>0</sub>), f(x<sub>1</sub>))</span>.</li>
+<li><strong>Subsets.</strong> A function <span class="m">X → 2</span> is the same thing as a subset of <span class="m">X</span>: the elements sent to <span class="m">1</span>. So <span class="m"><span class="cat">Set</span>(X, 2)</span> is a copy of the powerset of <span class="m">X</span>, and — check it — composing with <span class="m">f : X → Y</span> on the right turns a subset <span class="m">T</span> of <span class="m">Y</span> into its inverse image <span class="m">f<sup>−1</sup>(T)</span>. The contravariant powerset functor of the Going-deeper section is a hom functor.</li>
+<li><strong>Order.</strong> In a preorder, <span class="m"><span class="cat">𝒞</span>(a, x)</span> has one element when <span class="m">a ≤ x</span> and none otherwise. So <span class="m"><span class="cat">𝒞</span>(a, −)</span> simply records which elements lie above <span class="m">a</span>, and <span class="m"><span class="cat">𝒞</span>(−, a)</span> which lie below. The table shows the size of <span class="m"><span class="cat">𝒞</span>(a, x)</span> in the divisibility order on <span class="m">{1, 2, 3, 6}</span>:
+<div class="tablewrap"><table class="tbl">
+<tr><th>a \ x</th><th>1</th><th>2</th><th>3</th><th>6</th></tr>
+<tr><th>1</th><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><th>2</th><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><th>3</th><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><th>6</th><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</table></div>
+Read along a row for the covariant functor <span class="m"><span class="cat">𝒞</span>(a, −)</span>, and down a column for the contravariant <span class="m"><span class="cat">𝒞</span>(−, x)</span>.</li>
+<li><strong>Multiplication.</strong> In a monoid <span class="m">M</span> viewed as a one-object category, the only hom-set is the set of elements of <span class="m">M</span>, and the hom functor sends an element <span class="m">m</span> to the function <span class="m">h ↦ m · h</span>. So the hom functor <span class="m">M → <span class="cat">Set</span></span> is <span class="m">M</span> acting on itself by left multiplication — the action of example (vii) with <span class="m">S = M</span>.</li>
+<li><strong>Underlying sets.</strong> A group homomorphism <span class="m">ℤ → G</span> is completely determined by where it sends <span class="m">1</span>, and <span class="m">1</span> may be sent anywhere. So <span class="m"><span class="cat">Grp</span>(ℤ, G)</span> is a copy of the underlying set of <span class="m">G</span>: the forgetful functor of example (ii) is the hom functor <span class="m"><span class="cat">Grp</span>(ℤ, −)</span>, wearing a costume. Likewise <span class="m"><span class="cat">Mon</span>(ℕ, −)</span> and <span class="m"><span class="cat">Vect</span>(ℝ, −)</span>.</li>
+</ol>
+<p>Items 1, 2, 3 and 6 all say that some familiar functor is a hom functor <em>in disguise</em>. Making &ldquo;in disguise&rdquo; precise needs the natural isomorphisms of Lesson 3; functors that arise this way are called <strong>representable</strong>, and Lesson 9 is devoted to them. There the hom functors become the main characters of the whole subject: the Yoneda lemma says that an object <span class="m">A</span> is completely captured by its hom functor.</p>
+</div>
+</section>
+
+<section class="section" id="full">
+<div class="measure">
+<div class="sec-no">§6 — Full, faithful, and essentially surjective</div>
+<h2>How much of the arrows a functor sees</h2>
+<p>A function between sets can be injective, surjective, both or neither. For functors the corresponding questions are asked <strong>one hom-set at a time</strong>. A functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> gives, for each pair of objects <span class="m">X, Y</span> of <span class="m"><span class="cat">𝒞</span></span>, a function between hom-sets:</p>
+<p class="eq"><span class="m"><span class="cat">𝒞</span>(X, Y) → <span class="cat">𝒟</span>(F X, F Y), &nbsp;&nbsp;&nbsp; f ↦ F f.</span></p>
+<div class="box def">
+<span class="tag">Definition · Faithful, full, essentially surjective</span>
+<p>A functor <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> is</p>
+<ul class="deflist">
+<li><strong>faithful</strong> if each of these functions is injective: for parallel arrows, <span class="m">F f = F g</span> forces <span class="m">f = g</span>;</li>
+<li><strong>full</strong> if each is surjective: every arrow <span class="m">F X → F Y</span> of <span class="m"><span class="cat">𝒟</span></span> is <span class="m">F f</span> for some <span class="m">f : X → Y</span>;</li>
+<li><strong>fully faithful</strong> if it is both;</li>
+<li><strong>essentially surjective</strong> if every object of <span class="m"><span class="cat">𝒟</span></span> is isomorphic to <span class="m">F X</span> for some object <span class="m">X</span> of <span class="m"><span class="cat">𝒞</span></span>.</li>
+</ul>
+</div>
+<p>Read the definitions carefully. Faithful does <em>not</em> mean injective on arrows overall: it compares only arrows with the same source and target. The functor from the two-object discrete category to <span class="m"><span class="cat">𝟙</span></span> is faithful — every hom-set involved has at most one element — although it sends two different identity arrows to the same place. And essentially surjective asks for every object of <span class="m"><span class="cat">𝒟</span></span> to be reached only <strong>up to isomorphism</strong>, in keeping with Lesson 1&rsquo;s principle that isomorphic objects are interchangeable.</p>
+<div class="tablewrap"><table class="zoo">
+<tr><th>Functor</th><th>Faithful?</th><th>Full?</th><th>Why</th></tr>
+<tr><td>forgetful <span class="m"><span class="cat">Grp</span> → <span class="cat">Set</span></span></td><td>yes</td><td>no</td><td>a homomorphism is determined by its function; most functions are not homomorphisms</td></tr>
+<tr><td>inclusion <span class="m"><span class="cat">Ab</span> → <span class="cat">Grp</span></span></td><td>yes</td><td>yes</td><td>between abelian groups, the homomorphisms are the same in both categories</td></tr>
+<tr><td>monotone map, as a functor of posets</td><td>always</td><td>iff <span class="m">F x ≤ F y</span> implies <span class="m">x ≤ y</span></td><td>hom-sets have at most one element</td></tr>
+<tr><td>monoid homomorphism, as a functor</td><td>iff injective</td><td>iff surjective</td><td>there is only one hom-set: the monoid itself</td></tr>
+<tr><td>the unique functor <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝟙</span></span></td><td>iff <span class="m"><span class="cat">𝒞</span></span> is thin</td><td>iff no hom-set of <span class="m"><span class="cat">𝒞</span></span> is empty</td><td>each <span class="m"><span class="cat">𝒞</span>(X, Y)</span> maps to a one-element set</td></tr>
+</table></div>
+<p>The inclusion <span class="m"><span class="cat">Ab</span> → <span class="cat">Grp</span></span> is full and faithful but not essentially surjective: a non-abelian group is not isomorphic to any abelian one. A functor with all three properties loses nothing that category theory can see — Lesson 4 calls it an <em>equivalence</em> and makes it the right notion of two categories being &ldquo;the same.&rdquo;</p>
+<h3 class="sub">What these properties buy</h3>
+<p>§3 showed that every functor <em>preserves</em> isomorphisms. The converse direction — <em>reflecting</em> them — is exactly what full faithfulness provides.</p>
+<div class="box thm">
+<span class="tag">Theorem · Fully faithful functors reflect isomorphisms</span>
+<p>Let <span class="m">F</span> be fully faithful. If <span class="m">F f</span> is an isomorphism, then so is <span class="m">f</span>. Consequently, if <span class="m">F X ≅ F Y</span> then <span class="m">X ≅ Y</span>.</p>
+</div>
+<p><strong>Proof.</strong> Let <span class="m">f : X → Y</span>, and let <span class="m">k : F Y → F X</span> be the inverse of <span class="m">F f</span>. Because <span class="m">F</span> is full, <span class="m">k = F g</span> for some <span class="m">g : Y → X</span>. Then <span class="m">F(g ∘ f) = F g ∘ F f = id<sub>F X</sub> = F(id<sub>X</sub>)</span>, and because <span class="m">F</span> is faithful, <span class="m">g ∘ f = id<sub>X</sub></span>. In the same way <span class="m">f ∘ g = id<sub>Y</sub></span>. So <span class="m">g</span> is an inverse of <span class="m">f</span>. For the second statement, any isomorphism <span class="m">u : F X → F Y</span> is <span class="m">F f</span> for some <span class="m">f</span> by fullness, and that <span class="m">f</span> is an isomorphism by the first part. ∎</p>
+<p>Faithfulness alone already reflects the cancellation properties of Lesson 1.</p>
+<div class="box thm">
+<span class="tag">Proposition · Faithful functors reflect monos and epis</span>
+<p>Let <span class="m">F</span> be faithful. If <span class="m">F f</span> is monic then <span class="m">f</span> is monic, and if <span class="m">F f</span> is epic then <span class="m">f</span> is epic.</p>
+</div>
+<p><strong>Proof.</strong> Suppose <span class="m">F f</span> is monic and <span class="m">f ∘ h = f ∘ k</span>. Applying <span class="m">F</span> gives <span class="m">F f ∘ F h = F f ∘ F k</span>; cancel <span class="m">F f</span> to get <span class="m">F h = F k</span>; and <span class="m">F</span> is faithful, so <span class="m">h = k</span>. The epic case is the mirror image. ∎</p>
+<p>Since the forgetful functors to <span class="m"><span class="cat">Set</span></span> are faithful, this explains a fact you may have used for years: in <span class="m"><span class="cat">Grp</span></span>, <span class="m"><span class="cat">Mon</span></span>, <span class="m"><span class="cat">Vect</span></span> or <span class="m"><span class="cat">Top</span></span>, an arrow whose underlying function is injective is monic, and one whose underlying function is surjective is epic.</p>
+<div class="box amber">
+<span class="tag">Careful · Functors need not preserve monos or epis</span>
+<p>The other direction fails. Lesson 1 showed that the inclusion <span class="m">ℕ → ℤ</span> is an epimorphism in <span class="m"><span class="cat">Mon</span></span>. The forgetful functor <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span> sends it to a function that is not surjective — not an epimorphism of <span class="m"><span class="cat">Set</span></span>. The reason is instructive. A functor preserves any property expressed by an <em>equation</em> between composites, which is why isomorphisms, sections and retractions all survive (Exercise 3). But &ldquo;monic&rdquo; and &ldquo;epic&rdquo; are not equations: they are statements about <em>all</em> the arrows of a category, and a functor moves you to a category with different arrows.</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="byhand">
+<div class="measure">
+<div class="sec-no">§7 — Functors by hand</div>
+<h2>A functor between finite categories is two small tables</h2>
+<p>When both categories are finite, a functor is a finite object: one table saying where each object goes, another saying where each arrow goes. The laws are then finitely many equations. Three worked examples cover every situation you will meet in the exercises.</p>
+<h3 class="sub">One object: check a homomorphism</h3>
+<p>Take the monoid <span class="m">(ℤ/3, +)</span> of Lesson 1 as a one-object category, and try &ldquo;multiply by 2&rdquo; as a functor from it to itself. The object must go to the object; the arrow table is</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>arrow n</th><td>0</td><td>1</td><td>2</td></tr>
+<tr><th>F(n) = 2n mod 3</th><td>0</td><td>2</td><td>1</td></tr>
+</table></div>
+<p><em>Identities:</em> the identity arrow is <span class="m">0</span>, and <span class="m">F(0) = 0</span>. <em>Composition:</em> there are nine composable pairs, and each needs <span class="m">F(a + b) = F(a) + F(b)</span>. For instance <span class="m">F(1 + 2) = F(0) = 0</span> and <span class="m">F(1) + F(2) = 2 + 1 = 0</span>; or <span class="m">F(2 + 2) = F(1) = 2</span> and <span class="m">F(2) + F(2) = 1 + 1 = 2</span>. All nine hold for one reason: <span class="m">2(a + b) = 2a + 2b</span>. So doubling is a functor — in the language of §4(iv), a monoid homomorphism. Compare the map <span class="m">n ↦ n + 1</span>: it sends the identity <span class="m">0</span> to <span class="m">1</span>, so it fails at the first step (Exercise 16).</p>
+<h3 class="sub">Thin categories: count the monotone maps</h3>
+<p>How many functors are there from <span class="m"><span class="cat">𝟚</span></span> to the chain <span class="m"><span class="cat">𝟛</span></span> of Lesson 1? By §4(iv) a functor between preorders is just a monotone map: once the objects are placed, each arrow has only one place to go, and every equation holds automatically because the target is thin. So we need the pairs <span class="m">(F0, F1)</span> with <span class="m">F0 ≤ F1</span> in <span class="m">{0, 1, 2}</span>:</p>
+<p class="eq"><span class="m">(0,0), &nbsp; (0,1), &nbsp; (0,2), &nbsp; (1,1), &nbsp; (1,2), &nbsp; (2,2).</span></p>
+<p>Six functors. And <span class="m"><span class="cat">𝟛</span></span> has exactly six arrows — the functor <span class="m">(i, j)</span> is the one that selects the arrow <span class="m">i → j</span>, just as example (v) promised. The three functors <span class="m">(0,0), (1,1), (2,2)</span> select identity arrows: they collapse <span class="m"><span class="cat">𝟚</span></span> onto a single object.</p>
+<h3 class="sub">Groups: solve an equation</h3>
+<p>How many functors are there from <span class="m">ℤ/2</span> to <span class="m">ℤ/3</span>, both viewed as one-object categories? A functor is a homomorphism <span class="m">φ</span>, and it is determined by the single value <span class="m">x = φ(1)</span>. The law for the composite <span class="m">1 + 1 = 0</span> demands <span class="m">x + x = φ(0) = 0</span> in <span class="m">ℤ/3</span>, and the only solution is <span class="m">x = 0</span>. So there is exactly one functor, the one sending everything to the identity.</p>
+<p>From <span class="m">ℤ/3</span> to itself the constraint on <span class="m">x = φ(1)</span> is <span class="m">x + x + x = 0</span>, which every element of <span class="m">ℤ/3</span> satisfies. So there are three functors, <span class="m">n ↦ xn</span> for <span class="m">x = 0, 1, 2</span>: the constant functor, the identity functor, and the doubling functor of the first example.</p>
+<p>The recipe in all three cases is the same: place the objects; give every arrow an image with the right source and target; check that identities go to identities; check the composable pairs. When the target is thin the last two steps cost nothing.</p>
+<details class="pylab">
+<summary><span class="badge">Optional · Python</span><span class="t">Functors, checked by machine</span></summary>
+<div class="pybody">
     <p>First, <span class="m">List</span> as a functor on types. We lift ordinary functions with <code>fmap</code> and watch the two laws hold on real data.</p>
 
     <div class="code">
@@ -382,7 +707,44 @@ print(fmap(inc, data))            # [2, 3, 4, 5]</code></pre>
       <div class="out"><span class="lbl">output</span>[2, 3, 4, 5]</div>
     </div>
 
-    <p>Now the finite-category version. A functor between finite categories is just two dictionaries — where each object goes, where each arrow goes — plus a promise that typing, identities, and composites are respected. A single <code>check()</code> verifies all three (it reuses the <code>FiniteCategory</code> from Lesson 1). We point it at &ldquo;multiply by 2&rdquo; on the one-object category <span class="m">(ℤ/3, +)</span> — which, because that category is a monoid, is asking whether doubling is a monoid homomorphism.</p>
+    <p>Now the finite-category version. A functor between finite categories is just two dictionaries — where each object goes, where each arrow goes — plus a promise that typing, identities, and composites are respected. A single <code>check()</code> verifies all three (it reuses Lesson 1&rsquo;s <code>FiniteCategory</code>, repeated in the setup block so that this page runs on its own). We point it at &ldquo;multiply by 2&rdquo; on the one-object category <span class="m">(ℤ/3, +)</span> — which, because that category is a monoid, is asking whether doubling is a monoid homomorphism.</p>
+
+    <div class="code">
+  <div class="code-bar"><span class="fname"><b>setup.py</b> — Lesson 1&rsquo;s category checker, carried over</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product
+
+class FiniteCategory:
+    &quot;&quot;&quot;objects, arrows (name -&gt; (dom, cod)), a composition table,
+       and a chosen identity arrow for each object.&quot;&quot;&quot;
+    def __init__(self, objects, arrows, comp, ident):
+        self.obj, self.ar = set(objects), arrows
+        self.comp, self.id = comp, ident
+
+    def dom(self, a): return self.ar[a][0]
+    def cod(self, a): return self.ar[a][1]
+    def composable(self, g, f): return self.dom(g) == self.cod(f)
+
+    def check(self):
+        # 1. each identity is typed X -&gt; X
+        for X in self.obj:
+            assert self.ar[self.id[X]] == (X, X)
+        # 2. every composable pair has a composite, correctly typed
+        for g, f in product(self.ar, repeat=2):
+            if self.composable(g, f):
+                gf = self.comp[(g, f)]
+                assert self.ar[gf] == (self.dom(f), self.cod(g))
+        # 3. identity law on both sides
+        for f in self.ar:
+            X, Y = self.ar[f]
+            assert self.comp[(self.id[Y], f)] == f
+            assert self.comp[(f, self.id[X])] == f
+        # 4. associativity
+        for h, g, f in product(self.ar, repeat=3):
+            if self.composable(h, g) and self.composable(g, f):
+                assert self.comp[(h, self.comp[(g, f)])] == \
+                       self.comp[(self.comp[(h, g)], f)]
+        return True</code></pre>
+</div>
 
     <div class="code">
       <div class="code-bar"><span class="fname"><b>functor.py</b> — a functor between finite categories</span><button class="copy" type="button">Copy</button></div>
@@ -415,44 +777,64 @@ print(double.check())</code></pre>
       <div class="out"><span class="lbl">output</span>True</div>
     </div>
 
-    <p>Feed the same <code>check()</code> the data for a functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> and you can watch &ldquo;a functor out of <span class="cat">𝟚</span> is a choice of arrow&rdquo; turn into a passing assertion for whichever arrow you pick — that&rsquo;s the closing exercise.</p>
-  </div>
+    <p>Feed the same <code>check()</code> the data for a functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">𝒞</span></span> and you can watch &ldquo;a functor out of <span class="cat">𝟚</span> is a choice of arrow&rdquo; turn into a passing assertion for whichever arrow you pick — that is the optional part of Exercise 15.</p>
+  
+</div>
+</details>
+</div>
 </section>
 
-<!-- ============ GOING DEEPER ============ -->
-<section class="section">
+<section class="section" id="going-deeper">
   <div class="measure">
     <div class="sec-no">Going deeper</div>
     <h2>Contravariance, formalized at last</h2>
 
-    <p>§3&rsquo;s aside mentioned functors that <em>reverse</em> arrows. With Lesson 1&rsquo;s Exercise 7 in hand there is nothing new to define: a <strong>contravariant functor</strong> from <span class="cat">𝒞</span> to <span class="cat">𝒟</span> is simply an ordinary (covariant) functor <span class="cat">𝒞</span><sup>op</sup> <span class="m">→ <span class="cat">𝒟</span></span>. Reversal is not a new species of functor; it is the old species, fed the opposite category. The composition law comes out flipped — <span class="m">F(g ∘ f) = F(f) ∘ F(g)</span> — because composition in <span class="cat">𝒞</span><sup>op</sup> is itself flipped.</p>
-    <p>The flagship example is a matched pair on <span class="cat">Set</span>. The <strong>covariant powerset functor</strong> <span class="m">P</span> sends a set to its set of subsets and a function <span class="m">f</span> to the <em>direct image</em> <span class="m">S ↦ f(S)</span>. The <strong>contravariant powerset functor</strong> sends <span class="m">f</span> the other way, to the <em>inverse image</em> <span class="m">T ↦ f<sup>−1</sup>(T)</span> — and the identity <span class="m">(g ∘ f)<sup>−1</sup> = f<sup>−1</sup> ∘ g<sup>−1</sup></span>, socks-and-shoes from Lesson 1&rsquo;s Exercise 8, is exactly the flipped composition law. Contravariant <span class="cat">Set</span>-valued functors have a name of their own — <em>presheaves</em> — and the final lesson of this course is largely about one of them.</p>
+    <p>§2&rsquo;s aside mentioned functors that <em>reverse</em> arrows. With Lesson 1&rsquo;s Exercise 4 in hand there is nothing new to define: a <strong>contravariant functor</strong> from <span class="cat">𝒞</span> to <span class="cat">𝒟</span> is simply an ordinary (covariant) functor <span class="cat">𝒞</span><sup>op</sup> <span class="m">→ <span class="cat">𝒟</span></span>. Reversal is not a new species of functor; it is the old species, fed the opposite category. The composition law comes out flipped — <span class="m">F(g ∘ f) = F(f) ∘ F(g)</span> — because composition in <span class="cat">𝒞</span><sup>op</sup> is itself flipped.</p>
+    <p>The flagship example is a matched pair on <span class="cat">Set</span>. The <strong>covariant powerset functor</strong> <span class="m">P</span> sends a set to its set of subsets and a function <span class="m">f</span> to the <em>direct image</em> <span class="m">S ↦ f(S)</span>. The <strong>contravariant powerset functor</strong> sends <span class="m">f</span> the other way, to the <em>inverse image</em> <span class="m">T ↦ f<sup>−1</sup>(T)</span> — and the identity <span class="m">(g ∘ f)<sup>−1</sup> = f<sup>−1</sup> ∘ g<sup>−1</sup></span>, socks-and-shoes from Lesson 1&rsquo;s Exercise 10, is exactly the flipped composition law. Contravariant <span class="cat">Set</span>-valued functors have a name of their own — <em>presheaves</em> — and Lesson 9 is largely about one family of them: the hom functors of §5.</p>
   </div>
 </section>
 
-<!-- ============ §6 EXERCISES ============ -->
-<section class="section">
+<section class="section" id="s8">
   <div class="measure">
-    <div class="sec-no">§6 — Exercises</div>
-    <h2>Twelve problems on functors</h2>
-    <p>As before, the arrows-only proofs are the heart of the set — real conclusions drawn entirely from preservation of composition and identities. The code problems reuse <code>FiniteCategory</code> and <code>Functor</code> from §5.</p>
+    <div class="sec-no">§8 — Exercises</div>
+    <h2>Nineteen problems on functors</h2>
+<p>As before, the arrows-only proofs are the heart of the set — real conclusions drawn entirely from preservation of composition and identities. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Every problem can be done by hand; Exercises 15, 16 and 18 also carry an optional Python version that reuses the <code>FiniteCategory</code> and <code>Functor</code> classes from the lab in §7.</p>
 
-    <div class="prob">
+<div class="exgroup">
+  <h3>The definition, and what it guarantees</h3>
+  <p class="exmeta"><a href="#s2">§2</a>–<a href="#s3">§3</a> · Exercises 1–4</p>
+</div>
+
+<div class="prob">
       <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
-        <p>With <code>dbl = lambda x: 2*x</code>, compute <code>fmap(dbl, [1, 2, 3])</code> by hand.</p>
+        <p>Let <span class="m">dbl</span> be the doubling function <span class="m">x ↦ 2x</span>. Apply the list functor to it: compute <code>map(dbl)</code> of the list <code>[1, 2, 3]</code>.</p>
         <p>Then state, precisely, the two laws that any well-behaved <code>map</code> function must satisfy, and say which functor law each corresponds to.</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><code>fmap(dbl, [1,2,3]) = [2, 4, 6]</code> — apply the function to each element, keep the structure.</p>
+          <p><code>map(dbl)</code> sends <code>[1, 2, 3]</code> to <code>[2, 4, 6]</code> — apply the function to each element, keep the structure. (In the notation of the optional lab this is <code>fmap(dbl, [1, 2, 3])</code>.)</p>
           <p>The laws: <strong><code>map(id) == id</code></strong> (mapping the do-nothing function over a list changes nothing) and <strong><code>map(g ∘ f) == map(g) ∘ map(f)</code></strong> (mapping a composite in one pass equals mapping the pieces in two passes). These are precisely the functor laws — identity-preservation and composition-preservation — with <span class="m">List</span> in the role of <span class="m">F</span>. The second law is what licenses a compiler to fuse two traversals into one.</p>
         </div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">arrows-only</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">think</span></div>
+      <div class="prob-body">
+        <p>Nothing in the definition of a functor requires the object map to be injective or surjective. Make that vivid: exhibit one functor that is wildly non-injective on objects, and one that is badly non-surjective. Small categories from Lesson 1 (<span class="cat">𝟙</span>, <span class="cat">𝟚</span>) are enough raw material.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Non-injective:</strong> the unique functor <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝟙</span></span> from any category with at least two objects. Every object is crushed onto the single object of <span class="cat">𝟙</span> and every arrow onto its identity — the laws hold trivially, and injectivity fails as badly as possible.</p>
+          <p><strong>Non-surjective:</strong> an inclusion <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> that picks out one object of a large category <span class="cat">𝒞</span>, missing every other object.</p>
+          <p>The first functor <em>collapses</em>; the second merely <em>samples</em>. Functors are free to do either — they promise coherence, not faithfulness to size or shape.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
         <p>An arrow <span class="m">r</span> is a <em>left inverse</em> (a retraction) of <span class="m">f : X → Y</span> if <span class="m">r ∘ f = id<sub>X</sub></span>.</p>
         <p>Show that any functor <span class="m">F</span> sends a left inverse to a left inverse: if <span class="m">r ∘ f = id<sub>X</sub></span>, then <span class="m">F r ∘ F f = id<sub>F X</sub></span>. Where exactly does each functor law get used?</p>
@@ -465,8 +847,58 @@ print(double.check())</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">structure</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Functors preserve what equations express, and nothing more.</p>
+<ol>
+<li>Recall from Lesson 1 that <span class="m">s</span> is a <em>split</em> monomorphism if <span class="m">r ∘ s = id</span> for some <span class="m">r</span>. Show that every functor sends split monomorphisms to split monomorphisms, and split epimorphisms to split epimorphisms.</li>
+<li>Explain why the same argument cannot show that functors preserve monomorphisms, and name a functor and an arrow from §6 for which the corresponding statement about epimorphisms fails.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Apply <span class="m">F</span> to the equation <span class="m">r ∘ s = id<sub>X</sub></span>: by Exercise 3, <span class="m">F r ∘ F s = id<sub>F X</sub></span>. So <span class="m">F s</span> has the retraction <span class="m">F r</span>, and <span class="m">F r</span> has the section <span class="m">F s</span>.</p>
+<p><strong>(b)</strong> &ldquo;<span class="m">m</span> is monic&rdquo; is not an equation. It is an implication — <em>for all</em> <span class="m">h, k</span>, if <span class="m">m ∘ h = m ∘ k</span> then <span class="m">h = k</span> — ranging over every pair of arrows into the source of <span class="m">m</span>. Applying <span class="m">F</span> tells us something about arrows of the form <span class="m">F h</span> and <span class="m">F k</span> only, while <span class="m">F m</span> must be tested against <strong>all</strong> arrows of the target category, most of which need not come from the source. The warning in §6 gives a failure for the mirror-image property: the forgetful functor <span class="m"><span class="cat">Mon</span> → <span class="cat">Set</span></span> sends the epimorphism <span class="m">ℕ → ℤ</span> to a function that is not surjective.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Examples of functors</h3>
+  <p class="exmeta"><a href="#s4">§4</a>–<a href="#hom">§5</a> · Exercises 5–9</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>Fix an object <span class="m">D</span> of a category <span class="cat">𝒟</span>. The <strong>constant functor</strong> <span class="m">Δ<sub>D</sub> : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> sends <em>every</em> object of <span class="cat">𝒞</span> to <span class="m">D</span> and <em>every</em> arrow of <span class="cat">𝒞</span> to <span class="m">id<sub>D</sub></span>.</p>
+        <p>Verify the two functor laws for <span class="m">Δ<sub>D</sub></span>. Then describe, in a sentence, what <span class="m">Δ<sub>D</sub></span> does to any commuting diagram in <span class="cat">𝒞</span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Identities:</strong> <span class="m">Δ<sub>D</sub>(id<sub>X</sub>) = id<sub>D</sub> = id<sub>Δ<sub>D</sub>X</sub></span> — true by construction. <strong>Composition:</strong> <span class="m">Δ<sub>D</sub>(g ∘ f) = id<sub>D</sub></span>, while <span class="m">Δ<sub>D</sub>(g) ∘ Δ<sub>D</sub>(f) = id<sub>D</sub> ∘ id<sub>D</sub> = id<sub>D</sub></span>. Equal.</p>
+          <p><span class="m">Δ<sub>D</sub></span> crushes any diagram — however elaborate — down to the single object <span class="m">D</span> decorated with identity loops. It is the maximally forgetful functor: it remembers only that a diagram <em>existed</em>. Constant functors look like throwaways, but they are the yardstick against which limits and colimits are defined in Lesson 7 — a cone over a diagram will be exactly a natural transformation out of a <span class="m">Δ<sub>D</sub></span>.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>§4(i) asserted that functors compose. Prove it in full: given functors <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">G : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span>, define <span class="m">G ∘ F</span> by <span class="m">X ↦ G(F X)</span> on objects and <span class="m">f ↦ G(F f)</span> on arrows, and verify both functor laws. Note carefully which law of which functor you invoke at each step.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>Identities.</strong> <span class="m">(G ∘ F)(id<sub>X</sub>) = G(F(id<sub>X</sub>)) = G(id<sub>F X</sub>) = id<sub>G F X</sub></span>. The middle equality is <span class="m">F</span>&rsquo;s identity law; the last is <span class="m">G</span>&rsquo;s, applied at the object <span class="m">F X</span>.</p>
+          <p><strong>Composition.</strong> <span class="m">(G ∘ F)(g ∘ f) = G(F(g ∘ f)) = G(F g ∘ F f) = G(F g) ∘ G(F f)</span>. First <span class="m">F</span>&rsquo;s composition law, then <span class="m">G</span>&rsquo;s, applied to the arrows <span class="m">F g</span> and <span class="m">F f</span>.</p>
+          <p>Typing checks out at every stage, so <span class="m">G ∘ F</span> is a functor. Together with the identity functors this is exactly what makes <span class="cat">Cat</span> a category — the claim §4 made and this exercise cashes in.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure</span></div>
       <div class="prob-body">
         <p>Lesson 1 established that a one-object category is the same thing as a monoid. Now take two monoids <span class="m">M</span> and <span class="m">N</span>, viewed as one-object categories, and consider a functor <span class="m">F</span> between them.</p>
         <p>Spell out the full dictionary: what data does <span class="m">F</span> carry, and what do &ldquo;preserves composition&rdquo; and &ldquo;preserves identities&rdquo; become, stated in the language of monoids?</p>
@@ -479,8 +911,52 @@ print(double.check())</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">examples</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">examples</span></div>
+<div class="prob-body">
+<p>Actions as functors (§4, example vii).</p>
+<ol>
+<li>A functor <span class="m">F : (ℕ, +) → <span class="cat">Set</span></span> is a set <span class="m">S</span> with one function <span class="m">t = F(1) : S → S</span>. Take <span class="m">S = {1, 2, 3, 4}</span> and let <span class="m">t</span> send <span class="m">1 ↦ 2</span>, <span class="m">2 ↦ 3</span>, <span class="m">3 ↦ 1</span>, <span class="m">4 ↦ 4</span>. Compute the function <span class="m">F(5)</span>.</li>
+<li>Describe, in the same spirit, what a functor from the group <span class="m">ℤ/2</span> to <span class="m"><span class="cat">Set</span></span> amounts to.</li>
+<li>How many functors <span class="m">ℤ/2 → <span class="cat">Set</span></span> send the object to the set <span class="m">{1, 2, 3}</span>?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">F(5) = t ∘ t ∘ t ∘ t ∘ t</span>. On the cycle <span class="m">1 → 2 → 3 → 1</span>, three ticks return each point to itself, so five ticks act like two: <span class="m">1 ↦ 3</span>, <span class="m">2 ↦ 1</span>, <span class="m">3 ↦ 2</span>. And <span class="m">4</span> stays put. So <span class="m">F(5)</span> sends <span class="m">1 ↦ 3</span>, <span class="m">2 ↦ 1</span>, <span class="m">3 ↦ 2</span>, <span class="m">4 ↦ 4</span>.</p>
+<p><strong>(b)</strong> The group <span class="m">ℤ/2</span> has one non-identity arrow <span class="m">a</span>, with <span class="m">a ∘ a = id</span>. A functor must send it to a function <span class="m">s : S → S</span> with <span class="m">s ∘ s = id<sub>S</sub></span>. So a functor <span class="m">ℤ/2 → <span class="cat">Set</span></span> is a set equipped with an <strong>involution</strong> — a symmetry that undoes itself, like a reflection.</p>
+<p><strong>(c)</strong> We need the functions <span class="m">s</span> on <span class="m">{1, 2, 3}</span> with <span class="m">s ∘ s = id</span>: the identity, and the three swaps exchanging two points and fixing the third. <strong>Four</strong> functors. (The two 3-cycles are excluded: applying one twice gives the other, not the identity.)</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>Hom functors in the divisibility order on <span class="m">{1, 2, 3, 6}</span> (§5).</p>
+<ol>
+<li>List the value of <span class="m"><span class="cat">𝒞</span>(2, x)</span> for each object <span class="m">x</span>: a one-element set or the empty set.</li>
+<li>The arrow <span class="m">2 → 6</span> must be sent by <span class="m"><span class="cat">𝒞</span>(2, −)</span> to a function <span class="m"><span class="cat">𝒞</span>(2, 2) → <span class="cat">𝒞</span>(2, 6)</span>, and the arrow <span class="m">3 → 6</span> to a function <span class="m"><span class="cat">𝒞</span>(2, 3) → <span class="cat">𝒞</span>(2, 6)</span>. Say what each of these functions is.</li>
+<li>Now the contravariant functor <span class="m"><span class="cat">𝒞</span>(−, 2)</span>: to which function does it send the arrow <span class="m">1 → 2</span>?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m"><span class="cat">𝒞</span>(2, x)</span> is non-empty exactly when <span class="m">2</span> divides <span class="m">x</span>: it is a one-element set for <span class="m">x = 2</span> and <span class="m">x = 6</span>, and empty for <span class="m">x = 1</span> and <span class="m">x = 3</span>.</p>
+<p><strong>(b)</strong> <span class="m"><span class="cat">𝒞</span>(2, 2) → <span class="cat">𝒞</span>(2, 6)</span> is a function between one-element sets, and there is only one: it sends the arrow <span class="m">2 → 2</span> to the composite <span class="m">2 → 2 → 6</span>, which is the arrow <span class="m">2 → 6</span>. And <span class="m"><span class="cat">𝒞</span>(2, 3) → <span class="cat">𝒞</span>(2, 6)</span> is a function from the empty set to a one-element set: the empty function. Nothing needs to be sent anywhere.</p>
+<p><strong>(c)</strong> It runs backwards: from <span class="m"><span class="cat">𝒞</span>(2, 2)</span> to <span class="m"><span class="cat">𝒞</span>(1, 2)</span>, by composing on the right with <span class="m">1 → 2</span>. Both are one-element sets, and the function sends <span class="m">2 → 2</span> to the composite <span class="m">1 → 2 → 2</span>, the arrow <span class="m">1 → 2</span>.</p>
+<p>In a thin category the hom functors carry no more information than the order itself — which is the point: they <em>are</em> the order, repackaged as functors. Lesson 9 shows that in every category the hom functors repackage the whole category.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Full, faithful, essentially surjective</h3>
+  <p class="exmeta"><a href="#full">§6</a> · Exercises 10–13</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">examples</span></div>
       <div class="prob-body">
         <p>Consider the forgetful functor <span class="m">U : <span class="cat">Grp</span> → <span class="cat">Set</span></span>, which strips a group down to its underlying set and a homomorphism down to its underlying function. Two questions:</p>
         <ol>
@@ -498,24 +974,78 @@ print(double.check())</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">think</span></div>
-      <div class="prob-body">
-        <p>Nothing in the definition of a functor requires the object map to be injective or surjective. Make that vivid: exhibit one functor that is wildly non-injective on objects, and one that is badly non-surjective. Small categories from Lesson 1 (<span class="cat">𝟙</span>, <span class="cat">𝟚</span>) are enough raw material.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>Non-injective:</strong> the unique functor <span class="m"><span class="cat">𝒞</span> → <span class="cat">𝟙</span></span> from any category with at least two objects. Every object is crushed onto the single object of <span class="cat">𝟙</span> and every arrow onto its identity — the laws hold trivially, and injectivity fails as badly as possible.</p>
-          <p><strong>Non-surjective:</strong> an inclusion <span class="m"><span class="cat">𝟙</span> → <span class="cat">𝒞</span></span> that picks out one object of a large category <span class="cat">𝒞</span>, missing every other object.</p>
-          <p>The first functor <em>collapses</em>; the second merely <em>samples</em>. Functors are free to do either — they promise coherence, not faithfulness to size or shape.</p>
-        </div>
-      </details>
-    </div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">think</span></div>
+<div class="prob-body">
+<p>Classify each functor: faithful? full? essentially surjective?</p>
+<ol>
+<li>The inclusion of <span class="m">(ℕ, ≤)</span> into <span class="m">(ℤ, ≤)</span>.</li>
+<li>Reduction modulo 3, as a homomorphism <span class="m">(ℤ, +) → (ℤ/3, +)</span> of one-object categories.</li>
+<li>The forgetful functor <span class="m"><span class="cat">Pos</span> → <span class="cat">Set</span></span>.</li>
+<li>The functor <span class="m"><span class="cat">Set</span> → <span class="cat">Rel</span></span> of Lesson 1 that keeps every set and sends a function to its graph.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Faithful and full, not essentially surjective.</strong> Between posets every functor is faithful. Full: if <span class="m">m ≤ n</span> holds in <span class="m">ℤ</span> for two natural numbers, it holds in <span class="m">ℕ</span>. But <span class="m">−1</span> is not isomorphic to any natural number — in a poset, isomorphic means equal.</p>
+<p><strong>(b) Full and essentially surjective, not faithful.</strong> With one object on each side, essential surjectivity is automatic. Every element of <span class="m">ℤ/3</span> is the residue of some integer, so the single hom-set map is surjective: full. It is not injective — <span class="m">0</span> and <span class="m">3</span> both go to <span class="m">0</span> — so the functor is not faithful.</p>
+<p><strong>(c) Faithful and essentially surjective, not full.</strong> A monotone map is determined by its underlying function. Every set is the underlying set of a poset: give it the order in which <span class="m">x ≤ y</span> only when <span class="m">x = y</span>. But not every function between posets is monotone.</p>
+<p><strong>(d) Faithful and essentially surjective, not full.</strong> A function is determined by its graph. Every set is hit exactly. But most relations are not graphs of functions (Lesson 1, Exercise 17).</p>
+<p>Notice that no two of the three properties come as a package: each example has a different pair.</p>
+</div>
+</details>
+</div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">counting</span></div>
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Let <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">G : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span> be functors.</p>
+<ol>
+<li>Show that if <span class="m">F</span> and <span class="m">G</span> are faithful then so is <span class="m">G ∘ F</span>, and likewise for full.</li>
+<li>Show that if <span class="m">G ∘ F</span> is faithful then <span class="m">F</span> is faithful.</li>
+<li>Give an example where <span class="m">G ∘ F</span> is faithful but <span class="m">G</span> is not.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> On each hom-set the functor <span class="m">G ∘ F</span> acts as a composite of two functions,</p>
+<p class="eq"><span class="m"><span class="cat">𝒞</span>(X, Y) → <span class="cat">𝒟</span>(F X, F Y) → <span class="cat">ℰ</span>(G F X, G F Y).</span></p>
+<p>A composite of injective functions is injective, and a composite of surjective functions is surjective.</p>
+<p><strong>(b)</strong> If <span class="m">F f = F g</span> for parallel arrows <span class="m">f, g</span>, then <span class="m">G F f = G F g</span>, so <span class="m">f = g</span> by faithfulness of the composite. (This is Lesson 1, Exercise 16(b) one level up: if a composite is injective, its first factor is.)</p>
+<p><strong>(c)</strong> Let <span class="m">F : <span class="cat">𝟙</span> → <span class="cat">Mon</span></span> pick out the monoid <span class="m">(ℕ, +)</span>, and let <span class="m">G : <span class="cat">Mon</span> → <span class="cat">𝟙</span></span> be the only functor there is. Then <span class="m">G ∘ F</span> is the identity functor of <span class="m"><span class="cat">𝟙</span></span>, certainly faithful. But <span class="m">G</span> is not faithful: it sends every one of the many homomorphisms <span class="m">ℕ → ℕ</span> to the same identity arrow.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>The diagonal functor <span class="m">Δ : <span class="cat">𝒞</span> → <span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> of §4(viii) sends <span class="m">X</span> to <span class="m">(X, X)</span> and <span class="m">f</span> to <span class="m">(f, f)</span>.</p>
+<ol>
+<li>Verify the two functor laws.</li>
+<li>Show that <span class="m">Δ</span> is faithful.</li>
+<li>Show that <span class="m">Δ</span> is full exactly when <span class="m"><span class="cat">𝒞</span></span> is thin, and illustrate the failure in <span class="m"><span class="cat">Set</span></span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> Identities and composites in the product category are formed slot by slot (Lesson 1, Exercise 5). So <span class="m">Δ(id<sub>X</sub>) = (id<sub>X</sub>, id<sub>X</sub>)</span>, which is the identity of <span class="m">(X, X)</span>; and <span class="m">Δ(g ∘ f) = (g ∘ f, g ∘ f) = (g, g) ∘ (f, f) = Δ g ∘ Δ f</span>.</p>
+<p><strong>(b)</strong> If <span class="m">Δ f = Δ g</span> then <span class="m">(f, f) = (g, g)</span>, so <span class="m">f = g</span>.</p>
+<p><strong>(c)</strong> An arrow <span class="m">Δ X → Δ Y</span> in <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒞</span></span> is <em>any</em> pair <span class="m">(f, g)</span> of arrows <span class="m">X → Y</span>, while the arrows in the image of <span class="m">Δ</span> are the pairs with <span class="m">f = g</span>. So <span class="m">Δ</span> is full exactly when any two parallel arrows of <span class="m"><span class="cat">𝒞</span></span> are equal — when <span class="m"><span class="cat">𝒞</span></span> is thin. In <span class="m"><span class="cat">Set</span></span>, take <span class="m">X = Y = {0, 1}</span>: the pair consisting of the identity and the function swapping <span class="m">0</span> and <span class="m">1</span> is an arrow <span class="m">Δ X → Δ X</span> that is not <span class="m">Δ</span> of anything.</p>
+<p>Lesson 8 shows that the arrows <span class="m">Δ X → (A, B)</span> — pairs of arrows out of <span class="m">X</span> — are exactly what the product <span class="m">A × B</span> is designed to classify.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Functors by hand</h3>
+  <p class="exmeta"><a href="#byhand">§7</a> · Exercises 14–17</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">counting</span></div>
       <div class="prob-body">
-        <p>Let <span class="cat">Z3</span> denote the one-object category built from the monoid <span class="m">({0, 1, 2}, + mod 3)</span>, as in §5.</p>
+        <p>Let <span class="cat">Z3</span> denote the one-object category built from the monoid <span class="m">({0, 1, 2}, + mod 3)</span>, as in §7.</p>
         <ol>
           <li>How many functors are there <span class="m"><span class="cat">𝟙</span> → <span class="cat">Z3</span></span>?</li>
           <li>How many functors are there <span class="m"><span class="cat">𝟚</span> → <span class="cat">Z3</span></span>?</li>
@@ -531,41 +1061,19 @@ print(double.check())</code></pre>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">arrows-only · new</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
-        <p>§4(i) asserted that functors compose. Prove it in full: given functors <span class="m">F : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> and <span class="m">G : <span class="cat">𝒟</span> → <span class="cat">ℰ</span></span>, define <span class="m">G ∘ F</span> by <span class="m">X ↦ G(F X)</span> on objects and <span class="m">f ↦ G(F f)</span> on arrows, and verify both functor laws. Note carefully which law of which functor you invoke at each step.</p>
+<p>Write the functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">Z3</span></span> that selects the arrow <span class="m">2</span> as two small tables: where each object of <span class="m"><span class="cat">𝟚</span></span> goes, and where each of its three arrows <span class="m">i<sub>0</sub>, i<sub>1</sub>, u</span> goes. Then list the composable pairs of arrows of <span class="m"><span class="cat">𝟚</span></span> — there are four — and verify <span class="m">F(g ∘ f) = F(g) ∘ F(f)</span> for each. Why would the same verification succeed if <span class="m">u</span> were sent to <span class="m">0</span> or to <span class="m">1</span> instead?</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Encode <span class="cat">𝟚</span> as a <code>FiniteCategory</code> and build the functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">Z3</span></span> that selects the arrow <span class="m">2</span>. Run <code>check()</code> to confirm it passes, then change the selected arrow to <span class="m">0</span> and to <span class="m">1</span> and confirm those pass too — matching the count of Exercise 14(b).</p>
+</div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>Identities.</strong> <span class="m">(G ∘ F)(id<sub>X</sub>) = G(F(id<sub>X</sub>)) = G(id<sub>F X</sub>) = id<sub>G F X</sub></span>. The middle equality is <span class="m">F</span>&rsquo;s identity law; the last is <span class="m">G</span>&rsquo;s, applied at the object <span class="m">F X</span>.</p>
-          <p><strong>Composition.</strong> <span class="m">(G ∘ F)(g ∘ f) = G(F(g ∘ f)) = G(F g ∘ F f) = G(F g) ∘ G(F f)</span>. First <span class="m">F</span>&rsquo;s composition law, then <span class="m">G</span>&rsquo;s, applied to the arrows <span class="m">F g</span> and <span class="m">F f</span>.</p>
-          <p>Typing checks out at every stage, so <span class="m">G ∘ F</span> is a functor. Together with the identity functors this is exactly what makes <span class="cat">Cat</span> a category — the claim §4 made and this exercise cashes in.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">structure · new</span></div>
-      <div class="prob-body">
-        <p>Fix an object <span class="m">D</span> of a category <span class="cat">𝒟</span>. The <strong>constant functor</strong> <span class="m">Δ<sub>D</sub> : <span class="cat">𝒞</span> → <span class="cat">𝒟</span></span> sends <em>every</em> object of <span class="cat">𝒞</span> to <span class="m">D</span> and <em>every</em> arrow of <span class="cat">𝒞</span> to <span class="m">id<sub>D</sub></span>.</p>
-        <p>Verify the two functor laws for <span class="m">Δ<sub>D</sub></span>. Then describe, in a sentence, what <span class="m">Δ<sub>D</sub></span> does to any commuting diagram in <span class="cat">𝒞</span>.</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-          <p><strong>Identities:</strong> <span class="m">Δ<sub>D</sub>(id<sub>X</sub>) = id<sub>D</sub> = id<sub>Δ<sub>D</sub>X</sub></span> — true by construction. <strong>Composition:</strong> <span class="m">Δ<sub>D</sub>(g ∘ f) = id<sub>D</sub></span>, while <span class="m">Δ<sub>D</sub>(g) ∘ Δ<sub>D</sub>(f) = id<sub>D</sub> ∘ id<sub>D</sub> = id<sub>D</sub></span>. Equal.</p>
-          <p><span class="m">Δ<sub>D</sub></span> crushes any diagram — however elaborate — down to the single object <span class="m">D</span> decorated with identity loops. It is the maximally forgetful functor: it remembers only that a diagram <em>existed</em>. Constant functors look like throwaways, but they are the yardstick against which limits and colimits are defined in Lesson 5 — a cone over a diagram will be exactly a natural transformation out of a <span class="m">Δ<sub>D</sub></span>.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">code</span></div>
-      <div class="prob-body">
-        <p>Encode <span class="cat">𝟚</span> as a <code>FiniteCategory</code> and build the functor <span class="m"><span class="cat">𝟚</span> → <span class="cat">Z3</span></span> that selects the arrow <span class="m">2</span>. Run <code>check()</code> to confirm it passes, then change the selected arrow to <span class="m">0</span> and to <span class="m">1</span> and confirm those pass too — matching the count of Exercise 6(b).</p>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
+<p><strong>By hand.</strong> Objects: <span class="m">0 ↦ ∗</span> and <span class="m">1 ↦ ∗</span>. Arrows: <span class="m">i<sub>0</sub> ↦ 0</span> and <span class="m">i<sub>1</sub> ↦ 0</span>, because identities must go to the identity of the target, which is the element <span class="m">0</span>; and <span class="m">u ↦ 2</span>. The composable pairs of <span class="m"><span class="cat">𝟚</span></span> are <span class="m">(i<sub>0</sub>, i<sub>0</sub>)</span>, <span class="m">(i<sub>1</sub>, i<sub>1</sub>)</span>, <span class="m">(u, i<sub>0</sub>)</span> and <span class="m">(i<sub>1</sub>, u)</span>. The first two read <span class="m">F(i<sub>0</sub>) = 0 = 0 + 0</span>. The others read <span class="m">F(u ∘ i<sub>0</sub>) = F(u) = 2 = 2 + 0</span> and <span class="m">F(i<sub>1</sub> ∘ u) = F(u) = 2 = 0 + 2</span>.</p>
+<p>Every one of the four pairs involves an identity, so each equation is an instance of the identity law of the target. That is why it makes no difference where <span class="m">u</span> is sent: all three choices give functors — the count of Exercise 14(b).</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
           <p>The identities are forced to <code>0</code>; only the image of <code>u</code> is a choice:</p>
           <div class="code" style="margin-top:14px">
             <div class="code-bar"><span class="fname"><b>two_to_z3.py</b></span><button class="copy" type="button">Copy</button></div>
@@ -583,53 +1091,85 @@ for pick in (0, 1, 2):
 1 True
 2 True</div>
           </div>
-          <p style="margin-top:14px">Three arrows in <span class="cat">Z3</span>, three functors out of <span class="cat">𝟚</span> — the correspondence of Exercise 6, witnessed by a loop.</p>
+          <p style="margin-top:14px">Three arrows in <span class="cat">Z3</span>, three functors out of <span class="cat">𝟚</span> — the correspondence of Exercise 14, witnessed by a loop.</p>
+</div>
         </div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">code · new</span></div>
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 16</span><span class="tier py">by hand · optional python</span></div>
       <div class="prob-body">
-        <p>Now watch the checker earn its keep. Define the map <span class="m">n ↦ (n + 1) mod 3</span> on the arrows of <span class="cat">Z3</span> (with the object fixed) and feed it to <code>Functor(...).check()</code> as a claimed functor <span class="m"><span class="cat">Z3</span> → <span class="cat">Z3</span></span>.</p>
-        <p>Before running it: which functor law does this map violate, and at what input? Verify both by hand and by running the checker.</p>
+<p>Not every map of arrows is a functor. Consider <span class="m">n ↦ (n + 1) mod 3</span> on the arrows of <span class="m"><span class="cat">Z3</span></span>, with the object fixed, proposed as a functor from <span class="m"><span class="cat">Z3</span></span> to itself.</p>
+<p>Which functor laws does this map violate, and at which inputs? Decide by hand.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<p>Feed the map to <code>Functor(...).check()</code>. Which of the checker&rsquo;s assertions fires first?</p>
+</div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>Both laws fail</strong>, and the identity law fails first in the checker&rsquo;s order. The identity arrow of <span class="cat">Z3</span> is <span class="m">0</span>, but the map sends <span class="m">0 ↦ 1 ≠ 0</span> — identities are not preserved. Composition breaks too: <span class="m">F(a + b) = a + b + 1</span> while <span class="m">F(a) + F(b) = a + b + 2 (mod 3)</span>, which differ everywhere.</p>
-          <p>In monoid language, adding one is not a homomorphism of <span class="m">(ℤ/3, +)</span> — it fails to fix the unit. The checker rejects it with an <code>AssertionError</code> on the identity clause. Contrast with §5&rsquo;s &ldquo;multiply by 2,&rdquo; which fixes <span class="m">0</span> and distributes over addition, and passes. The difference between the two maps <em>is</em> the functor laws.</p>
-        </div>
-      </details>
-    </div>
-  
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">structure · new</span></div>
-      <div class="prob-body">
-
-        <p>Verify the claims of the Going-deeper section:</p>
-        <ol>
-          <li>Show the direct-image assignment <span class="m">P(f)(S) = { f(x) : x ∈ S }</span> satisfies both (covariant) functor laws.</li>
-          <li>Show the inverse-image assignment <span class="m">f ↦ f<sup>−1</sup></span> satisfies the identity law and the <em>flipped</em> composition law, and say precisely which Lesson 1 exercise the flip is.</li>
-        </ol>
-      </div>
-      <details><summary>Show solution</summary>
-        <div class="sol">
-
-          <p><strong>(a)</strong> Identity: the direct image of <span class="m">S</span> under <span class="m">id</span> is <span class="m">S</span> itself. Composition: <span class="m">(g ∘ f)(S) = { g(f(x)) : x ∈ S } = g(f(S))</span> — take the image in two stages or one, same set. Both laws hold, so <span class="m">P</span> is a functor <span class="cat">Set</span> → <span class="cat">Set</span>.</p>
-          <p><strong>(b)</strong> Identity: <span class="m">id<sup>−1</sup>(T) = T</span>. Composition: <span class="m">x ∈ (g ∘ f)<sup>−1</sup>(T)</span> means <span class="m">g(f(x)) ∈ T</span>, i.e. <span class="m">f(x) ∈ g<sup>−1</sup>(T)</span>, i.e. <span class="m">x ∈ f<sup>−1</sup>(g<sup>−1</sup>(T))</span> — so <span class="m">(g ∘ f)<sup>−1</sup> = f<sup>−1</sup> ∘ g<sup>−1</sup></span>, order reversed. That reversal is Lesson 1, Exercise 8(c) — the socks-and-shoes law for inverses — resurfacing as the composition law of a functor out of <span class="cat">Set</span><sup>op</sup>. One phenomenon, two bookkeepings.</p>
+          <p><strong>Both laws fail.</strong> The identity arrow of <span class="cat">Z3</span> is <span class="m">0</span>, but the map sends <span class="m">0 ↦ 1 ≠ 0</span> — identities are not preserved. Composition breaks too: <span class="m">F(a + b) = a + b + 1</span> while <span class="m">F(a) + F(b) = a + b + 2 (mod 3)</span>, which differ everywhere.</p>
+          <p>In monoid language, adding one is not a homomorphism of <span class="m">(ℤ/3, +)</span> — it fails to fix the unit. Contrast with §7&rsquo;s &ldquo;multiply by 2,&rdquo; which fixes <span class="m">0</span> and distributes over addition, and passes. The difference between the two maps <em>is</em> the functor laws.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<p>The checker tests typing, then identities, then composites, so it stops at the identity clause:</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>shift.py</b> — a map that is not a functor</span><button class="copy" type="button">Copy</button></div>
+<pre><code>shift = Functor(Z3, Z3, on_obj={&#x27;*&#x27;: &#x27;*&#x27;},
+                on_arr={n: (n + 1) % 3 for n in range(3)})
+try:
+    shift.check()
+except AssertionError:
+    print(&quot;rejected: the identity 0 is sent to 1&quot;)</code></pre>
+  <div class="out"><span class="lbl">output</span>rejected: the identity 0 is sent to 1</div>
+</div>
+</div>
         </div>
       </details>
     </div>
 
-    <div class="prob">
-      <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">code · new</span></div>
-      <div class="prob-body">
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 17</span><span class="tier">counting</span></div>
+<div class="prob-body">
+<p>Count the functors, using the methods of §7.</p>
+<ol>
+<li>From <span class="m"><span class="cat">𝟚</span></span> to <span class="m"><span class="cat">𝟚</span></span>.</li>
+<li>From <span class="m"><span class="cat">𝟛</span></span> to <span class="m"><span class="cat">𝟚</span></span>.</li>
+<li>From <span class="m">ℤ/2</span> to <span class="m">ℤ/4</span>, as one-object categories of groups under addition.</li>
+<li>From the discrete category with two objects to <span class="m"><span class="cat">𝟛</span></span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a) Three.</strong> Monotone maps from <span class="m">{0 ≤ 1}</span> to itself: the pairs <span class="m">(0,0), (0,1), (1,1)</span>. The middle one is the identity functor.</p>
+<p><strong>(b) Four.</strong> Monotone maps from a three-element chain to <span class="m">{0, 1}</span> are the non-decreasing sequences <span class="m">000, 001, 011, 111</span>: choose where the jump from <span class="m">0</span> to <span class="m">1</span> happens, or have no jump.</p>
+<p><strong>(c) Two.</strong> A homomorphism is determined by <span class="m">x = φ(1)</span>, subject to <span class="m">x + x = 0</span> in <span class="m">ℤ/4</span>. The solutions are <span class="m">x = 0</span> and <span class="m">x = 2</span>.</p>
+<p><strong>(d) Nine.</strong> A discrete category has no arrows beyond identities, so a functor out of it is just a choice of an object for each of its objects, with no constraint: <span class="m">3 × 3</span> choices. Arrows are what make functors scarce; remove them and every function on objects qualifies.</p>
+</div>
+</details>
+</div>
 
+<div class="exgroup">
+  <h3>The powerset functors</h3>
+  <p class="exmeta"><a href="#going-deeper">Going deeper</a> · Exercises 18–19</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 18</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>The covariant powerset functor of the Going-deeper section sends a function to its direct-image map. Let <span class="m">k(x) = x + 1</span> and <span class="m">h(x) = x mod 2</span>.</p>
+<ol>
+<li>Compute the direct image under <span class="m">h</span> of each of the eight subsets of <span class="m">{1, 2, 3}</span>.</li>
+<li>Verify the composition law <span class="m">P(h ∘ k) = P(h) ∘ P(k)</span> at the subsets <span class="m">{1, 3}</span> and <span class="m">{1, 2}</span>.</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
         <p>Check the covariant powerset functor&rsquo;s two laws by brute force: over <em>every</em> subset <span class="m">S ⊆ {1, 2, 3}</span>, verify <code>pmap(id, S) == S</code> and <code>pmap(h1, pmap(h2, S)) == pmap(h1 ∘ h2, S)</code> for a pair of test functions of your choice.</p>
+</div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-
+<p><strong>By hand. (a)</strong> <span class="m">∅ ↦ ∅</span>; <span class="m">{1} ↦ {1}</span>; <span class="m">{2} ↦ {0}</span>; <span class="m">{3} ↦ {1}</span>; <span class="m">{1,2} ↦ {0,1}</span>; <span class="m">{1,3} ↦ {1}</span>; <span class="m">{2,3} ↦ {0,1}</span>; <span class="m">{1,2,3} ↦ {0,1}</span>. Eight subsets land on four: the direct image remembers which values occur, not which elements produced them.</p>
+<p><strong>(b)</strong> For <span class="m">S = {1, 3}</span>: in two stages, <span class="m">k(S) = {2, 4}</span> and then <span class="m">h({2, 4}) = {0}</span>; in one stage, <span class="m">h ∘ k</span> sends <span class="m">1 ↦ 0</span> and <span class="m">3 ↦ 0</span>, giving <span class="m">{0}</span>. For <span class="m">S = {1, 2}</span>: in two stages, <span class="m">k(S) = {2, 3}</span> and then <span class="m">h({2, 3}) = {0, 1}</span>; in one stage, <span class="m">1 ↦ 0</span> and <span class="m">2 ↦ 1</span>, giving <span class="m">{0, 1}</span>. The two routes agree, as the composition law says they must.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
           <p>Eight subsets, two laws each — sixteen assertions:</p>
           <div class="code" style="margin-top:14px">
             <div class="code-bar"><span class="fname"><b>powerset.py</b></span><button class="copy" type="button">Copy</button></div>
@@ -650,15 +1190,35 @@ for S in subsets({1, 2, 3}):
 print(&quot;powerset functor laws: 16 instances pass&quot;)</code></pre>
             <div class="out"><span class="lbl">output</span>powerset functor laws: 16 instances pass</div>
           </div>
-          <p style="margin-top:14px">A functor whose &ldquo;elements&rdquo; are themselves sets — the first hint that <span class="cat">Set</span>-valued functors are data structures worth studying in their own right, which is where Lesson 7 ends up.</p>
+          <p style="margin-top:14px">A functor whose &ldquo;elements&rdquo; are themselves sets — the first hint that <span class="cat">Set</span>-valued functors are data structures worth studying in their own right, which is where Lesson 9 ends up.</p>
+</div>
         </div>
       </details>
     </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 19</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+
+        <p>Verify the claims of the Going-deeper section:</p>
+        <ol>
+          <li>Show the direct-image assignment <span class="m">P(f)(S) = { f(x) : x ∈ S }</span> satisfies both (covariant) functor laws.</li>
+          <li>Show the inverse-image assignment <span class="m">f ↦ f<sup>−1</sup></span> satisfies the identity law and the <em>flipped</em> composition law, and say precisely which Lesson 1 exercise the flip is.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p><strong>(a)</strong> Identity: the direct image of <span class="m">S</span> under <span class="m">id</span> is <span class="m">S</span> itself. Composition: <span class="m">(g ∘ f)(S) = { g(f(x)) : x ∈ S } = g(f(S))</span> — take the image in two stages or one, same set. Both laws hold, so <span class="m">P</span> is a functor <span class="cat">Set</span> → <span class="cat">Set</span>.</p>
+          <p><strong>(b)</strong> Identity: <span class="m">id<sup>−1</sup>(T) = T</span>. Composition: <span class="m">x ∈ (g ∘ f)<sup>−1</sup>(T)</span> means <span class="m">g(f(x)) ∈ T</span>, i.e. <span class="m">f(x) ∈ g<sup>−1</sup>(T)</span>, i.e. <span class="m">x ∈ f<sup>−1</sup>(g<sup>−1</sup>(T))</span> — so <span class="m">(g ∘ f)<sup>−1</sup> = f<sup>−1</sup> ∘ g<sup>−1</sup></span>, order reversed. That reversal is Lesson 1, Exercise 10(c) — the socks-and-shoes law for inverses — resurfacing as the composition law of a functor out of <span class="cat">Set</span><sup>op</sup>. One phenomenon, two bookkeepings.</p>
+        </div>
+      </details>
+    </div>
+
 </div>
 </section>
 
-<!-- ============ RECAP / NEXT ============ -->
-<section class="section">
+<section class="section" id="recap">
   <div class="measure">
     <div class="sec-no">Recap</div>
     <h2>What to carry forward</h2>
@@ -667,7 +1227,9 @@ print(&quot;powerset functor laws: 16 instances pass&quot;)</code></pre>
       <li>Functors send <strong>commuting diagrams to commuting diagrams</strong> and <strong>isomorphisms to isomorphisms</strong>; they may forget distinctions but never manufacture them.</li>
       <li>That iso-preservation is the licence behind algebraic invariants: differ after <span class="m">F</span>, and you differed before.</li>
       <li>Identity functors plus functor composition make categories into a category, <span class="cat">Cat</span> — the subject becomes self-referential.</li>
-      <li>Monoid homomorphisms and monotone maps are functors in disguise; in code, a lawful <code>map</code> is a functor.</li>
+      <li>Monoid homomorphisms and monotone maps are functors in disguise; so are monoid actions, and a lawful <code>map</code> in code.</li>
+      <li>Every object <span class="m">A</span> carries two <strong>hom functors</strong>, <span class="m"><span class="cat">𝒞</span>(A, −)</span> and <span class="m"><span class="cat">𝒞</span>(−, A)</span>, whose functor laws are the category laws themselves.</li>
+      <li><strong>Faithful</strong>, <strong>full</strong> and <strong>essentially surjective</strong> measure how much a functor sees. Fully faithful functors reflect isomorphisms; no functor is obliged to preserve monos or epis.</li>
     </ol>
 
     <div class="next">
@@ -680,25 +1242,46 @@ print(&quot;powerset functor laws: 16 instances pass&quot;)</code></pre>
       </span>
       <div>
         <span class="ntag">Coming next · Lesson 03</span>
-        <h3>Natural transformations — maps between functors</h3>
+        <h3><a href="lesson-03-natural-transformations.html">Natural transformations — maps between functors</a></h3>
         <p>If functors are the arrows of <span class="cat">Cat</span>, what is a map between two functors? The answer — a family of arrows that varies <em>naturally</em> with its input — is the very concept Eilenberg and Mac Lane invented category theory to make precise, and it opens the door to universal properties.</p>
       </div>
     </div>
+    <nav class="pager" aria-label="Lesson navigation"><a href="lesson-01-what-is-a-category.html">← Lesson 01 — Categories</a><a href="index.html">All lessons</a><a href="lesson-03-natural-transformations.html">Lesson 03 — Natural transformations →</a></nav>
+  
   </div>
 </section>
 
 <footer>Intro to Category Theory · Lesson 02 · functors carry whole worlds across, one arrow at a time</footer>
 
 </main>
+
 </div>
 
 <script>
+/* ----- commutative-diagram renderer (shared by every lesson page) ----- */
 const SVGNS = "http://www.w3.org/2000/svg";
 function el(tag, attrs, parent){
   const n = document.createElementNS(SVGNS, tag);
   for(const k in attrs) n.setAttribute(k, attrs[k]);
   if(parent) parent.appendChild(n);
   return n;
+}
+/* label mini-syntax:  "α~X" = α with subscript X;  "g ∘~K~ f" = subscript K mid-label;
+   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end. */
+function setLabel(t, label){
+  const parts = String(label).split(/([~^])/);
+  let mode = "", shift = 0;
+  t.textContent = "";
+  for(let i = 0; i < parts.length; i++){
+    const p = parts[i];
+    if(p === "~" || p === "^"){ mode = (mode === p) ? "" : p; continue; }
+    if(!p) continue;
+    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0;
+    const s = el("tspan", {dy: want - shift}, t);
+    if(mode) s.setAttribute("font-size", "12");
+    s.textContent = p;
+    shift = want;
+  }
 }
 
 function build(svg, spec){
@@ -713,6 +1296,7 @@ function build(svg, spec){
     let shaft, labelAt;
 
     if(a.from === a.to){
+      /* self-loop, pointing outward in direction `deg` (0 = up, clockwise) */
       const x = from.x, y = from.y;
       const deg = (a.deg ?? 0) * Math.PI/180;
       const ca = Math.cos(deg), sa = Math.sin(deg);
@@ -725,13 +1309,12 @@ function build(svg, spec){
       shaft = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
       labelAt = [lx, ly];
     } else {
-      let x1=from.x, y1=from.y, x2=to.x, y2=to.y;
-      let dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
-      let sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+      const x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+      const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      const sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
       const px=-uy, py=ux, off = a.curve ?? 0;
       if(off){
-        const mx=(sx+ex)/2, my=(sy+ey)/2;
-        const cx=mx+px*off, cy=my+py*off;
+        const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
         shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
         labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
       } else {
@@ -741,6 +1324,7 @@ function build(svg, spec){
       }
     }
 
+    /* measure the true end tangent to orient the arrowhead */
     const probe = el("path", {d:shaft}, svg);
     const Ltot = probe.getTotalLength();
     const pEnd = probe.getPointAtLength(Ltot);
@@ -748,40 +1332,42 @@ function build(svg, spec){
     svg.removeChild(probe);
     let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
     const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
-    const bl = 8.5, ang = 0.42, cos=Math.cos(ang), sin=Math.sin(ang);
-    const b1x = pEnd.x - bl*(tx*cos - ty*sin), b1y = pEnd.y - bl*(ty*cos + tx*sin);
-    const b2x = pEnd.x - bl*(tx*cos + ty*sin), b2y = pEnd.y - bl*(ty*cos - tx*sin);
-    const full = `${shaft} M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const head = a.nohead ? "" : ` M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
 
-    const path = el("path", {d:full, class:"arrow" + (a.cls ? " "+a.cls : "")}, svg);
-    const len = path.getTotalLength();
-    path.style.setProperty("--len", len);
-    path.setAttribute("stroke-dasharray", len);
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:shaft + head, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
     path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
 
     if(a.label){
       const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
-        "text-anchor":"middle", "dominant-baseline":"middle"}, svg);
-      t.textContent = a.label;
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
       t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
     }
   });
 
   spec.nodes.forEach(n => {
     const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
-      "text-anchor":"middle", "dominant-baseline":"central"}, svg);
-    t.textContent = n.label;
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
   });
 }
 
-const C = "\u{1D49E}", D = "\u{1D49F}", E = "\u2130", TWO = "\u{1D7DA}";
-
+/* ----- this lesson's diagrams ----- */
 const DIAGRAMS = {
   hero: {
     w:580, h:250,
     nodes:[
-      {id:"cC", x:66, y:36, label:C, cls:"region"},
-      {id:"cD", x:514, y:36, label:D, cls:"region"},
+      {id:"cC", x:66, y:36, label:"𝒞", cls:"region"},
+      {id:"cD", x:514, y:36, label:"𝒟", cls:"region"},
       {id:"A", x:66,  y:100, label:"A"},
       {id:"B", x:190, y:100, label:"B"},
       {id:"C", x:128, y:200, label:"C"},
@@ -804,8 +1390,8 @@ const DIAGRAMS = {
   contra: {
     w:520, h:160,
     nodes:[
-      {id:"cC", x:60,  y:30, label:C, cls:"region small"},
-      {id:"cD", x:470, y:30, label:D, cls:"region small"},
+      {id:"cC", x:60,  y:30, label:"𝒞", cls:"region small"},
+      {id:"cD", x:470, y:30, label:"𝒟", cls:"region small"},
       {id:"A", x:80,  y:96, label:"A"},
       {id:"B", x:200, y:96, label:"B"},
       {id:"FA", x:360, y:96, label:"FA"},
@@ -839,9 +1425,9 @@ const DIAGRAMS = {
   cat: {
     w:380, h:240,
     nodes:[
-      {id:"cC", x:80,  y:188, label:C, cls:"region"},
-      {id:"cD", x:300, y:188, label:D, cls:"region"},
-      {id:"cE", x:190, y:62,  label:E, cls:"region"},
+      {id:"cC", x:80,  y:188, label:"𝒞", cls:"region"},
+      {id:"cD", x:300, y:188, label:"𝒟", cls:"region"},
+      {id:"cE", x:190, y:62,  label:"ℰ", cls:"region"},
     ],
     arrows:[
       {from:"cC", to:"cD", label:"F", lo:18, rs:22, re:22, delay:0},
@@ -852,8 +1438,8 @@ const DIAGRAMS = {
   select: {
     w:560, h:210,
     nodes:[
-      {id:"l2", x:60,  y:30, label:TWO, cls:"region small"},
-      {id:"lc", x:500, y:30, label:C, cls:"region small"},
+      {id:"l2", x:60,  y:30, label:"𝟚", cls:"region small"},
+      {id:"lc", x:500, y:30, label:"𝒞", cls:"region small"},
       {id:"z", x:80,  y:108, label:"0"},
       {id:"o", x:220, y:108, label:"1"},
       {id:"X", x:360, y:78,  label:"X"},
@@ -870,10 +1456,23 @@ const DIAGRAMS = {
       {from:"W", to:"Y", cls:"soft", delay:600},
     ]
   },
+  homcov: {
+    w:380, h:250,
+    nodes:[
+      {id:"A", x:70, y:125, label:"A"},
+      {id:"X", x:290, y:55, label:"X"},
+      {id:"Y", x:290, y:200, label:"Y"},
+    ],
+    arrows:[
+      {from:"A", to:"X", label:"h", rs:17.0, re:19.0, lo:-14, delay:0},
+      {from:"X", to:"Y", label:"f", rs:17.0, re:19.0, lo:-16, delay:170},
+      {from:"A", to:"Y", label:"f ∘ h", rs:17.0, re:19.0, lo:16, cls:"soft", lcls:"soft", delay:340},
+    ]
+  }
 };
 
+/* ----- render, then draw each diagram as it scrolls into view ----- */
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 function renderAll(){
   document.querySelectorAll("[data-diagram]").forEach(div => {
     const spec = DIAGRAMS[div.dataset.diagram];
@@ -882,7 +1481,7 @@ function renderAll(){
 }
 renderAll();
 
-if(reduce){
+if(reduce || !("IntersectionObserver" in window)){
   document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
 } else {
   const io = new IntersectionObserver((entries)=>{
@@ -905,13 +1504,38 @@ window.addEventListener("resize", ()=>{
   }, 200);
 });
 
+/* ----- copy buttons on code blocks ----- */
 document.querySelectorAll(".copy").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     const code = btn.closest(".code").querySelector("code").innerText;
     navigator.clipboard.writeText(code).then(()=>{
       const old = btn.textContent; btn.textContent = "Copied";
       setTimeout(()=>btn.textContent = old, 1400);
-    }).catch(()=>{ btn.textContent = "\u2014"; });
+    }).catch(()=>{ btn.textContent = "—"; });
   });
 });
+
+/* ----- the optional Python track: one switch opens or closes every lab ----- */
+(function(){
+  const labs = [...document.querySelectorAll("details.pylab")];
+  const btn = document.querySelector(".pytoggle");
+  if(!btn) return;
+  if(!labs.length){ btn.hidden = true; return; }
+  const KEY = "ct-python-labs";
+  let open = false;
+  try { open = window.localStorage.getItem(KEY) === "open"; } catch(e) {}
+  function apply(){
+    labs.forEach(d => { d.open = open; });
+    btn.setAttribute("aria-pressed", open ? "true" : "false");
+    btn.textContent = open ? "Python labs: open" : "Python labs: closed";
+  }
+  apply();
+  btn.addEventListener("click", ()=>{
+    open = !open;
+    try { window.localStorage.setItem(KEY, open ? "open" : "closed"); } catch(e) {}
+    apply();
+  });
+})();
 </script>
+</body>
+</html>

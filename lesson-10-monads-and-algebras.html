@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Intro to Category Theory — Lesson 10: Monads &amp; Algebras -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monads &amp; Algebras — Intro to Category Theory, Lesson 10</title>
+<meta name="description" content="Every adjunction, folded in half, becomes a monad: an endofunctor that knows how to flatten itself. Its laws are the reason effects compose, and its algebras are the structures it describes — beginning with the monoids of Lesson 1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#FBFAF6;
+  --paper-2:#F3EFE4;
+  --grid:#E7E1D2;
+  --ink:#191B22;
+  --ink-soft:#5C5F69;
+  --ink-faint:#8B8C90;
+  --rule:#E2DDCF;
+  --arrow:#2A3FA6;        /* morphisms — drafting ink blue */
+  --arrow-soft:#8E97CE;   /* composites / derived arrows */
+  --amber:#A8641A;        /* identities & special notes, used sparingly */
+  --amber-wash:#F6ECDC;
+  --blue-wash:#EBEDF8;
+  --code-bg:#15171E;
+  --code-fg:#E7E4DA;
+  --code-dim:#8A8E9C;
+  --out-bg:#1E2733;
+  --maxw:720px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;
+  font-size:20px;
+  line-height:1.62;
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* faint drafting grid behind everything */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;
+  opacity:.32;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 30%,#000 0,transparent 78%);
+}
+.wrap{position:relative;z-index:1}
+
+/* ---------- type ---------- */
+.measure{max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+p{margin:0 0 1.15em}
+em,i,.var{font-style:italic}
+.var{font-family:"Newsreader",serif;font-style:italic}
+.op{font-style:normal}
+strong{font-weight:600}
+a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
+
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:22px;
+}
+.eyebrow .dot{color:var(--arrow)}
+.hero h1{
+  font-size:clamp(38px,7vw,70px);
+  margin:0 0 .35em;
+  font-weight:500;
+}
+.hero h1 .q{color:var(--arrow)}
+.lede{
+  font-size:clamp(19px,2.4vw,23px);
+  color:var(--ink-soft);
+  max-width:38ch;
+  margin:0;
+}
+.hero-diagram{
+  margin:42px auto 8px;
+  max-width:480px;
+}
+.hero-diagram:has(.board.wide){max-width:600px}
+
+/* ---------- section scaffolding ---------- */
+.section{padding:54px 0}
+.section + .section{border-top:1px solid var(--rule)}
+.sec-no{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--arrow);margin-bottom:12px;
+}
+.section h2{font-size:clamp(27px,4vw,36px);margin:0 0 .7em;max-width:24ch}
+.section h3{font-size:21px;margin:1.9em 0 .5em;font-weight:600}
+
+/* ---------- diagram figure ---------- */
+figure{margin:34px 0;text-align:center}
+.board{
+  background:
+    radial-gradient(circle at 50% 40%,#fff 0,var(--paper-2) 120%);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:26px 18px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.board::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;opacity:.5;
+}
+.board svg{position:relative;display:block;width:100%;height:auto;max-width:470px;margin-inline:auto}
+.board.wide svg{max-width:580px}
+figcaption{
+  font-size:15.5px;color:var(--ink-soft);margin-top:14px;line-height:1.5;
+  max-width:54ch;margin-inline:auto;font-style:italic;
+}
+
+/* svg primitives */
+.node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
+.elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;
+  fill:var(--arrow);paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
+.elabel.soft{fill:#5b62a0}
+.elabel.amber{fill:var(--amber)}
+.arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arrow.soft{stroke:var(--arrow-soft)}
+.arrow.dashed{stroke:var(--arrow-soft)}
+.arrow.amber{stroke:var(--amber)}
+
+/* draw-in animation */
+.arrow{stroke-dashoffset:var(--len,0)}
+.draw .arrow{stroke-dashoffset:0;transition:stroke-dashoffset .9s cubic-bezier(.6,0,.25,1)}
+.elabel{opacity:0}
+.draw .elabel{opacity:1;transition:opacity .5s ease .35s}
+@media (prefers-reduced-motion:reduce){
+  .arrow{stroke-dashoffset:0 !important;transition:none !important}
+  .elabel{opacity:1 !important;transition:none !important}
+}
+
+/* ---------- callout boxes ---------- */
+.box{
+  border:1px solid var(--rule);
+  border-left:3px solid var(--arrow);
+  background:var(--blue-wash);
+  border-radius:3px;
+  padding:22px 24px;
+  margin:30px 0;
+}
+.box .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px;
+}
+.box.amber{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.amber .tag{color:var(--amber)}
+.box p:last-child{margin-bottom:0}
+.box.def{font-size:19px}
+.deflist{margin:.4em 0 .2em;padding-left:1.2em}
+.deflist li{margin:.32em 0}
+.law{display:flex;gap:14px;align-items:baseline;margin:.5em 0;flex-wrap:wrap}
+.law .name{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-faint);min-width:96px}
+.law .eq{font-size:20px}
+
+/* inline math chips */
+.m{font-style:italic;white-space:nowrap}
+.hom{font-style:italic}
+.cat{font-family:"Fraunces",serif;font-style:normal;font-weight:500}
+
+/* ---------- code ---------- */
+.code{
+  background:var(--code-bg);border-radius:6px;margin:26px 0;overflow:hidden;
+  border:1px solid #000;
+}
+.code-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;background:#0F1116;border-bottom:1px solid #2a2d36;
+}
+.code-bar .fname{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--code-dim)}
+.code-bar .fname b{color:#cfd2dc;font-weight:500}
+.copy{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  color:var(--code-dim);background:transparent;border:1px solid #2f323c;
+  border-radius:4px;padding:4px 10px;cursor:pointer;transition:.15s;
+}
+.copy:hover{color:#fff;border-color:#525a6b}
+pre{margin:0;padding:18px 16px;overflow-x:auto}
+code,pre{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.62}
+pre code{color:var(--code-fg);font-size:13.5px;background:none}
+.out{
+  background:var(--out-bg);border-top:1px solid #2a3340;
+  padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#9fe0b0;
+  white-space:pre-wrap;
+}
+.out .lbl{color:#5f7388;display:block;margin-bottom:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+:not(pre) > code{
+  font-family:"IBM Plex Mono",monospace;font-size:.82em;
+  background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
+  padding:.05em .35em;color:#3a3d46;
+}
+
+/* ---------- example gallery ---------- */
+.ex{margin:26px 0;padding-top:22px;border-top:1px dashed var(--rule)}
+.ex:first-of-type{border-top:none;padding-top:0}
+.ex h3{margin-top:0;display:flex;align-items:baseline;gap:.5em}
+.ex h3 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--arrow);font-weight:500}
+
+/* ---------- takeaways / next ---------- */
+.takeaways{list-style:none;padding:0;margin:18px 0 0;counter-reset:t}
+.takeaways li{position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);counter-increment:t}
+.takeaways li::before{
+  content:counter(t);position:absolute;left:0;top:13px;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--arrow);
+  border:1px solid var(--arrow);border-radius:50%;width:26px;height:26px;
+  display:grid;place-items:center;
+}
+.next{
+  margin-top:38px;border:1px solid var(--rule);border-radius:4px;
+  padding:26px;display:flex;gap:22px;align-items:center;background:#fff;
+}
+.next .arrowmark{flex:none}
+.next .ntag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.next h3{margin:0 0 .25em;font-size:23px}
+.next p{margin:0;font-size:17px;color:var(--ink-soft)}
+
+footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;text-align:center}
+
+::selection{background:#d7ddf6}
+:focus-visible{outline:2px solid var(--arrow);outline-offset:3px;border-radius:2px}
+
+@media (max-width:560px){
+  body{font-size:18.5px}
+  .hero{padding:48px 0 22px}
+  .section{padding:42px 0}
+  .next{flex-direction:column;align-items:flex-start;gap:14px}
+  .law .name{min-width:0}
+}
+
+/* ---------- exercises ---------- */
+.prob{margin:44px 0;padding-top:32px;border-top:1px solid var(--rule)}
+.prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
+.prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-body p{margin:0 0 .9em}
+.prob-body p:last-child{margin-bottom:0}
+.prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
+.prob-body ol li{margin:.35em 0}
+.prob > details{border:none;background:transparent;padding:0;margin:18px 0 0}
+.prob > details[open]{background:transparent}
+.prob > details > summary{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--arrow);border-radius:22px;color:var(--arrow);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.06em;font-weight:400;cursor:pointer;transition:background .15s;list-style:none}
+.prob > details > summary::-webkit-details-marker{display:none}
+.prob > details > summary:hover{background:var(--blue-wash)}
+.prob > details > summary::before{content:"+ ";font-weight:500}
+.prob > details[open] > summary::before{content:"\2212  "}
+.prob .sol{border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:0 3px 3px 0;margin-top:16px;padding:20px 24px;font-size:18.5px;color:var(--ink-soft);line-height:1.6}
+.prob .sol strong{color:var(--ink)}
+.prob .sol p{margin:0 0 .9em}
+.prob .sol p:last-child{margin-bottom:0}
+
+/* ---------- diagram extras ---------- */
+.node.region{font-family:"Fraunces",serif;font-style:normal;font-weight:500;font-size:27px;fill:var(--ink-soft)}
+.node.small{font-size:19px}
+.node.tiny{font-size:16px}
+.node.amber{fill:var(--amber)}
+.node.plain{font-style:normal}
+.node.dbl{font-family:"Fraunces",serif;font-style:normal;font-size:34px;fill:var(--arrow);opacity:0}
+.draw .node.dbl{opacity:1;transition:opacity .5s ease .35s}
+.elabel.big{font-size:25px;fill:var(--ink);stroke-width:5px}
+.elabel.mono{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:14px}
+.elabel.small{font-size:15px}
+.arrow.big{stroke-width:2.5}
+.arrow.unique{stroke:var(--amber);stroke-dasharray:7 5 !important;stroke-dashoffset:0 !important;opacity:0}
+.draw .arrow.unique{opacity:1;transition:opacity .7s ease}
+@media (prefers-reduced-motion:reduce){
+  .arrow.unique,.node.dbl{opacity:1 !important;transition:none !important}
+}
+
+/* ---------- theorem boxes, tables, breadcrumbs ---------- */
+.box.thm{border-left-color:var(--amber);background:var(--amber-wash)}
+.box.thm .tag{color:var(--amber)}
+.box ol,.box ul{margin:.4em 0 .6em;padding-left:1.3em}
+.box li{margin:.3em 0}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:30px}
+.crumbs b{color:var(--arrow);font-weight:500}
+.crumbs a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--ink-faint)}
+.crumbs a:hover{color:var(--arrow);border-bottom-color:var(--arrow)}
+.zoo{width:100%;border-collapse:collapse;margin:28px 0;font-size:17.5px}
+.zoo th{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);text-align:left;padding:10px 12px;border-bottom:2px solid var(--rule)}
+.zoo td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+.zoo td:first-child{color:var(--ink)}
+.zoo td .m{color:var(--ink)}
+.zoo.shapes td:first-child{font-family:"IBM Plex Mono",monospace;font-size:14px;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+
+/* ---------- second edition: reading aids ---------- */
+h3.sub{font-size:23px;margin:1.7em 0 .6em}
+.eq{text-align:center;margin:1.1em 0 1.25em;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-bottom:2px}
+.eq .m{font-size:1.04em}
+.m sub,.m sup{font-size:.72em;line-height:0}
+.topnav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:20px;
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-faint)}
+.topnav a{color:var(--ink-faint);text-decoration:none}
+.topnav a:hover{color:var(--arrow)}
+.topnav + .hero{padding-top:44px}
+.pytoggle{font:inherit;letter-spacing:.06em;color:var(--amber);background:transparent;border:1px solid var(--amber);
+  border-radius:20px;padding:4px 13px;cursor:pointer;transition:.15s}
+.pytoggle:hover{background:var(--amber-wash)}
+.pytoggle[aria-pressed="true"]{background:var(--amber);color:#fff}
+.toc{border:1px solid var(--rule);border-radius:4px;background:#fff;padding:20px 24px;margin-top:34px}
+.toc .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:10px}
+.toc ul{list-style:none;margin:0;padding:0;columns:2;column-gap:34px;font-size:17px}
+.toc .n{display:inline-block;min-width:2.3em;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--arrow)}
+.toc li{margin:.22em 0;break-inside:avoid}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--arrow);text-decoration:underline}
+.toc .opt{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em}
+.tbl{border-collapse:collapse;margin:20px auto;font-size:17.5px}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:6px 13px;text-align:center}
+.tbl th{font-weight:500;font-style:italic;color:var(--arrow);background:var(--paper-2)}
+.tbl td{background:#fff;font-style:italic}
+.tbl caption{caption-side:bottom;font-size:15px;color:var(--ink-soft);font-style:italic;padding-top:10px}
+.box.hand .tag::before{content:"\270E\00a0";font-size:1.15em}
+.proof{color:var(--ink)}
+.qed{float:right}
+
+/* ---------- second edition: the optional Python track ---------- */
+details.pylab{margin:32px 0;border:1px solid #2f323c;border-radius:6px;overflow:hidden;background:#fff}
+details.pylab > summary{list-style:none;cursor:pointer;background:var(--code-bg);color:var(--code-fg);
+  padding:13px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.03em}
+details.pylab > summary::-webkit-details-marker{display:none}
+details.pylab > summary::after{content:"+ open";margin-left:auto;color:var(--code-dim);font-size:11.5px;letter-spacing:.08em}
+details.pylab[open] > summary::after{content:"\2212  close"}
+details.pylab > summary .badge{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#15171E;
+  background:#E3B36A;border-radius:20px;padding:2px 10px;font-weight:600;flex:none}
+details.pylab > summary:hover{background:#1d2029}
+details.pylab > .pybody{padding:22px 22px 8px;font-size:18.5px}
+details.pylab > .pybody > p:first-child{margin-top:0}
+details.pylab .code{margin:20px 0}
+.pynote{font-size:16.5px;color:var(--ink-soft);border-left:3px solid #E3B36A;padding:2px 0 2px 14px;margin:18px 0}
+.pytask{border:1px dashed var(--amber);border-radius:4px;background:rgba(246,236,220,.5);padding:14px 18px;margin:16px 0 4px;font-size:17.5px}
+.pytask .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:6px}
+.pytask p:last-child{margin-bottom:0}
+.sol .pytask{background:rgba(255,255,255,.55)}
+.prob-head .tier.py{color:var(--amber);border-color:var(--amber)}
+body.py-off .pyonly{display:none}
+
+/* ---------- second edition: pager ---------- */
+.next a{color:inherit;text-decoration:none}
+.next a:hover h3{color:var(--arrow)}
+.pager{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:26px;
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.05em}
+.pager a{color:var(--arrow);text-decoration:none;border:1px solid var(--rule);border-radius:22px;padding:7px 16px;background:#fff}
+.pager a:hover{border-color:var(--arrow)}
+.dl{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft);margin:14px 0 0}
+.dl a{color:var(--arrow)}
+
+@media (max-width:800px){
+  /* keep the title block off the edges of a narrow screen */
+  .hero.measure{padding-inline:26px}
+}
+@media (max-width:760px){
+  /* on narrow screens an inline formula may break at its spaces;
+     displayed formulas, tables and code scroll sideways instead */
+  .m{white-space:normal}
+  .eq .m,.tbl .m{white-space:nowrap}
+  .tablewrap{-webkit-overflow-scrolling:touch}
+}
+@media (max-width:560px){
+  .zoo{font-size:15.5px}
+  .toc ul{columns:1}
+  .tbl{font-size:15.5px}
+  .tbl th,.tbl td{padding:5px 8px}
+  details.pylab > .pybody{padding:16px 14px 4px}
+}
+@media print{
+  body::before{display:none}
+  .topnav,.pager,.copy,.pytoggle{display:none}
+  .board{break-inside:avoid}
+}
+
+/* ---------- second edition: exercise groups ---------- */
+.exgroup{margin:60px 0 0;padding-top:22px;border-top:2px solid var(--ink)}
+p + .exgroup{margin-top:40px}
+.exgroup h3{margin:0;font-size:24px;font-weight:600}
+.exgroup .exmeta{margin:7px 0 0;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.exgroup .exmeta a{color:var(--arrow);text-decoration:none}
+.exgroup .exmeta a:hover{text-decoration:underline}
+.exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<nav class="topnav measure" aria-label="Course">
+  <a href="index.html">← Intro to Category Theory · all lessons</a>
+  <button class="pytoggle" type="button" aria-pressed="false" title="Open or close every optional Python lab on this page">Python labs: closed</button>
+</nav>
+
+<header class="hero measure">
+  <div class="crumbs"><a href="lesson-09-representables-and-yoneda.html">Lesson 09 — Yoneda</a> &nbsp;›&nbsp; <b>Lesson 10 — Monads</b> &nbsp;›&nbsp; <a href="index.html">Course index</a></div>
+  <div class="eyebrow">Intro to Category Theory <span class="dot">·</span> Lesson 10 · finale</div>
+  <h1>Monads <span class="q">&amp; Algebras</span></h1>
+  <p class="lede">Every adjunction, folded in half, becomes a monad: an endofunctor that knows how to flatten itself. Its laws are the reason effects compose, and its algebras are the structures it describes — beginning with the monoids of Lesson 1.</p>
+  <figure class="hero-diagram">
+    <div class="board" data-diagram="hero" aria-label="Two categories C and D joined by functors F and U, and an endofunctor T equal to U after F drawn as a loop on C.">
+      <svg></svg>
+    </div>
+  </figure>
+  <nav class="toc" aria-label="In this lesson">
+    <span class="tag">In this lesson</span>
+    <ul>
+      <li><a href="#s1"><span class="n">§1</span>An adjunction, folded in half</a></li>
+      <li><a href="#s2"><span class="n">§2</span>The definition</a></li>
+      <li><a href="#s3"><span class="n">§3</span>Every adjunction gives a monad</a></li>
+      <li><a href="#s4"><span class="n">§4</span>A gallery of monads</a></li>
+      <li><a href="#s5"><span class="n">§5</span>The Kleisli category</a></li>
+      <li><a href="#s6"><span class="n">§6</span>Algebras</a></li>
+      <li><a href="#byhand"><span class="n">§7</span>Monads by hand</a></li>
+      <li><a href="#deeper"><span class="n"></span>Going deeper</a></li>
+      <li><a href="#exercises"><span class="n">§8</span>Exercises</a></li>
+      <li><a href="#recap"><span class="n"></span>Recap</a></li>
+    </ul>
+    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-10-monads-and-algebras.py">a script</a> and <a href="notebooks/lesson-10-monads-and-algebras.ipynb">a notebook</a>.</p>
+  </nav>
+</header>
+
+<main>
+<section class="section" id="s1">
+<div class="measure">
+<div class="sec-no">§1 — An adjunction, folded in half</div>
+<h2>What is left when the second category is forgotten</h2>
+<p>Lesson 8 built adjunctions <span class="m">F ⊣ U</span> and kept the two categories separate. But nothing stops us composing the two functors into a single endofunctor <span class="m">T = U ∘ F</span> on <span class="m"><span class="cat">𝒞</span></span> — for the free-monoid adjunction, <span class="m">T = List</span>. What structure does <span class="m">T</span> inherit from the adjunction it came from?</p>
+<p>The simplest case shows what to expect. Between posets an adjunction is a Galois connection <span class="m">f ⊣ g</span>, and Lesson 8&rsquo;s last exercise looked at the composite <span class="m">c = g ∘ f</span>. It is monotone, and it satisfies</p>
+<p class="eq"><span class="m">x ≤ c(x) &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; c(c(x)) ≤ c(x).</span></p>
+<p>An operation of this kind is a <em>closure operator</em>: the subgroup generated by a set of elements, the span of a set of vectors, the closure of a set of points. Each of these lives on one poset — the subsets of a group, of a vector space, of a space — and the second poset of the Galois connection is nowhere to be seen. Yet something of it survives. The elements with <span class="m">c(x) = x</span>, the <em>closed</em> ones, are exactly the subgroups, the subspaces, the closed sets.</p>
+<p>In a category that is not thin the same thing happens, with two changes. The two inequalities become two natural transformations, a <strong>unit</strong> <span class="m">η : Id ⇒ T</span> and a <strong>multiplication</strong> <span class="m">μ : T ∘ T ⇒ T</span>. And because parallel arrows may now differ, the two must satisfy equations. An endofunctor with this structure is a <strong>monad</strong>. You have used one since Lesson 2: for <span class="m">T = List</span> the unit wraps an element as a one-element list, and the multiplication is <code>flatten</code>, which Lesson 3 checked to be natural and filed away for the end of the course. This is the end of the course.</p>
+<p>The lesson has two halves. The first defines monads (§2), shows that every adjunction produces one (§3), and collects examples (§4). The second asks the converse question: does every monad come from an adjunction? It does, in two canonical ways. One is the <strong>Kleisli category</strong> (§5), whose arrows are &ldquo;functions with an effect&rdquo;; the monad laws turn out to be exactly what makes such functions composable. The other is the category of <strong>algebras</strong> (§6), which explains what a monad is <em>for</em>: a monad is a description of a kind of algebraic structure, and its algebras are the things that have that structure. The algebras of the list monad are the monoids — so the course ends by recovering the definition it began with.</p>
+</div>
+</section>
+<section class="section" id="s2">
+<div class="measure">
+<div class="sec-no">§2 — The definition</div>
+<h2>An endofunctor that can flatten itself</h2>
+<div class="box def">
+<span class="tag">Definition · Monad</span>
+<p>A <strong>monad</strong> on <span class="m"><span class="cat">𝒞</span></span> is an endofunctor <span class="m">T : <span class="cat">𝒞</span> → <span class="cat">𝒞</span></span> with natural transformations <span class="m">η : Id ⇒ T</span> (the <strong>unit</strong>) and <span class="m">μ : T<sup>2</sup> ⇒ T</span> (the <strong>multiplication</strong>) such that</p>
+<ul class="deflist" style="margin-top:0">
+<li><strong>associativity:</strong> <span class="m">μ ∘ μT = μ ∘ Tμ</span> — the two ways to flatten <span class="m">T<sup>3</sup></span> to <span class="m">T</span> agree;</li>
+<li><strong>unit laws:</strong> <span class="m">μ ∘ ηT = id = μ ∘ Tη</span> — wrapping then flattening changes nothing.</li>
+</ul>
+</div>
+<figure>
+<div class="board" data-diagram="assoc" aria-label="The monad associativity square: T cubed maps to T squared two ways, by T mu and by mu at T X, and both composites into T X agree.">
+<svg></svg>
+</div>
+<figcaption>Associativity: flatten the inner layer first or the outer layer first — from three layers down to one, the order cannot matter.</figcaption>
+</figure>
+<p>Here <span class="m">T<sup>2</sup></span> means <span class="m">T ∘ T</span>, and the symbols <span class="m">μT</span>, <span class="m">Tμ</span>, <span class="m">ηT</span>, <span class="m">Tη</span> are the whiskerings of Lesson 3. In components, at an object <span class="m">X</span>:</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th>transformation</th><th>component at X</th><th>in words</th></tr>
+<tr><td>μT</td><td>μ<sub>T X</sub> : T T T X → T T X</td><td>multiply the outer two layers</td></tr>
+<tr><td>Tμ</td><td>T(μ<sub>X</sub>) : T T T X → T T X</td><td>multiply the inner two layers</td></tr>
+<tr><td>ηT</td><td>η<sub>T X</sub> : T X → T T X</td><td>add a layer outside</td></tr>
+<tr><td>Tη</td><td>T(η<sub>X</sub>) : T X → T T X</td><td>add a layer inside</td></tr>
+</table></div>
+<figure>
+<div class="board" data-diagram="unit" aria-label="The two unit laws: from T X to T squared X by eta at T X on one side or by T of eta on the other, then mu, gives the identity both times.">
+<svg></svg>
+</div>
+<figcaption>The unit laws: add a trivial layer, outside or inside, and multiply it away again.</figcaption>
+</figure>
+<p>Take <span class="m">T = List</span>, with <span class="m">η<sub>X</sub>(x) = [x]</span> and <span class="m">μ<sub>X</sub></span> the function that concatenates a list of lists. On the three-layer value <span class="m">[[[1], [2, 3]], [[4]]]</span> the two sides of the associativity law are:</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th></th><th>first step</th><th>then μ</th></tr>
+<tr><th>outer layers first, μ<sub>T X</sub></th><td>[[1], [2, 3], [4]]</td><td>[1, 2, 3, 4]</td></tr>
+<tr><th>inner layers first, T(μ<sub>X</sub>)</th><td>[[1, 2, 3], [4]]</td><td>[1, 2, 3, 4]</td></tr>
+</table></div>
+<p>And the unit laws on <span class="m">[1, 2]</span>: adding a layer outside gives <span class="m">[[1, 2]]</span>, adding one inside gives <span class="m">[[1], [2]]</span>, and both flatten back to <span class="m">[1, 2]</span>.</p>
+<p>The shape of the definition should look familiar. A monoid is a set <span class="m">M</span> with a multiplication <span class="m">M × M → M</span> and a unit, an element picked out by a function <span class="m">1 → M</span>, satisfying associativity and two unit laws. A monad is an endofunctor <span class="m">T</span> with a multiplication <span class="m">T ∘ T ⇒ T</span> and a unit <span class="m">Id ⇒ T</span>, satisfying associativity and two unit laws. The only difference is that sets and their product have been replaced by endofunctors and their composition. That is the content of a sentence often quoted to alarm beginners — <em>a monad is a monoid in the category of endofunctors</em> — which is simply an accurate summary of the definition above.</p>
+</div>
+</section>
+<section class="section" id="s3">
+<div class="measure">
+<div class="sec-no">§3 — Every adjunction gives a monad</div>
+<h2>The unit comes along; the counit gets whiskered</h2>
+<p>Take any adjunction <span class="m">F ⊣ U</span> and compose: <span class="m">T = U ∘ F : <span class="cat">𝒞</span> → <span class="cat">𝒞</span></span>. The adjunction hands <span class="m">T</span> two natural transformations. The unit <span class="m">η : Id ⇒ T</span> comes straight from Lesson 8. The counit lives in the wrong category — <span class="m">ε : F ∘ U ⇒ Id</span> on the <span class="m"><span class="cat">𝒟</span></span> side — but whiskering it with <span class="m">U</span> on the left and <span class="m">F</span> on the right yields</p>
+<p class="eq"><span class="m">μ = U ε F : T<sup>2</sup> ⇒ T, &nbsp;&nbsp;&nbsp; with components &nbsp; μ<sub>X</sub> = U(ε<sub>F X</sub>) : U F U F X → U F X,</span></p>
+<p>a way to collapse two applications of <span class="m">T</span> into one. This is the operation <span class="m">H α K</span> that Lesson 3 set aside for this purpose.</p>
+<div class="box thm">
+<span class="tag">Theorem · Monads from adjunctions</span>
+<p>If <span class="m">F ⊣ U</span> with unit <span class="m">η</span> and counit <span class="m">ε</span>, then <span class="m">(U F, η, U ε F)</span> is a monad on <span class="m"><span class="cat">𝒞</span></span>.</p>
+</div>
+<p>The three laws come from the three facts we know about <span class="m">η</span> and <span class="m">ε</span>. The first unit law is the second triangle identity at the object <span class="m">F X</span>. The second unit law is the first triangle identity with <span class="m">U</span> applied to it. Associativity is the naturality square of <span class="m">ε</span> at the arrow <span class="m">ε<sub>F X</sub></span>, with <span class="m">U</span> applied. Exercise 4 writes the three computations out; they have the flavour of Lesson 8&rsquo;s Exercise 12.</p>
+<p>For the free-monoid adjunction: <span class="m">T = List</span>, <span class="m">η(x) = [x]</span>, and the counit <span class="m">ε<sub>M</sub></span> multiplies out a list of elements of the monoid <span class="m">M</span>. At <span class="m">M = List X</span>, whose multiplication is concatenation, it concatenates a list of lists. So <span class="m">μ</span> is <code>flatten</code>.</p>
+<p>For a Galois connection <span class="m">f ⊣ g</span> the theorem gives the closure operator of §1: the unit is <span class="m">x ≤ g(f(x))</span>, and <span class="m">μ</span> is the inequality obtained by applying <span class="m">g</span> to the counit <span class="m">f(g(y)) ≤ y</span> at <span class="m">y = f(x)</span>. The three laws need no checking, because in a poset any two parallel arrows are equal.</p>
+<p>And for the currying adjunction <span class="m">(−) × S ⊣ (−)<sup>S</sup></span> on <span class="m"><span class="cat">Set</span></span> the theorem produces something that looks designed, though it was not:</p>
+<p class="eq"><span class="m">T X = (X × S)<sup>S</sup>,</span></p>
+<p>the set of functions that take a <em>state</em> <span class="m">s</span> and return a value together with a new state. The unit sends <span class="m">x</span> to the function <span class="m">s ↦ (x, s)</span>, which returns <span class="m">x</span> and leaves the state alone. The multiplication runs such a function, obtains another one together with a new state, and runs that. Programmers call <span class="m">T</span> the <em>state monad</em>. It is the monad of currying.</p>
+<p>Different adjunctions can give the same monad, and passing from the adjunction to the monad forgets the category <span class="m"><span class="cat">𝒟</span></span> entirely. How much can be recovered is the question of §5 and §6.</p>
+</div>
+</section>
+<section class="section" id="s4">
+<div class="measure">
+<div class="sec-no">§4 — A gallery of monads</div>
+<h2>A value, plus something extra</h2>
+<p>The examples are a programmer&rsquo;s standard library, and a mathematician&rsquo;s as well.</p>
+<div class="tablewrap"><table class="zoo">
+<tr><th>Monad</th><th>T X</th><th>Unit</th><th>Multiplication</th></tr>
+<tr><td><strong>List</strong></td><td>lists of elements of <span class="m">X</span></td><td><span class="m">x ↦ [x]</span></td><td>concatenate a list of lists</td></tr>
+<tr><td><strong>Maybe</strong></td><td><span class="m">X + 1</span>: the elements of <span class="m">X</span> and one more, <span class="m">⊥</span></td><td><span class="m">x ↦ x</span></td><td>identify the two extra elements</td></tr>
+<tr><td><strong>Writer</strong>, for a monoid <span class="m">M</span></td><td><span class="m">X × M</span></td><td><span class="m">x ↦ (x, e)</span></td><td><span class="m">((x, v), w) ↦ (x, w · v)</span></td></tr>
+<tr><td><strong>Power set</strong></td><td>subsets of <span class="m">X</span></td><td><span class="m">x ↦ {x}</span></td><td>union of a set of subsets</td></tr>
+<tr><td><strong>Reader</strong>, for a set <span class="m">A</span></td><td>functions <span class="m">A → X</span></td><td><span class="m">x ↦</span> the constant function</td><td><span class="m">h ↦ (a ↦ h(a)(a))</span></td></tr>
+<tr><td><strong>State</strong>, for a set <span class="m">S</span></td><td>functions <span class="m">S → X × S</span></td><td><span class="m">x ↦ (s ↦ (x, s))</span></td><td>run, then run the result</td></tr>
+<tr><td><strong>closure</strong> <span class="m">c</span> on a poset</td><td><span class="m">c(x)</span></td><td><span class="m">x ≤ c(x)</span></td><td><span class="m">c(c(x)) ≤ c(x)</span></td></tr>
+</table></div>
+<p><strong>List</strong>: nondeterminism — a computation returning many possible answers; <span class="m">μ</span> merges a batch of batches. <strong>Maybe</strong>: partiality — <span class="m">T X = X + 1</span>, an answer or a failure <span class="m">⊥</span> (Python&rsquo;s <code>None</code>); <span class="m">η</span> includes <span class="m">X</span>, and <span class="m">μ</span> collapses the two possible failures, inner and outer, into one. <strong>Writer</strong>: logging — <span class="m">T X = X × M</span> for a monoid <span class="m">M</span>; <span class="m">μ</span> combines the two logs, and its associativity law holds <em>because</em> the monoid&rsquo;s does — Lesson 1&rsquo;s axioms, billed at last (Exercise 2 makes the dependence explicit).</p>
+<p>The <strong>power set</strong> monad is the pair of natural transformations that Lesson 3 asked you to keep in mind: the singleton map <span class="m">η<sub>X</sub> : X → P X</span> and the union map <span class="m">μ<sub>X</sub> : P P X → P X</span>. Its laws are facts about unions that nobody doubts. A union of unions may be taken in either order; the union of the singletons of the elements of <span class="m">S</span> is <span class="m">S</span>; the union of the one-member family <span class="m">{S}</span> is <span class="m">S</span>. It is the list monad with order and repetition forgotten.</p>
+<p>In every case <span class="m">T X</span> reads as &ldquo;a value of type <span class="m">X</span>, plus something extra&rdquo; — several values, possibly none, a log, a dependence on a state. The unit says &ldquo;nothing extra,&rdquo; and the multiplication says &ldquo;two rounds of extra can be merged into one.&rdquo; Computer scientists call the something extra an <em>effect</em>.</p>
+<p>Each row also comes from an adjunction, as §3 says it may. List comes from the free monoid; Maybe from adding a base point to a set, the left adjoint of the forgetful functor from the pointed sets of Lesson 4; Writer from the free set with an action of <span class="m">M</span>; State from currying. But the definition of a monad mentions no adjunction, and it is often easier to check the laws directly than to find one.</p>
+<p>A warning to go with the gallery: a monad is a functor <em>with</em> a chosen unit and multiplication, not a property of the functor. The same functor may carry several monad structures or none (Exercise 3).</p>
+</div>
+</section>
+<section class="section" id="s5">
+<div class="measure">
+<div class="sec-no">§5 — The Kleisli category</div>
+<h2>What the monad laws are <em>for</em></h2>
+<p>Here is the question the laws answer. An <em>effectful function</em> from <span class="m">A</span> to <span class="m">B</span> is an ordinary arrow <span class="m">A → T B</span>: it returns a <span class="m">B</span>, plus effect. Can effectful functions be composed? Given <span class="m">f : A → T B</span> and <span class="m">g : B → T C</span>, the types refuse to chain directly — <span class="m">f</span> lands in <span class="m">T B</span>, and <span class="m">g</span> wants a bare <span class="m">B</span>. The monad supplies the adapter: apply <span class="m">T</span> to <span class="m">g</span> (Lesson 2: functors act on arrows), then flatten the doubled effect with <span class="m">μ</span>:</p>
+<figure>
+<div class="board wide" data-diagram="kleisli" aria-label="Kleisli composition: f from A to T B, then T g from T B to T squared C, then mu down to T C; the dashed composite is the Kleisli composite of g after f.">
+<svg></svg>
+</div>
+<figcaption>The Kleisli composite <span class="m">g ∘<sub>K</sub> f = μ ∘ T g ∘ f</span>: run <span class="m">f</span>, map <span class="m">g</span> over its result, merge the two layers of effect.</figcaption>
+</figure>
+<p>Now the point of the whole construction. Define the <strong>Kleisli category</strong> <span class="m">Kl(T)</span>: same objects as <span class="m"><span class="cat">𝒞</span></span>, but an arrow <span class="m">A ⇸ B</span> is an arrow <span class="m">A → T B</span> of <span class="m"><span class="cat">𝒞</span></span>, composed as above, with <span class="m">η<sub>A</sub> : A → T A</span> as the identity. For this to be a <em>category</em> — Lesson 1&rsquo;s two laws — you need exactly: composition associative, and <span class="m">η</span> neutral on both sides. Unwind those requirements (Exercise 7) and they are, one for one, <strong>the monad laws</strong>. The associativity square is what makes chained effectful calls bracket-independent; the unit laws are what make a pure value a no-op in a pipeline.</p>
+<p>Two categories from earlier lessons whose arrows were not functions turn out to be Kleisli categories of monads on <span class="m"><span class="cat">Set</span></span>.</p>
+<ul>
+<li><strong>Maybe.</strong> An arrow <span class="m">A → B + 1</span> is a <em>partial function</em> from <span class="m">A</span> to <span class="m">B</span>: where it returns <span class="m">⊥</span>, it is undefined. The Kleisli composite of two partial functions is defined exactly where both steps are. So <span class="m">Kl(Maybe)</span> is the category <span class="m"><span class="cat">Par</span></span> of sets and partial functions from Lesson 4.</li>
+<li><strong>Power set.</strong> An arrow <span class="m">f : A → P B</span> is a <em>relation</em> from <span class="m">A</span> to <span class="m">B</span>: <span class="m">a</span> is related to the elements of <span class="m">f(a)</span>. The Kleisli composite sends <span class="m">a</span> to the union of the sets <span class="m">g(b)</span> for <span class="m">b</span> in <span class="m">f(a)</span> — the set of all <span class="m">c</span> reachable from <span class="m">a</span> through some <span class="m">b</span> — which is the composite of relations. The identity <span class="m">η</span> relates each element to itself alone. So <span class="m">Kl(P)</span> is the category <span class="m"><span class="cat">Rel</span></span> of Lesson 1.</li>
+</ul>
+<p>For List the Kleisli arrows are functions with several outcomes, in order and with repetition (Exercise 5); for Writer they are functions that also emit a log, and composition concatenates the logs.</p>
+<h3 class="sub">Bind</h3>
+<p>Programmers usually meet the package in another form. For <span class="m">g : A → T B</span>, put</p>
+<p class="eq"><span class="m">g<sup>*</sup> = μ<sub>B</sub> ∘ T g : T A → T B,</span></p>
+<p>the <em>extension</em> of <span class="m">g</span> to inputs that already carry an effect. Then Kleisli composition is <span class="m">g ∘<sub>K</sub> f = g<sup>*</sup> ∘ f</span>, and the operation <span class="m">m ↦ g<sup>*</sup>(m)</span>, written <code>m &gt;&gt;= g</code> and pronounced <em>bind</em>, is Kleisli composition with the first argument already evaluated. Haskell&rsquo;s <code>do</code>-notation and Rust&rsquo;s <code>and_then</code> are this operation. JavaScript&rsquo;s promise chaining is a close relative, though promises flatten themselves automatically and so do not obey the laws in every case. The unit and the extension operation determine the monad, and the three laws can be restated in terms of them (Exercise 8).</p>
+<h3 class="sub">The first answer to the converse question</h3>
+<p>Does every monad come from an adjunction? The Kleisli category gives one.</p>
+<div class="box thm">
+<span class="tag">Theorem · The Kleisli adjunction</span>
+<p>For a monad <span class="m">T</span> on <span class="m"><span class="cat">𝒞</span></span> there is an adjunction <span class="m">F<sub>T</sub> ⊣ U<sub>T</sub></span> between <span class="m"><span class="cat">𝒞</span></span> and <span class="m">Kl(T)</span> whose monad is <span class="m">T</span>. The functor <span class="m">F<sub>T</sub></span> is the identity on objects and sends <span class="m">f : A → B</span> to <span class="m">η<sub>B</sub> ∘ f</span>. The functor <span class="m">U<sub>T</sub></span> sends an object <span class="m">A</span> to <span class="m">T A</span> and a Kleisli arrow <span class="m">g : A → T B</span> to its extension <span class="m">g<sup>*</sup> : T A → T B</span>.</p>
+</div>
+<p><strong>Proof.</strong> That <span class="m">U<sub>T</sub></span> preserves identities and composition is the content of the laws for extension in Exercise 8, and <span class="m">F<sub>T</sub></span> is a functor by the naturality of <span class="m">η</span> and a unit law. An arrow <span class="m">F<sub>T</sub> A ⇸ B</span> of the Kleisli category is, by definition, an arrow <span class="m">A → T B</span> of <span class="m"><span class="cat">𝒞</span></span>; and <span class="m">T B</span> is <span class="m">U<sub>T</sub> B</span>. So</p>
+<p class="eq"><span class="m">Kl(T)(F<sub>T</sub> A, B) = <span class="cat">𝒞</span>(A, U<sub>T</sub> B),</span></p>
+<p>and the bijection demanded by the definition of an adjunction is the identity function. It is natural in both variables. Finally <span class="m">U<sub>T</sub> F<sub>T</sub> A = T A</span>, and on arrows <span class="m">U<sub>T</sub> F<sub>T</sub> f = (η<sub>B</sub> ∘ f)<sup>*</sup> = μ<sub>B</sub> ∘ T η<sub>B</sub> ∘ T f = T f</span>, by a unit law: the composite <span class="m">U<sub>T</sub> ∘ F<sub>T</sub></span> is <span class="m">T</span>, and one checks in the same way that the unit and multiplication of this adjunction are <span class="m">η</span> and <span class="m">μ</span>. ∎</p>
+<p>So the answer is yes. The functor <span class="m">F<sub>T</sub></span> deserves a second look in the two examples above: it turns a function into a partial function that happens to be defined everywhere, and into the relation that is its graph. Lesson 1 already met the second of these: it is how <span class="m"><span class="cat">Set</span></span> sits inside <span class="m"><span class="cat">Rel</span></span>.</p>
+</div>
+</section>
+<section class="section" id="s6">
+<div class="measure">
+<div class="sec-no">§6 — Algebras</div>
+<h2>Where the structure lives</h2>
+<p>A monad describes a <em>kind</em> of structure; an <strong>algebra</strong> for it is a place where that structure is actually realized. The definition is one arrow and two laws:</p>
+<div class="box def">
+<span class="tag">Definition · T-algebra</span>
+<p>An <strong>algebra</strong> for a monad <span class="m">(T, η, μ)</span> is an object <span class="m">X</span> with an arrow <span class="m">a : T X → X</span> (the <em>structure map</em>) such that <span class="m">a ∘ η<sub>X</sub> = id<sub>X</sub></span> and <span class="m">a ∘ μ<sub>X</sub> = a ∘ T a</span>. A <strong>homomorphism</strong> from an algebra <span class="m">(X, a)</span> to an algebra <span class="m">(Y, b)</span> is an arrow <span class="m">h : X → Y</span> with <span class="m">h ∘ a = b ∘ T h</span>.</p>
+</div>
+<figure>
+<div class="board" data-diagram="algebra" aria-label="The algebra law as a square: from T squared X to T X by mu or by T of a, and then to X by a; the two composites agree.">
+<svg></svg>
+</div>
+<figcaption>The second algebra law: merge the layers and then evaluate, or evaluate inside and then evaluate again.</figcaption>
+</figure>
+<p>Read <span class="m">a</span> as an <em>evaluator</em>: it collapses a <span class="m">T</span>-shaped bundle of <span class="m">X</span>&rsquo;s to a single <span class="m">X</span>. The first law says a trivially-wrapped value evaluates to itself; the second says a two-layer bundle evaluates to the same answer whether you merge the layers first (<span class="m">μ</span>) or evaluate the inner bundles first (<span class="m">T a</span>). A homomorphism is an arrow that commutes with evaluation.</p>
+<p>For the List monad the picture is this. Think of a list <span class="m">[x<sub>1</sub>, …, x<sub>n</sub>]</span> as an unevaluated product, an <em>expression</em>. A structure map <span class="m">a</span> assigns a value to every expression. The unit law says the one-term expression <span class="m">[x]</span> has the value <span class="m">x</span>. The second law says that an expression built from sub-expressions may be evaluated in stages. An evaluator with these two properties is <em>exactly a monoid structure</em> on <span class="m">X</span>: put <span class="m">x · y = a([x, y])</span> and <span class="m">e = a([])</span>, and conversely let <span class="m">a</span> multiply a list out (Exercise 10). And a homomorphism of algebras is a homomorphism of monoids. This closes the loop that the course opened when Lesson 1 called monoids one-object categories:</p>
+<p class="eq"><span class="m">the algebras of the list monad are the monoids.</span></p>
+<p>The same reading works for every monad in the gallery.</p>
+<div class="tablewrap"><table class="zoo">
+<tr><th>Monad</th><th>An algebra is</th><th>because the structure map</th></tr>
+<tr><td>List</td><td>a monoid</td><td>multiplies out a list</td></tr>
+<tr><td>Maybe</td><td>a set with a chosen element — a pointed set</td><td>must say where <span class="m">⊥</span> goes; nothing else is free (Exercise 12)</td></tr>
+<tr><td>Writer, for <span class="m">M</span></td><td>a set on which <span class="m">M</span> acts</td><td>applies a monoid element to a point</td></tr>
+<tr><td>Power set</td><td>a poset in which every subset has a join</td><td>takes the join of a subset</td></tr>
+<tr><td>closure <span class="m">c</span> on a poset</td><td>a closed element, <span class="m">c(x) = x</span></td><td>is the inequality <span class="m">c(x) ≤ x</span></td></tr>
+</table></div>
+<p>So a monad is a <em>theory</em>, and its algebras are the <em>models</em> of the theory. <span class="m">T X</span> is the set of all expressions that the theory can form from the elements of <span class="m">X</span>; the unit regards an element as an expression; the multiplication substitutes expressions into an expression; and an algebra is a set in which every expression has a value.</p>
+<h3 class="sub">Free algebras, and the second answer</h3>
+<p>Every monad has algebras, whatever the category: for each object <span class="m">X</span>, the pair <span class="m">(T X, μ<sub>X</sub>)</span> is one. Its two laws are a unit law and the associativity law of the monad. It is called the <strong>free algebra</strong> on <span class="m">X</span>, and the name is earned: for any algebra <span class="m">(Y, b)</span> and any arrow <span class="m">f : X → Y</span>, there is exactly one homomorphism <span class="m">(T X, μ<sub>X</sub>) → (Y, b)</span> that restricts to <span class="m">f</span> along <span class="m">η<sub>X</sub></span>, namely <span class="m">b ∘ T f</span> (Exercise 13). For lists this is the statement, from the first page of Lesson 8, that a function on generators extends to exactly one homomorphism.</p>
+<p>The algebras of <span class="m">T</span> and their homomorphisms form a category, written <span class="m"><span class="cat">𝒞</span><sup>T</sup></span> and called the <strong>Eilenberg–Moore category</strong> of the monad.</p>
+<div class="box thm">
+<span class="tag">Theorem · The Eilenberg–Moore adjunction</span>
+<p>The forgetful functor <span class="m">U<sup>T</sup> : <span class="cat">𝒞</span><sup>T</sup> → <span class="cat">𝒞</span></span>, which sends <span class="m">(X, a)</span> to <span class="m">X</span>, has a left adjoint <span class="m">F<sup>T</sup></span>, which sends <span class="m">X</span> to the free algebra <span class="m">(T X, μ<sub>X</sub>)</span>. The monad of the adjunction <span class="m">F<sup>T</sup> ⊣ U<sup>T</sup></span> is <span class="m">T</span>.</p>
+</div>
+<p><strong>Proof.</strong> The universal property of the free algebra is a bijection between homomorphisms <span class="m">(T X, μ<sub>X</sub>) → (Y, b)</span> and arrows <span class="m">X → Y</span>, sending <span class="m">h</span> to <span class="m">h ∘ η<sub>X</sub></span>, with inverse <span class="m">f ↦ b ∘ T f</span>. It is natural in both variables, so <span class="m">F<sup>T</sup> ⊣ U<sup>T</sup></span>, with unit <span class="m">η</span>. The composite <span class="m">U<sup>T</sup> F<sup>T</sup></span> sends <span class="m">X</span> to <span class="m">T X</span>. The counit at an algebra <span class="m">(Y, b)</span> is the homomorphism corresponding to <span class="m">id<sub>Y</sub></span>, which is <span class="m">b</span> itself; at a free algebra <span class="m">(T X, μ<sub>X</sub>)</span> it is <span class="m">μ<sub>X</sub></span>. So the multiplication <span class="m">U<sup>T</sup> ε F<sup>T</sup></span> is <span class="m">μ</span>. ∎</p>
+<p>For the list monad, <span class="m"><span class="cat">𝒞</span><sup>T</sup></span> is the category of monoids, <span class="m">U<sup>T</sup></span> is the forgetful functor, and <span class="m">F<sup>T</sup></span> is the free monoid functor: the Eilenberg–Moore adjunction of the list monad <em>is</em> the adjunction that Lesson 8 started from. The monad remembered everything.</p>
+<h3 class="sub">Two answers, compared</h3>
+<p>A monad thus comes from at least two adjunctions, and they sit at opposite extremes. The Kleisli category is as small as it can be: it has no objects beyond those of <span class="m"><span class="cat">𝒞</span></span>, and no arrows beyond those the monad requires. The Eilenberg–Moore category is as large as it can be: it contains every algebra. They are related in a simple way. A Kleisli arrow <span class="m">A → T B</span> extends to a homomorphism of free algebras <span class="m">(T A, μ<sub>A</sub>) → (T B, μ<sub>B</sub>)</span>, and every homomorphism between free algebras arises from exactly one Kleisli arrow. So</p>
+<p class="eq"><span class="m">Kl(T) &nbsp;is equivalent to&nbsp; the full subcategory of <span class="cat">𝒞</span><sup>T</sup> on the free algebras.</span></p>
+<p>Any other adjunction <span class="m">F ⊣ U</span> with the same monad lies in between: there are comparison functors <span class="m">Kl(T) → <span class="cat">𝒟</span> → <span class="cat">𝒞</span><sup>T</sup></span>, compatible with all the functors in sight. The second one sends an object <span class="m">Y</span> of <span class="m"><span class="cat">𝒟</span></span> to the algebra <span class="m">(U Y, U ε<sub>Y</sub>)</span>.</p>
+<p>Sometimes the two extremes coincide. Every pointed set is a free algebra for Maybe — remove the base point, and add it back — so for that monad the Kleisli category is equivalent to the whole category of algebras. That is the equivalence <span class="m"><span class="cat">Par</span> ≃ <span class="cat">Set<sub>∗</sub></span></span> of Lesson 4: partial functions on one side, the Kleisli category; pointed sets on the other, the algebras.</p>
+</div>
+</section>
+<section class="section" id="byhand">
+<div class="measure">
+<div class="sec-no">§7 — Monads by hand</div>
+<h2>Flatten, compose and evaluate on paper</h2>
+<p>The laws of a monad and of an algebra are equations between functions, and for the monads on <span class="m"><span class="cat">Set</span></span> they can be tested on particular values. Five computations.</p>
+<h3 class="sub">The power set monad on one value</h3>
+<p>Let <span class="m">X = {1, 2, 3}</span>. The multiplication takes a set of subsets to its union: <span class="m">μ({{1}, {1, 2}, ∅}) = {1, 2}</span>. For the unit laws take <span class="m">S = {1, 3}</span>. Wrapping outside gives <span class="m">{{1, 3}}</span>, whose union is <span class="m">{1, 3}</span>. Wrapping inside — applying <span class="m">P(η)</span>, the direct image of the singleton map — gives <span class="m">{{1}, {3}}</span>, whose union is again <span class="m">{1, 3}</span>.</p>
+<p>For associativity we need a set of sets of subsets: take the two-member family consisting of <span class="m">{{1}, {2}}</span> and <span class="m">{{2, 3}}</span>.</p>
+<div class="tablewrap"><table class="tbl">
+<tr><th></th><th>first step</th><th>then μ</th></tr>
+<tr><th>outer layers first</th><td>{ {1}, {2}, {2, 3} }</td><td>{1, 2, 3}</td></tr>
+<tr><th>inner layers first</th><td>{ {1, 2}, {2, 3} }</td><td>{1, 2, 3}</td></tr>
+</table></div>
+<h3 class="sub">Kleisli composition is composition of relations</h3>
+<p>Lesson 1&rsquo;s Exercise 17 composed two relations: <span class="m">R</span> from <span class="m">{1, 2}</span> to <span class="m">{a, b, c}</span>, with pairs <span class="m">(1, a), (1, b), (2, c)</span>; and <span class="m">S</span> from <span class="m">{a, b, c}</span> to <span class="m">{x, y}</span>, with pairs <span class="m">(a, x), (b, y), (c, y)</span>. As Kleisli arrows for the power set monad they are the functions</p>
+<p class="eq"><span class="m">f(1) = {a, b}, &nbsp; f(2) = {c}; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g(a) = {x}, &nbsp; g(b) = {y}, &nbsp; g(c) = {y}.</span></p>
+<p>The Kleisli composite runs <span class="m">f</span>, applies <span class="m">g</span> to each result, and takes the union:</p>
+<p class="eq"><span class="m">(g ∘<sub>K</sub> f)(1) = g(a) ∪ g(b) = {x, y}, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (g ∘<sub>K</sub> f)(2) = g(c) = {y}.</span></p>
+<p>As a relation that is <span class="m">(1, x), (1, y), (2, y)</span> — the composite <span class="m">S ∘ R</span> found in Lesson 1.</p>
+<h3 class="sub">Partial functions</h3>
+<p>Let <span class="m">f</span> be &ldquo;subtract one,&rdquo; defined on the natural numbers <span class="m">n ≥ 1</span>, and <span class="m">g</span> be &ldquo;halve,&rdquo; defined on the even ones. As Kleisli arrows for Maybe they return <span class="m">⊥</span> where they are undefined. The composite <span class="m">g ∘<sub>K</sub> f</span> at <span class="m">3</span>: <span class="m">f(3) = 2</span>, and <span class="m">g(2) = 1</span>. At <span class="m">4</span>: <span class="m">f(4) = 3</span>, and <span class="m">g(3) = ⊥</span>. At <span class="m">0</span>: <span class="m">f(0) = ⊥</span>, and the extension of <span class="m">g</span> sends <span class="m">⊥</span> to <span class="m">⊥</span> without consulting <span class="m">g</span>. A failure at any stage is a failure of the whole.</p>
+<h3 class="sub">An algebra, and an evaluator that is not one</h3>
+<p>Let <span class="m">a</span> be the sum of a list of integers. It is a structure map for the list monad: <span class="m">a([x]) = x</span>, and on the two-layer value <span class="m">[[1, 2], [3]]</span>,</p>
+<p class="eq"><span class="m">a(μ([[1, 2], [3]])) = a([1, 2, 3]) = 6,</span></p>
+<p class="eq"><span class="m">a(T a([[1, 2], [3]])) = a([3, 3]) = 6.</span></p>
+<p>The corresponding monoid is the integers under addition. Now let <span class="m">m</span> be the <em>average</em> of a non-empty list of numbers. The unit law holds, since the average of <span class="m">[x]</span> is <span class="m">x</span>. But</p>
+<p class="eq"><span class="m">m(μ([[1, 2], [3]])) = m([1, 2, 3]) = 2,</span></p>
+<p class="eq"><span class="m">m(T m([[1, 2], [3]])) = m([1.5, 3]) = 2.25.</span></p>
+<p>The average of the averages is not the average. So the average is not an algebra: there is no associative operation whose repeated product it is, and indeed the obvious candidate <span class="m">x · y = (x + y)/2</span> is not associative. (The average of an empty list is undefined, so the monad in question is strictly that of <em>non-empty</em> lists, whose algebras are semigroups — monoids without the unit. The computation is the same.)</p>
+<h3 class="sub">The algebras of a closure operator</h3>
+<p>In the group <span class="m">ℤ/6</span>, let <span class="m">c(S)</span> be the subgroup generated by a subset <span class="m">S</span>: <span class="m">c({2}) = {0, 2, 4}</span> and <span class="m">c({2, 3})</span> is all of <span class="m">ℤ/6</span>. This is a monad on the poset of subsets of <span class="m">ℤ/6</span>. An algebra is a subset <span class="m">S</span> with <span class="m">c(S) ⊆ S</span>: a subset that already contains everything it generates. There are four — <span class="m">{0}</span>, <span class="m">{0, 3}</span>, <span class="m">{0, 2, 4}</span> and <span class="m">ℤ/6</span> — the four subgroups. The algebras of &ldquo;the subgroup generated by&rdquo; are the subgroups.</p>
+<details class="pylab">
+<summary><span class="badge">Optional · Python</span><span class="t">Monad laws by enumeration</span></summary>
+<div class="pybody">
+<p>The list monad&rsquo;s functor, unit and multiplication have all appeared in this course before — <code>fmap</code> in Lesson 2, <code>flatten</code> in Lesson 3 — and the laws can be checked over a systematically generated cube of nested lists, with Maybe done fully exhaustively alongside:</p>
+<div class="code">
+      <div class="code-bar"><span class="fname"><b>monad_laws.py</b> — List and Maybe, laws by enumeration</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import product as cartesian
+
+eta  = lambda x: [x]
+mu   = lambda xss: [x for xs in xss for x in xs]     # Lesson 3&#x27;s flatten
+fmap = lambda f, xs: [f(x) for x in xs]
+
+def lists_over(base, maxlen=2):
+    out = [[]]
+    for k in range(1, maxlen + 1):
+        out += [list(t) for t in cartesian(base, repeat=k)]
+    return out
+
+T1 = lists_over([0, 1]); T2 = lists_over(T1); T3 = lists_over(T2)
+
+assert all(mu(mu(x)) == mu(fmap(mu, x)) for x in T3)          # associativity
+assert all(mu(eta(x)) == x == mu(fmap(eta, x)) for x in T1)   # unit laws
+print(f&quot;List : associativity on {len(T3)} T\u00b3 values, units on {len(T1)} — pass&quot;)
+
+J     = lambda x: (&#x27;Just&#x27;, x)                        # Maybe&#x27;s eta
+fmapM = lambda f, m: None if m is None else J(f(m[1]))
+muM   = lambda mm: None if mm is None else mm[1]     # collapse one layer
+
+M1 = [None] + [J(x) for x in (0, 1)]
+M2 = [None] + [J(m) for m in M1]
+M3 = [None] + [J(m) for m in M2]
+
+assert all(muM(muM(m)) == muM(fmapM(muM, m)) for m in M3)
+assert all(muM(J(m)) == m == muM(fmapM(J, m)) for m in M1)
+print(f&quot;Maybe: associativity on {len(M3)} T\u00b3 values, units on {len(M1)} — pass&quot;)</code></pre>
+      <div class="out"><span class="lbl">output</span>List : associativity on 3307 T³ values, units on 7 — pass
+Maybe: associativity on 5 T³ values, units on 3 — pass</div>
+    </div>
+<p>For Maybe the check is exhaustive: there are only five triple-layer values over a two-point base, and all five satisfy the law. For List, 3,307 systematically generated triples of nesting all agree that outer-first and inner-first flattening coincide.</p>
+<p>The power set monad can be checked exhaustively too, over a two-element base. A set of sets of subsets of a two-element set is one of <span class="m">2<sup>16</sup></span> = 65,536 values.</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>powerset_monad.py</b> — unions of unions</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from itertools import combinations
+
+def powerset(xs):
+    xs = list(xs)
+    return [frozenset(c) for r in range(len(xs) + 1)
+            for c in combinations(xs, r)]
+
+etaP  = lambda x: frozenset([x])                        # singleton
+muP   = lambda ss: frozenset(x for s in ss for x in s)  # union
+fmapP = lambda f, s: frozenset(f(x) for x in s)         # direct image
+
+P1 = powerset([0, 1]); P2 = powerset(P1); P3 = powerset(P2)
+assert all(muP(muP(a)) == muP(fmapP(muP, a)) for a in P3)
+assert all(muP(etaP(s)) == s == muP(fmapP(etaP, s)) for s in P1)
+print(f&quot;Powerset: associativity on {len(P3)} values,&quot;,
+      f&quot;units on {len(P1)} — pass&quot;)</code></pre>
+  <div class="out"><span class="lbl">output</span>Powerset: associativity on 65536 values, units on 4 — pass</div>
+</div>
+<p>Next, the claim of §5 that Kleisli composition for this monad is composition of relations, on the two relations of Lesson 1:</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>kleisli_rel.py</b> — relations are Kleisli arrows</span><button class="copy" type="button">Copy</button></div>
+<pre><code>def kleisli(g, f):
+    &quot;g after f, for the power set monad&quot;
+    return lambda a: muP(fmapP(g, f(a)))
+
+def compose_rel(S, R):
+    &quot;S after R, for relations given as sets of pairs&quot;
+    return {(a, c) for (a, b) in R for (b2, c) in S if b == b2}
+
+R = {(1, &#x27;a&#x27;), (1, &#x27;b&#x27;), (2, &#x27;c&#x27;)}
+S = {(&#x27;a&#x27;, &#x27;x&#x27;), (&#x27;b&#x27;, &#x27;y&#x27;), (&#x27;c&#x27;, &#x27;y&#x27;)}
+f = lambda a: frozenset(b for (a2, b) in R if a2 == a)
+g = lambda b: frozenset(c for (b2, c) in S if b2 == b)
+
+graph = {(a, c) for a in (1, 2) for c in kleisli(g, f)(a)}
+print(&quot;Kleisli composite   :&quot;, sorted(graph))
+print(&quot;relational composite:&quot;, sorted(compose_rel(S, R)))</code></pre>
+  <div class="out"><span class="lbl">output</span>Kleisli composite   : [(1, 'x'), (1, 'y'), (2, 'y')]
+relational composite: [(1, 'x'), (1, 'y'), (2, 'y')]</div>
+</div>
+<p>And the two evaluators of the by-hand section, tested on every two-layer list the first block generated:</p>
+<div class="code">
+  <div class="code-bar"><span class="fname"><b>evaluators.py</b> — the sum is an algebra, the average is not</span><button class="copy" type="button">Copy</button></div>
+<pre><code>from fractions import Fraction
+
+avg = lambda xs: Fraction(sum(xs), len(xs))       # an exact average
+T2 = [xss for xss in lists_over(lists_over([0, 1]))
+      if xss and all(xss)]            # non-empty lists of non-empty lists
+ok_sum = all(sum(mu(xss)) == sum(fmap(sum, xss)) for xss in T2)
+bad    = [xss for xss in T2 if avg(mu(xss)) != avg(fmap(avg, xss))]
+print(&quot;sum satisfies the algebra law on all&quot;, len(T2), &quot;values:&quot;, ok_sum)
+print(&quot;the average fails it on&quot;, len(bad), &quot;of them; first:&quot;, bad[0])</code></pre>
+  <div class="out"><span class="lbl">output</span>sum satisfies the algebra law on all 42 values: True
+the average fails it on 12 of them; first: [[0], [0, 1]]</div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section class="section" id="deeper">
+<div class="measure">
+<div class="sec-no">Going deeper</div>
+<h2>Which categories are categories of algebras?</h2>
+<p>For the list monad, the Eilenberg–Moore construction gave back the category of monoids. Is that typical? Start from any adjunction <span class="m">F ⊣ U</span> between <span class="m"><span class="cat">𝒞</span></span> and <span class="m"><span class="cat">𝒟</span></span>, form its monad <span class="m">T</span>, and compare <span class="m"><span class="cat">𝒟</span></span> with <span class="m"><span class="cat">𝒞</span><sup>T</sup></span> by the functor of §6, which sends <span class="m">Y</span> to the algebra <span class="m">(U Y, U ε<sub>Y</sub>)</span>. When this comparison is an equivalence, the functor <span class="m">U</span> is called <strong>monadic</strong>: the category <span class="m"><span class="cat">𝒟</span></span> can be reconstructed from the monad alone, as its category of algebras.</p>
+<p>The forgetful functors from monoids, groups, rings and vector spaces to <span class="m"><span class="cat">Set</span></span> are all monadic. So is every category of structures defined by operations and equations: the monad <span class="m">T X</span> is &ldquo;all expressions in the elements of <span class="m">X</span>, up to the equations,&rdquo; exactly as for lists. This is the sense in which monads are a category-theoretic account of algebra.</p>
+<p>Other forgetful functors are not monadic, and the failure is instructive. The underlying-set functor from preorders has the discrete order as its left adjoint (Lesson 8, Exercise 17). The composite sends a set to itself: the monad is the identity monad, whose algebras are just sets. All the order structure has been lost. The same happens for topological spaces. Order and topology are not algebraic structure on a set, in the sense of operations and equations — and the monad detects this.</p>
+<p>There are surprises in the other direction. The category of compact Hausdorff spaces <em>is</em> monadic over <span class="m"><span class="cat">Set</span></span>: its monad sends a set to the set of ultrafilters on it, and an algebra is a rule assigning a limit point to every ultrafilter. Which functors are monadic is settled by a theorem of Beck, the <em>monadicity theorem</em>, which is one of the natural next things to learn.</p>
+<p>Everything in this lesson can be dualized. An endofunctor with a counit <span class="m">T ⇒ Id</span> and a comultiplication <span class="m">T ⇒ T<sup>2</sup></span> is a <em>comonad</em>; every adjunction <span class="m">F ⊣ U</span> gives one on <span class="m"><span class="cat">𝒟</span></span>, namely <span class="m">F ∘ U</span>. Where monads model computations that produce effects, comonads model computations that consume a context.</p>
+</div>
+</section>
+<section class="section" id="exercises">
+<div class="measure">
+<div class="sec-no">§8 — Exercises</div>
+<h2>Fifteen problems to finish the course</h2>
+<p>Exercises 4 and 7 are the capstones — the first connects this lesson to Lesson 8, the second connects it back to Lesson 1. Between them they close the course&rsquo;s longest arcs. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercises 2, 5 and 11 have optional Python parts; everything else is pencil and paper.</p>
+
+<div class="exgroup">
+  <h3>The definition and its examples</h3>
+  <p class="exmeta"><a href="#s2">§2</a>–<a href="#s4">§4</a> · Exercises 1–4</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">examples</span></div>
+      <div class="prob-body">
+        <p>The Maybe monad by cases. With <span class="m">T X = X + 1</span> written as <span class="m">None</span>, for the extra element, or <span class="m">Just x</span>, for an element <span class="m">x</span> of <span class="m">X</span>, and with <span class="m">η = Just</span>, <span class="m">μ(None) = None</span>, <span class="m">μ(Just m) = m</span>:</p>
+        <ol>
+          <li>Verify the two unit laws by exhausting the cases of a value <span class="m">m ∈ T X</span>.</li>
+          <li>Verify associativity by exhausting the cases of a value in <span class="m">T³ X</span>. How many case-shapes are there, and which single line of the definition does all the work?</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> <span class="m">μ(η(m)) = μ(Just(m)) = m</span> — one case, done. For <span class="m">μ(T η(m))</span>: if <span class="m">m = None</span>, <span class="m">Tη</span> maps it to <span class="m">None</span> and <span class="m">μ(None) = None = m</span>; if <span class="m">m = Just(x)</span>, <span class="m">Tη(m) = Just(Just(x))</span> and <span class="m">μ</span> peels a layer: <span class="m">Just(x) = m</span>. ✓</p>
+          <p><strong>(b)</strong> A <span class="m">T³</span> value has four shapes: <span class="m">None</span>, <span class="m">J(None)</span>, <span class="m">J(J(None))</span>, <span class="m">J(J(J(x)))</span> — the exhaustive list of the lab in §7, with the last shape once per base element. Chase each through <span class="m">μ ∘ μT</span> and <span class="m">μ ∘ Tμ</span>: e.g. <span class="m">J(J(J(x)))</span> goes to <span class="m">J(J(x))</span> either way, then to <span class="m">J(x)</span>; and any <span class="m">None</span> at any depth propagates to <span class="m">None</span> along both paths. The single line doing all the work is <span class="m">μ(Just m) = m</span> — &ldquo;peel exactly one layer&rdquo; — which cannot notice whether the layer it peels is outer or inner. Failure is absorbing, success is transparent: that is the whole personality of Maybe, and the laws are its formal statement.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>The Writer monad, and the invoice it sends to Lesson 1. Let <span class="m">M</span> be a monoid with operation <span class="m">·</span> and unit <span class="m">e</span>, and let <span class="m">T X = X × M</span>, with <span class="m">η(x) = (x, e)</span> and <span class="m">μ((x, v), w) = (x, w · v)</span>.</p>
+<ol>
+<li>For the monoid <span class="m">(ℕ, +, 0)</span>, compute both sides of the associativity law on the three-layer value <span class="m">(((x, 2), 3), 4)</span>, and both unit laws on <span class="m">(x, 5)</span>.</li>
+<li>Repeat the computation for an arbitrary monoid, on <span class="m">(((x, u), v), w)</span> and on <span class="m">(x, w)</span>. Exactly which monoid axiom does each monad law consume?</li>
+<li>What would break if the &ldquo;log combiner&rdquo; were subtraction of numbers?</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<p>Implement the Writer monad for the monoid of strings under concatenation — <code>etaW</code>, <code>muW</code>, and <code>fmapW</code> acting on the first component — and verify the three laws on an enumerated grid of values.</p>
+</div>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+<p><strong>By hand. (a)</strong> Outer layers first: <span class="m">μ<sub>T X</sub></span> treats <span class="m">((x, 2), 3)</span> as the value and <span class="m">4</span> as the outer log, giving <span class="m">((x, 2), 4 + 3)</span>, and then <span class="m">μ</span> gives <span class="m">(x, 7 + 2) = (x, 9)</span>. Inner layers first: <span class="m">T μ</span> multiplies inside the value, giving <span class="m">((x, 3 + 2), 4)</span>, and then <span class="m">(x, 4 + 5) = (x, 9)</span>. Units: <span class="m">η<sub>T X</sub>(x, 5) = ((x, 5), 0)</span>, which <span class="m">μ</span> sends to <span class="m">(x, 0 + 5)</span>; and <span class="m">T η(x, 5) = ((x, 0), 5)</span>, which <span class="m">μ</span> sends to <span class="m">(x, 5 + 0)</span>.</p>
+<p><strong>(b)</strong> The two sides of associativity are <span class="m">(x, (w · v) · u)</span> and <span class="m">(x, w · (v · u))</span>: the monad&rsquo;s <strong>associativity</strong> is the monoid&rsquo;s. The unit laws come out as <span class="m">e · w = w</span> and <span class="m">w · e = w</span>: the monoid&rsquo;s two-sided unit. A perfect bill: three laws bought, three axioms paid.</p>
+<p><strong>(c)</strong> With subtraction, <span class="m">(4 − 3) − 2 = −1</span> but <span class="m">4 − (3 − 2) = 3</span>, so associativity fails; and <span class="m">0 − 5 ≠ 5</span>, so a unit law fails too. Lesson 1 defined a monoid as a one-object category; nine lessons later, its laws turn out to be exactly the price of composable logging.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<div class="code" style="margin-top:2px">
+            <div class="code-bar"><span class="fname"><b>writer.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>etaW  = lambda x: (x, &quot;&quot;)
+fmapW = lambda f, p: (f(p[0]), p[1])
+def muW(pp):
+    (x, inner), outer = pp
+    return (x, outer + inner)
+
+logs = [&quot;&quot;, &quot;a&quot;, &quot;bc&quot;]
+W1 = [(x, w) for x in (0, 1) for w in logs]
+W2 = [(p, w) for p in W1 for w in logs]
+W3 = [(q, w) for q in W2 for w in logs]
+
+assert all(muW(muW(q)) == muW(fmapW(muW, q)) for q in W3)
+assert all(muW(etaW(p)) == p == muW(fmapW(etaW, p)) for p in W1)
+print(f&quot;Writer: associativity on {len(W3)} values, units on {len(W1)} — pass&quot;)</code></pre>
+            <div class="out"><span class="lbl">output</span>Writer: associativity on 54 values, units on 6 — pass</div>
+          </div>
+<p style="margin-top:14px">Replace <code>outer + inner</code> with subtraction on numeric logs and the first assert fails, as part (c) predicts.</p>
+</div>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>One functor, several candidate monads. Let <span class="m">T X = X × X</span> on <span class="m"><span class="cat">Set</span></span>, with <span class="m">η(x) = (x, x)</span>. An element of <span class="m">T T X</span> is a pair of pairs <span class="m">((a, b), (c, d))</span>. Consider three candidates for the multiplication, each described by what it makes of that element:</p>
+<p class="eq"><span class="m">μ<sub>1</sub> gives (a, d), &nbsp;&nbsp;&nbsp;&nbsp; μ<sub>2</sub> gives (a, b), &nbsp;&nbsp;&nbsp;&nbsp; μ<sub>3</sub> gives (a, c).</span></p>
+<ol>
+<li>Work out what <span class="m">η<sub>T X</sub></span> and <span class="m">T η<sub>X</sub></span> do to a pair <span class="m">(a, b)</span>.</li>
+<li>Test the two unit laws for each candidate.</li>
+<li>For the candidate that survives, check associativity on a general element of <span class="m">T T T X</span>.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">η<sub>T X</sub>(a, b) = ((a, b), (a, b))</span>: duplicate the whole pair. <span class="m">T η<sub>X</sub> (a, b) = ((a, a), (b, b))</span>: duplicate each entry.</p>
+<p><strong>(b)</strong> <span class="m">μ<sub>1</sub></span>: from <span class="m">((a, b), (a, b))</span> it returns <span class="m">(a, b)</span>, and from <span class="m">((a, a), (b, b))</span> it returns <span class="m">(a, b)</span>. Both unit laws hold. <span class="m">μ<sub>2</sub></span>: the first law holds, but from <span class="m">((a, a), (b, b))</span> it returns <span class="m">(a, a)</span> — the second fails. <span class="m">μ<sub>3</sub></span>: from <span class="m">((a, b), (a, b))</span> it returns <span class="m">(a, a)</span> — the first fails.</p>
+<p><strong>(c)</strong> Write an element of <span class="m">T T T X</span> as <span class="m">(((a, b), (c, d)), ((e, f), (g, h)))</span>. Outer layers first: <span class="m">μ<sub>1</sub></span> at <span class="m">T X</span> keeps the first entry of the first pair and the second entry of the second, giving <span class="m">((a, b), (g, h))</span>, and then <span class="m">(a, h)</span>. Inner layers first: apply <span class="m">μ<sub>1</sub></span> to each half, giving <span class="m">((a, d), (e, h))</span>, and then <span class="m">(a, h)</span>. Equal.</p>
+<p>So only the &ldquo;diagonal&rdquo; multiplication <span class="m">μ<sub>1</sub></span> makes these data a monad. It is the Reader monad of §4 for a two-element set <span class="m">A</span>: a pair is a function from <span class="m">{0, 1}</span>, and <span class="m">μ<sub>1</sub></span> is <span class="m">h ↦ (i ↦ h(i)(i))</span>. The moral is the warning of §4: a unit and a multiplication of the right types do not make a monad until the laws have been checked.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 4</span><span class="tier">arrows-only</span></div>
+      <div class="prob-body">
+        <p>The Lesson 8 connection, in full. Let <span class="m">F ⊣ U</span> with unit <span class="m">η</span> and counit <span class="m">ε</span>, and set <span class="m">T = UF</span>, <span class="m">μ = UεF</span> (components <span class="m">μ<sub>X</sub> = U(ε<sub>F X</sub>)</span>). Prove the three monad laws:</p>
+        <ol>
+          <li><span class="m">μ ∘ ηT = id</span> — i.e. <span class="m">μ<sub>X</sub> ∘ η<sub>T X</sub> = id<sub>T X</sub></span>;</li>
+          <li><span class="m">μ ∘ Tη = id</span> — i.e. <span class="m">μ<sub>X</sub> ∘ UF(η<sub>X</sub>) = id<sub>T X</sub>;</span></li>
+          <li><span class="m">μ ∘ μT = μ ∘ Tμ</span>.</li>
+        </ol>
+        <p>Hint: (a) and (b) are the two triangle identities, one whiskered by <span class="m">U</span>, the other instantiated at <span class="m">F X</span>. For (c), apply <span class="m">U</span> to the naturality square of <span class="m">ε</span> at the arrow <span class="m">ε<sub>F X</sub></span>.</p>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> The second triangle identity says <span class="m">U(ε<sub>Y</sub>) ∘ η<sub>U Y</sub> = id<sub>U Y</sub></span> for every <span class="m">Y</span>; instantiate <span class="m">Y = F X</span>: <span class="m">U(ε<sub>F X</sub>) ∘ η<sub>U F X</sub> = id</span>, which is exactly <span class="m">μ<sub>X</sub> ∘ η<sub>T X</sub> = id<sub>T X</sub></span>.</p>
+          <p><strong>(b)</strong> The first triangle identity says <span class="m">ε<sub>F X</sub> ∘ F(η<sub>X</sub>) = id<sub>F X</sub></span>; apply the functor <span class="m">U</span> to both sides (Lesson 2: equal arrows have equal images, composition splits): <span class="m">U(ε<sub>F X</sub>) ∘ UF(η<sub>X</sub>) = id<sub>UF X</sub></span> — which is <span class="m">μ<sub>X</sub> ∘ T(η<sub>X</sub>) = id<sub>T X</sub></span>.</p>
+          <p><strong>(c)</strong> Naturality of <span class="m">ε</span> at the arrow <span class="m">ε<sub>F X</sub> : FUF X → F X</span> reads <span class="m">ε<sub>F X</sub> ∘ FU(ε<sub>F X</sub>) = ε<sub>F X</sub> ∘ ε<sub>FUF X</sub></span>. Apply <span class="m">U</span>: <span class="m">μ<sub>X</sub> ∘ UFU(ε<sub>F X</sub>) = μ<sub>X</sub> ∘ U(ε<sub>FUF X</sub>)</span> — and reading the two sides as components, the left is <span class="m">μ<sub>X</sub> ∘ T(μ<sub>X</sub>)</span> and the right is <span class="m">μ<sub>X</sub> ∘ μ<sub>T X</sub></span>. That is associativity. Three laws, three ingredients: one triangle each for the units, one naturality square for associativity — the same toolkit as Lesson 8&rsquo;s Exercise 12, run in reverse. (The converse is also true — every monad arises from an adjunction, in two standard ways: the Kleisli construction of §5 and the Eilenberg–Moore construction of §6.)</p>
+        </div>
+      </details>
+    </div>
+
+<div class="exgroup">
+  <h3>The Kleisli category</h3>
+  <p class="exmeta"><a href="#s5">§5</a> · Exercises 5–9</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>Kleisli in practice. For the List monad take <span class="m">f(x) = [x, x+1]</span>, <span class="m">g(x) = [2x]</span> and <span class="m">h(x) = [x, −x]</span>.</p>
+<ol>
+<li>Compute <span class="m">(g ∘<sub>K</sub> f)(2)</span> and <span class="m">(h ∘<sub>K</sub> g)(2)</span>.</li>
+<li>Compute the triple composite at <span class="m">2</span> with each bracketing, <span class="m">h ∘<sub>K</sub> (g ∘<sub>K</sub> f)</span> and <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f</span>, writing down every intermediate list.</li>
+<li>Check both identity laws at the input <span class="m">2</span>.</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<p>Implement <code>kleisli(g, f) = lambda x: mu(fmap(g, f(x)))</code> with the lab&rsquo;s <code>mu</code>, <code>fmap</code> and <code>eta</code>, and check associativity and both identity laws pointwise on the inputs <span class="m">−5, …, 5</span>.</p>
+</div>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+<p><strong>By hand. (a)</strong> <span class="m">f(2) = [2, 3]</span>; map <span class="m">g</span>: <span class="m">[[4], [6]]</span>; flatten: <span class="m">[4, 6]</span>. And <span class="m">g(2) = [4]</span>; map <span class="m">h</span>: <span class="m">[[4, −4]]</span>; flatten: <span class="m">[4, −4]</span>.</p>
+<p><strong>(b)</strong> For <span class="m">h ∘<sub>K</sub> (g ∘<sub>K</sub> f)</span>: start from <span class="m">(g ∘<sub>K</sub> f)(2) = [4, 6]</span>; map <span class="m">h</span>: <span class="m">[[4, −4], [6, −6]]</span>; flatten: <span class="m">[4, −4, 6, −6]</span>. For <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f</span>: start from <span class="m">f(2) = [2, 3]</span>; map <span class="m">h ∘<sub>K</sub> g</span>, which sends <span class="m">2</span> to <span class="m">[4, −4]</span> and <span class="m">3</span> to <span class="m">[6, −6]</span>: <span class="m">[[4, −4], [6, −6]]</span>; flatten: <span class="m">[4, −4, 6, −6]</span>. The same four outcomes — every branch of every stage, in left-to-right order — reached through different intermediate lists.</p>
+<p><strong>(c)</strong> <span class="m">(f ∘<sub>K</sub> η)(2)</span>: <span class="m">η(2) = [2]</span>; map <span class="m">f</span>: <span class="m">[[2, 3]]</span>; flatten: <span class="m">[2, 3]</span>. <span class="m">(η ∘<sub>K</sub> f)(2)</span>: <span class="m">f(2) = [2, 3]</span>; map <span class="m">η</span>: <span class="m">[[2], [3]]</span>; flatten: <span class="m">[2, 3]</span>. Both equal <span class="m">f(2)</span>.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+<div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>kleisli_list.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>kleisli = lambda g, f: (lambda x: mu(fmap(g, f(x))))
+f = lambda x: [x, x + 1]
+g = lambda x: [x * 2]
+h = lambda x: [x, -x]
+
+assert all(kleisli(kleisli(h, g), f)(x) == kleisli(h, kleisli(g, f))(x)
+           for x in range(-5, 6))
+assert all(kleisli(f, eta)(x) == f(x) == kleisli(eta, f)(x)
+           for x in range(-5, 6))
+print(&quot;laws pass;  ((h .K g) .K f)(2) =&quot;, kleisli(kleisli(h, g), f)(2))</code></pre>
+            <div class="out"><span class="lbl">output</span>laws pass;  ((h .K g) .K f)(2) = [4, -4, 6, -6]</div>
+          </div>
+<p style="margin-top:14px">The associativity assert is the practical content of Exercise 7: a three-stage nondeterministic pipeline gives the same outcomes however you bracket the stages — so &ldquo;pipeline&rdquo; is a well-defined notion at all. Every <code>flatMap</code> chain you have ever written was leaning on this.</p>
+</div>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 6</span><span class="tier">by hand</span></div>
+<div class="prob-body">
+<p>The power set monad and relations (§5, §7). Let <span class="m">f : {1, 2, 3} → P({a, b})</span> be given by <span class="m">f(1) = {a}</span>, <span class="m">f(2) = {a, b}</span>, <span class="m">f(3) = ∅</span>, and <span class="m">g : {a, b} → P({x, y, z})</span> by <span class="m">g(a) = {x, y}</span>, <span class="m">g(b) = {y, z}</span>.</p>
+<ol>
+<li>Compute the Kleisli composite <span class="m">g ∘<sub>K</sub> f</span> at <span class="m">1</span>, <span class="m">2</span> and <span class="m">3</span>.</li>
+<li>Write <span class="m">f</span>, <span class="m">g</span> and the composite as relations — sets of pairs — and check that the composite is the composite of relations.</li>
+<li>Which relation is the identity of the Kleisli category at <span class="m">{a, b}</span>?</li>
+<li>The functor <span class="m">F<sub>P</sub></span> of §5 sends a function <span class="m">h</span> to the Kleisli arrow <span class="m">η ∘ h</span>. Which relations arise in this way?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">(g ∘<sub>K</sub> f)(1) = g(a) = {x, y}</span>. <span class="m">(g ∘<sub>K</sub> f)(2) = g(a) ∪ g(b) = {x, y, z}</span>. <span class="m">(g ∘<sub>K</sub> f)(3)</span> is the union of no sets at all: <span class="m">∅</span>.</p>
+<p><strong>(b)</strong> <span class="m">f</span> is <span class="m">{(1, a), (2, a), (2, b)}</span>; <span class="m">g</span> is <span class="m">{(a, x), (a, y), (b, y), (b, z)}</span>. Chaining pairs through a common middle element gives <span class="m">(1, x), (1, y), (2, x), (2, y), (2, z)</span> — the pair <span class="m">(2, y)</span> arises twice, through <span class="m">a</span> and through <span class="m">b</span>, and a set records it once. That is the relation in (a).</p>
+<p><strong>(c)</strong> The unit <span class="m">η</span>, which sends <span class="m">a</span> to <span class="m">{a}</span> and <span class="m">b</span> to <span class="m">{b}</span>: the relation <span class="m">{(a, a), (b, b)}</span>, equality.</p>
+<p><strong>(d)</strong> <span class="m">η ∘ h</span> sends each <span class="m">x</span> to the one-element set <span class="m">{h(x)}</span>. As a relation it is the graph of <span class="m">h</span>. The relations of this form are those in which every element is related to exactly one element — the answer to Lesson 1&rsquo;s Exercise 17(c).</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 7</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+        <p>The full circle. Take the Kleisli data at face value: arrows <span class="m">A ⇸ B</span> are arrows <span class="m">A → T B</span>, composition is <span class="m">g ∘<sub>K</sub> f = μ ∘ Tg ∘ f</span>, and the proposed identity on <span class="m">A</span> is <span class="m">η<sub>A</sub></span>.</p>
+        <ol>
+          <li>Show <span class="m">f ∘<sub>K</sub> η = f</span> and <span class="m">η ∘<sub>K</sub> f = f</span>, identifying which monad unit law each uses (and where naturality of <span class="m">η</span> sneaks in).</li>
+          <li>Show that associativity of <span class="m">∘<sub>K</sub></span> follows from the monad&rsquo;s associativity law together with naturality of <span class="m">μ</span>. (Expand both bracketings of <span class="m">h ∘<sub>K</sub> g ∘<sub>K</sub> f</span> and slide <span class="m">μ</span>&rsquo;s past <span class="m">T</span>&rsquo;s.)</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+          <p><strong>(a)</strong> Right identity: <span class="m">f ∘<sub>K</sub> η<sub>A</sub> = μ ∘ Tf ∘ η<sub>A</sub></span>. Naturality of <span class="m">η</span> at <span class="m">f : A → TB</span> slides it forward: <span class="m">Tf ∘ η<sub>A</sub> = η<sub>T B</sub> ∘ f</span>, so the composite is <span class="m">μ ∘ ηT ∘ f = f</span> by the <em>first</em> unit law. Left identity: <span class="m">η<sub>B</sub> ∘<sub>K</sub> f = μ ∘ Tη<sub>B</sub> ∘ f = f</span> directly by the <em>second</em> unit law. Each unit law serves exactly one side — that is <em>why</em> there are two.</p>
+          <p><strong>(b)</strong> Expand: <span class="m">h ∘<sub>K</sub> (g ∘<sub>K</sub> f) = μ ∘ Th ∘ μ ∘ Tg ∘ f</span>, while <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f = μ ∘ T(μ ∘ Th ∘ g) ∘ f = μ ∘ Tμ ∘ T²h ∘ Tg ∘ f</span>. In the first expression, slide <span class="m">Th</span> past <span class="m">μ</span> using <span class="m">μ</span>&rsquo;s naturality at <span class="m">h</span>: <span class="m">Th ∘ μ = μ ∘ T²h</span>, giving <span class="m">μ ∘ μT ∘ T²h ∘ Tg ∘ f</span>. The two expressions now differ only in their heads — <span class="m">μ ∘ μT</span> versus <span class="m">μ ∘ Tμ</span> — and the associativity square says those are equal. ∎</p>
+          <p>So: <em>Kl(T) is a category precisely because T is a monad.</em> Lesson 1 asked for two laws and the course spent nine lessons discovering how much they carry; here, at the end, the same two laws re-derive themselves as the correctness conditions for effectful programming. The snake has its tail.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Bind (§5). For <span class="m">g : A → T B</span> let <span class="m">g<sup>*</sup> = μ<sub>B</sub> ∘ T g</span>.</p>
+<ol>
+<li>Show that <span class="m">μ<sub>X</sub> = (id<sub>T X</sub>)<sup>*</sup></span> and <span class="m">T f = (η<sub>B</sub> ∘ f)<sup>*</sup></span> for <span class="m">f : A → B</span>: the unit and the extension operation determine the rest of the monad.</li>
+<li>Prove the three laws: <span class="m">η<sub>A</sub><sup>*</sup> = id<sub>T A</sub></span>; &nbsp; <span class="m">g<sup>*</sup> ∘ η<sub>A</sub> = g</span>; &nbsp; <span class="m">(h<sup>*</sup> ∘ g)<sup>*</sup> = h<sup>*</sup> ∘ g<sup>*</sup></span>.</li>
+<li>Which statement about the Kleisli category is each of the three?</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">(id<sub>T X</sub>)<sup>*</sup> = μ<sub>X</sub> ∘ T(id) = μ<sub>X</sub></span>. And <span class="m">(η<sub>B</sub> ∘ f)<sup>*</sup> = μ<sub>B</sub> ∘ T η<sub>B</sub> ∘ T f = T f</span>, by the second unit law.</p>
+<p><strong>(b)</strong> <span class="m">η<sub>A</sub><sup>*</sup> = μ<sub>A</sub> ∘ T η<sub>A</sub> = id</span>: the second unit law. Next, <span class="m">g<sup>*</sup> ∘ η<sub>A</sub> = μ<sub>B</sub> ∘ T g ∘ η<sub>A</sub> = μ<sub>B</sub> ∘ η<sub>T B</sub> ∘ g = g</span>: naturality of <span class="m">η</span> at <span class="m">g</span>, then the first unit law. Finally</p>
+<p class="eq"><span class="m">(h<sup>*</sup> ∘ g)<sup>*</sup> = μ ∘ T μ ∘ T T h ∘ T g = μ ∘ μ T ∘ T T h ∘ T g</span></p>
+<p class="eq"><span class="m">= μ ∘ T h ∘ μ ∘ T g = h<sup>*</sup> ∘ g<sup>*</sup>,</span></p>
+<p>using associativity and then the naturality of <span class="m">μ</span> at <span class="m">h</span>.</p>
+<p><strong>(c)</strong> Since <span class="m">g ∘<sub>K</sub> f = g<sup>*</sup> ∘ f</span>: the second law says <span class="m">g ∘<sub>K</sub> η = g</span>, and the first gives <span class="m">η ∘<sub>K</sub> f = η<sup>*</sup> ∘ f = f</span> — the two identity laws. The third gives <span class="m">(h ∘<sub>K</sub> g) ∘<sub>K</sub> f = (h<sup>*</sup> ∘ g)<sup>*</sup> ∘ f = h<sup>*</sup> ∘ g<sup>*</sup> ∘ f = h ∘<sub>K</sub> (g ∘<sub>K</sub> f)</span> — associativity. This is Exercise 7 again, in the notation programmers use; the first and third laws also say that <span class="m">A ↦ T A</span>, <span class="m">g ↦ g<sup>*</sup></span> is a functor out of the Kleisli category, the <span class="m">U<sub>T</sub></span> of §5.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>The state monad (§3). Let <span class="m">S</span> be a set and <span class="m">T X = (X × S)<sup>S</sup></span>, the monad of the currying adjunction <span class="m">(−) × S ⊣ (−)<sup>S</sup></span>.</p>
+<ol>
+<li>Use the unit of the adjunction (Lesson 8, Exercise 10) to write down <span class="m">η<sub>X</sub></span>.</li>
+<li>The counit is <span class="m">eval</span>. Show that <span class="m">μ<sub>X</sub></span> sends <span class="m">k : S → T X × S</span> to the function <span class="m">s ↦ k′(s′)</span>, where <span class="m">(k′, s′) = k(s)</span>.</li>
+<li>Show that a Kleisli arrow <span class="m">A → T B</span> is the same thing as a function <span class="m">A × S → B × S</span>, and that Kleisli composition becomes ordinary composition of such functions.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">η<sub>X</sub>(x)</span> is the function <span class="m">s ↦ (x, s)</span>.</p>
+<p><strong>(b)</strong> <span class="m">μ<sub>X</sub> = U(ε<sub>F X</sub>)</span>, where <span class="m">F X = X × S</span>, <span class="m">U = (−)<sup>S</sup></span>, and <span class="m">ε<sub>F X</sub></span> is <span class="m">eval : (X × S)<sup>S</sup> × S → X × S</span>. Applying <span class="m">U</span> means composing with <span class="m">eval</span> afterwards. So <span class="m">μ<sub>X</sub>(k)</span> is the function <span class="m">s ↦ eval(k(s))</span>, and if <span class="m">k(s) = (k′, s′)</span> then <span class="m">eval(k′, s′) = k′(s′)</span>.</p>
+<p><strong>(c)</strong> By currying, a function <span class="m">A → (B × S)<sup>S</sup></span> corresponds to a function <span class="m">A × S → B × S</span>: take the input and the current state, return the output and the new state. Let <span class="m">f</span> and <span class="m">g</span> be Kleisli arrows, corresponding to <span class="m">f̄ : A × S → B × S</span> and <span class="m">ḡ : B × S → C × S</span>. Then <span class="m">(g ∘<sub>K</sub> f)(a)</span> is <span class="m">μ</span> applied to the function <span class="m">s ↦ (g(b), s′)</span>, where <span class="m">(b, s′) = f̄(a, s)</span>; by (b) that is the function <span class="m">s ↦ g(b)(s′) = ḡ(b, s′) = ḡ(f̄(a, s))</span>. So the composite corresponds to <span class="m">ḡ ∘ f̄</span>.</p>
+<p>A function with a side effect on a state, composed with another, is just a function that passes the state along. The state monad says so in the language of this lesson, and the Kleisli category makes the state-passing invisible.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Algebras</h3>
+  <p class="exmeta"><a href="#s6">§6</a> · Exercises 10–13</p>
+</div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">structure</span></div>
+      <div class="prob-body">
+
+        <p>Show that a List-algebra on a set <span class="m">X</span> is the same thing as a monoid structure on <span class="m">X</span>. Given a structure map <span class="m">a : List X → X</span> satisfying the two algebra laws, define <span class="m">e = a([])</span> and <span class="m">x · y = a([x, y])</span>, and derive:</p>
+        <ol>
+          <li>the unit laws <span class="m">e · x = x = x · e</span>,</li>
+          <li>associativity of <span class="m">·</span> — evaluate the two-layer value <span class="m">[[x, y], [z]]</span> both ways the algebra law allows.</li>
+        </ol>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+
+          <p>The key consequence of the laws (worth deriving first) is that <span class="m">a</span> evaluates concatenations pairwise: applying the second law to <span class="m">[xs, ys]</span> ∈ <span class="m">List(List X)</span> gives <span class="m">a(xs ⧺ ys) = a([a(xs), a(ys)])= a(xs) · a(ys)</span>.</p>
+          <p><strong>(a)</strong> <span class="m">e · x = a([a([]), a([x])])</span>; by the pairwise rule backwards this is <span class="m">a([] ⧺ [x]) = a([x])</span>, and the first algebra law (<span class="m">a ∘ η = id</span>) gives <span class="m">a([x]) = x</span>. The right unit law mirrors.</p>
+          <p><strong>(b)</strong> Evaluate <span class="m">[[x, y], [z]]</span>: merging layers first (<span class="m">μ</span>) gives <span class="m">a([x, y, z])</span>; evaluating inner bundles first (<span class="m">T a</span>) gives <span class="m">a([x·y, z]) = (x·y)·z</span>. The algebra law equates them, so <span class="m">a([x,y,z]) = (x·y)·z</span> — and running the same computation on <span class="m">[[x], [y, z]]</span> gives <span class="m">a([x,y,z]) = x·(y·z)</span>. Both bracketings equal the same three-element evaluation: associativity. Conversely a monoid defines <span class="m">a</span> = &ldquo;multiply the list out&rdquo; (Lesson 8&rsquo;s <code>fold_map</code> of the identity), and the two constructions invert each other. <strong>Monoids are the algebras of the List monad</strong> — the course&rsquo;s first definition and its last, revealed as the same idea seen from opposite ends.</p>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+      <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier py">by hand · optional python</span></div>
+      <div class="prob-body">
+<p>Make Exercise 10 concrete, for the list monad on sets of numbers.</p>
+<ol>
+<li>Let <span class="m">a</span> be the sum of a list of integers. Verify the law <span class="m">a ∘ μ = a ∘ T a</span> on the values <span class="m">[[1, 2], [3]]</span> and <span class="m">[[], [4, 5]]</span>, and the law <span class="m">a ∘ η = id</span> at <span class="m">7</span>. Which monoid is this algebra?</li>
+<li>Is &ldquo;the maximum of the list, or <span class="m">0</span> for the empty list&rdquo; an algebra on the natural numbers?</li>
+<li>Is &ldquo;the length of the list&rdquo; an algebra on the natural numbers?</li>
+<li>Is &ldquo;the last element of the list, or <span class="m">0</span> for the empty list&rdquo; an algebra on the integers?</li>
+</ol>
+<div class="pytask"><span class="tag">Optional · Python</span>
+        <p>Make Exercise 10 executable: take <span class="m">X = ℤ</span> with structure map <code>a = sum</code> (note <code>sum([]) == 0</code> — the evaluator chooses the monoid&rsquo;s unit for you).</p>
+        <p>Verify both algebra laws — <span class="m">a ∘ η = id</span> pointwise, and <span class="m">a ∘ μ = a ∘ Ta</span> over the systematically generated <span class="m">T²</span> values from the lab&rsquo;s <code>lists_over</code>.</p>
+</div>
+      </div>
+      <details><summary>Show solution</summary>
+        <div class="sol">
+<p><strong>By hand. (a)</strong> <span class="m">a(μ([[1, 2], [3]])) = a([1, 2, 3]) = 6</span> and <span class="m">a(T a([[1, 2], [3]])) = a([3, 3]) = 6</span>. <span class="m">a(μ([[], [4, 5]])) = a([4, 5]) = 9</span> and <span class="m">a(T a([[], [4, 5]])) = a([0, 9]) = 9</span>. And <span class="m">a([7]) = 7</span>. The monoid is <span class="m">(ℤ, +, 0)</span>; its unit is the sum of the empty list.</p>
+<p><strong>(b)</strong> Yes: it is the algebra of the monoid <span class="m">(ℕ, max, 0)</span>. A maximum of maxima is the maximum of everything, and <span class="m">0</span> is neutral because no natural number is smaller.</p>
+<p><strong>(c)</strong> No. The unit law fails: the length of <span class="m">[x]</span> is <span class="m">1</span>, not <span class="m">x</span>.</p>
+<p><strong>(d)</strong> No. The unit law holds, but on <span class="m">[[5], []]</span> the two sides differ: <span class="m">μ</span> gives <span class="m">[5]</span>, with last element <span class="m">5</span>; evaluating inside gives <span class="m">[5, 0]</span>, with last element <span class="m">0</span>. In terms of Exercise 10, the operation would be <span class="m">x · y = y</span> with <span class="m">e = 0</span>, and <span class="m">x · e = e</span> is not <span class="m">x</span>.</p>
+<div class="pytask"><span class="tag">Optional · Python</span>
+          <p>Reusing the lab&rsquo;s machinery, the whole check is four lines:</p>
+          <div class="code" style="margin-top:14px">
+            <div class="code-bar"><span class="fname"><b>algebra.py</b></span><button class="copy" type="button">Copy</button></div>
+<pre><code>a = sum                          # a : List Z -&gt; Z,  with a([]) == 0
+
+assert all(a(eta(x)) == x for x in (0, 1, 5, -3))          # a . eta = id
+T2 = lists_over(lists_over([0, 1]))
+assert all(a(mu(xss)) == a(fmap(a, xss)) for xss in T2)    # a . mu = a . Ta
+print(f&quot;sum is a List-algebra: laws pass on {len(T2)} T² values&quot;)</code></pre>
+            <div class="out"><span class="lbl">output</span>sum is a List-algebra: laws pass on 57 T² values</div>
+          </div>
+          <p style="margin-top:14px">Swap <code>sum</code> for <code>math.prod</code> (unit 1) or — with lists of strings in place of the integers — for <code>&quot;&quot;.join</code> (unit <code>&quot;&quot;</code>), and the same asserts pass: one algebra per monoid, as Exercise 10 predicts. Swap in something non-associative, like <code>lambda xs: functools.reduce(operator.sub, xs, 0)</code>, and already the first assert fails — that evaluator sends <code>[5]</code> to <code>-5</code> — and the second fails as well: the algebra laws are the monoid laws, mechanically enforced. A fitting final output for the course: its very first definition, verified by its very last program.</p>
+</div>
+        </div>
+      </details>
+    </div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>Maybe, pointed sets and partial functions (§6).</p>
+<ol>
+<li>Let <span class="m">a : X + 1 → X</span> be an algebra for the Maybe monad. Show that the unit law forces <span class="m">a(x) = x</span> for <span class="m">x</span> in <span class="m">X</span>, and that the second law then holds whatever element <span class="m">a(⊥)</span> is.</li>
+<li>Conclude that an algebra is a pointed set, and a homomorphism a function preserving the chosen points.</li>
+<li>Describe the free algebra on a set <span class="m">X</span>, and show that every algebra is isomorphic to a free one.</li>
+<li>Explain how (c), with §6, gives the equivalence <span class="m"><span class="cat">Par</span> ≃ <span class="cat">Set<sub>∗</sub></span></span> of Lesson 4.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> The unit includes <span class="m">X</span> in <span class="m">X + 1</span>, so <span class="m">a ∘ η = id</span> says <span class="m">a(x) = x</span>. For the second law, an element of <span class="m">(X + 1) + 1</span> is an element <span class="m">x</span> of <span class="m">X</span>, the inner <span class="m">⊥</span>, or the outer <span class="m">⊥</span>. On <span class="m">x</span>, both <span class="m">a ∘ μ</span> and <span class="m">a ∘ T a</span> give <span class="m">x</span>. On the inner <span class="m">⊥</span>: <span class="m">μ</span> gives <span class="m">⊥</span> and then <span class="m">a</span> gives <span class="m">a(⊥)</span>; while <span class="m">T a</span> gives the element <span class="m">a(⊥)</span> of <span class="m">X</span>, and then <span class="m">a</span> fixes it. On the outer <span class="m">⊥</span>: <span class="m">μ</span> gives <span class="m">⊥</span>, then <span class="m">a(⊥)</span>; <span class="m">T a</span> leaves it as <span class="m">⊥</span>, then <span class="m">a(⊥)</span>. Equal in every case.</p>
+<p><strong>(b)</strong> So the only datum is the element <span class="m">x<sub>0</sub> = a(⊥)</span> of <span class="m">X</span>, and it may be any element: an algebra is a set with a chosen point. A homomorphism <span class="m">h</span> must satisfy <span class="m">h(a(⊥)) = b(T h(⊥)) = b(⊥)</span>, that is, <span class="m">h(x<sub>0</sub>) = y<sub>0</sub></span>; on the elements of <span class="m">X</span> the condition is automatic.</p>
+<p><strong>(c)</strong> The free algebra on <span class="m">X</span> is <span class="m">X + 1</span>, with <span class="m">⊥</span> as its chosen point. Given any pointed set <span class="m">(Y, y<sub>0</sub>)</span>, let <span class="m">X</span> be <span class="m">Y</span> with <span class="m">y<sub>0</sub></span> removed. The function <span class="m">X + 1 → Y</span> that is the identity on <span class="m">X</span> and sends <span class="m">⊥</span> to <span class="m">y<sub>0</sub></span> is a bijection preserving the points: an isomorphism of algebras.</p>
+<p><strong>(d)</strong> §6 showed that the Kleisli category is equivalent to the full subcategory of free algebras. By (c) every algebra is isomorphic to a free one, so that subcategory is equivalent to the whole category of algebras (Lesson 4: a full and faithful functor that is essentially surjective is an equivalence). The Kleisli category of Maybe is <span class="m"><span class="cat">Par</span></span>, and its category of algebras is <span class="m"><span class="cat">Set<sub>∗</sub></span></span>.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">arrows-only</span></div>
+<div class="prob-body">
+<p>Free algebras (§6). Let <span class="m">(T, η, μ)</span> be a monad on <span class="m"><span class="cat">𝒞</span></span>.</p>
+<ol>
+<li>Show that <span class="m">(T X, μ<sub>X</sub>)</span> is an algebra.</li>
+<li>Let <span class="m">(Y, b)</span> be an algebra and <span class="m">f : X → Y</span> any arrow. Show that <span class="m">f̂ = b ∘ T f</span> is a homomorphism from <span class="m">(T X, μ<sub>X</sub>)</span> to <span class="m">(Y, b)</span>, and that <span class="m">f̂ ∘ η<sub>X</sub> = f</span>.</li>
+<li>Show that <span class="m">f̂</span> is the only homomorphism with that property.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> The unit law for an algebra with structure map <span class="m">μ<sub>X</sub></span> reads <span class="m">μ<sub>X</sub> ∘ η<sub>T X</sub> = id</span>, which is the first unit law of the monad. The second reads <span class="m">μ<sub>X</sub> ∘ μ<sub>T X</sub> = μ<sub>X</sub> ∘ T μ<sub>X</sub></span>, which is associativity.</p>
+<p><strong>(b)</strong> Homomorphism: <span class="m">f̂ ∘ μ<sub>X</sub> = b ∘ T f ∘ μ<sub>X</sub> = b ∘ μ<sub>Y</sub> ∘ T T f</span> by the naturality of <span class="m">μ</span>; this is <span class="m">b ∘ T b ∘ T T f</span> by the second algebra law for <span class="m">b</span>; and that is <span class="m">b ∘ T(b ∘ T f) = b ∘ T f̂</span>. Restriction: <span class="m">f̂ ∘ η<sub>X</sub> = b ∘ T f ∘ η<sub>X</sub> = b ∘ η<sub>Y</sub> ∘ f</span> by the naturality of <span class="m">η</span>, and <span class="m">b ∘ η<sub>Y</sub> = id</span> by the first algebra law.</p>
+<p><strong>(c)</strong> Let <span class="m">h</span> be a homomorphism from <span class="m">(T X, μ<sub>X</sub>)</span> to <span class="m">(Y, b)</span> with <span class="m">h ∘ η<sub>X</sub> = f</span>. By the second unit law of the monad, <span class="m">h = h ∘ μ<sub>X</sub> ∘ T η<sub>X</sub></span>. Since <span class="m">h</span> is a homomorphism, <span class="m">h ∘ μ<sub>X</sub> = b ∘ T h</span>. So <span class="m">h = b ∘ T h ∘ T η<sub>X</sub> = b ∘ T(h ∘ η<sub>X</sub>) = b ∘ T f</span>.</p>
+<p>Parts (b) and (c) together are the bijection of the Eilenberg–Moore adjunction. Every law was used once: both unit laws and associativity of the monad, both laws of the algebra <span class="m">b</span>, and both naturality squares.</p>
+</div>
+</details>
+</div>
+
+<div class="exgroup">
+  <h3>Monads and orders</h3>
+  <p class="exmeta"><a href="#s5">§5</a>–<a href="#s6">§6</a>, <a href="#deeper">Going deeper</a> · Exercises 14–15</p>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 14</span><span class="tier">structure</span></div>
+<div class="prob-body">
+<p>Monads on a poset. Let <span class="m">P</span> be a poset, regarded as a category.</p>
+<ol>
+<li>Show that a monad on <span class="m">P</span> is exactly a monotone map <span class="m">c : P → P</span> with <span class="m">x ≤ c(x)</span> and <span class="m">c(c(x)) ≤ c(x)</span> for all <span class="m">x</span>. Why is there nothing further to check?</li>
+<li>Show that <span class="m">c(c(x)) = c(x)</span>.</li>
+<li>What is an algebra for <span class="m">c</span>?</li>
+<li>When is there a Kleisli arrow from <span class="m">x</span> to <span class="m">y</span>? Verify directly, from the properties in (a), that Kleisli arrows compose.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> An endofunctor of <span class="m">P</span> is a monotone map. A natural transformation <span class="m">Id ⇒ c</span> is a family of arrows <span class="m">x → c(x)</span>, that is, the inequalities <span class="m">x ≤ c(x)</span>; naturality is automatic in a thin category. Likewise <span class="m">μ</span> is the family of inequalities <span class="m">c(c(x)) ≤ c(x)</span>. The three monad laws are equations between parallel arrows, and in a poset parallel arrows are always equal.</p>
+<p><strong>(b)</strong> The unit at the element <span class="m">c(x)</span> gives <span class="m">c(x) ≤ c(c(x))</span>. With <span class="m">c(c(x)) ≤ c(x)</span> and antisymmetry, the two are equal.</p>
+<p><strong>(c)</strong> An arrow <span class="m">c(x) → x</span>: an element with <span class="m">c(x) ≤ x</span>, hence, by the unit, with <span class="m">c(x) = x</span> — a <em>closed</em> element. The two algebra laws are again automatic. So the Eilenberg–Moore category of a closure operator is the poset of closed elements.</p>
+<p><strong>(d)</strong> A Kleisli arrow <span class="m">x ⇸ y</span> is an arrow <span class="m">x → c(y)</span>: it exists when <span class="m">x ≤ c(y)</span>. Identities: <span class="m">x ≤ c(x)</span>. Composition: if <span class="m">x ≤ c(y)</span> and <span class="m">y ≤ c(z)</span>, then <span class="m">c(y) ≤ c(c(z)) = c(z)</span> by monotonicity and (b), so <span class="m">x ≤ c(z)</span>. The Kleisli category is the preorder &ldquo;<span class="m">x</span> lies in the closure of <span class="m">y</span>.&rdquo;</p>
+<p>For <span class="m">c</span> = &ldquo;the subgroup generated by,&rdquo; the algebras are the subgroups (§7), and a Kleisli arrow from <span class="m">S</span> to <span class="m">S′</span> says that everything in <span class="m">S</span> can be generated from <span class="m">S′</span>.</p>
+</div>
+</details>
+</div>
+
+<div class="prob">
+<div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">think</span></div>
+<div class="prob-body">
+<p>A forgetful functor that is not monadic (Going deeper). Lesson 8&rsquo;s Exercise 17 showed that the underlying-set functor <span class="m">U</span> from preorders to sets has a left adjoint <span class="m">D</span>, the discrete order.</p>
+<ol>
+<li>Compute the monad <span class="m">T = U ∘ D</span>, with its unit and multiplication.</li>
+<li>What is an algebra for this monad? What is the Eilenberg–Moore category?</li>
+<li>What does the comparison functor of §6 do to a preorder? Is it an equivalence?</li>
+<li>Contrast with the adjunction between sets and monoids.</li>
+</ol>
+</div>
+<details><summary>Show solution</summary>
+<div class="sol">
+<p><strong>(a)</strong> <span class="m">D X</span> is the set <span class="m">X</span> with the discrete order, and <span class="m">U</span> forgets the order again: <span class="m">T X = X</span>. The unit is the identity function, and so is the multiplication. <span class="m">T</span> is the identity monad.</p>
+<p><strong>(b)</strong> A structure map <span class="m">a : X → X</span> must satisfy <span class="m">a ∘ η = id</span>, that is, <span class="m">a = id</span>. So every set is an algebra in exactly one way, every function is a homomorphism, and the Eilenberg–Moore category is <span class="m"><span class="cat">Set</span></span>.</p>
+<p><strong>(c)</strong> It sends a preorder <span class="m">P</span> to the algebra <span class="m">(U P, U ε<sub>P</sub>)</span> — the underlying set, with the only structure map there is. It is the functor <span class="m">U</span> itself, and it is not an equivalence: it is not full, since most functions between preorders are not monotone.</p>
+<p><strong>(d)</strong> For monoids the comparison functor is an equivalence: an algebra for the list monad is a monoid, and nothing is lost. The difference is that a monoid structure consists of <em>operations</em> on the underlying set, obeying equations, and a monad can record those; an order is a <em>relation</em>, and the monad of the adjunction does not see it at all.</p>
+</div>
+</details>
+</div>
+
+</div>
+</section>
+<section class="section" id="recap">
+<div class="measure">
+<div class="sec-no">Recap</div>
+<h2>What the course leaves you with</h2>
+<ol class="takeaways">
+<li>A <strong>monad</strong> is an endofunctor <span class="m">T</span> with a unit <span class="m">η : Id ⇒ T</span> and a multiplication <span class="m">μ : T<sup>2</sup> ⇒ T</span> obeying associativity and two unit laws — a monoid made of functors. <strong>Every adjunction yields one</strong>: <span class="m">T = U F</span>, <span class="m">μ = U ε F</span>.</li>
+<li>The gallery: <strong>List</strong>, <strong>Maybe</strong>, <strong>Writer</strong>, <strong>power set</strong>, <strong>State</strong>, and on a poset the <strong>closure operators</strong>. <span class="m">T X</span> is an <span class="m">X</span> with something extra; <span class="m">η</span> adds nothing; <span class="m">μ</span> merges two rounds into one.</li>
+<li>The <strong>Kleisli category</strong> of arrows <span class="m">A → T B</span> is a category <em>precisely because</em> the monad laws hold — Lesson 1&rsquo;s two axioms, rediscovered as the specification of composable effects. Partial functions and relations are the Kleisli categories of Maybe and of the power set. <code>bind</code> is Kleisli composition.</li>
+<li>An <strong>algebra</strong> is an arrow <span class="m">a : T X → X</span> that evaluates, compatibly with <span class="m">η</span> and <span class="m">μ</span>. The algebras of the list monad are the <strong>monoids</strong>; of Maybe, the pointed sets; of a closure operator, the closed elements.</li>
+<li>Every monad comes from an adjunction, in two extreme ways: the <strong>Kleisli</strong> adjunction and the <strong>Eilenberg–Moore</strong> adjunction, with the Kleisli category sitting inside the algebras as the free ones.</li>
+<li>Across the whole course: an object is known by its arrows (Yoneda); the best objects are defined by universal properties, which are representations; adjunctions organise universal properties into pairs of functors; and monads are what an adjunction leaves behind on one side.</li>
+</ol>
+<div class="next">
+      <span class="arrowmark" aria-hidden="true">
+        <svg width="70" height="44" viewBox="0 0 70 44">
+          <path d="M12 32 Q 35 6 58 32" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M58 32 l-8 -1 M58 32 l-3 -8" fill="none" stroke="var(--arrow)" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="12" cy="32" r="3" fill="var(--amber)"/>
+        </svg>
+      </span>
+      <div>
+        <span class="ntag">The road from here</span>
+        <h3>Ten lessons down; the subject is wide open</h3>
+        <p>Natural next steps: <strong>monadicity</strong> and the general theory of algebraic structures; <strong>presheaf categories and topoi</strong>, where Yoneda becomes a way of life; <strong>Kan extensions</strong> (&ldquo;all concepts are Kan extensions&rdquo;); <strong>monoidal and enriched categories</strong>, where the hom-sets themselves acquire structure. For books — Leinster&rsquo;s <em>Basic Category Theory</em> for rigor at this course&rsquo;s scope, Awodey&rsquo;s <em>Category Theory</em> and Riehl&rsquo;s <em>Category Theory in Context</em> to go deeper, Milewski&rsquo;s <em>Category Theory for Programmers</em> to keep the code angle, and Mac Lane&rsquo;s <em>Categories for the Working Mathematician</em> when you are ready for the source. Keep the discipline: never look inside.</p>
+      </div>
+    </div>
+    <nav class="pager" aria-label="Lesson navigation"><a href="lesson-09-representables-and-yoneda.html">← Lesson 09 — Yoneda</a><a href="index.html">Course index →</a></nav>
+  
+</div>
+</section>
+<footer>Intro to Category Theory · Lesson 10 · the algebras of the list monad are the monoids</footer>
+
+</main>
+
+</div>
+
+<script>
+/* ----- commutative-diagram renderer (shared by every lesson page) ----- */
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const n = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+/* label mini-syntax:  "α~X" = α with subscript X;  "g ∘~K~ f" = subscript K mid-label;
+   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end. */
+function setLabel(t, label){
+  const parts = String(label).split(/([~^])/);
+  let mode = "", shift = 0;
+  t.textContent = "";
+  for(let i = 0; i < parts.length; i++){
+    const p = parts[i];
+    if(p === "~" || p === "^"){ mode = (mode === p) ? "" : p; continue; }
+    if(!p) continue;
+    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0;
+    const s = el("tspan", {dy: want - shift}, t);
+    if(mode) s.setAttribute("font-size", "12");
+    s.textContent = p;
+    shift = want;
+  }
+}
+
+function build(svg, spec){
+  svg.setAttribute("viewBox", `0 0 ${spec.w} ${spec.h}`);
+  svg.innerHTML = "";
+  const nodeOf = {};
+  spec.nodes.forEach(n => nodeOf[n.id] = n);
+
+  spec.arrows.forEach(a => {
+    const from = nodeOf[a.from], to = nodeOf[a.to];
+    const rS = a.rs ?? 17, rE = a.re ?? 19;
+    let shaft, labelAt;
+
+    if(a.from === a.to){
+      /* self-loop, pointing outward in direction `deg` (0 = up, clockwise) */
+      const x = from.x, y = from.y;
+      const deg = (a.deg ?? 0) * Math.PI/180;
+      const ca = Math.cos(deg), sa = Math.sin(deg);
+      const rot = (px,py)=>[ x + px*ca - py*sa, y + px*sa + py*ca ];
+      const [sx,sy]   = rot(-12, -16);
+      const [c1x,c1y] = rot(-26, -54);
+      const [c2x,c2y] = rot( 26, -54);
+      const [ex,ey]   = rot( 12, -16);
+      const [lx,ly]   = rot(  0, -64);
+      shaft = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
+      labelAt = [lx, ly];
+    } else {
+      const x1=from.x, y1=from.y, x2=to.x, y2=to.y;
+      const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+      const sx=x1+ux*rS, sy=y1+uy*rS, ex=x2-ux*rE, ey=y2-uy*rE;
+      const px=-uy, py=ux, off = a.curve ?? 0;
+      if(off){
+        const mx=(sx+ex)/2, my=(sy+ey)/2, cx=mx+px*off, cy=my+py*off;
+        shaft = `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`;
+        labelAt = [mx + px*(off*0.62 + Math.sign(off)*12), my + py*(off*0.62 + Math.sign(off)*12)];
+      } else {
+        shaft = `M ${sx} ${sy} L ${ex} ${ey}`;
+        const lo = a.lo ?? 14;
+        labelAt = [ (sx+ex)/2 + px*lo, (sy+ey)/2 + py*lo ];
+      }
+    }
+
+    /* measure the true end tangent to orient the arrowhead */
+    const probe = el("path", {d:shaft}, svg);
+    const Ltot = probe.getTotalLength();
+    const pEnd = probe.getPointAtLength(Ltot);
+    const pBack = probe.getPointAtLength(Math.max(0, Ltot-2));
+    svg.removeChild(probe);
+    let tx = pEnd.x - pBack.x, ty = pEnd.y - pBack.y;
+    const tl = Math.hypot(tx,ty)||1; tx/=tl; ty/=tl;
+    const bl=8.5, ang=0.42, cos=Math.cos(ang), sin=Math.sin(ang);
+    const b1x=pEnd.x-bl*(tx*cos-ty*sin), b1y=pEnd.y-bl*(ty*cos+tx*sin);
+    const b2x=pEnd.x-bl*(tx*cos+ty*sin), b2y=pEnd.y-bl*(ty*cos-tx*sin);
+    const head = a.nohead ? "" : ` M ${b1x} ${b1y} L ${pEnd.x} ${pEnd.y} L ${b2x} ${b2y}`;
+
+    const isUnique = (a.cls||"").includes("unique");
+    const path = el("path", {d:shaft + head, class:"arrow"+(a.cls?" "+a.cls:"")}, svg);
+    if(!isUnique){
+      const len = path.getTotalLength();
+      path.style.setProperty("--len", len);
+      path.setAttribute("stroke-dasharray", len);
+    }
+    path.style.transitionDelay = ((a.delay ?? 0)) + "ms";
+
+    if(a.label){
+      const t = el("text", {x:labelAt[0], y:labelAt[1], class:"elabel"+(a.lcls?" "+a.lcls:""),
+        "text-anchor":"middle","dominant-baseline":"middle"}, svg);
+      setLabel(t, a.label);
+      t.style.transitionDelay = ((a.delay ?? 0) + 150) + "ms";
+    }
+  });
+
+  spec.nodes.forEach(n => {
+    const t = el("text", {x:n.x, y:n.y, class:"node"+(n.cls?" "+n.cls:""),
+      "text-anchor":"middle","dominant-baseline":"central"}, svg);
+    setLabel(t, n.label);
+  });
+}
+
+/* ----- this lesson's diagrams ----- */
+const DIAGRAMS = {
+  hero: {
+    w:440, h:280,
+    nodes:[
+      {id:"C", x:110, y:170, label:"𝒞", cls:"region"},
+      {id:"D", x:340, y:170, label:"𝒟", cls:"region"},
+    ],
+    arrows:[
+      {from:"C", to:"D", label:"F", rs:30, re:32, curve:-46, cls:"soft", lcls:"soft", delay:0},
+      {from:"D", to:"C", label:"U", rs:30, re:32, curve:-46, cls:"soft", lcls:"soft", delay:170},
+      {from:"C", to:"C", label:"T = UF", deg:0, cls:"amber", lcls:"amber", delay:340},
+    ]
+  },
+  unit: {
+    w:500, h:260,
+    nodes:[
+      {id:"A", x:80, y:70, label:"TX"},
+      {id:"B", x:250, y:70, label:"T²X"},
+      {id:"C", x:420, y:70, label:"TX"},
+      {id:"D", x:250, y:210, label:"TX", cls:"amber"},
+    ],
+    arrows:[
+      {from:"A", to:"B", label:"η~TX", rs:18.5, re:26.2, lo:-15, delay:0},
+      {from:"C", to:"B", label:"Tη~X", rs:18.5, re:26.2, lo:15, delay:170},
+      {from:"B", to:"D", label:"μ~X", rs:17.0, re:19.0, lo:-17, delay:340},
+      {from:"A", to:"D", label:"id", rs:17.8, re:19.8, lo:18, cls:"soft", lcls:"soft", delay:510},
+      {from:"C", to:"D", label:"id", rs:17.8, re:19.8, lo:-18, cls:"soft", lcls:"soft", delay:680},
+    ]
+  },
+  algebra: {
+    w:440, h:290,
+    nodes:[
+      {id:"TTX", x:90, y:70, label:"T²X"},
+      {id:"TX1", x:350, y:70, label:"TX"},
+      {id:"TX2", x:90, y:225, label:"TX"},
+      {id:"X", x:350, y:225, label:"X", cls:"amber"},
+    ],
+    arrows:[
+      {from:"TTX", to:"TX1", label:"Ta", rs:24.2, re:20.5, lo:-15, delay:0},
+      {from:"TTX", to:"TX2", label:"μ~X", rs:17.0, re:19.0, lo:-17, delay:170},
+      {from:"TX1", to:"X", label:"a", rs:17.0, re:19.0, lo:-14, delay:340},
+      {from:"TX2", to:"X", label:"a", rs:18.5, re:19.0, lo:15, delay:510},
+    ]
+  },
+  assoc: {
+    w:460, h:300,
+    nodes:[
+      {id:"T3",  x:100, y:75,  label:"T\u00b3X"},
+      {id:"T2a", x:370, y:75,  label:"T\u00b2X"},
+      {id:"T2b", x:100, y:235, label:"T\u00b2X"},
+      {id:"TX",  x:370, y:235, label:"TX", cls:"amber"},
+    ],
+    arrows:[
+      {from:"T3",  to:"T2a", label:"T\u03bc~X", lo:-15, rs:26, re:28, delay:0},
+      {from:"T3",  to:"T2b", label:"\u03bc~TX", lo:-17, rs:22, re:24, delay:180},
+      {from:"T2a", to:"TX",  label:"\u03bc~X", lo:-15, rs:22, re:22, delay:400},
+      {from:"T2b", to:"TX",  label:"\u03bc~X", lo:15, rs:26, re:24, delay:580},
+    ]
+  },
+  kleisli: {
+    w:560, h:280,
+    nodes:[
+      {id:"A",   x:70,  y:100, label:"A"},
+      {id:"TB",  x:240, y:100, label:"TB"},
+      {id:"T2C", x:430, y:100, label:"T\u00b2C"},
+      {id:"TC",  x:430, y:230, label:"TC", cls:"amber"},
+    ],
+    arrows:[
+      {from:"A",   to:"TB",  label:"f", lo:-14, delay:0},
+      {from:"TB",  to:"T2C", label:"Tg", lo:-14, rs:24, re:28, delay:180},
+      {from:"T2C", to:"TC",  label:"\u03bc~C", lo:-15, rs:22, re:22, delay:380},
+      {from:"A",   to:"TC",  label:"g \u2218~K~ f", lo:26, cls:"unique", lcls:"amber", re:26, delay:640},
+    ]
+  }
+};
+
+/* ----- render, then draw each diagram as it scrolls into view ----- */
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function renderAll(){
+  document.querySelectorAll("[data-diagram]").forEach(div => {
+    const spec = DIAGRAMS[div.dataset.diagram];
+    if(spec) build(div.querySelector("svg"), spec);
+  });
+}
+renderAll();
+
+if(reduce || !("IntersectionObserver" in window)){
+  document.querySelectorAll(".board").forEach(b => b.classList.add("draw"));
+} else {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("draw"); io.unobserve(e.target); } });
+  }, {threshold:0.3});
+  document.querySelectorAll(".board").forEach(b => io.observe(b));
+  const hero = document.querySelector('[data-diagram="hero"]');
+  if(hero){ requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add("draw"))); }
+}
+
+let rt;
+window.addEventListener("resize", ()=>{
+  clearTimeout(rt);
+  rt = setTimeout(()=>{
+    document.querySelectorAll(".board").forEach(b=>{
+      const had = b.classList.contains("draw");
+      const spec = DIAGRAMS[b.dataset.diagram];
+      if(spec){ build(b.querySelector("svg"), spec); if(had||reduce) b.classList.add("draw"); }
+    });
+  }, 200);
+});
+
+/* ----- copy buttons on code blocks ----- */
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const code = btn.closest(".code").querySelector("code").innerText;
+    navigator.clipboard.writeText(code).then(()=>{
+      const old = btn.textContent; btn.textContent = "Copied";
+      setTimeout(()=>btn.textContent = old, 1400);
+    }).catch(()=>{ btn.textContent = "—"; });
+  });
+});
+
+/* ----- the optional Python track: one switch opens or closes every lab ----- */
+(function(){
+  const labs = [...document.querySelectorAll("details.pylab")];
+  const btn = document.querySelector(".pytoggle");
+  if(!btn) return;
+  if(!labs.length){ btn.hidden = true; return; }
+  const KEY = "ct-python-labs";
+  let open = false;
+  try { open = window.localStorage.getItem(KEY) === "open"; } catch(e) {}
+  function apply(){
+    labs.forEach(d => { d.open = open; });
+    btn.setAttribute("aria-pressed", open ? "true" : "false");
+    btn.textContent = open ? "Python labs: open" : "Python labs: closed";
+  }
+  apply();
+  btn.addEventListener("click", ()=>{
+    open = !open;
+    try { window.localStorage.setItem(KEY, open ? "open" : "closed"); } catch(e) {}
+    apply();
+  });
+})();
+</script>
+</body>
+</html>
