@@ -114,6 +114,15 @@ present, and this is where each one went.
   linked breadcrumbs, a table of contents, previous/next links, and links to
   the lesson's script and notebook. (The first edition's lesson pages had no
   links at all.)
+- **Typography.** Text is darker and heavier: body text is set at weight
+  460 instead of 400, and the greys used for solutions, captions and labels
+  are darker (solution text now has a contrast ratio of 10:1 against its
+  background, small labels at least 5.6:1). In formulas only letters are
+  italic: brackets, operators, relations, arrows and digits are upright,
+  and so are brackets and symbols in italic prose and in diagram labels.
+  Italic letters that overhang their space — *f* above all — get room
+  before a bracket, an operator, a superscript or the next word. Sentences
+  are separated by a wider space, about two word spaces.
 - **Narrow screens.** At phone width, six of the seven first-edition lessons
   scrolled sideways (long formulas, wide tables) and the title block touched
   the edge of the screen. Formulas now wrap, tables scroll inside their own
@@ -192,7 +201,7 @@ Code and claims.
   is true by construction, and `tools/check_course.py` enforces it.
 - Leftover revision markers ("· new" on 23 exercise labels, "Lesson 2's new
   Exercise 11") were removed, and two diagrams with overlapping labels were
-  tidied.
+  tidied. One program output contained an unescaped `<`; it is now escaped.
 
 ### Tooling
 
@@ -204,7 +213,10 @@ Code and claims.
   inside an optional lab or an optional exercise part. It also checks that
   the caption of each exercise group names exactly the exercises under it,
   and that every reference to an exercise — "Exercise 12", "Lesson 6,
-  Exercise 8" — names one that exists.
+  Exercise 8" — names one that exists, and that every page is typeset.
+- `tools/typeset.py` sets brackets and symbols upright in formulas, adds
+  italic corrections and sentence spacing. Run it after editing the text of
+  a page; running it again changes nothing.
 
 ## First edition
 

@@ -8,19 +8,19 @@
 <meta name="description" content="A ten-lesson introduction to category theory: animated diagrams, full proofs, exercises with solutions, and optional Python labs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --paper:#FBFAF6; --paper-2:#F3EFE4; --grid:#E7E1D2;
-  --ink:#191B22; --ink-soft:#5C5F69; --ink-faint:#8B8C90; --rule:#E2DDCF;
-  --arrow:#2A3FA6; --arrow-soft:#8E97CE; --amber:#A8641A; --amber-wash:#F6ECDC;
+  --ink:#121318; --ink-soft:#33363F; --ink-faint:#5A5D66; --rule:#E2DDCF;
+  --arrow:#2A3FA6; --arrow-soft:#7983C2; --amber:#8F5212; --amber-wash:#F6ECDC;
   --blue-wash:#EBEDF8; --maxw:760px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Newsreader",Georgia,serif;font-size:20px;line-height:1.62;
+  font-family:"Newsreader",Georgia,serif;font-size:20px;font-weight:460;line-height:1.62;
   font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -50,7 +50,7 @@ a{color:inherit}
 .section{padding:52px 0}
 .sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--arrow);margin-bottom:16px}
 .intro{color:var(--ink-soft);max-width:60ch}
-.intro strong{color:var(--ink);font-weight:500}
+.intro strong{color:var(--ink);font-weight:650}
 .intro .m{font-style:italic}
 .intro code{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:.05em .35em;color:#3a3d46}
 
@@ -72,7 +72,7 @@ a{color:inherit}
 .part::after{content:"";flex:1;height:1px;background:var(--rule)}
 .part:first-child{margin-top:0}
 .card code,.how code{font-family:"IBM Plex Mono",monospace;font-size:.8em}
-.how strong{color:var(--ink);font-weight:500}
+.how strong{color:var(--ink);font-weight:650}
 .how{border:1px solid var(--rule);border-left:3px solid var(--arrow);background:var(--blue-wash);border-radius:3px;padding:22px 24px;margin-top:44px;font-size:18px;color:var(--ink-soft)}
 .how .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--arrow);display:block;margin-bottom:10px}
 .how p:last-child{margin-bottom:0}
@@ -85,10 +85,20 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
   .card{padding:22px 20px}
   .card .go{display:none}
 }
+.up{font-style:normal}
 @media (max-width:800px){
   /* keep the title block off the edges of a narrow screen */
   .hero.measure{padding-inline:26px}
 }
+/* italic corrections, used by tools/typeset.py */
+.pl2{padding-left:.02em} .pl3{padding-left:.03em} .pl4{padding-left:.04em} .pl5{padding-left:.05em} .pl6{padding-left:.06em} .pl7{padding-left:.07em} .pl8{padding-left:.08em} .pl9{padding-left:.09em}
+.pl10{padding-left:.10em} .pl11{padding-left:.11em} .pl12{padding-left:.12em} .pl13{padding-left:.13em} .pl14{padding-left:.14em} .pl15{padding-left:.15em} .pl16{padding-left:.16em} .pl17{padding-left:.17em}
+.pl18{padding-left:.18em} .pl19{padding-left:.19em} .pl20{padding-left:.20em} .pl21{padding-left:.21em} .pl22{padding-left:.22em} .pl23{padding-left:.23em} .pl24{padding-left:.24em} .pl25{padding-left:.25em}
+.pl26{padding-left:.26em} .pl27{padding-left:.27em} .pl28{padding-left:.28em} .pl29{padding-left:.29em} .pl30{padding-left:.30em} .pr2{padding-right:.02em} .pr3{padding-right:.03em} .pr4{padding-right:.04em}
+.pr5{padding-right:.05em} .pr6{padding-right:.06em} .pr7{padding-right:.07em} .pr8{padding-right:.08em} .pr9{padding-right:.09em} .pr10{padding-right:.10em} .pr11{padding-right:.11em} .pr12{padding-right:.12em}
+.pr13{padding-right:.13em} .pr14{padding-right:.14em} .pr15{padding-right:.15em} .pr16{padding-right:.16em} .pr17{padding-right:.17em} .pr18{padding-right:.18em} .pr19{padding-right:.19em} .pr20{padding-right:.20em}
+.pr21{padding-right:.21em} .pr22{padding-right:.22em} .pr23{padding-right:.23em} .pr24{padding-right:.24em} .pr25{padding-right:.25em} .pr26{padding-right:.26em} .pr27{padding-right:.27em} .pr28{padding-right:.28em}
+.pr29{padding-right:.29em} .pr30{padding-right:.30em}
 </style>
 </head>
 <body>
@@ -110,7 +120,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
       <path d="M278 118 l-9 -4.5 M278 118 l-9 4.5" class="hm-arrow amber" style="stroke-dasharray:none"/>
       <text x="96"  y="62"  class="hm-lab">f</text>
       <text x="246" y="62"  class="hm-lab">g</text>
-      <text x="170" y="140" class="hm-lab amber">g ∘ f</text>
+      <text x="170" y="140" class="hm-lab amber">g <tspan font-style="normal">∘</tspan> f</text>
     </svg>
   </div>
 </header>
@@ -119,7 +129,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
 <section class="section">
   <div class="measure">
     <div class="sec-no">The course</div>
-    <p class="intro">Each lesson is a self-contained page: motivation, boxed definitions and theorems with their proofs, worked examples with commutative diagrams that draw themselves, a section of computations carried out by hand, and a large set of exercises with hidden solutions — from warm-ups to arrows-only proofs. <strong>No programming is required.</strong> For readers who know Python, every lesson also has an optional lab in which the day&rsquo;s concept is implemented and machine-checked (each output shown was produced by the code shown), and a few exercises carry an optional Python part. The lessons build strictly in order; start at 01.</p>
+    <p class="intro">Each lesson is a self-contained page: motivation, boxed definitions and theorems with their proofs, worked examples with commutative diagrams that draw themselves, a section of computations carried out by hand, and a large set of exercises with hidden solutions — from warm-ups to arrows-only proofs. <strong>No programming is required.</strong> For readers who know Python, every lesson also has an optional lab in which the day&rsquo;s concept is implemented and machine-checked (each output shown was produced by the code shown), and a few exercises carry an optional Python part. The lessons build strictly in order; start at 01.</p>
 
     <nav class="cards" aria-label="Lessons">
       <div class="part">Part I · the language</div>
@@ -128,7 +138,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 01</span>
         <span class="go">read →</span>
         <h2>What Is a Category?</h2>
-        <p class="blurb">Objects, arrows, identity, and composition — and the two laws that make the whole subject go. Sets, preorders, monoids, relations and matrices all turn out to be categories; isomorphisms, monos and epis are defined without ever looking inside an object.</p>
+        <p class="blurb">Objects, arrows, identity, and composition — and the two laws that make the whole subject go. Sets, preorders, monoids, relations and matrices all turn out to be categories; isomorphisms, monos and epis are defined without ever looking inside an object.</p>
         <div class="topics"><span>objects &amp; arrows</span><span>composition</span><span>commuting diagrams</span><span>isomorphisms</span></div>
       </a>
 
@@ -136,7 +146,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 02</span>
         <span class="go">read →</span>
         <h2>Functors</h2>
-        <p class="blurb">Structure-preserving maps between categories. Why <code>map</code> obeying two laws is the same mathematics as monoid homomorphisms; the hom functors; and what it means for a functor to be full, faithful, or essentially surjective.</p>
+        <p class="blurb">Structure-preserving maps between categories. Why <code>map</code> obeying two laws is the same mathematics as monoid homomorphisms; the hom functors; and what it means for a functor to be full, faithful, or essentially surjective.</p>
         <div class="topics"><span>functor laws</span><span>hom functors</span><span>full &amp; faithful</span><span>Cat</span></div>
       </a>
 
@@ -144,7 +154,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 03</span>
         <span class="go">read →</span>
         <h2>Natural Transformations</h2>
-        <p class="blurb">Morphisms between functors, and the naturality square that makes &ldquo;polymorphic&rdquo; precise: <code>reverse</code> is natural for free, <code>sorted</code> is not. Then naturality in mathematics, the functor category, and what &ldquo;natural in <i>X</i>&rdquo; means.</p>
+        <p class="blurb">Morphisms between functors, and the naturality square that makes &ldquo;polymorphic&rdquo; precise: <code>reverse</code> is natural for free, <code>sorted</code> is not. Then naturality in mathematics, the functor category, and what &ldquo;natural in <i class="pr8">X</i>&rdquo; means.</p>
         <div class="topics"><span>components</span><span>naturality squares</span><span>functor categories</span><span>natural isomorphism</span></div>
       </a>
 
@@ -152,7 +162,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 04</span>
         <span class="go">read →</span>
         <h2>Equivalence of Categories</h2>
-        <p class="blurb">When are two categories &ldquo;the same&rdquo;? Isomorphism is too strict; equivalence is the right answer. A functor is an equivalence exactly when it is full, faithful and essentially surjective — proved in full — with matrices, skeletons and dualities as examples.</p>
+        <p class="blurb">When are two categories &ldquo;the same&rdquo;? Isomorphism is too strict; equivalence is the right answer. A functor is an equivalence exactly when it is full, faithful and essentially surjective — proved in full — with matrices, skeletons and dualities as examples.</p>
         <div class="topics"><span>equivalence</span><span>recognition theorem</span><span>skeletons</span><span>duality</span></div>
       </a>
 
@@ -178,7 +188,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 07</span>
         <span class="go">read →</span>
         <h2>Limits &amp; Colimits</h2>
-        <p class="blurb">Every universal property so far was a cone in disguise. Diagrams as functors, limits as universal cones; equalizers as solution sets, pullbacks as database joins; one formula for every limit of sets; and the theorem that hom functors preserve limits.</p>
+        <p class="blurb">Every universal property so far was a cone in disguise. Diagrams as functors, limits as universal cones; equalizers as solution sets, pullbacks as database joins; one formula for every limit of sets; and the theorem that hom functors preserve limits.</p>
         <div class="topics"><span>diagrams &amp; cones</span><span>equalizers</span><span>pullbacks</span><span>colimits</span></div>
       </a>
 
@@ -186,7 +196,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 08</span>
         <span class="go">read →</span>
         <h2>Adjunctions</h2>
-        <p class="blurb">What &ldquo;free&rdquo; has meant all along: a perfect exchange of arrows between two functors. Free ⊣ forgetful, currying with eval as counit, floor and ceiling as a Galois sandwich, universal arrows, and two proofs that right adjoints preserve limits.</p>
+        <p class="blurb">What &ldquo;free&rdquo; has meant all along: a perfect exchange of arrows between two functors. Free ⊣ forgetful, currying with eval as counit, floor and ceiling as a Galois sandwich, universal arrows, and two proofs that right adjoints preserve limits.</p>
         <div class="topics"><span>hom-set bijection</span><span>unit &amp; counit</span><span>galois connections</span><span>RAPL</span></div>
       </a>
 
@@ -196,7 +206,7 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 09</span>
         <span class="go">read →</span>
         <h2>Representables &amp; the Yoneda Lemma</h2>
-        <p class="blurb">The course&rsquo;s slogan becomes a theorem: an object is exactly the arrows into it, proved by tracking the identity. Graphs as presheaves, Cayley&rsquo;s theorem as a special case — and the discovery that every universal property is a representation of a functor.</p>
+        <p class="blurb">The course&rsquo;s slogan becomes a theorem: an object is exactly the arrows into it, proved by tracking the identity. Graphs as presheaves, Cayley&rsquo;s theorem as a special case — and the discovery that every universal property is a representation of a functor.</p>
         <div class="topics"><span>presheaves</span><span>yoneda lemma</span><span>representables</span><span>universal elements</span></div>
       </a>
 
@@ -204,15 +214,15 @@ footer{padding:44px 0 70px;color:var(--ink-faint);font-size:14.5px;font-family:"
         <span class="no">Lesson 10</span>
         <span class="go">read →</span>
         <h2>Monads &amp; Algebras</h2>
-        <p class="blurb">The finale. Every adjunction folds into a monad — List, Maybe, Writer, power set, State. The Kleisli category reveals the monad laws as Lesson 1&rsquo;s two axioms in disguise, and the algebras of the list monad turn out to be the monoids the course began with.</p>
+        <p class="blurb">The finale. Every adjunction folds into a monad — List, Maybe, Writer, power set, State. The Kleisli category reveals the monad laws as Lesson 1&rsquo;s two axioms in disguise, and the algebras of the list monad turn out to be the monoids the course began with.</p>
         <div class="topics"><span>monads</span><span>kleisli</span><span>algebras</span><span>eilenberg–moore</span></div>
       </a>
     </nav>
 
     <div class="how">
       <span class="tag">How to use these pages</span>
-      <p><strong>With pencil and paper.</strong> Every lesson can be read from start to finish without a computer, and the exercises are pen-and-paper problems; where one has a Python part, that part is optional. Do the exercises before opening the solutions; the arrows-only ones are the course.</p>
-      <p><strong>With Python, if you like.</strong> The optional labs are folded away inside each lesson; the button at the top of a lesson opens or closes all of them. The same code is collected, lesson by lesson, as plain scripts in <code>code/</code> and as Jupyter notebooks in <code>notebooks/</code>, and needs nothing beyond Python 3.</p>
+      <p><strong>With pencil and paper.</strong> Every lesson can be read from start to finish without a computer, and the exercises are pen-and-paper problems; where one has a Python part, that part is optional. Do the exercises before opening the solutions; the arrows-only ones are the course.</p>
+      <p><strong>With Python, if you like.</strong> The optional labs are folded away inside each lesson; the button at the top of a lesson opens or closes all of them. The same code is collected, lesson by lesson, as plain scripts in <code>code/</code> and as Jupyter notebooks in <code>notebooks/</code>, and needs nothing beyond Python 3.</p>
       <p>Keep all the <code>.html</code> files in one folder so that the links between lessons work.</p>
     </div>
   </div>

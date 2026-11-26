@@ -67,6 +67,8 @@ code/lesson-NN-<topic>.py      a lesson's optional Python, as a plain script
 notebooks/lesson-NN-….ipynb    the same code as a Jupyter notebook, with outputs
 tools/sync_code.py             regenerates code/ and notebooks/ from the pages
 tools/check_course.py          checks pages, links, code and generated files
+tools/typeset.py               sets symbols upright in formulas, adds italic
+                               corrections and sentence spacing
 CHANGELOG.md                   what changed between editions
 ```
 
@@ -84,6 +86,8 @@ python3 tools/check_course.py    # run every code box and compare its output wit
                                  # generated files
 python3 tools/sync_code.py       # after editing code on a page: regenerate
                                  # code/ and notebooks/
+python3 tools/typeset.py         # after editing text on a page: set brackets and
+                                 # symbols upright in formulas, space sentences
 ```
 
 If a page and a program ever disagree, the checker fails — and if you find a

@@ -8,20 +8,20 @@
 <meta name="description" content="Five lessons of preparation pay off: we now define objects by how everything else maps to them — and the definitions pin their subjects down up to unique isomorphism.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --paper:#FBFAF6;
   --paper-2:#F3EFE4;
   --grid:#E7E1D2;
-  --ink:#191B22;
-  --ink-soft:#5C5F69;
-  --ink-faint:#8B8C90;
+  --ink:#121318;
+  --ink-soft:#33363F;     /* solutions, captions: 10:1 on the blue wash */
+  --ink-faint:#5A5D66;    /* small labels: 6:1 */
   --rule:#E2DDCF;
   --arrow:#2A3FA6;        /* morphisms — drafting ink blue */
-  --arrow-soft:#8E97CE;   /* composites / derived arrows */
-  --amber:#A8641A;        /* identities & special notes, used sparingly */
+  --arrow-soft:#7983C2;   /* composites / derived arrows */
+  --amber:#8F5212;        /* identities & special notes, used sparingly */
   --amber-wash:#F6ECDC;
   --blue-wash:#EBEDF8;
   --code-bg:#15171E;
@@ -39,6 +39,7 @@ body{
   color:var(--ink);
   font-family:"Newsreader",Georgia,serif;
   font-size:20px;
+  font-weight:460;
   line-height:1.62;
   font-optical-sizing:auto;
   -webkit-font-smoothing:antialiased;
@@ -64,7 +65,7 @@ p{margin:0 0 1.15em}
 em,i,.var{font-style:italic}
 .var{font-family:"Newsreader",serif;font-style:italic}
 .op{font-style:normal}
-strong{font-weight:600}
+strong{font-weight:650}
 a{color:var(--arrow);text-decoration-thickness:1px;text-underline-offset:2px}
 
 h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
@@ -135,7 +136,7 @@ figcaption{
 .node{font-family:"Newsreader",serif;font-style:italic;font-size:23px;fill:var(--ink)}
 .elabel{font-family:"Newsreader",serif;font-style:italic;font-size:18px;
   fill:var(--arrow);paint-order:stroke;stroke:var(--paper-2);stroke-width:4px;stroke-linejoin:round}
-.elabel.soft{fill:#5b62a0}
+.elabel.soft{fill:#454c8f}
 .elabel.amber{fill:var(--amber)}
 .arrow{fill:none;stroke:var(--arrow);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .arrow.soft{stroke:var(--arrow-soft)}
@@ -257,7 +258,7 @@ footer{padding:40px 0 70px;color:var(--ink-faint);font-size:14.5px;
 .prob:first-of-type{border-top:none;padding-top:0;margin-top:28px}
 .prob-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .prob-head .pn{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--arrow);font-weight:500}
-.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
+.prob-head .tier{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;border:1px solid var(--rule);border-radius:20px;padding:2px 10px}
 .prob-body p{margin:0 0 .9em}
 .prob-body p:last-child{margin-bottom:0}
 .prob-body ol{margin:.3em 0 .9em;padding-left:1.5em}
@@ -404,6 +405,20 @@ p + .exgroup{margin-top:40px}
 .exgroup .exmeta a{color:var(--arrow);text-decoration:none}
 .exgroup .exmeta a:hover{text-decoration:underline}
 .exgroup + .prob{border-top:none;padding-top:0;margin-top:26px}
+
+/* ---------- second edition: typography ---------- */
+/* in math and in italic prose, only letters lean: brackets, operators, digits are upright */
+.up{font-style:normal}
+
+/* italic corrections, used by tools/typeset.py */
+.pl2{padding-left:.02em} .pl3{padding-left:.03em} .pl4{padding-left:.04em} .pl5{padding-left:.05em} .pl6{padding-left:.06em} .pl7{padding-left:.07em} .pl8{padding-left:.08em} .pl9{padding-left:.09em}
+.pl10{padding-left:.10em} .pl11{padding-left:.11em} .pl12{padding-left:.12em} .pl13{padding-left:.13em} .pl14{padding-left:.14em} .pl15{padding-left:.15em} .pl16{padding-left:.16em} .pl17{padding-left:.17em}
+.pl18{padding-left:.18em} .pl19{padding-left:.19em} .pl20{padding-left:.20em} .pl21{padding-left:.21em} .pl22{padding-left:.22em} .pl23{padding-left:.23em} .pl24{padding-left:.24em} .pl25{padding-left:.25em}
+.pl26{padding-left:.26em} .pl27{padding-left:.27em} .pl28{padding-left:.28em} .pl29{padding-left:.29em} .pl30{padding-left:.30em} .pr2{padding-right:.02em} .pr3{padding-right:.03em} .pr4{padding-right:.04em}
+.pr5{padding-right:.05em} .pr6{padding-right:.06em} .pr7{padding-right:.07em} .pr8{padding-right:.08em} .pr9{padding-right:.09em} .pr10{padding-right:.10em} .pr11{padding-right:.11em} .pr12{padding-right:.12em}
+.pr13{padding-right:.13em} .pr14{padding-right:.14em} .pr15{padding-right:.15em} .pr16{padding-right:.16em} .pr17{padding-right:.17em} .pr18{padding-right:.18em} .pr19{padding-right:.19em} .pr20{padding-right:.20em}
+.pr21{padding-right:.21em} .pr22{padding-right:.22em} .pr23{padding-right:.23em} .pr24{padding-right:.24em} .pr25{padding-right:.25em} .pr26{padding-right:.26em} .pr27{padding-right:.27em} .pr28{padding-right:.28em}
+.pr29{padding-right:.29em} .pr30{padding-right:.30em}
 </style>
 </head>
 <body>
@@ -438,7 +453,7 @@ p + .exgroup{margin-top:40px}
       <li><a href="#s7"><span class="n">§7</span>Exercises</a></li>
       <li><a href="#recap"><span class="n"></span>Recap</a></li>
     </ul>
-    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-06-universal-properties.py">a script</a> and <a href="notebooks/lesson-06-universal-properties.ipynb">a notebook</a>.</p>
+    <p class="dl">Python is optional throughout. The labs on this page are collected in <a href="code/lesson-06-universal-properties.py">a script</a> and <a href="notebooks/lesson-06-universal-properties.ipynb">a notebook</a>.</p>
   </nav>
 </header>
 
@@ -448,9 +463,9 @@ p + .exgroup{margin-top:40px}
   <div class="measure">
     <div class="sec-no">§1 — The payoff</div>
     <h2>Defining things by the company they keep</h2>
-    <p>So far we have described objects from the outside — by their arrows — but we have not yet <em>defined</em> anything that way. This lesson makes the move — Lesson 5 gave a first glimpse of it, when the identity arrow of a slice category turned out to receive exactly one arrow from every object. A <strong>universal property</strong> characterizes an object as the <em>best possible</em> solution to a mapping problem: the object such that every other candidate factors through it, in exactly one way.</p>
-    <p>The template has two clauses, and both matter. <strong>Existence</strong>: for every candidate, some arrow does the job. <strong>Uniqueness</strong>: only one arrow does. Existence alone would give a &ldquo;good enough&rdquo; object; uniqueness is what makes it <em>the</em> object, canonical, with no arbitrary choices hiding inside. In the diagram above, the dashed amber arrow is this lesson&rsquo;s signature mark: <em>there exists exactly one arrow making the picture commute</em>.</p>
-    <p>The reward for this austerity is the theorem we prove in §2: anything defined by a universal property is unique up to <em>unique</em> isomorphism. Two constructions built in wildly different ways — cartesian pairs versus some exotic encoding — are interchangeable the moment they satisfy the same universal property. Interfaces over implementations, stated as mathematics.</p>
+    <p>So far we have described objects from the outside — by their arrows — but we have not yet <em class="pr5">defined</em> anything that way. This lesson makes the move — Lesson 5 gave a first glimpse of it, when the identity arrow of a slice category turned out to receive exactly one arrow from every object. A <strong>universal property</strong> characterizes an object as the <em>best possible</em> solution to a mapping problem: the object such that every other candidate factors through it, in exactly one way.</p>
+    <p>The template has two clauses, and both matter. <strong>Existence</strong>: for every candidate, some arrow does the job. <strong>Uniqueness</strong>: only one arrow does. Existence alone would give a &ldquo;good enough&rdquo; object; uniqueness is what makes it <em>the</em> object, canonical, with no arbitrary choices hiding inside. In the diagram above, the dashed amber arrow is this lesson&rsquo;s signature mark: <em>there exists exactly one arrow making the picture commute</em>.</p>
+    <p>The reward for this austerity is the theorem we prove in §2: anything defined by a universal property is unique up to <em>unique</em> isomorphism. Two constructions built in wildly different ways — cartesian pairs versus some exotic encoding — are interchangeable the moment they satisfy the same universal property. Interfaces over implementations, stated as mathematics.</p>
   </div>
 </section>
 
@@ -462,8 +477,8 @@ p + .exgroup{margin-top:40px}
     <div class="box def">
       <span class="tag">Definition · Terminal and initial</span>
       <ul class="deflist" style="margin-top:0">
-        <li>An object <span class="m">T</span> is <strong>terminal</strong> if for <em>every</em> object <span class="m">X</span> there is <strong>exactly one</strong> arrow <span class="m">X → T</span>. It is written <span class="m">1</span>, and the unique arrow <span class="m">!<sub>X</sub> : X → 1</span>.</li>
-        <li>An object <span class="m">I</span> is <strong>initial</strong> if for every object <span class="m">X</span> there is exactly one arrow <span class="m">I → X</span>. It is written <span class="m">0</span>.</li>
+        <li>An object <span class="m pr8">T</span> is <strong>terminal</strong> if for <em>every</em> object <span class="m pr8">X</span> there is <strong>exactly one</strong> arrow <span class="m">X <span class="up pl8">→ </span>T</span>. It is written <span class="m"><span class="up">1</span></span>, and the unique arrow <span class="m"><span class="up">!</span><sub>X</sub> <span class="up pl6">: </span>X <span class="up pl8">→ 1</span></span>.</li>
+        <li>An object <span class="m pr7">I</span> is <strong>initial</strong> if for every object <span class="m pr8">X</span> there is exactly one arrow <span class="m">I <span class="up pl7">→ </span>X</span>. It is written <span class="m"><span class="up">0</span></span>.</li>
       </ul>
     </div>
 
@@ -471,34 +486,34 @@ p + .exgroup{margin-top:40px}
       <div class="board" data-diagram="terminal" aria-label="Three objects X, Y, Z each with a single arrow into a terminal object T.">
         <svg></svg>
       </div>
-      <figcaption>A terminal object is a universal sink: every object has exactly one route in. No conditions on what <span class="m">T</span> is &ldquo;made of&rdquo; — only on its arrows.</figcaption>
+      <figcaption>A terminal object is a universal sink: every object has exactly one route in. No conditions on what <span class="m pr8">T</span> is &ldquo;made of&rdquo; — only on its arrows.</figcaption>
     </figure>
 
-    <p>In <span class="cat">Set</span>, a one-element set <span class="m">{∗}</span> is terminal: a function into it has no choices to make, so there is exactly one from each <span class="m">X</span>. The empty set is initial: the empty function is the unique map <span class="m">∅ → X</span> — there is nothing to send, hence nothing to choose, hence exactly one way to do it. (Vacuous, and correct.) Note the asymmetry: <span class="cat">Set</span> has <em>many</em> terminal objects — every singleton — which is exactly why the uniqueness theorem below matters. In a preorder, terminal means <em>greatest element</em> and initial means <em>least</em>; in <span class="cat">Grp</span>, the trivial group is both at once (a <em>zero object</em>).</p>
+    <p>In <span class="cat">Set</span>, a one-element set <span class="m"><span class="up">{∗}</span></span> is terminal: a function into it has no choices to make, so there is exactly one from each <span class="m">X</span>. The empty set is initial: the empty function is the unique map <span class="m pr8"><span class="up">∅ → </span>X</span> — there is nothing to send, hence nothing to choose, hence exactly one way to do it. (Vacuous, and correct.) Note the asymmetry: <span class="cat">Set</span> has <em>many</em> terminal objects — every singleton — which is exactly why the uniqueness theorem below matters. In a preorder, terminal means <em>greatest element</em> and initial means <em>least</em>; in <span class="cat">Grp</span>, the trivial group is both at once (a <em>zero object</em>).</p>
 
 <h3 class="sub">The two ends of some familiar categories</h3>
-<p>A terminal object and an initial object are the two &ldquo;ends&rdquo; of a category — where every arrow can finish, and where every arrow can start. Whether a category has them, and what they are, is one of the first things worth knowing about it.</p>
+<p>A terminal object and an initial object are the two &ldquo;ends&rdquo; of a category — where every arrow can finish, and where every arrow can start. Whether a category has them, and what they are, is one of the first things worth knowing about it.</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>Category</th><th>Initial object</th><th>Terminal object</th></tr>
 <tr><td><span class="m"><span class="cat">Set</span></span></td><td>the empty set</td><td>any one-element set</td></tr>
 <tr><td>a preorder</td><td>a least element, if there is one</td><td>a greatest element, if there is one</td></tr>
 <tr><td><span class="m"><span class="cat">Grp</span></span>, <span class="m"><span class="cat">Mon</span></span>, <span class="m"><span class="cat">Vect</span></span></td><td>the trivial one</td><td>the trivial one again: a zero object</td></tr>
-<tr><td><span class="m"><span class="cat">Ring</span></span></td><td>the integers <span class="m">ℤ</span></td><td>the zero ring, in which <span class="m">0 = 1</span></td></tr>
+<tr><td><span class="m"><span class="cat">Ring</span></span></td><td>the integers <span class="m"><span class="up">ℤ</span></span></td><td>the zero ring, in which <span class="m"><span class="up">0 = 1</span></span></td></tr>
 <tr><td><span class="m"><span class="cat">Cat</span></span></td><td>the empty category <span class="m"><span class="cat">𝟘</span></span></td><td>the one-object category <span class="m"><span class="cat">𝟙</span></span></td></tr>
-<tr><td>a slice <span class="m"><span class="cat">𝒞</span>/A</span> (Lesson 5)</td><td>—</td><td>the identity <span class="m">(A, id<sub>A</sub>)</span></td></tr>
-<tr><td>a coslice <span class="m">A/<span class="cat">𝒞</span></span></td><td>the identity <span class="m">(A, id<sub>A</sub>)</span></td><td>—</td></tr>
-<tr><td><span class="m">(ℤ, ≤)</span>; a non-trivial group as a one-object category</td><td>none</td><td>none</td></tr>
+<tr><td>a slice <span class="m"><span class="cat">𝒞</span><span class="up pr5">/</span>A</span> (Lesson 5)</td><td>—</td><td>the identity <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">)</span></span></td></tr>
+<tr><td>a coslice <span class="m">A<span class="up">/</span><span class="cat">𝒞</span></span></td><td>the identity <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">)</span></span></td><td>—</td></tr>
+<tr><td><span class="m"><span class="up">(ℤ, ≤)</span></span>; a non-trivial group as a one-object category</td><td>none</td><td>none</td></tr>
 </table></div>
-<p>Two rows deserve a word. In <span class="m"><span class="cat">Ring</span></span> a homomorphism must send <span class="m">1</span> to <span class="m">1</span>, so a homomorphism out of <span class="m">ℤ</span> has no freedom at all — <span class="m">n</span> must go to <span class="m">1 + ⋯ + 1</span> — and there is exactly one into every ring: <span class="m">ℤ</span> is initial. And a group with more than one element, viewed as a one-object category, has no terminal or initial object: its only object has several arrows to itself, not exactly one. Existence is never guaranteed. But when an end exists, the theorem below says it is essentially unique.</p>
+<p>Two rows deserve a word. In <span class="m"><span class="cat">Ring</span></span> a homomorphism must send <span class="m"><span class="up">1</span></span> to <span class="m"><span class="up">1</span></span>, so a homomorphism out of <span class="m"><span class="up">ℤ</span></span> has no freedom at all — <span class="m">n</span> must go to <span class="m"><span class="up">1 + ⋯ + 1</span></span> — and there is exactly one into every ring: <span class="m"><span class="up">ℤ</span></span> is initial. And a group with more than one element, viewed as a one-object category, has no terminal or initial object: its only object has several arrows to itself, not exactly one. Existence is never guaranteed. But when an end exists, the theorem below says it is essentially unique.</p>
 
 
     <div class="box thm">
       <span class="tag">Theorem · Unique up to unique isomorphism</span>
-      <p>If <span class="m">T</span> and <span class="m">T&prime;</span> are both terminal in <span class="cat">𝒞</span>, there is exactly one arrow <span class="m">T → T&prime;</span>, and it is an isomorphism.</p>
+      <p>If <span class="m pr8">T</span> and <span class="m">T<span class="up pl8">&prime;</span></span> are both terminal in <span class="cat">𝒞</span>, there is exactly one arrow <span class="m">T <span class="up pl8">→ </span>T<span class="up pl8">&prime;</span></span>, and it is an isomorphism.</p>
     </div>
 
-    <p><strong>Proof (arrows only).</strong> Terminality of <span class="m">T&prime;</span> gives a unique arrow <span class="m">u : T → T&prime;</span>; terminality of <span class="m">T</span> gives a unique <span class="m">v : T&prime; → T</span>. Now consider <span class="m">v ∘ u : T → T</span>. Since <span class="m">T</span> is terminal, there is exactly <em>one</em> arrow <span class="m">T → T</span> — and <span class="m">id<sub>T</sub></span> is such an arrow. So <span class="m">v ∘ u = id<sub>T</sub></span>, and symmetrically <span class="m">u ∘ v = id<sub>T&prime;</sub></span>. Hence <span class="m">u</span> is an isomorphism, and it was unique from the start. ∎</p>
-    <p>Read the proof again — it is four sentences, and the engine of all four is the word <em>exactly</em>. This one argument, lightly costumed, will re-prove itself for products below, for limits in Lesson 7, and for adjoints after that. It is the most reusable proof in the subject.</p>
+    <p><strong>Proof (arrows only).</strong> Terminality of <span class="m">T<span class="up pl8">&prime;</span></span> gives a unique arrow <span class="m">u <span class="up">: </span>T <span class="up pl8">→ </span>T<span class="up pl8">&prime;</span></span>; terminality of <span class="m pr8">T</span> gives a unique <span class="m">v <span class="up">: </span>T<span class="up pl8">&prime; → </span>T</span>. Now consider <span class="m">v <span class="up">∘ </span>u <span class="up">: </span>T <span class="up pl8">→ </span>T</span>. Since <span class="m pr8">T</span> is terminal, there is exactly <em>one</em> arrow <span class="m pr8">T <span class="up pl8">→ </span>T</span> — and <span class="m pr6">id<sub>T</sub></span> is such an arrow. So <span class="m">v <span class="up">∘ </span>u <span class="up">= </span>id<sub>T</sub></span>, and symmetrically <span class="m">u <span class="up">∘ </span>v <span class="up">= </span>id<sub>T<span class="up pl8">&prime;</span></sub></span>. Hence <span class="m">u</span> is an isomorphism, and it was unique from the start. ∎</p>
+    <p>Read the proof again — it is four sentences, and the engine of all four is the word <em>exactly</em>. This one argument, lightly costumed, will re-prove itself for products below, for limits in Lesson 7, and for adjoints after that. It is the most reusable proof in the subject.</p>
   </div>
 </section>
 
@@ -506,40 +521,40 @@ p + .exgroup{margin-top:40px}
   <div class="measure">
     <div class="sec-no">§3 — Products</div>
     <h2>The pair, without ever saying &ldquo;pair&rdquo;</h2>
-    <p>What is the cartesian product <span class="m">A × B</span>, arrows-only? Its interface: it comes with two projections, and knowing a map into <span class="m">A × B</span> is exactly the same as knowing a map into <span class="m">A</span> and a map into <span class="m">B</span>. Promote the interface to the definition:</p>
+    <p>What is the cartesian product <span class="m">A <span class="up">× </span>B</span>, arrows-only? Its interface: it comes with two projections, and knowing a map into <span class="m">A <span class="up">× </span>B</span> is exactly the same as knowing a map into <span class="m">A</span> and a map into <span class="m">B</span>. Promote the interface to the definition:</p>
 
     <div class="box def">
       <span class="tag">Definition · Product</span>
-      <p>A <strong>product</strong> of <span class="m">A</span> and <span class="m">B</span> is an object <span class="m">A × B</span> together with arrows <span class="m">π<sub>1</sub> : A × B → A</span> and <span class="m">π<sub>2</sub> : A × B → B</span> (the <strong>projections</strong>) such that: for every object <span class="m">X</span> and every pair of arrows <span class="m">f : X → A</span>, <span class="m">g : X → B</span>, there is <strong>exactly one</strong> arrow <span class="m">⟨f, g⟩ : X → A × B</span> with</p>
-      <p style="text-align:center" class="m">π<sub>1</sub> ∘ ⟨f, g⟩ = f &nbsp;&nbsp;and&nbsp;&nbsp; π<sub>2</sub> ∘ ⟨f, g⟩ = g.</p>
+      <p>A <strong>product</strong> of <span class="m">A</span> and <span class="m">B</span> is an object <span class="m">A <span class="up">× </span>B</span> together with arrows <span class="m">π<sub><span class="up">1</span></sub> <span class="up">: </span>A <span class="up">× </span>B <span class="up">→ </span>A</span> and <span class="m">π<sub><span class="up">2</span></sub> <span class="up">: </span>A <span class="up">× </span>B <span class="up">→ </span>B</span> (the <strong>projections</strong>) such that: for every object <span class="m pr8">X</span> and every pair of arrows <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span>, <span class="m">g <span class="up pl5">: </span>X <span class="up pl8">→ </span>B</span>, there is <strong>exactly one</strong> arrow <span class="m"><span class="up pr14">⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ : </span>X <span class="up pl8">→ </span>A <span class="up">× </span>B</span> with</p>
+      <p style="text-align:center" class="m">π<sub><span class="up">1</span></sub> <span class="up pr14">∘ ⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ = </span>f &nbsp;&nbsp;and&nbsp;&nbsp; π<sub><span class="up">2</span></sub> <span class="up pr14">∘ ⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ = </span>g<span class="up">.</span></p>
     </div>
 
-    <p>That is the hero diagram at the top of the page: the solid arrows are the given data, and the dashed <span class="m">⟨f, g⟩</span> is the one arrow the universal property conjures. In <span class="cat">Set</span> it is <span class="m">x ↦ (f(x), g(x))</span> — and the uniqueness clause holds because any map <span class="m">m</span> with <span class="m">π<sub>1</sub> ∘ m = f</span> and <span class="m">π<sub>2</sub> ∘ m = g</span> has both coordinates of <span class="m">m(x)</span> pinned down.</p>
-    <p>Now the definition goes traveling. In <span class="cat">Grp</span>, the same property picks out the direct product of groups. In a preorder, an arrow <span class="m">X → A</span> just means <span class="m">X ≤ A</span>, so the product of <span class="m">A</span> and <span class="m">B</span> is the greatest element below both — the <strong>meet</strong>. In the divisibility order on positive integers, &ldquo;below&rdquo; means &ldquo;divides,&rdquo; and the product of two numbers is their <strong>gcd</strong>. One definition; pairs, direct products, meets, and gcds fall out as instances. And by the same style of argument as §2&rsquo;s theorem, any two products of <span class="m">A</span> and <span class="m">B</span> are uniquely isomorphic (Exercise 8) — so we may speak of <em>the</em> product.</p>
-    <p>A warning with content: <strong>products need not exist.</strong> The definition is a specification, not a guarantee, and some categories simply have no object meeting it — §6 exhibits two, and proves it by listing the candidates. Whether a category <em>has</em> products is real information about the category.</p>
+    <p>That is the hero diagram at the top of the page: the solid arrows are the given data, and the dashed <span class="m"><span class="up pr14">⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩</span></span> is the one arrow the universal property conjures. In <span class="cat">Set</span> it is <span class="m">x <span class="up pr14">↦ (</span>f<span class="up pl18">(</span>x<span class="up">), </span>g<span class="up pl5">(</span>x<span class="up">))</span></span> — and the uniqueness clause holds because any map <span class="m">m</span> with <span class="m pr18">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m <span class="up">= </span>f</span> and <span class="m pr5">π<sub><span class="up">2</span></sub> <span class="up">∘ </span>m <span class="up">= </span>g</span> has both coordinates of <span class="m">m<span class="up">(</span>x<span class="up">)</span></span> pinned down.</p>
+    <p>Now the definition goes traveling. In <span class="cat">Grp</span>, the same property picks out the direct product of groups. In a preorder, an arrow <span class="m">X <span class="up pl8">→ </span>A</span> just means <span class="m">X <span class="up pl8">≤ </span>A</span>, so the product of <span class="m">A</span> and <span class="m">B</span> is the greatest element below both — the <strong>meet</strong>. In the divisibility order on positive integers, &ldquo;below&rdquo; means &ldquo;divides,&rdquo; and the product of two numbers is their <strong>gcd</strong>. One definition; pairs, direct products, meets, and gcds fall out as instances. And by the same style of argument as §2&rsquo;s theorem, any two products of <span class="m">A</span> and <span class="m">B</span> are uniquely isomorphic (Exercise 8) — so we may speak of <em>the</em> product.</p>
+    <p>A warning with content: <strong>products need not exist.</strong> The definition is a specification, not a guarantee, and some categories simply have no object meeting it — §6 exhibits two, and proves it by listing the candidates. Whether a category <em>has</em> products is real information about the category.</p>
 
     <figure>
       <div class="board" data-diagram="div" aria-label="The divisibility order on 1, 2, 3, 6 drawn as a diamond, with 1 initial at the bottom, 6 terminal at the top, and gcd and lcm as meet and join.">
         <svg></svg>
       </div>
-      <figcaption>The divisibility order on <span class="m">{1, 2, 3, 6}</span>. Bottom is initial, top is terminal, and for <span class="m">2</span> and <span class="m">3</span>: product = gcd = <span class="m">1</span>, coproduct = lcm = <span class="m">6</span>. §6 verifies all four claims by hand and, optionally, by machine.</figcaption>
+      <figcaption>The divisibility order on <span class="m"><span class="up">{1, 2, 3, 6}</span></span>. Bottom is initial, top is terminal, and for <span class="m"><span class="up pl3">2</span></span> and <span class="m"><span class="up pl5">3</span></span>: product <span class="up">= </span>gcd <span class="up pl5">= </span><span class="m"><span class="up">1</span></span>, coproduct <span class="up">= </span>lcm <span class="up">= </span><span class="m"><span class="up">6</span></span>. §6 verifies all four claims by hand and, optionally, by machine.</figcaption>
     </figure>
 <h3 class="sub">A product is a terminal object</h3>
-<p>The uniqueness of products need not be proved separately. It is §2&rsquo;s theorem, applied in a category built with the kit of Lesson 5. Fix <span class="m">A</span> and <span class="m">B</span>, and consider the <strong>spans</strong> over them: triples <span class="m">(X, f, g)</span> with <span class="m">f : X → A</span> and <span class="m">g : X → B</span>. Spans form a category, in which an arrow from <span class="m">(X, f, g)</span> to <span class="m">(X′, f′, g′)</span> is an arrow <span class="m">m : X → X′</span> compatible with both legs,</p>
-<p class="eq"><span class="m">f′ ∘ m = f &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; g′ ∘ m = g.</span></p>
-<p>(In the language of Lesson 5 it is the comma category of the diagonal functor over the pair <span class="m">(A, B)</span>.) Now read the definition of the product again: <em>for every span <span class="m">(X, f, g)</span> there is exactly one arrow to the span <span class="m">(A × B, π<sub>1</sub>, π<sub>2</sub>)</span></em>. A product of <span class="m">A</span> and <span class="m">B</span> is precisely a <strong>terminal object in the category of spans</strong>. So any two products are isomorphic by a unique isomorphism of spans — one compatible with the projections — and nothing new has to be proved. This manoeuvre, <em>build the right category and look for its terminal object</em>, is the pattern behind every universal property, and Lesson 7 uses it to define all limits at once.</p>
+<p>The uniqueness of products need not be proved separately. It is §2&rsquo;s theorem, applied in a category built with the kit of Lesson 5. Fix <span class="m">A</span> and <span class="m">B</span>, and consider the <strong>spans</strong> over them: triples <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up">, </span>g<span class="up pl5">)</span></span> with <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span> and <span class="m">g <span class="up pl5">: </span>X <span class="up pl8">→ </span>B</span>. Spans form a category, in which an arrow from <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up">, </span>g<span class="up pl5">)</span></span> to <span class="m"><span class="up pr5">(</span>X<span class="up pl8">′, </span>f<span class="up pl18">′, </span>g<span class="up pl5">′)</span></span> is an arrow <span class="m">m <span class="up">: </span>X <span class="up pl8">→ </span>X<span class="up pl8">′</span></span> compatible with both legs,</p>
+<p class="eq"><span class="m">f<span class="up pl18">′ ∘ </span>m <span class="up">= </span>f &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; g<span class="up pl5">′ ∘ </span>m <span class="up">= </span>g<span class="up">.</span></span></p>
+<p>(In the language of Lesson 5 it is the comma category of the diagonal functor over the pair <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>B<span class="up">)</span></span>.) Now read the definition of the product again: <em>for every span <span class="m"><span class="up pr5">(</span>X<span class="up">, </span>f<span class="up">, </span>g<span class="up pl5">)</span></span> there is exactly one arrow to the span <span class="m"><span class="up pr5">(</span>A <span class="up">× </span>B<span class="up">, </span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">)</span></span></em>. A product of <span class="m">A</span> and <span class="m">B</span> is precisely a <strong>terminal object in the category of spans</strong>. So any two products are isomorphic by a unique isomorphism of spans — one compatible with the projections — and nothing new has to be proved. This manoeuvre, <em>build the right category and look for its terminal object</em>, is the pattern behind every universal property, and Lesson 7 uses it to define all limits at once.</p>
 <h3 class="sub">Calculating with products</h3>
-<p>The universal property is also a practical calculus. Its uniqueness clause gives a test for equality of arrows into a product:</p>
+<p>The universal property is also a practical calculus. Its uniqueness clause gives a test for equality of arrows into a product:</p>
 <div class="box thm">
 <span class="tag">Proposition · Arrows into a product are determined by their components</span>
-<p>If <span class="m">m, m′ : X → A × B</span> satisfy <span class="m">π<sub>1</sub> ∘ m = π<sub>1</sub> ∘ m′</span> and <span class="m">π<sub>2</sub> ∘ m = π<sub>2</sub> ∘ m′</span>, then <span class="m">m = m′</span>.</p>
+<p>If <span class="m">m<span class="up">, </span>m<span class="up">′ : </span>X <span class="up pl8">→ </span>A <span class="up">× </span>B</span> satisfy <span class="m">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m <span class="up">= </span>π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m<span class="up">′</span></span> and <span class="m">π<sub><span class="up">2</span></sub> <span class="up">∘ </span>m <span class="up">= </span>π<sub><span class="up">2</span></sub> <span class="up">∘ </span>m<span class="up">′</span></span>, then <span class="m">m <span class="up">= </span>m<span class="up">′</span></span>.</p>
 </div>
-<p><strong>Proof.</strong> Put <span class="m">f = π<sub>1</sub> ∘ m</span> and <span class="m">g = π<sub>2</sub> ∘ m</span>. Both <span class="m">m</span> and <span class="m">m′</span> are arrows whose composites with the projections are <span class="m">f</span> and <span class="m">g</span>. There is exactly one such arrow, <span class="m">⟨f, g⟩</span>. ∎</p>
-<p>Everything else follows from this test. For any <span class="m">h : W → X</span>,</p>
-<p class="eq"><span class="m">⟨f, g⟩ ∘ h = ⟨f ∘ h, g ∘ h⟩,</span></p>
-<p>because both sides have the same two components: <span class="m">π<sub>1</sub> ∘ ⟨f, g⟩ ∘ h = f ∘ h</span>, and similarly for <span class="m">π<sub>2</sub></span>. And two arrows <span class="m">f : A → A′</span> and <span class="m">g : B → B′</span> combine into an arrow between products,</p>
-<p class="eq"><span class="m">f × g = ⟨f ∘ π<sub>1</sub>, g ∘ π<sub>2</sub>⟩ : A × B → A′ × B′,</span></p>
-<p>which in <span class="m"><span class="cat">Set</span></span> is <span class="m">(a, b) ↦ (f(a), g(b))</span>. The same test shows <span class="m">(f′ × g′) ∘ (f × g) = (f′ ∘ f) × (g′ ∘ g)</span> and <span class="m">id × id = id</span>. So in a category where every pair of objects has a product, the product is a <strong>bifunctor</strong> <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒞</span> → <span class="cat">𝒞</span></span> in the sense of Lesson 5 — its action on arrows was forced by the universal property, with no further choices.</p>
+<p><strong>Proof.</strong> Put <span class="m">f <span class="up pl18">= </span>π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m</span> and <span class="m">g <span class="up pl5">= </span>π<sub><span class="up">2</span></sub> <span class="up">∘ </span>m</span>. Both <span class="m">m</span> and <span class="m">m<span class="up">′</span></span> are arrows whose composites with the projections are <span class="m pr18">f</span> and <span class="m">g</span>. There is exactly one such arrow, <span class="m"><span class="up pr14">⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩</span></span>. ∎</p>
+<p>Everything else follows from this test. For any <span class="m">h <span class="up">: </span>W <span class="up pl10">→ </span>X</span>,</p>
+<p class="eq"><span class="m"><span class="up pr14">⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ ∘ </span>h <span class="up pr14">= ⟨</span>f <span class="up pl18">∘ </span>h<span class="up">, </span>g <span class="up pl5">∘ </span>h<span class="up">⟩,</span></span></p>
+<p>because both sides have the same two components: <span class="m">π<sub><span class="up">1</span></sub> <span class="up pr14">∘ ⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ ∘ </span>h <span class="up">= </span>f <span class="up pl18">∘ </span>h</span>, and similarly for <span class="m">π<sub><span class="up">2</span></sub></span>. And two arrows <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>A<span class="up">′</span></span> and <span class="m">g <span class="up pl5">: </span>B <span class="up">→ </span>B<span class="up">′</span></span> combine into an arrow between products,</p>
+<p class="eq"><span class="m">f <span class="up pl18">× </span>g <span class="up pl5 pr14">= ⟨</span>f <span class="up pl18">∘ </span>π<sub><span class="up">1</span></sub><span class="up">, </span>g <span class="up pl5">∘ </span>π<sub><span class="up">2</span></sub><span class="up">⟩ : </span>A <span class="up">× </span>B <span class="up">→ </span>A<span class="up">′ × </span>B<span class="up">′,</span></span></p>
+<p>which in <span class="m"><span class="cat">Set</span></span> is <span class="m"><span class="up">(</span>a<span class="up">, </span>b<span class="up pr14">) ↦ (</span>f<span class="up pl18">(</span>a<span class="up">), </span>g<span class="up pl5">(</span>b<span class="up">))</span></span>. The same test shows <span class="m"><span class="up pr14">(</span>f<span class="up pl18">′ × </span>g<span class="up pl5 pr14">′) ∘ (</span>f <span class="up pl18">× </span>g<span class="up pl5 pr14">) = (</span>f<span class="up pl18">′ ∘ </span>f<span class="up pl18 pr4">) × (</span>g<span class="up pl5">′ ∘ </span>g<span class="up pl5">)</span></span> and <span class="m">id <span class="up pl5">× </span>id <span class="up pl5">= </span>id</span>. So in a category where every pair of objects has a product, the product is a <strong>bifunctor</strong> <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒞</span> <span class="up">→ </span><span class="cat">𝒞</span></span> in the sense of Lesson 5 — its action on arrows was forced by the universal property, with no further choices.</p>
   </div>
 </section>
 
@@ -547,25 +562,25 @@ p + .exgroup{margin-top:40px}
   <div class="measure">
     <div class="sec-no">§4 — Coproducts &amp; duality</div>
     <h2>Flip every arrow, get a second theory free</h2>
-    <p>Lesson 1&rsquo;s Exercise 4 built the opposite category <span class="cat">𝒞</span><sup>op</sup>: same objects, every arrow reversed. Here is why that construction earns its keep. Any arrows-only definition can be interpreted in <span class="cat">𝒞</span><sup>op</sup> instead of <span class="cat">𝒞</span>, which reverses every arrow in the definition — producing a <em>dual</em> concept in <span class="cat">𝒞</span> itself. Initial is dual to terminal. And dual to the product is:</p>
+    <p>Lesson 1&rsquo;s Exercise 4 built the opposite category <span class="cat">𝒞</span><sup>op</sup>: same objects, every arrow reversed. Here is why that construction earns its keep. Any arrows-only definition can be interpreted in <span class="cat">𝒞</span><sup>op</sup> instead of <span class="cat">𝒞</span>, which reverses every arrow in the definition — producing a <em class="pr4">dual</em> concept in <span class="cat">𝒞</span> itself. Initial is dual to terminal. And dual to the product is:</p>
 
     <div class="box def">
       <span class="tag">Definition · Coproduct (the product, arrows reversed)</span>
-      <p>A <strong>coproduct</strong> of <span class="m">A</span> and <span class="m">B</span> is an object <span class="m">A + B</span> with arrows <span class="m">ι<sub>1</sub> : A → A + B</span> and <span class="m">ι<sub>2</sub> : B → A + B</span> (the <strong>injections</strong>) such that for every <span class="m">X</span> and every <span class="m">f : A → X</span>, <span class="m">g : B → X</span>, there is exactly one <span class="m">[f, g] : A + B → X</span> with <span class="m">[f, g] ∘ ι<sub>1</sub> = f</span> and <span class="m">[f, g] ∘ ι<sub>2</sub> = g</span>.</p>
+      <p>A <strong>coproduct</strong> of <span class="m">A</span> and <span class="m">B</span> is an object <span class="m">A <span class="up">+ </span>B</span> with arrows <span class="m">ι<sub><span class="up">1</span></sub> <span class="up">: </span>A <span class="up">→ </span>A <span class="up">+ </span>B</span> and <span class="m">ι<sub><span class="up">2</span></sub> <span class="up">: </span>B <span class="up">→ </span>A <span class="up">+ </span>B</span> (the <strong>injections</strong>) such that for every <span class="m pr8">X</span> and every <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>X</span>, <span class="m">g <span class="up pl5">: </span>B <span class="up">→ </span>X</span>, there is exactly one <span class="m pr8"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] : </span>A <span class="up">+ </span>B <span class="up">→ </span>X</span> with <span class="m pr18"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] ∘ </span>ι<sub><span class="up">1</span></sub> <span class="up">= </span>f</span> and <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] ∘ </span>ι<sub><span class="up">2</span></sub> <span class="up">= </span>g</span>.</p>
     </div>
 
     <figure>
       <div class="board wide" data-diagram="coprod" aria-label="The universal property of the coproduct: injections from A and B into A plus B, and any pair of arrows from A and B into X factors uniquely through A plus B.">
         <svg></svg>
       </div>
-      <figcaption>The product diagram with every arrow reversed. Mapping <em>out of</em> <span class="m">A + B</span> is the same as mapping out of <span class="m">A</span> and out of <span class="m">B</span> separately — a case analysis.</figcaption>
+      <figcaption>The product diagram with every arrow reversed. Mapping <em>out of</em> <span class="m">A <span class="up">+ </span>B</span> is the same as mapping out of <span class="m">A</span> and out of <span class="m">B</span> separately — a case analysis.</figcaption>
     </figure>
 
-    <p>In <span class="cat">Set</span>, the coproduct is the <strong>disjoint union</strong>: to define a function out of <span class="m">A ⊔ B</span> you say what happens on the <span class="m">A</span>-part and what happens on the <span class="m">B</span>-part, and <span class="m">[f, g]</span> is exactly that case split — in code, pattern-matching on a tagged union or <code>Either</code> type. In a preorder it is the <strong>join</strong> (least upper bound); in divisibility, the <strong>lcm</strong>. In <span class="cat">Grp</span> it is the free product — famously <em>not</em> the direct product, a reminder that duals can look very different from their originals even when the definitions are mirror images.</p>
+    <p>In <span class="cat">Set</span>, the coproduct is the <strong>disjoint union</strong>: to define a function out of <span class="m">A <span class="up">⊔ </span>B</span> you say what happens on the <span class="m">A</span>-part and what happens on the <span class="m">B</span>-part, and <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">]</span></span> is exactly that case split — in code, pattern-matching on a tagged union or <code>Either</code> type. In a preorder it is the <strong>join</strong> (least upper bound); in divisibility, the <strong>lcm</strong>. In <span class="cat">Grp</span> it is the free product — famously <em>not</em> the direct product, a reminder that duals can look very different from their originals even when the definitions are mirror images.</p>
 
     <div class="box amber">
       <span class="tag">The duality principle</span>
-      <p>Every theorem proved from the category axioms alone dualizes: reverse all arrows in both the statement and the proof, and the result is again a theorem, because the opposite of a category is again a category (Lesson 5, §2, where the principle was proved). So §2&rsquo;s uniqueness theorem for terminal objects is <em>automatically</em> also a uniqueness theorem for initial objects, and the uniqueness of products yields uniqueness of coproducts — no new work. One proof, two theorems, forever. This is the single best bargain in mathematics.</p>
+      <p>Every theorem proved from the category axioms alone dualizes: reverse all arrows in both the statement and the proof, and the result is again a theorem, because the opposite of a category is again a category (Lesson 5, §2, where the principle was proved). So §2&rsquo;s uniqueness theorem for terminal objects is <em>automatically</em> also a uniqueness theorem for initial objects, and the uniqueness of products yields uniqueness of coproducts — no new work. One proof, two theorems, forever. This is the single best bargain in mathematics.</p>
     </div>
   </div>
 </section>
@@ -576,24 +591,24 @@ p + .exgroup{margin-top:40px}
 <div class="measure">
 <div class="sec-no">§5 — A catalogue</div>
 <h2>The same two definitions, in eight categories</h2>
-<p>One definition of product and one of coproduct, read in different categories, produce a remarkable range of constructions. The table collects the ones met so far and adds a few more.</p>
+<p>One definition of product and one of coproduct, read in different categories, produce a remarkable range of constructions. The table collects the ones met so far and adds a few more.</p>
 <div class="tablewrap"><table class="zoo">
 <tr><th>Category</th><th>Product of A and B</th><th>Coproduct of A and B</th></tr>
-<tr><td><span class="m"><span class="cat">Set</span></span></td><td>cartesian product <span class="m">A × B</span></td><td>disjoint union</td></tr>
+<tr><td><span class="m"><span class="cat">Set</span></span></td><td>cartesian product <span class="m">A <span class="up">× </span>B</span></td><td>disjoint union</td></tr>
 <tr><td>a preorder</td><td>meet (greatest lower bound)</td><td>join (least upper bound)</td></tr>
 <tr><td>divisibility</td><td>greatest common divisor</td><td>least common multiple</td></tr>
-<tr><td>subsets of a set, under <span class="m">⊆</span></td><td>intersection</td><td>union</td></tr>
+<tr><td>subsets of a set, under <span class="m"><span class="up">⊆</span></span></td><td>intersection</td><td>union</td></tr>
 <tr><td><span class="m"><span class="cat">Grp</span></span></td><td>direct product</td><td>free product</td></tr>
-<tr><td><span class="m"><span class="cat">Vect</span></span>, <span class="m"><span class="cat">Ab</span></span></td><td>direct sum <span class="m">A ⊕ B</span></td><td>direct sum <span class="m">A ⊕ B</span> again</td></tr>
-<tr><td><span class="m"><span class="cat">Cat</span></span></td><td>product category <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span></td><td>the two categories side by side</td></tr>
+<tr><td><span class="m"><span class="cat">Vect</span></span>, <span class="m"><span class="cat">Ab</span></span></td><td>direct sum <span class="m">A <span class="up">⊕ </span>B</span></td><td>direct sum <span class="m">A <span class="up">⊕ </span>B</span> again</td></tr>
+<tr><td><span class="m"><span class="cat">Cat</span></span></td><td>product category <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span></td><td>the two categories side by side</td></tr>
 <tr><td><span class="m"><span class="cat">Rel</span></span></td><td>disjoint union</td><td>disjoint union again</td></tr>
 </table></div>
 <p>Three rows repay a closer look.</p>
-<p><strong>Vector spaces.</strong> The direct sum <span class="m">V ⊕ W</span> consists of pairs <span class="m">(v, w)</span>. With the two projections it is the product, for the same reason as in <span class="m"><span class="cat">Set</span></span>. But it is also the coproduct, with injections <span class="m">v ↦ (v, 0)</span> and <span class="m">w ↦ (0, w)</span>: given linear maps <span class="m">f : V → X</span> and <span class="m">g : W → X</span>, the unique linear map out of <span class="m">V ⊕ W</span> restricting to them is</p>
-<p class="eq"><span class="m">[f, g](v, w) = f(v) + g(w).</span></p>
-<p>The formula uses <em>addition</em> in <span class="m">X</span> — which is why it is available for vector spaces and abelian groups but not for sets or for groups in general. An object that is a product and a coproduct at once is called a <strong>biproduct</strong>.</p>
-<p><strong>Categories.</strong> The product category of Lesson 5 is the product in <span class="m"><span class="cat">Cat</span></span>: a functor into <span class="m"><span class="cat">𝒞</span> × <span class="cat">𝒟</span></span> is exactly a pair of functors, one into each factor. The construction of Lesson 1, Exercise 5 was a universal property in waiting.</p>
-<p><strong>Relations.</strong> In <span class="m"><span class="cat">Rel</span></span> the product of two sets is <em>not</em> their cartesian product but their disjoint union. A relation from <span class="m">W</span> to the disjoint union <span class="m">X ⊔ Y</span> is a set of pairs, each ending in <span class="m">X</span> or in <span class="m">Y</span> — so it is the same thing as a relation from <span class="m">W</span> to <span class="m">X</span> together with a relation from <span class="m">W</span> to <span class="m">Y</span>, which is the universal property of a product. Because <span class="m"><span class="cat">Rel</span></span> is its own opposite (Lesson 1, Exercise 19), the same object is also the coproduct. The moral: a universal property takes its meaning from the <em>arrows</em> of the category, and changing the arrows changes the answer, even when the objects are the same sets.</p>
+<p><strong>Vector spaces.</strong> The direct sum <span class="m pr10">V <span class="up pl11">⊕ </span>W</span> consists of pairs <span class="m"><span class="up">(</span>v<span class="up">, </span>w<span class="up">)</span></span>. With the two projections it is the product, for the same reason as in <span class="m"><span class="cat">Set</span></span>. But it is also the coproduct, with injections <span class="m">v <span class="up">↦ (</span>v<span class="up">, 0)</span></span> and <span class="m">w <span class="up">↦ (0, </span>w<span class="up">)</span></span>: given linear maps <span class="m pr8">f <span class="up pl18">: </span>V <span class="up pl11">→ </span>X</span> and <span class="m">g <span class="up pl5">: </span>W <span class="up pl10">→ </span>X</span>, the unique linear map out of <span class="m pr10">V <span class="up pl11">⊕ </span>W</span> restricting to them is</p>
+<p class="eq"><span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">](</span>v<span class="up">, </span>w<span class="up">) = </span>f<span class="up pl18">(</span>v<span class="up">) + </span>g<span class="up pl5">(</span>w<span class="up">).</span></span></p>
+<p>The formula uses <em>addition</em> in <span class="m pr8">X</span> — which is why it is available for vector spaces and abelian groups but not for sets or for groups in general. An object that is a product and a coproduct at once is called a <strong>biproduct</strong>.</p>
+<p><strong>Categories.</strong> The product category of Lesson 5 is the product in <span class="m"><span class="cat">Cat</span></span>: a functor into <span class="m"><span class="cat">𝒞</span> <span class="up">× </span><span class="cat">𝒟</span></span> is exactly a pair of functors, one into each factor. The construction of Lesson 1, Exercise 5 was a universal property in waiting.</p>
+<p><strong>Relations.</strong> In <span class="m"><span class="cat">Rel</span></span> the product of two sets is <em>not</em> their cartesian product but their disjoint union. A relation from <span class="m pr10">W</span> to the disjoint union <span class="m pr10">X <span class="up pl8">⊔ </span>Y</span> is a set of pairs, each ending in <span class="m pr8">X</span> or in <span class="m pr10">Y</span> — so it is the same thing as a relation from <span class="m pr10">W</span> to <span class="m pr8">X</span> together with a relation from <span class="m pr10">W</span> to <span class="m">Y</span>, which is the universal property of a product. Because <span class="m"><span class="cat">Rel</span></span> is its own opposite (Lesson 1, Exercise 19), the same object is also the coproduct. The moral: a universal property takes its meaning from the <em>arrows</em> of the category, and changing the arrows changes the answer, even when the objects are the same sets.</p>
 </div>
 </section>
 
@@ -601,31 +616,31 @@ p + .exgroup{margin-top:40px}
 <div class="measure">
 <div class="sec-no">§6 — Universal properties by hand</div>
 <h2>&ldquo;Exactly one&rdquo; is something you can check</h2>
-<p>A universal property is a statement about <em>all</em> competitors, so in a small category it can be verified by listing them. Four computations, two successes and two instructive failures.</p>
+<p>A universal property is a statement about <em class="pr4">all</em> competitors, so in a small category it can be verified by listing them. Four computations, two successes and two instructive failures.</p>
 <h3 class="sub">Products and coproducts in the diamond</h3>
-<p>Work in the divisibility order on <span class="m">{1, 2, 3, 6}</span> pictured in §3. A product of <span class="m">2</span> and <span class="m">3</span> must first of all be a <em>candidate</em>: an object with arrows to both, that is, a common divisor. The only common divisor of <span class="m">2</span> and <span class="m">3</span> here is <span class="m">1</span>. Is it universal? Every object <span class="m">X</span> with arrows to <span class="m">2</span> and to <span class="m">3</span> must have exactly one arrow to <span class="m">1</span> — and the only such <span class="m">X</span> is <span class="m">1</span> itself, which has its identity. So <span class="m">2 × 3 = 1</span>, the greatest common divisor.</p>
-<p>For <span class="m">2</span> and <span class="m">6</span> there are two candidates, <span class="m">1</span> and <span class="m">2</span> (both divide <span class="m">2</span> and <span class="m">6</span>). The universal one is the candidate that every candidate maps to: <span class="m">1 | 2</span>, so <span class="m">2 × 6 = 2</span>. In an order, &ldquo;universal among lower bounds&rdquo; just means <em>greatest</em> lower bound. Dually the coproduct of <span class="m">2</span> and <span class="m">3</span> is the least of their common multiples, and the only common multiple available is <span class="m">6</span>.</p>
+<p>Work in the divisibility order on <span class="m"><span class="up">{1, 2, 3, 6}</span></span> pictured in §3. A product of <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> must first of all be a <em>candidate</em>: an object with arrows to both, that is, a common divisor. The only common divisor of <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> here is <span class="m"><span class="up">1</span></span>. Is it universal? Every object <span class="m pr8">X</span> with arrows to <span class="m"><span class="up">2</span></span> and to <span class="m"><span class="up">3</span></span> must have exactly one arrow to <span class="m"><span class="up">1</span></span> — and the only such <span class="m pr8">X</span> is <span class="m"><span class="up">1</span></span> itself, which has its identity. So <span class="m"><span class="up">2 × 3 = 1</span></span>, the greatest common divisor.</p>
+<p>For <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">6</span></span> there are two candidates, <span class="m"><span class="up">1</span></span> and <span class="m"><span class="up">2</span></span> (both divide <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">6</span></span>). The universal one is the candidate that every candidate maps to: <span class="m"><span class="up">1 | 2</span></span>, so <span class="m"><span class="up">2 × 6 = 2</span></span>. In an order, &ldquo;universal among lower bounds&rdquo; just means <em>greatest</em> lower bound. Dually the coproduct of <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> is the least of their common multiples, and the only common multiple available is <span class="m"><span class="up">6</span></span>.</p>
 <h3 class="sub">A product that does not exist</h3>
-<p>Now take the four-element order with <span class="m">a ≤ x</span>, <span class="m">a ≤ y</span>, <span class="m">b ≤ x</span>, <span class="m">b ≤ y</span> and no other relations besides reflexivity: two lower elements, each below two upper ones.</p>
+<p>Now take the four-element order with <span class="m">a <span class="up">≤ </span>x</span>, <span class="m">a <span class="up">≤ </span>y</span>, <span class="m">b <span class="up">≤ </span>x</span>, <span class="m">b <span class="up">≤ </span>y</span> and no other relations besides reflexivity: two lower elements, each below two upper ones.</p>
 <figure>
 <div class="board" data-diagram="bowtie" aria-label="Four objects: a and b at the bottom, x and y at the top, with arrows from a to x, a to y, b to x and b to y.">
 <svg></svg>
 </div>
-<figcaption>Two lower bounds of <span class="m">x</span> and <span class="m">y</span>, neither above the other. There is no best one.</figcaption>
+<figcaption>Two lower bounds of <span class="m">x</span> and <span class="m">y</span>, neither above the other. There is no best one.</figcaption>
 </figure>
-<p>The candidates for <span class="m">x × y</span> are <span class="m">a</span> and <span class="m">b</span>. If <span class="m">a</span> were the product, the candidate <span class="m">b</span> would need an arrow to <span class="m">a</span>; there is none. By symmetry <span class="m">b</span> fails too. So <span class="m">x</span> and <span class="m">y</span> have <strong>no product</strong>, although they have lower bounds. The universal property asks for a <em>single best</em> candidate, and here the candidates do not agree on a best.</p>
+<p>The candidates for <span class="m">x <span class="up">× </span>y</span> are <span class="m">a</span> and <span class="m">b</span>. If <span class="m">a</span> were the product, the candidate <span class="m">b</span> would need an arrow to <span class="m">a</span>; there is none. By symmetry <span class="m">b</span> fails too. So <span class="m">x</span> and <span class="m">y</span> have <strong>no product</strong>, although they have lower bounds. The universal property asks for a <em>single best</em> candidate, and here the candidates do not agree on a best.</p>
 <h3 class="sub">A category with no products at all</h3>
-<p>The one-object category of the monoid <span class="m">(ℤ/3, +)</span> is not thin, so the uniqueness clause comes into play. A product of the only object <span class="m">∗</span> with itself would be <span class="m">∗</span> again, with two projections <span class="m">p</span> and <span class="m">q</span> — two elements of <span class="m">ℤ/3</span>. For every pair of arrows <span class="m">(f, g)</span> there would have to be exactly one mediating arrow <span class="m">m</span> with</p>
-<p class="eq"><span class="m">p + m = f &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; q + m = g.</span></p>
-<p>The first equation forces <span class="m">m = f − p</span>, the second <span class="m">m = g − q</span>. These agree only when <span class="m">f − g = p − q</span>. So for any choice of projections, the pairs <span class="m">(f, g)</span> with <span class="m">f − g ≠ p − q</span> — six of the nine — have no mediating arrow at all. <strong>No product exists.</strong> Existence fails, not uniqueness. A product must be able to hold two independent pieces of information, and a single object whose arrows form a group has no room for that (Exercise 15 gives the general statement).</p>
+<p>The one-object category of the monoid <span class="m"><span class="up">(ℤ/3, +)</span></span> is not thin, so the uniqueness clause comes into play. A product of the only object <span class="m"><span class="up">∗</span></span> with itself would be <span class="m"><span class="up">∗</span></span> again, with two projections <span class="m">p</span> and <span class="m">q</span> — two elements of <span class="m"><span class="up">ℤ/3</span></span>. For every pair of arrows <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> there would have to be exactly one mediating arrow <span class="m">m</span> with</p>
+<p class="eq"><span class="m">p <span class="up">+ </span>m <span class="up">= </span>f &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; q <span class="up">+ </span>m <span class="up">= </span>g<span class="up">.</span></span></p>
+<p>The first equation forces <span class="m">m <span class="up">= </span>f <span class="up pl18">− </span>p</span>, the second <span class="m">m <span class="up">= </span>g <span class="up pl5">− </span>q</span>. These agree only when <span class="m">f <span class="up pl18">− </span>g <span class="up pl5">= </span>p <span class="up">− </span>q</span>. So for any choice of projections, the pairs <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> with <span class="m">f <span class="up pl18">− </span>g <span class="up pl5">≠ </span>p <span class="up">− </span>q</span> — six of the nine — have no mediating arrow at all. <strong>No product exists.</strong> Existence fails, not uniqueness. A product must be able to hold two independent pieces of information, and a single object whose arrows form a group has no room for that (Exercise 15 gives the general statement).</p>
 <h3 class="sub">The universal property, counted</h3>
-<p>In <span class="m"><span class="cat">Set</span></span> the two universal properties can be checked by counting functions. The product property says that functions <span class="m">X → A × B</span> correspond exactly to pairs of functions <span class="m">X → A</span> and <span class="m">X → B</span>. Take sets with <span class="m">|X| = 2</span>, <span class="m">|A| = 3</span>, <span class="m">|B| = 2</span>: there are <span class="m">(3 · 2)<sup>2</sup> = 36</span> functions into the product, and <span class="m">3<sup>2</sup> · 2<sup>2</sup> = 36</span> pairs. The coproduct property says that functions <span class="m">A + B → X</span> correspond to pairs of functions <span class="m">A → X</span> and <span class="m">B → X</span>: there are <span class="m">2<sup>3 + 2</sup> = 32</span> of the first and <span class="m">2<sup>3</sup> · 2<sup>2</sup> = 32</span> of the second. In general</p>
-<p class="eq"><span class="m">(a b)<sup>x</sup> = a<sup>x</sup> · b<sup>x</sup> &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; x<sup>a + b</sup> = x<sup>a</sup> · x<sup>b</sup>.</span></p>
+<p>In <span class="m"><span class="cat">Set</span></span> the two universal properties can be checked by counting functions. The product property says that functions <span class="m">X <span class="up pl8">→ </span>A <span class="up">× </span>B</span> correspond exactly to pairs of functions <span class="m">X <span class="up pl8">→ </span>A</span> and <span class="m">X <span class="up pl8">→ </span>B</span>. Take sets with <span class="m"><span class="up pr5">|</span>X<span class="up pl8">| = 2</span></span>, <span class="m"><span class="up pr5">|</span>A<span class="up">| = 3</span></span>, <span class="m"><span class="up">|</span>B<span class="up">| = 2</span></span>: there are <span class="m"><span class="up">(3 · 2)</span><sup><span class="up">2</span></sup> <span class="up">= 36</span></span> functions into the product, and <span class="m"><span class="up">3</span><sup><span class="up">2</span></sup> <span class="up">· 2</span><sup><span class="up">2</span></sup> <span class="up">= 36</span></span> pairs. The coproduct property says that functions <span class="m pr8">A <span class="up">+ </span>B <span class="up">→ </span>X</span> correspond to pairs of functions <span class="m pr8">A <span class="up">→ </span>X</span> and <span class="m pr8">B <span class="up">→ </span>X</span>: there are <span class="m"><span class="up">2</span><sup><span class="up">3 + 2</span></sup> <span class="up">= 32</span></span> of the first and <span class="m"><span class="up">2</span><sup><span class="up">3</span></sup> <span class="up">· 2</span><sup><span class="up">2</span></sup> <span class="up">= 32</span></span> of the second. In general</p>
+<p class="eq"><span class="m"><span class="up">(</span>a b<span class="up">)</span><sup>x</sup> <span class="up">= </span>a<sup>x</sup> <span class="up">· </span>b<sup>x</sup> &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; x<sup>a <span class="up">+ </span>b</sup> <span class="up">= </span>x<sup>a</sup> <span class="up">· </span>x<sup>b</sup><span class="up">.</span></span></p>
 <p>The laws of exponents from school are the universal properties of product and coproduct, counted.</p>
 <details class="pylab">
 <summary><span class="badge">Optional · Python</span><span class="t">Universal properties as search problems</span></summary>
 <div class="pybody">
-    <p>In a finite category, &ldquo;there exists exactly one arrow such that…&rdquo; is checkable by enumeration. That makes every definition in this lesson executable. We write finders for terminal objects, initial objects, and products, and point them at the divisibility poset from §3. (These build on Lesson 1&rsquo;s <code>FiniteCategory</code> class, repeated in the setup block.)</p>
+    <p>In a finite category, &ldquo;there exists exactly one arrow such that…&rdquo; is checkable by enumeration. That makes every definition in this lesson executable. We write finders for terminal objects, initial objects, and products, and point them at the divisibility poset from §3. (These build on Lesson 1&rsquo;s <code>FiniteCategory</code> class, repeated in the setup block.)</p>
 
     <div class="code">
   <div class="code-bar"><span class="fname"><b>setup.py</b> — Lesson 1&rsquo;s category class, carried over</span><button class="copy" type="button">Copy</button></div>
@@ -717,7 +732,7 @@ terminal: [6]
 2 x 6 = [(2, '2|2', '2|6')]</div>
     </div>
 
-    <p>The finder confirms §3&rsquo;s claims: in the divisibility order, initial is <span class="m">1</span>, terminal is <span class="m">6</span>, and products compute gcds. Now the promised non-existence result. In the one-object category <span class="cat">Z3</span> (our running monoid), a product of <span class="m">∗</span> with <span class="m">∗</span> would need projections <span class="m">p, q</span> such that every pair <span class="m">(f, g)</span> factors uniquely — and no choice of <span class="m">p, q</span> manages it. The search space is tiny, so exhaustion is a proof:</p>
+    <p>The finder confirms §3&rsquo;s claims: in the divisibility order, initial is <span class="m"><span class="up">1</span></span>, terminal is <span class="m"><span class="up">6</span></span>, and products compute gcds. Now the promised non-existence result. In the one-object category <span class="cat">Z3</span> (our running monoid), a product of <span class="m"><span class="up">∗</span></span> with <span class="m"><span class="up">∗</span></span> would need projections <span class="m">p<span class="up">, </span>q</span> such that every pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> factors uniquely — and no choice of <span class="m">p<span class="up">, </span>q</span> manages it. The search space is tiny, so exhaustion is a proof:</p>
 
     <div class="code">
       <div class="code-bar"><span class="fname"><b>no_products.py</b> — a category with no products</span><button class="copy" type="button">Copy</button></div>
@@ -731,7 +746,7 @@ print(find_products(Z3, &#x27;*&#x27;, &#x27;*&#x27;))    # exhaustive search ov
       <div class="out"><span class="lbl">output</span>[]</div>
     </div>
 
-    <p>The reason is the hand computation above: a mediating arrow exists only when <span class="m">f − g = p − q</span>, which fails for six of the nine pairs. Finally, the product in <span class="cat">Set</span> itself, with its mediating map as a working function:</p>
+    <p>The reason is the hand computation above: a mediating arrow exists only when <span class="m">f <span class="up pl18">− </span>g <span class="up pl5">= </span>p <span class="up">− </span>q</span>, which fails for six of the nine pairs. Finally, the product in <span class="cat">Set</span> itself, with its mediating map as a working function:</p>
 
     <div class="code">
       <div class="code-bar"><span class="fname"><b>pairing.py</b> — the product in Set</span><button class="copy" type="button">Copy</button></div>
@@ -764,8 +779,8 @@ print([m(x) for x in X])</code></pre>
     <div class="sec-no">Going deeper</div>
     <h2>Elements, generalized</h2>
 
-    <p>Terminal objects quietly repair the ban on elements. In <span class="cat">Set</span>, an arrow <span class="m">1 → X</span> from the one-point set is exactly a choice of one element of <span class="m">X</span> — so &ldquo;element&rdquo; can be <em>defined</em> arrows-only: a <strong>global element</strong> of <span class="m">X</span> is an arrow <span class="m">1 → X</span> from the terminal object. In <span class="cat">Set</span> this recovers everything: functions are determined by what they do to global elements.</p>
-    <p>In most categories, though, global elements are scarce, and arrows are <em>not</em> determined by them. In a poset only the top element has one; in <span class="cat">Grp</span> every group has exactly one, so global elements cannot tell any two parallel homomorphisms apart (Exercise 17). The repair is to widen the probe: an arrow <span class="m">U → X</span> from an arbitrary object is a <strong>generalized element</strong> of <span class="m">X</span> &ldquo;of shape <span class="m">U</span>.&rdquo; Probing with <em>all</em> shapes at once recovers everything in every category — that is the course&rsquo;s slogan, and Lesson 9&rsquo;s Yoneda lemma is precisely the theorem that the full dossier of generalized elements determines the object. This little section is the bridge between the slogan&rsquo;s two banks.</p>
+    <p>Terminal objects quietly repair the ban on elements. In <span class="cat">Set</span>, an arrow <span class="m pr8"><span class="up">1 → </span>X</span> from the one-point set is exactly a choice of one element of <span class="m pr8">X</span> — so &ldquo;element&rdquo; can be <em class="pr5">defined</em> arrows-only: a <strong>global element</strong> of <span class="m pr8">X</span> is an arrow <span class="m pr8"><span class="up">1 → </span>X</span> from the terminal object. In <span class="cat">Set</span> this recovers everything: functions are determined by what they do to global elements.</p>
+    <p>In most categories, though, global elements are scarce, and arrows are <em>not</em> determined by them. In a poset only the top element has one; in <span class="cat">Grp</span> every group has exactly one, so global elements cannot tell any two parallel homomorphisms apart (Exercise 17). The repair is to widen the probe: an arrow <span class="m pr8">U <span class="up pl8">→ </span>X</span> from an arbitrary object is a <strong>generalized element</strong> of <span class="m pr8">X</span> &ldquo;of shape <span class="m">U</span>.&rdquo; Probing with <em class="pr4">all</em> shapes at once recovers everything in every category — that is the course&rsquo;s slogan, and Lesson 9&rsquo;s Yoneda lemma is precisely the theorem that the full dossier of generalized elements determines the object. This little section is the bridge between the slogan&rsquo;s two banks.</p>
   </div>
 </section>
 
@@ -773,7 +788,7 @@ print([m(x) for x in X])</code></pre>
   <div class="measure">
     <div class="sec-no">§7 — Exercises</div>
     <h2>Seventeen problems on universal properties</h2>
-<p>These lean on the uniqueness clause more than any previous set — whenever you are stuck, ask &ldquo;what is the <em>only</em> arrow that could possibly work here?&rdquo; and let <em>exactly one</em> do the rest. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 16 has an optional Python part; everything else is pencil and paper.</p>
+<p>These lean on the uniqueness clause more than any previous set — whenever you are stuck, ask &ldquo;what is the <em>only</em> arrow that could possibly work here?&rdquo; and let <em>exactly one</em> do the rest. The problems are grouped by topic, following the lesson&rsquo;s sections, and within each group they run from easier to harder. Exercise 16 has an optional Python part; everything else is pencil and paper.</p>
 
 <div class="exgroup">
   <h3>Terminal and initial objects</h3>
@@ -783,16 +798,16 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 1</span><span class="tier">warm-up</span></div>
       <div class="prob-body">
-        <p>Work in <span class="cat">Set</span>. For a set <span class="m">X</span> with 5 elements:</p>
+        <p>Work in <span class="cat">Set</span>. For a set <span class="m pr8">X</span> with 5 elements:</p>
         <ol>
-          <li>How many functions are there from <span class="m">X</span> to the one-element set <span class="m">{∗}</span>? What does your answer confirm?</li>
-          <li>How many functions are there from the empty set <span class="m">∅</span> to <span class="m">X</span>? And how many from <span class="m">X</span> to <span class="m">∅</span>? What do these two answers say about <span class="m">∅</span>?</li>
+          <li>How many functions are there from <span class="m pr8">X</span> to the one-element set <span class="m"><span class="up">{∗}</span></span>? What does your answer confirm?</li>
+          <li>How many functions are there from the empty set <span class="m"><span class="up">∅</span></span> to <span class="m pr8">X</span>? And how many from <span class="m pr8">X</span> to <span class="m"><span class="up">∅</span></span>? What do these two answers say about <span class="m"><span class="up">∅</span></span>?</li>
         </ol>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>(a) Exactly one.</strong> A function must assign each of the 5 elements a value in <span class="m">{∗}</span>, and there is only one value available — no choices anywhere. This confirms singletons are terminal.</p>
-          <p><strong>(b)</strong> From <span class="m">∅</span> to <span class="m">X</span>: <strong>exactly one</strong> — the empty function. There is nothing to assign, hence exactly one way to complete the (empty) assignment. From <span class="m">X</span> to <span class="m">∅</span>: <strong>zero</strong> — element <span class="m">x</span> would need a value in <span class="m">∅</span>, and there are none. So <span class="m">∅</span> is initial but not terminal: <span class="cat">Set</span> has no zero object, unlike <span class="cat">Grp</span>. The count &ldquo;one map out, no maps in&rdquo; is the entire personality of the empty set, expressed in arrows.</p>
+          <p><strong>(a) Exactly one.</strong> A function must assign each of the 5 elements a value in <span class="m"><span class="up">{∗}</span></span>, and there is only one value available — no choices anywhere. This confirms singletons are terminal.</p>
+          <p><strong>(b)</strong> From <span class="m"><span class="up">∅</span></span> to <span class="m pr8">X</span>: <strong>exactly one</strong> — the empty function. There is nothing to assign, hence exactly one way to complete the (empty) assignment. From <span class="m pr8">X</span> to <span class="m"><span class="up">∅</span></span>: <strong>zero</strong> — element <span class="m">x</span> would need a value in <span class="m"><span class="up">∅</span></span>, and there are none. So <span class="m"><span class="up">∅</span></span> is initial but not terminal: <span class="cat">Set</span> has no zero object, unlike <span class="cat">Grp</span>. The count &ldquo;one map out, no maps in&rdquo; is the entire personality of the empty set, expressed in arrows.</p>
         </div>
       </details>
     </div>
@@ -800,16 +815,16 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 2</span><span class="tier">examples</span></div>
       <div class="prob-body">
-        <p>A <em>zero object</em> is one that is initial and terminal at once. §2 noted that the trivial group is a zero object in <span class="cat">Grp</span>.</p>
+        <p>A <em>zero object</em> is one that is initial and terminal at once. §2 noted that the trivial group is a zero object in <span class="cat">Grp</span>.</p>
         <ol>
-          <li>Verify both halves: for any group <span class="m">G</span>, count the homomorphisms <span class="m">{e} → G</span> and <span class="m">G → {e}</span>.</li>
+          <li>Verify both halves: for any group <span class="m">G</span>, count the homomorphisms <span class="m"><span class="up">{</span>e<span class="up">} → </span>G</span> and <span class="m">G <span class="up">→ {</span>e<span class="up">}</span></span>.</li>
           <li>Explain why the analogous count fails in <span class="cat">Set</span>, even though <span class="cat">Set</span> has both an initial and a terminal object.</li>
         </ol>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>(a)</strong> A homomorphism must send identity to identity. Out of <span class="m">{e}</span>: the only element must go to the identity of <span class="m">G</span>, so exactly one homomorphism — <span class="m">{e}</span> is initial. Into <span class="m">{e}</span>: every element has nowhere to go but <span class="m">e</span>, so again exactly one — terminal too. One object, both properties: a zero object.</p>
-          <p><strong>(b)</strong> In <span class="cat">Set</span> the initial object is <span class="m">∅</span> and the terminal objects are singletons, and no set is both: <span class="m">∅ ≇ {∗}</span> (there is no arrow <span class="m">{∗} → ∅</span> at all, per Exercise 1). The difference-maker is the group identity: it gives every hom-set a guaranteed inhabitant, collapsing &ldquo;empty&rdquo; and &ldquo;one-point&rdquo; into the same object. Whether a category has a zero object is a coarse but genuinely useful invariant — it is why &ldquo;the zero map&rdquo; makes sense between any two groups but not between any two sets.</p>
+          <p><strong>(a)</strong> A homomorphism must send identity to identity. Out of <span class="m"><span class="up">{</span>e<span class="up">}</span></span>: the only element must go to the identity of <span class="m">G</span>, so exactly one homomorphism — <span class="m"><span class="up">{</span>e<span class="up">}</span></span> is initial. Into <span class="m"><span class="up">{</span>e<span class="up">}</span></span>: every element has nowhere to go but <span class="m">e</span>, so again exactly one — terminal too. One object, both properties: a zero object.</p>
+          <p><strong>(b)</strong> In <span class="cat">Set</span> the initial object is <span class="m"><span class="up">∅</span></span> and the terminal objects are singletons, and no set is both: <span class="m"><span class="up">∅ ≇ {∗}</span></span> (there is no arrow <span class="m"><span class="up">{∗} → ∅</span></span> at all, per Exercise 1). The difference-maker is the group identity: it gives every hom-set a guaranteed inhabitant, collapsing &ldquo;empty&rdquo; and &ldquo;one-point&rdquo; into the same object. Whether a category has a zero object is a coarse but genuinely useful invariant — it is why &ldquo;the zero map&rdquo; makes sense between any two groups but not between any two sets.</p>
         </div>
       </details>
     </div>
@@ -817,18 +832,18 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 3</span><span class="tier">examples</span></div>
 <div class="prob-body">
-<p>Initial objects, counted. The table in §2 says that <span class="m">ℤ</span> is initial in <span class="m"><span class="cat">Ring</span></span>: from <span class="m">ℤ</span> to any ring there is exactly one homomorphism (which must send <span class="m">1</span> to <span class="m">1</span>).</p>
+<p>Initial objects, counted. The table in §2 says that <span class="m"><span class="up">ℤ</span></span> is initial in <span class="m"><span class="cat">Ring</span></span>: from <span class="m"><span class="up">ℤ</span></span> to any ring there is exactly one homomorphism (which must send <span class="m"><span class="up">1</span></span> to <span class="m"><span class="up">1</span></span>).</p>
 <ol>
-<li>Describe the unique ring homomorphism <span class="m">ℤ → ℤ/6</span>.</li>
-<li>How many ring homomorphisms are there from <span class="m">ℤ/2</span> to <span class="m">ℤ</span>? What does the answer say about whether <span class="m">ℤ/2</span> is initial?</li>
-<li>Why is there exactly one ring homomorphism from any ring to the zero ring, and no homomorphism from the zero ring to <span class="m">ℤ</span>?</li>
+<li>Describe the unique ring homomorphism <span class="m"><span class="up">ℤ → ℤ/6</span></span>.</li>
+<li>How many ring homomorphisms are there from <span class="m"><span class="up">ℤ/2</span></span> to <span class="m"><span class="up">ℤ</span></span>? What does the answer say about whether <span class="m"><span class="up">ℤ/2</span></span> is initial?</li>
+<li>Why is there exactly one ring homomorphism from any ring to the zero ring, and no homomorphism from the zero ring to <span class="m"><span class="up">ℤ</span></span>?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> It sends <span class="m">n</span> to its residue modulo <span class="m">6</span> — the image of <span class="m">n</span> is forced to be <span class="m">1 + ⋯ + 1</span>, <span class="m">n</span> times.</p>
-<p><strong>(b)</strong> None. A homomorphism <span class="m">φ</span> would need <span class="m">φ(1) = 1</span>, hence <span class="m">φ(1 + 1) = 2</span>; but <span class="m">1 + 1 = 0</span> in <span class="m">ℤ/2</span>, so also <span class="m">φ(1 + 1) = φ(0) = 0</span>. Since <span class="m">2 ≠ 0</span> in <span class="m">ℤ</span>, no such <span class="m">φ</span> exists. An initial object has exactly one arrow to <em>every</em> object, so <span class="m">ℤ/2</span> is not initial.</p>
-<p><strong>(c)</strong> The zero ring has a single element, so there is exactly one function into it, and it preserves everything: terminal. A homomorphism out of it would send its one element, which is both <span class="m">0</span> and <span class="m">1</span>, to both <span class="m">0</span> and <span class="m">1</span> of the target — possible only if the target also has <span class="m">0 = 1</span>. So the zero ring is terminal but not initial, and <span class="m"><span class="cat">Ring</span></span>, like <span class="m"><span class="cat">Set</span></span>, has no zero object.</p>
+<p><strong>(a)</strong> It sends <span class="m">n</span> to its residue modulo <span class="m"><span class="up">6</span></span> — the image of <span class="m">n</span> is forced to be <span class="m"><span class="up">1 + ⋯ + 1</span></span>, <span class="m">n</span> times.</p>
+<p><strong>(b)</strong> None. A homomorphism <span class="m">φ</span> would need <span class="m">φ<span class="up">(1) = 1</span></span>, hence <span class="m">φ<span class="up">(1 + 1) = 2</span></span>; but <span class="m"><span class="up">1 + 1 = 0</span></span> in <span class="m"><span class="up">ℤ/2</span></span>, so also <span class="m">φ<span class="up">(1 + 1) = </span>φ<span class="up">(0) = 0</span></span>. Since <span class="m"><span class="up">2 ≠ 0</span></span> in <span class="m"><span class="up">ℤ</span></span>, no such <span class="m">φ</span> exists. An initial object has exactly one arrow to <em>every</em> object, so <span class="m"><span class="up">ℤ/2</span></span> is not initial.</p>
+<p><strong>(c)</strong> The zero ring has a single element, so there is exactly one function into it, and it preserves everything: terminal. A homomorphism out of it would send its one element, which is both <span class="m"><span class="up">0</span></span> and <span class="m"><span class="up">1</span></span>, to both <span class="m"><span class="up">0</span></span> and <span class="m"><span class="up">1</span></span> of the target — possible only if the target also has <span class="m"><span class="up">0 = 1</span></span>. So the zero ring is terminal but not initial, and <span class="m"><span class="cat">Ring</span></span>, like <span class="m"><span class="cat">Set</span></span>, has no zero object.</p>
 </div>
 </details>
 </div>
@@ -841,8 +856,8 @@ print([m(x) for x in X])</code></pre>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>Let <span class="m">I</span> and <span class="m">I&prime;</span> be initial. Initiality of <span class="m">I</span> gives a unique <span class="m">u : I → I&prime;</span>; initiality of <span class="m">I&prime;</span> gives a unique <span class="m">v : I&prime; → I</span>. The composite <span class="m">v ∘ u : I → I</span> is an arrow out of the initial <span class="m">I</span>, of which there is exactly one — and <span class="m">id<sub>I</sub></span> qualifies. So <span class="m">v ∘ u = id<sub>I</sub></span>, and symmetrically <span class="m">u ∘ v = id<sub>I&prime;</sub></span>: a unique isomorphism.</p>
-          <p>Comparing: every &ldquo;arrow into&rdquo; became &ldquo;arrow out of,&rdquo; every use of terminality became initiality, and the composite <span class="m">v ∘ u</span> was pinned down as an endomorphism of <span class="m">I</span> rather than <span class="m">T</span>. Nothing else changed. That mechanical translation is the duality principle in action — you could have skipped the proof entirely and cited §4&rsquo;s amber box, but it is worth doing by hand exactly once.</p>
+          <p>Let <span class="m pr7">I</span> and <span class="m">I<span class="up pl7">&prime;</span></span> be initial. Initiality of <span class="m pr7">I</span> gives a unique <span class="m">u <span class="up">: </span>I <span class="up pl7">→ </span>I<span class="up pl7">&prime;</span></span>; initiality of <span class="m">I<span class="up pl7">&prime;</span></span> gives a unique <span class="m">v <span class="up">: </span>I<span class="up pl7">&prime; → </span>I</span>. The composite <span class="m pr7">v <span class="up">∘ </span>u <span class="up">: </span>I <span class="up pl7">→ </span>I</span> is an arrow out of the initial <span class="m">I</span>, of which there is exactly one — and <span class="m pr5">id<sub>I</sub></span> qualifies. So <span class="m">v <span class="up">∘ </span>u <span class="up">= </span>id<sub>I</sub></span>, and symmetrically <span class="m">u <span class="up">∘ </span>v <span class="up">= </span>id<sub>I<span class="up pl7">&prime;</span></sub></span>: a unique isomorphism.</p>
+          <p>Comparing: every &ldquo;arrow into&rdquo; became &ldquo;arrow out of,&rdquo; every use of terminality became initiality, and the composite <span class="m">v <span class="up">∘ </span>u</span> was pinned down as an endomorphism of <span class="m pr7">I</span> rather than <span class="m">T</span>. Nothing else changed. That mechanical translation is the duality principle in action — you could have skipped the proof entirely and cited §4&rsquo;s amber box, but it is worth doing by hand exactly once.</p>
         </div>
       </details>
     </div>
@@ -850,19 +865,19 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 5</span><span class="tier">think</span></div>
 <div class="prob-body">
-<p>Lesson 4 promised a one-line reason why <span class="m"><span class="cat">Set</span></span> is not equivalent to its opposite. Here it is, in three steps.</p>
+<p>Lesson 4 promised a one-line reason why <span class="m"><span class="cat">Set</span></span> is not equivalent to its opposite. Here it is, in three steps.</p>
 <ol>
 <li>Show that in <span class="m"><span class="cat">Set</span></span>, every arrow <em>into</em> the initial object is an isomorphism.</li>
 <li>Identify the initial object of <span class="m"><span class="cat">Set</span><sup>op</sup></span>, and exhibit an arrow into it that is not an isomorphism.</li>
-<li>Conclude that <span class="m"><span class="cat">Set</span></span> and <span class="m"><span class="cat">Set</span><sup>op</sup></span> are not equivalent. (You may use the standing fact of Lesson 4 that equivalences preserve everything defined by arrows, including initial objects and isomorphisms.)</li>
+<li>Conclude that <span class="m"><span class="cat">Set</span></span> and <span class="m"><span class="cat">Set</span><sup>op</sup></span> are not equivalent. (You may use the standing fact of Lesson 4 that equivalences preserve everything defined by arrows, including initial objects and isomorphisms.)</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> The initial object is <span class="m">∅</span>. A function <span class="m">X → ∅</span> exists only when <span class="m">X = ∅</span>, and then it is the identity of <span class="m">∅</span>.</p>
-<p><strong>(b)</strong> Initial in <span class="m"><span class="cat">Set</span><sup>op</sup></span> means terminal in <span class="m"><span class="cat">Set</span></span>: a one-element set <span class="m">1</span>. An arrow <span class="m">X → 1</span> of <span class="m"><span class="cat">Set</span><sup>op</sup></span> is a function <span class="m">1 → X</span> in <span class="m"><span class="cat">Set</span></span> — an element of <span class="m">X</span>. Take <span class="m">X = {0, 1}</span> and the element <span class="m">0</span>: this function is not a bijection, so it is not an isomorphism in <span class="m"><span class="cat">Set</span></span>, nor in <span class="m"><span class="cat">Set</span><sup>op</sup></span> (the isomorphisms are the same).</p>
-<p><strong>(c)</strong> &ldquo;Every arrow into the initial object is an isomorphism&rdquo; is a statement about arrows only, so an equivalence would carry it from <span class="m"><span class="cat">Set</span></span> to <span class="m"><span class="cat">Set</span><sup>op</sup></span>. It holds in one and fails in the other.</p>
-<p>The two ends of <span class="m"><span class="cat">Set</span></span> are genuinely different: nothing maps into the empty set, but plenty maps out of the one-point set. Compare <span class="m"><span class="cat">Grp</span></span> or <span class="m"><span class="cat">Vect</span></span>, where the two ends coincide — a hint of why those categories are so much more symmetric.</p>
+<p><strong>(a)</strong> The initial object is <span class="m"><span class="up">∅</span></span>. A function <span class="m">X <span class="up pl8">→ ∅</span></span> exists only when <span class="m">X <span class="up pl8">= ∅</span></span>, and then it is the identity of <span class="m"><span class="up">∅</span></span>.</p>
+<p><strong>(b)</strong> Initial in <span class="m"><span class="cat">Set</span><sup>op</sup></span> means terminal in <span class="m"><span class="cat">Set</span></span>: a one-element set <span class="m"><span class="up">1</span></span>. An arrow <span class="m">X <span class="up pl8">→ 1</span></span> of <span class="m"><span class="cat">Set</span><sup>op</sup></span> is a function <span class="m pr8"><span class="up">1 → </span>X</span> in <span class="m"><span class="cat">Set</span></span> — an element of <span class="m">X</span>. Take <span class="m">X <span class="up pl8">= {0, 1}</span></span> and the element <span class="m"><span class="up">0</span></span>: this function is not a bijection, so it is not an isomorphism in <span class="m"><span class="cat">Set</span></span>, nor in <span class="m"><span class="cat">Set</span><sup>op</sup></span> (the isomorphisms are the same).</p>
+<p><strong>(c)</strong> &ldquo;Every arrow into the initial object is an isomorphism&rdquo; is a statement about arrows only, so an equivalence would carry it from <span class="m"><span class="cat">Set</span></span> to <span class="m"><span class="cat">Set</span><sup>op</sup></span>. It holds in one and fails in the other.</p>
+<p>The two ends of <span class="m"><span class="cat">Set</span></span> are genuinely different: nothing maps into the empty set, but plenty maps out of the one-point set. Compare <span class="m"><span class="cat">Grp</span></span> or <span class="m"><span class="cat">Vect</span></span>, where the two ends coincide — a hint of why those categories are so much more symmetric.</p>
 </div>
 </details>
 </div>
@@ -883,8 +898,8 @@ print([m(x) for x in X])</code></pre>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>(a)</strong> Terminal: an object with an arrow from everything — i.e. an element <span class="m">⊤</span> with <span class="m">x ≤ ⊤</span> for all <span class="m">x</span>: a <strong>greatest element</strong>. Dually, initial is a <strong>least element</strong>. (Uniqueness of arrows is free — the category is thin.)</p>
-          <p><strong>(b)</strong> The projections <span class="m">a × b → a</span> and <span class="m">a × b → b</span> say the product is a <strong>lower bound</strong>: <span class="m">a × b ≤ a</span> and <span class="m">a × b ≤ b</span>. The mediating-arrow clause says every <span class="m">x</span> with <span class="m">x ≤ a</span> and <span class="m">x ≤ b</span> satisfies <span class="m">x ≤ a × b</span> — the product is <strong>greatest</strong> among lower bounds. Existence of the mediator is the &ldquo;greatest&rdquo; clause; its uniqueness is free by thinness. So products in a preorder are meets, and dually coproducts are joins — and in the divisibility order these are gcd and lcm, as §6 verified.</p>
+          <p><strong>(a)</strong> Terminal: an object with an arrow from everything — i.e. an element <span class="m"><span class="up">⊤</span></span> with <span class="m">x <span class="up">≤ ⊤</span></span> for all <span class="m">x</span>: a <strong>greatest element</strong>. Dually, initial is a <strong>least element</strong>. (Uniqueness of arrows is free — the category is thin.)</p>
+          <p><strong>(b)</strong> The projections <span class="m">a <span class="up">× </span>b <span class="up">→ </span>a</span> and <span class="m">a <span class="up">× </span>b <span class="up">→ </span>b</span> say the product is a <strong>lower bound</strong>: <span class="m">a <span class="up">× </span>b <span class="up">≤ </span>a</span> and <span class="m">a <span class="up">× </span>b <span class="up">≤ </span>b</span>. The mediating-arrow clause says every <span class="m">x</span> with <span class="m">x <span class="up">≤ </span>a</span> and <span class="m">x <span class="up">≤ </span>b</span> satisfies <span class="m">x <span class="up">≤ </span>a <span class="up">× </span>b</span> — the product is <strong>greatest</strong> among lower bounds. Existence of the mediator is the &ldquo;greatest&rdquo; clause; its uniqueness is free by thinness. So products in a preorder are meets, and dually coproducts are joins — and in the divisibility order these are gcd and lcm, as §6 verified.</p>
         </div>
       </details>
     </div>
@@ -894,15 +909,15 @@ print([m(x) for x in X])</code></pre>
 <div class="prob-body">
 <p>Using only the test of §3 — arrows into a product are equal when their components are — prove:</p>
 <ol>
-<li><span class="m">⟨π<sub>1</sub>, π<sub>2</sub>⟩ = id<sub>A × B</sub></span>.</li>
-<li>For <span class="m">f : A → A′</span>, <span class="m">g : B → B′</span> and arrows <span class="m">a : X → A</span>, <span class="m">b : X → B</span>: <span class="m">(f × g) ∘ ⟨a, b⟩ = ⟨f ∘ a, g ∘ b⟩</span>.</li>
+<li><span class="m"><span class="up">⟨</span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">⟩ = </span>id<sub>A <span class="up">× </span>B</sub></span>.</li>
+<li>For <span class="m">f <span class="up pl18">: </span>A <span class="up">→ </span>A<span class="up">′</span></span>, <span class="m">g <span class="up pl5">: </span>B <span class="up">→ </span>B<span class="up">′</span></span> and arrows <span class="m">a <span class="up">: </span>X <span class="up pl8">→ </span>A</span>, <span class="m">b <span class="up">: </span>X <span class="up pl8">→ </span>B</span>: <span class="m"><span class="up pr14">(</span>f <span class="up pl18">× </span>g<span class="up pl5">) ∘ ⟨</span>a<span class="up">, </span>b<span class="up pr14">⟩ = ⟨</span>f <span class="up pl18">∘ </span>a<span class="up">, </span>g <span class="up pl5">∘ </span>b<span class="up">⟩</span></span>.</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> Both sides are arrows <span class="m">A × B → A × B</span>. The components of <span class="m">⟨π<sub>1</sub>, π<sub>2</sub>⟩</span> are <span class="m">π<sub>1</sub></span> and <span class="m">π<sub>2</sub></span> by definition; the components of the identity are <span class="m">π<sub>1</sub> ∘ id = π<sub>1</sub></span> and <span class="m">π<sub>2</sub> ∘ id = π<sub>2</sub></span>. Same components, same arrow.</p>
-<p><strong>(b)</strong> Recall <span class="m">f × g = ⟨f ∘ π<sub>1</sub>, g ∘ π<sub>2</sub>⟩</span>. The first component of the left side is <span class="m">π<sub>1</sub> ∘ (f × g) ∘ ⟨a, b⟩ = f ∘ π<sub>1</sub> ∘ ⟨a, b⟩ = f ∘ a</span>, which is the first component of the right side. The second components agree in the same way.</p>
-<p>Every identity about pairing is proved like this: compose with each projection and compare. The uniqueness clause of the universal property turns into a method of calculation.</p>
+<p><strong>(a)</strong> Both sides are arrows <span class="m">A <span class="up">× </span>B <span class="up">→ </span>A <span class="up">× </span>B</span>. The components of <span class="m"><span class="up">⟨</span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">⟩</span></span> are <span class="m">π<sub><span class="up">1</span></sub></span> and <span class="m">π<sub><span class="up">2</span></sub></span> by definition; the components of the identity are <span class="m">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>id <span class="up pl5">= </span>π<sub><span class="up">1</span></sub></span> and <span class="m">π<sub><span class="up">2</span></sub> <span class="up">∘ </span>id <span class="up pl5">= </span>π<sub><span class="up">2</span></sub></span>. Same components, same arrow.</p>
+<p><strong>(b)</strong> Recall <span class="m">f <span class="up pl18">× </span>g <span class="up pl5 pr14">= ⟨</span>f <span class="up pl18">∘ </span>π<sub><span class="up">1</span></sub><span class="up">, </span>g <span class="up pl5">∘ </span>π<sub><span class="up">2</span></sub><span class="up">⟩</span></span>. The first component of the left side is <span class="m">π<sub><span class="up">1</span></sub> <span class="up pr14">∘ (</span>f <span class="up pl18">× </span>g<span class="up pl5">) ∘ ⟨</span>a<span class="up">, </span>b<span class="up">⟩ = </span>f <span class="up pl18">∘ </span>π<sub><span class="up">1</span></sub> <span class="up">∘ ⟨</span>a<span class="up">, </span>b<span class="up">⟩ = </span>f <span class="up pl18">∘ </span>a</span>, which is the first component of the right side. The second components agree in the same way.</p>
+<p>Every identity about pairing is proved like this: compose with each projection and compare. The uniqueness clause of the universal property turns into a method of calculation.</p>
 </div>
 </details>
 </div>
@@ -910,13 +925,13 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 8</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
-        <p>Adapt §2&rsquo;s uniqueness proof to products. Suppose <span class="m">(P, π<sub>1</sub>, π<sub>2</sub>)</span> and <span class="m">(P&prime;, π&prime;<sub>1</sub>, π&prime;<sub>2</sub>)</span> are both products of <span class="m">A</span> and <span class="m">B</span>. Show there is a unique isomorphism <span class="m">u : P → P&prime;</span> that is <em>compatible with the projections</em>, i.e. <span class="m">π&prime;<sub>1</sub> ∘ u = π<sub>1</sub></span> and <span class="m">π&prime;<sub>2</sub> ∘ u = π<sub>2</sub></span>.</p>
-        <p>Hint: to show a certain composite equals an identity, ask what the uniqueness clause says about arrows <span class="m">P → P</span> that commute with both projections.</p>
+        <p>Adapt §2&rsquo;s uniqueness proof to products. Suppose <span class="m"><span class="up">(</span>P<span class="up">, </span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">)</span></span> and <span class="m"><span class="up">(</span>P<span class="up pl4">&prime;, </span>π<span class="up">&prime;</span><sub><span class="up">1</span></sub><span class="up">, </span>π<span class="up">&prime;</span><sub><span class="up">2</span></sub><span class="up">)</span></span> are both products of <span class="m">A</span> and <span class="m">B</span>. Show there is a unique isomorphism <span class="m">u <span class="up">: </span>P <span class="up pl4">→ </span>P<span class="up pl4">&prime;</span></span> that is <em>compatible with the projections</em>, i.e. <span class="m">π<span class="up">&prime;</span><sub><span class="up">1</span></sub> <span class="up">∘ </span>u <span class="up">= </span>π<sub><span class="up">1</span></sub></span> and <span class="m">π<span class="up">&prime;</span><sub><span class="up">2</span></sub> <span class="up">∘ </span>u <span class="up">= </span>π<sub><span class="up">2</span></sub></span>.</p>
+        <p>Hint: to show a certain composite equals an identity, ask what the uniqueness clause says about arrows <span class="m pr4">P <span class="up pl4">→ </span>P</span> that commute with both projections.</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>The universal property of <span class="m">P&prime;</span>, applied to the arrows <span class="m">π<sub>1</sub>, π<sub>2</sub></span> out of <span class="m">P</span>, produces a unique <span class="m">u = ⟨π<sub>1</sub>, π<sub>2</sub>⟩&prime; : P → P&prime;</span> compatible with the projections. Symmetrically, <span class="m">P</span>&rsquo;s universal property produces <span class="m">v : P&prime; → P</span> with <span class="m">π<sub>i</sub> ∘ v = π&prime;<sub>i</sub></span>.</p>
-          <p>Now the punchline. The composite <span class="m">v ∘ u : P → P</span> commutes with both projections: <span class="m">π<sub>i</sub> ∘ (v ∘ u) = π&prime;<sub>i</sub> ∘ u = π<sub>i</sub></span>. But <span class="m">P</span>&rsquo;s universal property, applied to the pair <span class="m">(π<sub>1</sub>, π<sub>2</sub>)</span> itself, says there is <em>exactly one</em> arrow <span class="m">P → P</span> commuting with both projections — and <span class="m">id<sub>P</sub></span> visibly does. Therefore <span class="m">v ∘ u = id<sub>P</sub></span>, and symmetrically <span class="m">u ∘ v = id<sub>P&prime;</sub></span>. Same skeleton as §2: manufacture arrows with existence, collapse composites with uniqueness. Once you have written this proof twice you will never need to write it again — Lesson 7 states it once for all limits.</p>
+          <p>The universal property of <span class="m">P<span class="up pl4">&prime;</span></span>, applied to the arrows <span class="m">π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub></span> out of <span class="m">P</span>, produces a unique <span class="m">u <span class="up">= ⟨</span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">⟩&prime; : </span>P <span class="up pl4">→ </span>P<span class="up pl4">&prime;</span></span> compatible with the projections. Symmetrically, <span class="m pr4">P</span>&rsquo;s universal property produces <span class="m pr4">v <span class="up">: </span>P<span class="up pl4">&prime; → </span>P</span> with <span class="m">π<sub>i</sub> <span class="up pl3">∘ </span>v <span class="up">= </span>π<span class="up">&prime;</span><sub>i</sub></span>.</p>
+          <p>Now the punchline. The composite <span class="m pr4">v <span class="up">∘ </span>u <span class="up">: </span>P <span class="up pl4">→ </span>P</span> commutes with both projections: <span class="m">π<sub>i</sub> <span class="up pl3">∘ (</span>v <span class="up">∘ </span>u<span class="up">) = </span>π<span class="up">&prime;</span><sub>i</sub> <span class="up pl3">∘ </span>u <span class="up">= </span>π<sub>i</sub></span>. But <span class="m pr4">P</span>&rsquo;s universal property, applied to the pair <span class="m"><span class="up">(</span>π<sub><span class="up">1</span></sub><span class="up">, </span>π<sub><span class="up">2</span></sub><span class="up">)</span></span> itself, says there is <em>exactly one</em> arrow <span class="m pr4">P <span class="up pl4">→ </span>P</span> commuting with both projections — and <span class="m pr3">id<sub>P</sub></span> visibly does. Therefore <span class="m">v <span class="up">∘ </span>u <span class="up">= </span>id<sub>P</sub></span>, and symmetrically <span class="m">u <span class="up">∘ </span>v <span class="up">= </span>id<sub>P<span class="up pl4">&prime;</span></sub></span>. Same skeleton as §2: manufacture arrows with existence, collapse composites with uniqueness. Once you have written this proof twice you will never need to write it again — Lesson 7 states it once for all limits.</p>
         </div>
       </details>
     </div>
@@ -924,12 +939,12 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 9</span><span class="tier">arrows-only</span></div>
 <div class="prob-body">
-<p>Let <span class="m">1</span> be a terminal object. Show that for every object <span class="m">A</span>, the object <span class="m">A</span> itself, with the arrows <span class="m">id<sub>A</sub> : A → A</span> and <span class="m">!<sub>A</sub> : A → 1</span>, is a product of <span class="m">A</span> and <span class="m">1</span>. Conclude that <span class="m">A × 1 ≅ A</span> whenever the product exists.</p>
+<p>Let <span class="m"><span class="up">1</span></span> be a terminal object. Show that for every object <span class="m">A</span>, the object <span class="m">A</span> itself, with the arrows <span class="m">id<sub>A</sub> <span class="up">: </span>A <span class="up">→ </span>A</span> and <span class="m"><span class="up">!</span><sub>A</sub> <span class="up">: </span>A <span class="up">→ 1</span></span>, is a product of <span class="m">A</span> and <span class="m"><span class="up">1</span></span>. Conclude that <span class="m">A <span class="up">× 1 ≅ </span>A</span> whenever the product exists.</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p>Let <span class="m">X</span> be any object with arrows <span class="m">f : X → A</span> and <span class="m">t : X → 1</span>. We need exactly one <span class="m">m : X → A</span> with <span class="m">id<sub>A</sub> ∘ m = f</span> and <span class="m">!<sub>A</sub> ∘ m = t</span>. The first equation forces <span class="m">m = f</span>. And <span class="m">m = f</span> satisfies the second automatically: <span class="m">!<sub>A</sub> ∘ f</span> and <span class="m">t</span> are both arrows <span class="m">X → 1</span>, and there is only one. So <span class="m">(A, id<sub>A</sub>, !<sub>A</sub>)</span> has the universal property of the product.</p>
-<p>Since products are unique up to isomorphism (§3), any product <span class="m">A × 1</span> is isomorphic to <span class="m">A</span>. In <span class="m"><span class="cat">Set</span></span> this is the bijection <span class="m">(a, ∗) ↦ a</span>; in a preorder with a top element it is <span class="m">a ∧ ⊤ = a</span>; counted, it is <span class="m">a · 1 = a</span>. The terminal object is the unit for the product, which is why it is written <span class="m">1</span>.</p>
+<p>Let <span class="m pr8">X</span> be any object with arrows <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span> and <span class="m">t <span class="up">: </span>X <span class="up pl8">→ 1</span></span>. We need exactly one <span class="m">m <span class="up">: </span>X <span class="up pl8">→ </span>A</span> with <span class="m pr18">id<sub>A</sub> <span class="up">∘ </span>m <span class="up">= </span>f</span> and <span class="m"><span class="up">!</span><sub>A</sub> <span class="up">∘ </span>m <span class="up">= </span>t</span>. The first equation forces <span class="m">m <span class="up">= </span>f</span>. And <span class="m pr18">m <span class="up">= </span>f</span> satisfies the second automatically: <span class="m pr18"><span class="up">!</span><sub>A</sub> <span class="up">∘ </span>f</span> and <span class="m">t</span> are both arrows <span class="m">X <span class="up pl8">→ 1</span></span>, and there is only one. So <span class="m"><span class="up pr5">(</span>A<span class="up">, </span>id<sub>A</sub><span class="up">, !</span><sub>A</sub><span class="up">)</span></span> has the universal property of the product.</p>
+<p>Since products are unique up to isomorphism (§3), any product <span class="m">A <span class="up">× 1</span></span> is isomorphic to <span class="m">A</span>. In <span class="m"><span class="cat">Set</span></span> this is the bijection <span class="m"><span class="up">(</span>a<span class="up">, ∗) ↦ </span>a</span>; in a preorder with a top element it is <span class="m">a <span class="up">∧ ⊤ = </span>a</span>; counted, it is <span class="m">a <span class="up">· 1 = </span>a</span>. The terminal object is the unit for the product, which is why it is written <span class="m"><span class="up">1</span></span>.</p>
 </div>
 </details>
 </div>
@@ -938,14 +953,14 @@ print([m(x) for x in X])</code></pre>
       <div class="prob-head"><span class="pn">Exercise 10</span><span class="tier">arrows-only</span></div>
       <div class="prob-body">
 
-        <p>Products associate, up to the usual unique isomorphism. Suppose the products <span class="m">(A × B) × C</span> and <span class="m">A × (B × C)</span> both exist.</p>
-        <p>Equip <span class="m">(A × B) × C</span> with three &ldquo;projections&rdquo; to <span class="m">A</span>, <span class="m">B</span>, and <span class="m">C</span>, and show it satisfies the universal property of a <em>triple</em> product: for any <span class="m">f : X → A</span>, <span class="m">g : X → B</span>, <span class="m">h : X → C</span>, exactly one arrow into it commutes with all three. Conclude — without further computation — that <span class="m">(A × B) × C ≅ A × (B × C)</span>.</p>
+        <p>Products associate, up to the usual unique isomorphism. Suppose the products <span class="m pr4"><span class="up pr5">(</span>A <span class="up">× </span>B<span class="up">) × </span>C</span> and <span class="m">A <span class="up">× (</span>B <span class="up">× </span>C<span class="up pl4">)</span></span> both exist.</p>
+        <p>Equip <span class="m pr4"><span class="up pr5">(</span>A <span class="up">× </span>B<span class="up">) × </span>C</span> with three &ldquo;projections&rdquo; to <span class="m">A</span>, <span class="m">B</span>, and <span class="m">C</span>, and show it satisfies the universal property of a <em>triple</em> product: for any <span class="m">f <span class="up pl18">: </span>X <span class="up pl8">→ </span>A</span>, <span class="m">g <span class="up pl5">: </span>X <span class="up pl8">→ </span>B</span>, <span class="m">h <span class="up">: </span>X <span class="up pl8">→ </span>C</span>, exactly one arrow into it commutes with all three. Conclude — without further computation — that <span class="m"><span class="up pr5">(</span>A <span class="up">× </span>B<span class="up">) × </span>C <span class="up pl4">≅ </span>A <span class="up">× (</span>B <span class="up">× </span>C<span class="up pl4">)</span></span>.</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
 
-          <p>The three projections: <span class="m">π<sub>1</sub> ∘ π<sub>1</sub></span>, <span class="m">π<sub>2</sub> ∘ π<sub>1</sub></span>, and <span class="m">π<sub>2</sub></span> (outer). Given <span class="m">f, g, h</span>, build the mediator in two stages: pair <span class="m">f</span> and <span class="m">g</span> into <span class="m">⟨f, g⟩ : X → A × B</span>, then pair with <span class="m">h</span>: <span class="m">⟨⟨f, g⟩, h⟩</span>. The three triangles commute by unwinding the two pairings.</p>
-          <p><strong>Uniqueness</strong> stacks the two uniqueness clauses: a competitor <span class="m">m</span> commuting with all three projections has <span class="m">π<sub>1</sub> ∘ m</span> commuting with both inner projections, so <span class="m">π<sub>1</sub> ∘ m = ⟨f, g⟩</span> by the inner product&rsquo;s uniqueness — and then <span class="m">m = ⟨⟨f, g⟩, h⟩</span> by the outer&rsquo;s. So <span class="m">(A × B) × C</span> is a triple product; by the mirror argument so is <span class="m">A × (B × C)</span>; and §2&rsquo;s theorem (two objects with the same universal property) supplies the unique isomorphism, no components ever computed. The same template gives commutativity <span class="m">A × B ≅ B × A</span> and, in Lesson 7&rsquo;s language, both are limits over the same three-dot diagram — associativity is then not even a theorem, just two names for one limit.</p>
+          <p>The three projections: <span class="m">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>π<sub><span class="up">1</span></sub></span>, <span class="m">π<sub><span class="up">2</span></sub> <span class="up">∘ </span>π<sub><span class="up">1</span></sub></span>, and <span class="m">π<sub><span class="up">2</span></sub></span> (outer). Given <span class="m">f<span class="up">, </span>g<span class="up">, </span>h</span>, build the mediator in two stages: pair <span class="m pr18">f</span> and <span class="m pr5">g</span> into <span class="m"><span class="up pr14">⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩ : </span>X <span class="up pl8">→ </span>A <span class="up">× </span>B</span>, then pair with <span class="m">h</span>: <span class="m"><span class="up pr14">⟨⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩, </span>h<span class="up">⟩</span></span>. The three triangles commute by unwinding the two pairings.</p>
+          <p><strong>Uniqueness</strong> stacks the two uniqueness clauses: a competitor <span class="m">m</span> commuting with all three projections has <span class="m">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m</span> commuting with both inner projections, so <span class="m">π<sub><span class="up">1</span></sub> <span class="up">∘ </span>m <span class="up pr14">= ⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩</span></span> by the inner product&rsquo;s uniqueness — and then <span class="m">m <span class="up pr14">= ⟨⟨</span>f<span class="up">, </span>g<span class="up pl5">⟩, </span>h<span class="up">⟩</span></span> by the outer&rsquo;s. So <span class="m pr4"><span class="up pr5">(</span>A <span class="up">× </span>B<span class="up">) × </span>C</span> is a triple product; by the mirror argument so is <span class="m">A <span class="up">× (</span>B <span class="up">× </span>C<span class="up pl4">)</span></span>; and §2&rsquo;s theorem (two objects with the same universal property) supplies the unique isomorphism, no components ever computed. The same template gives commutativity <span class="m">A <span class="up">× </span>B <span class="up">≅ </span>B <span class="up">× </span>A</span> and, in Lesson 7&rsquo;s language, both are limits over the same three-dot diagram — associativity is then not even a theorem, just two names for one limit.</p>
         </div>
       </details>
     </div>
@@ -958,16 +973,16 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 11</span><span class="tier">structure</span></div>
       <div class="prob-body">
-        <p>In <span class="cat">Set</span>, take <span class="m">A = {1, 2}</span> and <span class="m">B = {2, 3}</span>, and let <span class="m">X = {&#x27;lo&#x27;, &#x27;hi&#x27;}</span>. Define <span class="m">f : A → X</span> by <span class="m">1, 2 ↦ &#x27;lo&#x27;</span> and <span class="m">g : B → X</span> by <span class="m">2 ↦ &#x27;lo&#x27;, 3 ↦ &#x27;hi&#x27;</span>.</p>
+        <p>In <span class="cat">Set</span>, take <span class="m">A <span class="up">= {1, 2}</span></span> and <span class="m">B <span class="up">= {2, 3}</span></span>, and let <span class="m">X <span class="up pl8">= {&#x27;</span>lo<span class="up">&#x27;, &#x27;</span>hi<span class="up pl4">&#x27;}</span></span>. Define <span class="m pr8">f <span class="up pl18">: </span>A <span class="up">→ </span>X</span> by <span class="m"><span class="up">1, 2 ↦ &#x27;</span>lo<span class="up">&#x27;</span></span> and <span class="m pr8">g <span class="up pl5">: </span>B <span class="up">→ </span>X</span> by <span class="m"><span class="up">2 ↦ &#x27;</span>lo<span class="up">&#x27;, 3 ↦ &#x27;</span>hi<span class="up pl4">&#x27;</span></span>.</p>
         <ol>
-          <li>Describe the coproduct <span class="m">A + B</span> concretely. Why must the two copies of the element <span class="m">2</span> be kept apart?</li>
-          <li>Write out the copairing <span class="m">[f, g] : A + B → X</span> explicitly, and check that both triangles commute.</li>
+          <li>Describe the coproduct <span class="m">A <span class="up">+ </span>B</span> concretely. Why must the two copies of the element <span class="m"><span class="up">2</span></span> be kept apart?</li>
+          <li>Write out the copairing <span class="m pr8"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] : </span>A <span class="up">+ </span>B <span class="up">→ </span>X</span> explicitly, and check that both triangles commute.</li>
         </ol>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p><strong>(a)</strong> The coproduct is the <em>disjoint</em> union — implement it with tags: <span class="m">A + B = {(&#x27;L&#x27;,1), (&#x27;L&#x27;,2), (&#x27;R&#x27;,2), (&#x27;R&#x27;,3)}</span>, with injections <span class="m">ι<sub>1</sub>(a) = (&#x27;L&#x27;, a)</span> and <span class="m">ι<sub>2</sub>(b) = (&#x27;R&#x27;, b)</span>. The two 2&rsquo;s must stay distinct because the universal property demands that <span class="m">f</span> and <span class="m">g</span> be recoverable <em>independently</em>: had we merged the 2&rsquo;s, a pair with <span class="m">f(2) ≠ g(2)</span> would have no well-defined copairing at all. (Here <span class="m">f(2) = g(2) = &#x27;lo&#x27;</span> by luck, but the coproduct must work for <em>every</em> pair.)</p>
-          <p><strong>(b)</strong> <span class="m">[f, g]</span> pattern-matches on the tag: <span class="m">(&#x27;L&#x27;,1) ↦ &#x27;lo&#x27;, (&#x27;L&#x27;,2) ↦ &#x27;lo&#x27;, (&#x27;R&#x27;,2) ↦ &#x27;lo&#x27;, (&#x27;R&#x27;,3) ↦ &#x27;hi&#x27;</span>. The triangles: <span class="m">[f,g](ι<sub>1</sub>(a)) = f(a)</span> for both <span class="m">a</span>, and <span class="m">[f,g](ι<sub>2</sub>(b)) = g(b)</span> for both <span class="m">b</span> — check each of the four elements. This is exactly the <code>match</code> statement on an <code>Either</code>/tagged-union type; the coproduct&rsquo;s universal property is the mathematical spec of case analysis.</p>
+          <p><strong>(a)</strong> The coproduct is the <em>disjoint</em> union — implement it with tags: <span class="m">A <span class="up">+ </span>B <span class="up">= {(&#x27;</span>L<span class="up">&#x27;,1), (&#x27;</span>L<span class="up">&#x27;,2), (&#x27;</span>R<span class="up">&#x27;,2), (&#x27;</span>R<span class="up">&#x27;,3)}</span></span>, with injections <span class="m">ι<sub><span class="up">1</span></sub><span class="up">(</span>a<span class="up">) = (&#x27;</span>L<span class="up">&#x27;, </span>a<span class="up">)</span></span> and <span class="m">ι<sub><span class="up">2</span></sub><span class="up">(</span>b<span class="up">) = (&#x27;</span>R<span class="up">&#x27;, </span>b<span class="up">)</span></span>. The two 2&rsquo;s must stay distinct because the universal property demands that <span class="m pr18">f</span> and <span class="m pr5">g</span> be recoverable <em>independently</em>: had we merged the 2&rsquo;s, a pair with <span class="m">f<span class="up pl18">(2) ≠ </span>g<span class="up pl5">(2)</span></span> would have no well-defined copairing at all. (Here <span class="m">f<span class="up pl18">(2) = </span>g<span class="up pl5">(2) = &#x27;</span>lo<span class="up">&#x27;</span></span> by luck, but the coproduct must work for <em>every</em> pair.)</p>
+          <p><strong>(b)</strong> <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">]</span></span> pattern-matches on the tag: <span class="m"><span class="up">(&#x27;</span>L<span class="up">&#x27;,1) ↦ &#x27;</span>lo<span class="up">&#x27;, (&#x27;</span>L<span class="up">&#x27;,2) ↦ &#x27;</span>lo<span class="up">&#x27;, (&#x27;</span>R<span class="up">&#x27;,2) ↦ &#x27;</span>lo<span class="up">&#x27;, (&#x27;</span>R<span class="up">&#x27;,3) ↦ &#x27;</span>hi<span class="up pl4">&#x27;</span></span>. The triangles: <span class="m"><span class="up pr14">[</span>f<span class="up pr4">,</span>g<span class="up pl5">](</span>ι<sub><span class="up">1</span></sub><span class="up">(</span>a<span class="up">)) = </span>f<span class="up pl18">(</span>a<span class="up">)</span></span> for both <span class="m">a</span>, and <span class="m"><span class="up pr14">[</span>f<span class="up pr4">,</span>g<span class="up pl5">](</span>ι<sub><span class="up">2</span></sub><span class="up">(</span>b<span class="up">)) = </span>g<span class="up pl5">(</span>b<span class="up">)</span></span> for both <span class="m">b</span> — check each of the four elements. This is exactly the <code>match</code> statement on an <code>Either</code>/tagged-union type; the coproduct&rsquo;s universal property is the mathematical spec of case analysis.</p>
         </div>
       </details>
     </div>
@@ -975,18 +990,18 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 12</span><span class="tier">structure</span></div>
 <div class="prob-body">
-<p>Verify the claim of §5 that in <span class="m"><span class="cat">Vect</span></span> the direct sum <span class="m">V ⊕ W</span>, with the injections <span class="m">i<sub>1</sub>(v) = (v, 0)</span> and <span class="m">i<sub>2</sub>(w) = (0, w)</span>, is a coproduct. Given linear maps <span class="m">f : V → X</span> and <span class="m">g : W → X</span>:</p>
+<p>Verify the claim of §5 that in <span class="m"><span class="cat">Vect</span></span> the direct sum <span class="m">V <span class="up pl11">⊕ </span>W</span>, with the injections <span class="m">i<sub><span class="up pl4">1</span></sub><span class="up">(</span>v<span class="up">) = (</span>v<span class="up">, 0)</span></span> and <span class="m">i<sub><span class="up pl4">2</span></sub><span class="up">(</span>w<span class="up">) = (0, </span>w<span class="up">)</span></span>, is a coproduct. Given linear maps <span class="m pr8">f <span class="up pl18">: </span>V <span class="up pl11">→ </span>X</span> and <span class="m pr8">g <span class="up pl5">: </span>W <span class="up pl10">→ </span>X</span>:</p>
 <ol>
-<li>check that <span class="m">[f, g](v, w) = f(v) + g(w)</span> is linear and satisfies <span class="m">[f, g] ∘ i<sub>1</sub> = f</span> and <span class="m">[f, g] ∘ i<sub>2</sub> = g</span>;</li>
+<li>check that <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">](</span>v<span class="up">, </span>w<span class="up">) = </span>f<span class="up pl18">(</span>v<span class="up">) + </span>g<span class="up pl5">(</span>w<span class="up">)</span></span> is linear and satisfies <span class="m pr18"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] ∘ </span>i<sub><span class="up pl4">1</span></sub> <span class="up">= </span>f</span> and <span class="m pr5"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">] ∘ </span>i<sub><span class="up pl4">2</span></sub> <span class="up">= </span>g</span>;</li>
 <li>show that it is the only linear map with those two properties.</li>
 </ol>
 <p>Where does the argument break down in <span class="m"><span class="cat">Set</span></span>?</p>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> Linearity: <span class="m">[f, g]</span> of a sum of pairs is <span class="m">f(v + v′) + g(w + w′) = (f(v) + g(w)) + (f(v′) + g(w′))</span>, and similarly for scalar multiples. And <span class="m">[f, g](v, 0) = f(v) + g(0) = f(v)</span>, since a linear map sends <span class="m">0</span> to <span class="m">0</span>; likewise <span class="m">[f, g](0, w) = g(w)</span>.</p>
-<p><strong>(b)</strong> Let <span class="m">h</span> be linear with <span class="m">h ∘ i<sub>1</sub> = f</span> and <span class="m">h ∘ i<sub>2</sub> = g</span>. Every pair decomposes as <span class="m">(v, w) = (v, 0) + (0, w)</span>, so by linearity <span class="m">h(v, w) = h(v, 0) + h(0, w) = f(v) + g(w)</span>.</p>
-<p>In <span class="m"><span class="cat">Set</span></span> there is no way to write a pair <span class="m">(v, w)</span> as a combination of something from the image of <span class="m">i<sub>1</sub></span> and something from the image of <span class="m">i<sub>2</sub></span> — there is no <span class="m">0</span> to pad with and no <span class="m">+</span> to combine with. That is why the cartesian product of sets is not their coproduct, and why the two coincide exactly in categories whose arrows can be added.</p>
+<p><strong>(a)</strong> Linearity: <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">]</span></span> of a sum of pairs is <span class="m">f<span class="up pl18">(</span>v <span class="up">+ </span>v<span class="up">′) + </span>g<span class="up pl5">(</span>w <span class="up">+ </span>w<span class="up pr14">′) = (</span>f<span class="up pl18">(</span>v<span class="up">) + </span>g<span class="up pl5">(</span>w<span class="up pr14">)) + (</span>f<span class="up pl18">(</span>v<span class="up">′) + </span>g<span class="up pl5">(</span>w<span class="up">′))</span></span>, and similarly for scalar multiples. And <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">](</span>v<span class="up">, 0) = </span>f<span class="up pl18">(</span>v<span class="up">) + </span>g<span class="up pl5">(0) = </span>f<span class="up pl18">(</span>v<span class="up">)</span></span>, since a linear map sends <span class="m"><span class="up">0</span></span> to <span class="m"><span class="up">0</span></span>; likewise <span class="m"><span class="up pr14">[</span>f<span class="up">, </span>g<span class="up pl5">](0, </span>w<span class="up">) = </span>g<span class="up pl5">(</span>w<span class="up">)</span></span>.</p>
+<p><strong>(b)</strong> Let <span class="m">h</span> be linear with <span class="m pr18">h <span class="up">∘ </span>i<sub><span class="up pl4">1</span></sub> <span class="up">= </span>f</span> and <span class="m">h <span class="up">∘ </span>i<sub><span class="up pl4">2</span></sub> <span class="up">= </span>g</span>. Every pair decomposes as <span class="m"><span class="up">(</span>v<span class="up">, </span>w<span class="up">) = (</span>v<span class="up">, 0) + (0, </span>w<span class="up">)</span></span>, so by linearity <span class="m">h<span class="up">(</span>v<span class="up">, </span>w<span class="up">) = </span>h<span class="up">(</span>v<span class="up">, 0) + </span>h<span class="up">(0, </span>w<span class="up">) = </span>f<span class="up pl18">(</span>v<span class="up">) + </span>g<span class="up pl5">(</span>w<span class="up">)</span></span>.</p>
+<p>In <span class="m"><span class="cat">Set</span></span> there is no way to write a pair <span class="m"><span class="up">(</span>v<span class="up">, </span>w<span class="up">)</span></span> as a combination of something from the image of <span class="m">i<sub><span class="up pl4">1</span></sub></span> and something from the image of <span class="m">i<sub><span class="up pl4">2</span></sub></span> — there is no <span class="m"><span class="up">0</span></span> to pad with and no <span class="m"><span class="up">+</span></span> to combine with. That is why the cartesian product of sets is not their coproduct, and why the two coincide exactly in categories whose arrows can be added.</p>
 </div>
 </details>
 </div>
@@ -999,18 +1014,18 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
 <div class="prob-head"><span class="pn">Exercise 13</span><span class="tier">counting</span></div>
 <div class="prob-body">
-<p>Check the two universal properties in <span class="m"><span class="cat">Set</span></span> by counting, as in §6. Let <span class="m">|A| = 2</span>, <span class="m">|B| = 3</span> and <span class="m">|X| = 2</span>.</p>
+<p>Check the two universal properties in <span class="m"><span class="cat">Set</span></span> by counting, as in §6. Let <span class="m"><span class="up pr5">|</span>A<span class="up">| = 2</span></span>, <span class="m"><span class="up">|</span>B<span class="up">| = 3</span></span> and <span class="m"><span class="up pr5">|</span>X<span class="up pl8">| = 2</span></span>.</p>
 <ol>
-<li>How many functions are there <span class="m">X → A × B</span>, and how many pairs of functions <span class="m">(X → A, X → B)</span>?</li>
-<li>How many functions <span class="m">A + B → X</span>, and how many pairs <span class="m">(A → X, B → X)</span>?</li>
-<li>The product property applied to the empty family says: there is exactly one arrow <span class="m">X → 1</span>. Which law of exponents is that?</li>
+<li>How many functions are there <span class="m">X <span class="up pl8">→ </span>A <span class="up">× </span>B</span>, and how many pairs of functions <span class="m"><span class="up pr5">(</span>X <span class="up pl8">→ </span>A<span class="up">, </span>X <span class="up pl8">→ </span>B<span class="up">)</span></span>?</li>
+<li>How many functions <span class="m">A <span class="up">+ </span>B <span class="up">→ </span>X</span>, and how many pairs <span class="m"><span class="up pr5">(</span>A <span class="up">→ </span>X<span class="up">, </span>B <span class="up">→ </span>X<span class="up pl8">)</span></span>?</li>
+<li>The product property applied to the empty family says: there is exactly one arrow <span class="m">X <span class="up pl8">→ 1</span></span>. Which law of exponents is that?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> <span class="m">|A × B| = 6</span>, so <span class="m">6<sup>2</sup> = 36</span> functions; and <span class="m">2<sup>2</sup> · 3<sup>2</sup> = 4 · 9 = 36</span> pairs.</p>
-<p><strong>(b)</strong> <span class="m">|A + B| = 5</span>, so <span class="m">2<sup>5</sup> = 32</span> functions; and <span class="m">2<sup>2</sup> · 2<sup>3</sup> = 4 · 8 = 32</span> pairs.</p>
-<p><strong>(c)</strong> <span class="m">1<sup>x</sup> = 1</span>: there is exactly one function from a set with <span class="m">x</span> elements to a one-element set. Dually, <span class="m">x<sup>0</sup> = 1</span> counts the single function from the empty set — initiality of <span class="m">∅</span>. Each law of exponents is a universal property with the arrows counted.</p>
+<p><strong>(a)</strong> <span class="m"><span class="up pr5">|</span>A <span class="up">× </span>B<span class="up">| = 6</span></span>, so <span class="m"><span class="up">6</span><sup><span class="up">2</span></sup> <span class="up">= 36</span></span> functions; and <span class="m"><span class="up">2</span><sup><span class="up">2</span></sup> <span class="up">· 3</span><sup><span class="up">2</span></sup> <span class="up">= 4 · 9 = 36</span></span> pairs.</p>
+<p><strong>(b)</strong> <span class="m"><span class="up pr5">|</span>A <span class="up">+ </span>B<span class="up">| = 5</span></span>, so <span class="m"><span class="up">2</span><sup><span class="up">5</span></sup> <span class="up">= 32</span></span> functions; and <span class="m"><span class="up">2</span><sup><span class="up">2</span></sup> <span class="up">· 2</span><sup><span class="up">3</span></sup> <span class="up">= 4 · 8 = 32</span></span> pairs.</p>
+<p><strong>(c)</strong> <span class="m"><span class="up">1</span><sup>x</sup> <span class="up">= 1</span></span>: there is exactly one function from a set with <span class="m">x</span> elements to a one-element set. Dually, <span class="m">x<sup><span class="up">0</span></sup> <span class="up">= 1</span></span> counts the single function from the empty set — initiality of <span class="m"><span class="up">∅</span></span>. Each law of exponents is a universal property with the arrows counted.</p>
 </div>
 </details>
 </div>
@@ -1020,15 +1035,15 @@ print([m(x) for x in X])</code></pre>
 <div class="prob-body">
 <p>Products that fail to exist, in two small orders.</p>
 <ol>
-<li>In the divisibility order on <span class="m">{2, 3, 6}</span> — the diamond with its bottom removed — show that <span class="m">2</span> and <span class="m">3</span> have no product. Do they have a coproduct?</li>
-<li>In the order of §6 with <span class="m">a, b</span> below <span class="m">x, y</span>: do <span class="m">a</span> and <span class="m">b</span> have a coproduct? A product?</li>
+<li>In the divisibility order on <span class="m"><span class="up">{2, 3, 6}</span></span> — the diamond with its bottom removed — show that <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> have no product. Do they have a coproduct?</li>
+<li>In the order of §6 with <span class="m">a<span class="up">, </span>b</span> below <span class="m">x<span class="up">, </span>y</span>: do <span class="m">a</span> and <span class="m">b</span> have a coproduct? A product?</li>
 </ol>
 </div>
 <details><summary>Show solution</summary>
 <div class="sol">
-<p><strong>(a)</strong> A product needs at least one candidate: an element dividing both <span class="m">2</span> and <span class="m">3</span>. In <span class="m">{2, 3, 6}</span> there is none, so there is no product. The coproduct exists: the only common multiple is <span class="m">6</span>, and it is trivially the least.</p>
-<p><strong>(b)</strong> The candidates for the coproduct of <span class="m">a</span> and <span class="m">b</span> are their common upper bounds, <span class="m">x</span> and <span class="m">y</span>. Neither is below the other, so there is no least one: <strong>no coproduct</strong> — the mirror image of the failure in §6. For the product, a candidate must be below both <span class="m">a</span> and <span class="m">b</span>; nothing is, so there is <strong>no product</strong> either.</p>
-<p>Part (a) fails for lack of candidates, part (b) for lack of a <em>best</em> candidate. These are the only two ways a universal object can fail to exist.</p>
+<p><strong>(a)</strong> A product needs at least one candidate: an element dividing both <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span>. In <span class="m"><span class="up">{2, 3, 6}</span></span> there is none, so there is no product. The coproduct exists: the only common multiple is <span class="m"><span class="up">6</span></span>, and it is trivially the least.</p>
+<p><strong>(b)</strong> The candidates for the coproduct of <span class="m">a</span> and <span class="m">b</span> are their common upper bounds, <span class="m">x</span> and <span class="m">y</span>. Neither is below the other, so there is no least one: <strong>no coproduct</strong> — the mirror image of the failure in §6. For the product, a candidate must be below both <span class="m">a</span> and <span class="m">b</span>; nothing is, so there is <strong>no product</strong> either.</p>
+<p>Part (a) fails for lack of candidates, part (b) for lack of a <em>best</em> candidate. These are the only two ways a universal object can fail to exist.</p>
 </div>
 </details>
 </div>
@@ -1036,13 +1051,13 @@ print([m(x) for x in X])</code></pre>
 <div class="prob">
       <div class="prob-head"><span class="pn">Exercise 15</span><span class="tier">think</span></div>
       <div class="prob-body">
-        <p>§6 showed that the one-object category <span class="cat">Z3</span> has no binary products. Now prove the general statement, for the one-object category built from a group <span class="m">(G, +)</span> with more than one element.</p>
-        <p>Suppose <span class="m">(∗, p, q)</span> were a product of <span class="m">∗</span> with <span class="m">∗</span>. Analyze what a mediating arrow for a pair <span class="m">(f, g)</span> would have to be, and derive a contradiction.</p>
+        <p>§6 showed that the one-object category <span class="cat">Z3</span> has no binary products. Now prove the general statement, for the one-object category built from a group <span class="m"><span class="up">(</span>G<span class="up">, +)</span></span> with more than one element.</p>
+        <p>Suppose <span class="m"><span class="up">(∗, </span>p<span class="up">, </span>q<span class="up">)</span></span> were a product of <span class="m"><span class="up">∗</span></span> with <span class="m"><span class="up">∗</span></span>. Analyze what a mediating arrow for a pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> would have to be, and derive a contradiction.</p>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-          <p>A mediator for the pair <span class="m">(f, g)</span> is an element <span class="m">m ∈ G</span> with <span class="m">p + m = f</span> and <span class="m">q + m = g</span>. In a group each equation has exactly one solution: <span class="m">m = −p + f</span> from the first and <span class="m">m = −q + g</span> from the second. A mediator exists iff these agree, i.e. iff <span class="m">−p + f = −q + g</span>, i.e. iff <span class="m">g = q − p + f</span>.</p>
-          <p>But the universal property requires a mediator for <em>every</em> pair <span class="m">(f, g) ∈ G × G</span> — and the condition pins <span class="m">g</span> to a single value once <span class="m">f</span> is chosen. Since <span class="m">|G| > 1</span>, choose any <span class="m">g&prime; ≠ q − p + f</span>: the pair <span class="m">(f, g&prime;)</span> has no mediator. Existence fails, so no <span class="m">(p, q)</span> works, so there is no product. Intuition to keep: a product must be able to store two independent pieces of information, and a single object whose arrows form a group has no room — every equation is exactly solvable, leaving no slack for a second coordinate.</p>
+          <p>A mediator for the pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">)</span></span> is an element <span class="m">m <span class="up">∈ </span>G</span> with <span class="m pr18">p <span class="up">+ </span>m <span class="up">= </span>f</span> and <span class="m">q <span class="up">+ </span>m <span class="up">= </span>g</span>. In a group each equation has exactly one solution: <span class="m pr18">m <span class="up pr7">= −</span>p <span class="up">+ </span>f</span> from the first and <span class="m pr5">m <span class="up">= −</span>q <span class="up">+ </span>g</span> from the second. A mediator exists iff these agree, i.e. iff <span class="m"><span class="up pr7">−</span>p <span class="up">+ </span>f <span class="up pl18">= −</span>q <span class="up">+ </span>g</span>, i.e. iff <span class="m">g <span class="up pl5">= </span>q <span class="up">− </span>p <span class="up">+ </span>f</span>.</p>
+          <p>But the universal property requires a mediator for <em>every</em> pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">) ∈ </span>G <span class="up">× </span>G</span> — and the condition pins <span class="m pr5">g</span> to a single value once <span class="m pr18">f</span> is chosen. Since <span class="m"><span class="up">|</span>G<span class="up">| > 1</span></span>, choose any <span class="m pr18">g<span class="up pl5">&prime; ≠ </span>q <span class="up">− </span>p <span class="up">+ </span>f</span>: the pair <span class="m"><span class="up pr14">(</span>f<span class="up">, </span>g<span class="up pl5">&prime;)</span></span> has no mediator. Existence fails, so no <span class="m"><span class="up pr7">(</span>p<span class="up">, </span>q<span class="up">)</span></span> works, so there is no product. Intuition to keep: a product must be able to store two independent pieces of information, and a single object whose arrows form a group has no room — every equation is exactly solvable, leaving no slack for a second coordinate.</p>
         </div>
       </details>
     </div>
@@ -1052,20 +1067,20 @@ print([m(x) for x in X])</code></pre>
       <div class="prob-body">
 <p>Dualize the product computations of §6.</p>
 <ol>
-<li>In the divisibility order on <span class="m">{1, 2, 3, 6}</span>, find the coproduct of <span class="m">2</span> and <span class="m">3</span> directly from the definition: list the candidates, and check the universal property.</li>
+<li>In the divisibility order on <span class="m"><span class="up">{1, 2, 3, 6}</span></span>, find the coproduct of <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> directly from the definition: list the candidates, and check the universal property.</li>
 <li>Explain, using the duality principle and the fact that addition modulo 3 is commutative, why the one-object category <span class="m"><span class="cat">Z3</span></span> has no coproducts either.</li>
 </ol>
 <div class="pytask"><span class="tag">Optional · Python</span>
         <p>Write <code>find_coproducts(C, A, B)</code> by dualizing <code>find_products</code> from the lab in §6 — reverse the direction of the candidate injections and of the mediating arrow, and flip the order of each composition accordingly.</p>
-        <p>Run it on the divisibility poset to confirm that the coproduct of <span class="m">2</span> and <span class="m">3</span> is <span class="m">6</span> (the lcm). Then run it on <span class="cat">Z3</span> and interpret the result in the light of duality.</p>
+        <p>Run it on the divisibility poset to confirm that the coproduct of <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span> is <span class="m"><span class="up">6</span></span> (the lcm). Then run it on <span class="cat">Z3</span> and interpret the result in the light of duality.</p>
 </div>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-<p><strong>By hand. (a)</strong> A candidate is an object with arrows <em>from</em> both <span class="m">2</span> and <span class="m">3</span>: a common multiple. The only one in the diamond is <span class="m">6</span>. It is universal: any <span class="m">X</span> with <span class="m">2 | X</span> and <span class="m">3 | X</span> is <span class="m">6</span> itself, and there is exactly one arrow <span class="m">6 → 6</span>. So <span class="m">2 + 3 = 6</span>, the least common multiple.</p>
-<p><strong>(b)</strong> A coproduct in a category is a product in its opposite. The opposite of a one-object category reverses the order of multiplication (Lesson 5, §2), and for a commutative monoid that changes nothing: <span class="m"><span class="cat">Z3</span><sup>op</sup> = <span class="cat">Z3</span></span>. So a coproduct in <span class="m"><span class="cat">Z3</span></span> would be a product in <span class="m"><span class="cat">Z3</span></span>, and §6 showed there are none.</p>
+<p><strong>By hand. (a)</strong> A candidate is an object with arrows <em>from</em> both <span class="m"><span class="up">2</span></span> and <span class="m"><span class="up">3</span></span>: a common multiple. The only one in the diamond is <span class="m"><span class="up">6</span></span>. It is universal: any <span class="m pr8">X</span> with <span class="m pr8"><span class="up">2 | </span>X</span> and <span class="m pr8"><span class="up">3 | </span>X</span> is <span class="m"><span class="up">6</span></span> itself, and there is exactly one arrow <span class="m"><span class="up">6 → 6</span></span>. So <span class="m"><span class="up">2 + 3 = 6</span></span>, the least common multiple.</p>
+<p><strong>(b)</strong> A coproduct in a category is a product in its opposite. The opposite of a one-object category reverses the order of multiplication (Lesson 5, §2), and for a commutative monoid that changes nothing: <span class="m"><span class="cat">Z3</span><sup>op</sup> <span class="up">= </span><span class="cat">Z3</span></span>. So a coproduct in <span class="m"><span class="cat">Z3</span></span> would be a product in <span class="m"><span class="cat">Z3</span></span>, and §6 showed there are none.</p>
 <div class="pytask"><span class="tag">Optional · Python</span>
-          <p>Every <code>arrows_between</code> call flips its arguments, and each composite <code>comp[(proj, m)]</code> becomes <code>comp[(m, inj)]</code> — the mediator is now applied <em>after</em> the injection:</p>
+          <p>Every <code>arrows_between</code> call flips its arguments, and each composite <code>comp[(proj, m)]</code> becomes <code>comp[(m, inj)]</code> — the mediator is now applied <em class="pr3">after</em> the injection:</p>
           <div class="code" style="margin-top:14px">
             <div class="code-bar"><span class="fname"><b>coproducts.py</b></span><button class="copy" type="button">Copy</button></div>
 <pre><code>def find_coproducts(C, A, B):
@@ -1089,7 +1104,7 @@ print(find_coproducts(Z3, '*', '*'))  # []</code></pre>
             <div class="out"><span class="lbl">output</span>[(6, '2|6', '3|6')]
 []</div>
           </div>
-          <p style="margin-top:14px"><span class="cat">Z3</span> has no coproducts either — as duality predicts. <span class="cat">Z3</span> is isomorphic to its own opposite (reverse the arrows of a commutative group and relabel), so &ldquo;no products in <span class="cat">Z3</span><sup>op</sup>&rdquo; translates directly into &ldquo;no coproducts in <span class="cat">Z3</span>.&rdquo; Exercise 15&rsquo;s by-hand proof dualizes the same way, word for word.</p>
+          <p style="margin-top:14px"><span class="cat">Z3</span> has no coproducts either — as duality predicts. <span class="cat">Z3</span> is isomorphic to its own opposite (reverse the arrows of a commutative group and relabel), so &ldquo;no products in <span class="cat">Z3</span><sup>op</sup>&rdquo; translates directly into &ldquo;no coproducts in <span class="cat">Z3</span>.&rdquo; Exercise 15&rsquo;s by-hand proof dualizes the same way, word for word.</p>
 </div>
         </div>
       </details>
@@ -1105,16 +1120,16 @@ print(find_coproducts(Z3, '*', '*'))  # []</code></pre>
       <div class="prob-body">
 <p>Global elements, counted in three categories:</p>
 <ol>
-<li>In <span class="m"><span class="cat">Set</span></span>, exhibit the bijection between arrows <span class="m">1 → X</span> and elements of <span class="m">X</span>, and explain why two functions <span class="m">f, g : X → Y</span> agreeing on all global elements must be equal.</li>
-<li>In the divisibility poset <span class="m">{1, 2, 3, 6}</span> (terminal object: <span class="m">6</span>), which objects have a global element?</li>
-<li>In <span class="m"><span class="cat">Grp</span></span> the terminal object is the trivial group. How many global elements does a group have? Exhibit two <em>different</em> homomorphisms <span class="m">ℤ → ℤ</span> that agree on every global element.</li>
+<li>In <span class="m"><span class="cat">Set</span></span>, exhibit the bijection between arrows <span class="m pr8"><span class="up">1 → </span>X</span> and elements of <span class="m">X</span>, and explain why two functions <span class="m pr10">f<span class="up">, </span>g <span class="up pl5">: </span>X <span class="up pl8">→ </span>Y</span> agreeing on all global elements must be equal.</li>
+<li>In the divisibility poset <span class="m"><span class="up">{1, 2, 3, 6}</span></span> (terminal object: <span class="m"><span class="up">6</span></span>), which objects have a global element?</li>
+<li>In <span class="m"><span class="cat">Grp</span></span> the terminal object is the trivial group. How many global elements does a group have? Exhibit two <em>different</em> homomorphisms <span class="m"><span class="up">ℤ → ℤ</span></span> that agree on every global element.</li>
 </ol>
       </div>
       <details><summary>Show solution</summary>
         <div class="sol">
-<p><strong>(a)</strong> A function from a one-point set has exactly one value to choose, so arrows <span class="m">1 → X</span> correspond to elements <span class="m">x ∈ X</span> via <span class="m">∗ ↦ x</span>. If <span class="m">f, g</span> agree on every global element, then for each <span class="m">x</span>, composing with the arrow picking <span class="m">x</span> gives <span class="m">f(x) = g(x)</span> — pointwise agreement, hence equality. <span class="m"><span class="cat">Set</span></span> is <em>well-pointed</em>: the single probe <span class="m">1</span> suffices.</p>
-<p><strong>(b)</strong> A global element of <span class="m">x</span> is an arrow <span class="m">6 → x</span>, which exists iff <span class="m">6 | x</span> — so only <span class="m">x = 6</span> has one. Every other object is invisible to the probe <span class="m">1</span>.</p>
-<p><strong>(c)</strong> A homomorphism out of the trivial group must send its one element to the identity, so every group has exactly <strong>one</strong> global element. Consequently <em>any</em> two homomorphisms <span class="m">G → H</span> agree on global elements — for instance the identity of <span class="m">ℤ</span> and the zero homomorphism <span class="m">n ↦ 0</span>, which are certainly different. In <span class="m"><span class="cat">Grp</span></span>, arrows are not determined by global elements. One probe is nowhere near enough in general; you need them all, which is exactly the widening that generalized elements — and, in Lesson 9, the Yoneda embedding — perform.</p>
+<p><strong>(a)</strong> A function from a one-point set has exactly one value to choose, so arrows <span class="m pr8"><span class="up">1 → </span>X</span> correspond to elements <span class="m pr8">x <span class="up">∈ </span>X</span> via <span class="m"><span class="up">∗ ↦ </span>x</span>. If <span class="m pr5">f<span class="up">, </span>g</span> agree on every global element, then for each <span class="m">x</span>, composing with the arrow picking <span class="m">x</span> gives <span class="m">f<span class="up pl18">(</span>x<span class="up">) = </span>g<span class="up pl5">(</span>x<span class="up">)</span></span> — pointwise agreement, hence equality. <span class="m"><span class="cat">Set</span></span> is <em class="pr5">well-pointed</em>: the single probe <span class="m"><span class="up">1</span></span> suffices.</p>
+<p><strong>(b)</strong> A global element of <span class="m">x</span> is an arrow <span class="m"><span class="up">6 → </span>x</span>, which exists iff <span class="m"><span class="up">6 | </span>x</span> — so only <span class="m">x <span class="up">= 6</span></span> has one. Every other object is invisible to the probe <span class="m"><span class="up">1</span></span>.</p>
+<p><strong>(c)</strong> A homomorphism out of the trivial group must send its one element to the identity, so every group has exactly <strong>one</strong> global element. Consequently <em>any</em> two homomorphisms <span class="m pr7">G <span class="up">→ </span>H</span> agree on global elements — for instance the identity of <span class="m"><span class="up">ℤ</span></span> and the zero homomorphism <span class="m">n <span class="up">↦ 0</span></span>, which are certainly different. In <span class="m"><span class="cat">Grp</span></span>, arrows are not determined by global elements. One probe is nowhere near enough in general; you need them all, which is exactly the widening that generalized elements — and, in Lesson 9, the Yoneda embedding — perform.</p>
         </div>
       </details>
     </div>
@@ -1127,9 +1142,9 @@ print(find_coproducts(Z3, '*', '*'))  # []</code></pre>
     <div class="sec-no">Recap</div>
     <h2>What to carry forward</h2>
     <ol class="takeaways">
-      <li>A <strong>universal property</strong> defines an object by a mapping problem it solves best: for every candidate, <strong>exactly one</strong> arrow factors through it. Existence and uniqueness are separate clauses, and both carry weight.</li>
+      <li>A <strong>universal property</strong> defines an object by a mapping problem it solves best: for every candidate, <strong>exactly one</strong> arrow factors through it. Existence and uniqueness are separate clauses, and both carry weight.</li>
       <li><strong>Terminal</strong> and <strong>initial</strong> objects are the smallest instances; anything universal is <strong>unique up to unique isomorphism</strong>, by a four-sentence proof that recurs throughout the subject.</li>
-      <li>The <strong>product</strong> is the pair defined without elements — and the same definition yields direct products, meets, and gcds, depending on the category. Products need not exist, and whether they do is real information.</li>
+      <li>The <strong>product</strong> is the pair defined without elements — and the same definition yields direct products, meets, and gcds, depending on the category. Products need not exist, and whether they do is real information.</li>
       <li><strong>Duality</strong>: reverse all arrows and every definition and theorem dualizes — coproducts (disjoint unions, joins, lcms, tagged unions) come free from products.</li>
       <li>A product is a <strong>terminal object in a category of spans</strong> — so its uniqueness is the uniqueness of terminal objects, and arrows into it are determined by their two components.</li>
       <li>In a finite category, a universal property is a <strong>finite search</strong>: it can be settled by listing the candidates, by hand or by machine — including proofs that no universal object exists.</li>
@@ -1147,7 +1162,7 @@ print(find_coproducts(Z3, '*', '*'))  # []</code></pre>
       <div>
         <span class="ntag">Coming next · Lesson 07</span>
         <h3><a href="lesson-07-limits-and-colimits.html">Limits &amp; colimits — universal properties over any diagram</a></h3>
-        <p>Terminal objects are the limit of the empty diagram; products, of a two-dot diagram. Lesson 7 lets the diagram be anything — equalizers, pullbacks, and the general notion of a cone — and proves the uniqueness theorem once, for all of them at the same time.</p>
+        <p>Terminal objects are the limit of the empty diagram; products, of a two-dot diagram. Lesson 7 lets the diagram be anything — equalizers, pullbacks, and the general notion of a cone — and proves the uniqueness theorem once, for all of them at the same time.</p>
       </div>
     </div>
     <nav class="pager" aria-label="Lesson navigation"><a href="lesson-05-new-categories-from-old.html">← Lesson 05 — Constructions</a><a href="index.html">All lessons</a><a href="lesson-07-limits-and-colimits.html">Lesson 07 — Limits & colimits →</a></nav>
@@ -1171,19 +1186,49 @@ function el(tag, attrs, parent){
   return n;
 }
 /* label mini-syntax:  "α~X" = α with subscript X;  "g ∘~K~ f" = subscript K mid-label;
-   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end. */
+   "𝒞^op" = superscript.  A sub/superscript runs to the next marker or the end.
+   In an italic label only the letters are italic: brackets, operators and digits are set upright,
+   and a letter that overhangs its box (f above all) is given room before an upright character or a
+   superscript — the same italic corrections as in the text. */
+const ITALIC_R = {"d": 0.05, "f": 0.18, "g": 0.05, "i": 0.04, "j": 0.05, "l": 0.04, "r": 0.03, "C": 0.04, "E": 0.04, "F": 0.07, "H": 0.07, "I": 0.07, "J": 0.08, "K": 0.08, "M": 0.05, "N": 0.08, "P": 0.04, "T": 0.08, "U": 0.08, "V": 0.11, "W": 0.1, "X": 0.08, "Y": 0.1, "Z": 0.07},
+      ITALIC_L = {"f": 0.14, "g": 0.04, "j": 0.17, "p": 0.07, "y": 0.06, "A": 0.05, "J": 0.03, "M": 0.03, "X": 0.05};
+const LETTER = /\p{L}/u, MARK = /\p{M}/u, UPRIGHT_LETTERS = "ℕℤℚℝℂℙ";
+function isLetter(c){ return LETTER.test(c) && !UPRIGHT_LETTERS.includes(c); }
 function setLabel(t, label){
   const parts = String(label).split(/([~^])/);
-  let mode = "", shift = 0;
+  let mode = "", shift = 0, last = null;           // last: [italic letter, font size]
   t.textContent = "";
+  const style = getComputedStyle(t);
+  const italic = style.fontStyle === "italic", base = parseFloat(style.fontSize) || 20;
   for(let i = 0; i < parts.length; i++){
     const p = parts[i];
     if(p === "~" || p === "^"){ mode = (mode === p) ? "" : p; continue; }
     if(!p) continue;
-    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0;
-    const s = el("tspan", {dy: want - shift}, t);
-    if(mode) s.setAttribute("font-size", "12");
-    s.textContent = p;
+    const want = mode === "~" ? 5 : mode === "^" ? -8 : 0, size = mode ? 12 : base;
+    const runs = [];
+    for(const ch of p){
+      const prev = runs.length ? runs[runs.length - 1][0] : "it";
+      const kind = (italic && !/\s/.test(ch) && !MARK.test(ch) && !isLetter(ch)) ? "up" : isLetter(ch) ? "it" : prev;
+      if(runs.length && prev === kind) runs[runs.length - 1][1] += ch; else runs.push([kind, ch]);
+    }
+    runs.forEach((r, k) => {
+      const attrs = {};
+      if(k === 0) attrs.dy = want - shift;
+      let dx = 0;
+      if(italic && last && ITALIC_R[last[0]] && (r[0] === "up" || (k === 0 && mode === "^")) && !/^\s*[.,]/.test(r[1]))
+        dx += ITALIC_R[last[0]] * last[1];
+      if(italic && r[0] === "it" && k > 0 && !/\s$/.test(runs[k - 1][1]) && ITALIC_L[r[1][0]])
+        dx += ITALIC_L[r[1][0]] * size;
+      if(dx) attrs.dx = dx.toFixed(2);
+      const s = el("tspan", attrs, t);
+      if(mode) s.setAttribute("font-size", "12");
+      if(r[0] === "up") s.setAttribute("font-style", "normal");
+      s.textContent = r[1];
+      for(const ch of r[1]){
+        if(r[0] === "it" && isLetter(ch)) last = [ch, size];
+        else if(!/\s/.test(ch) && !MARK.test(ch)) last = null;
+      }
+    });
     shift = want;
   }
 }
